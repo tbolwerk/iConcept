@@ -18,7 +18,11 @@ if(isset($_POST['submit'])){
   register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$password,$secretQuetion);
 }
 ?>
-
+<!--Main Layout-->
+<main class="py-5 mask rgba-black-light flex-center">
+  <div class="bg"></div>
+<!-- Card -->
+<div class="container col-md-4">
 
 
 <!-- Card -->
@@ -134,6 +138,11 @@ if(isset($_POST['submit'])){
 
 </div>
 <!-- Card -->
+</div>
+<!-- Card -->
+</div>
+</main>
+<!--Main Layout-->
 
 <!-- Material form register -->
 <?php include 'templates/footer.php'; ?>

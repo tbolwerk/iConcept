@@ -1,0 +1,78 @@
+/* Your custom styles */
+html, body {font-family: 'Montserrat', sans-serif; height:auto;}
+a {
+  font-size: 25px;
+  color: #FFFFFF;
+}
+a:hover {
+  color: #FFFFFF;
+}
+p {
+  margin: 5px;
+}
+
+.view-main-header {
+  background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.bg {
+    position: fixed;
+    background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
+    background-position: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background-size: cover;
+}
+.auction-card {
+  margin: 20px 0;
+}
+
+.card-login {
+  margin-top: 100px;
+  background: rgba(229, 228, 255, 0.2);
+}
+
+.navbar {
+  background-color: #2E2E2E;
+}
+.nav a {
+  color: #FFFFFF;
+}
+.nav .fa {
+  color: white;
+}
+
+.mdb-blue {
+  background-color: #5484A4;
+  height: 50px;
+  border-radius: 0 0 5px 5px;
+}
+.mdb-blue a {
+  color: #FFFFFF;
+  font-size: 25px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.list-inline-item p {
+  margin: 2px;
+}
+
+.veiling-bieden a:hover {
+  color: #FFFFFF;
+}
+
+.small-font {
+  font-size: 12px;
+}
+
+
+
+.card-body ul {
+  margin: 0px;
+}

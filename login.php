@@ -8,7 +8,7 @@ if(isset($_POST['submit'])){//if submit pressed
 }
 
 ?>
-<?php include 'templates/header.php'; ?>
+
 
 <?php if(isset($error)) {
   echo $error;
@@ -23,11 +23,24 @@ if(isset($_POST['submit'])){//if submit pressed
     <!-- Card body -->
     <div class="card-body">
 
+<<<<<<< HEAD
         <!-- Material form login -->
         <form>
             <p class="h4 text-center py-4">Sign in</p>
 
 
+=======
+        <!-- Material form register -->
+        <form>
+            <p class="h4 text-center py-4">Sign up</p>
+
+            <!-- Material input text -->
+            <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="materialFormCardNameEx" class="form-control">
+                <label for="materialFormCardNameEx" class="font-weight-light">Your name</label>
+            </div>
+>>>>>>> 0fdc1181bd0c8f165469e3001cac66a1d976e558
 
             <!-- Material input email -->
             <div class="md-form">
@@ -36,6 +49,16 @@ if(isset($_POST['submit'])){//if submit pressed
                 <label for="materialFormCardEmailEx" class="font-weight-light">Your email</label>
             </div>
 
+<<<<<<< HEAD
+=======
+            <!-- Material input email -->
+            <div class="md-form">
+                <i class="fa fa-exclamation-triangle prefix grey-text"></i>
+                <input type="email" id="materialFormCardConfirmEx" class="form-control">
+                <label for="materialFormCardConfirmEx" class="font-weight-light">Confirm your email</label>
+            </div>
+
+>>>>>>> 0fdc1181bd0c8f165469e3001cac66a1d976e558
             <!-- Material input password -->
             <div class="md-form">
                 <i class="fa fa-lock prefix grey-text"></i>
@@ -47,7 +70,11 @@ if(isset($_POST['submit'])){//if submit pressed
                 <button class="btn btn-cyan" type="submit">Register</button>
             </div>
         </form>
+<<<<<<< HEAD
         <!-- Material form login -->
+=======
+        <!-- Material form register -->
+>>>>>>> 0fdc1181bd0c8f165469e3001cac66a1d976e558
 
     </div>
     <!-- Card body -->

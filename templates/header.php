@@ -44,5 +44,5 @@ switch($current_page){
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
   <?php include 'templates/nav.php'; ?>
+<body>

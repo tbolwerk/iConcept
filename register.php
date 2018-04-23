@@ -1,6 +1,6 @@
 <?php
 $current_page='register';
-require('header.php');
+require_once('templates/header.php');
 //Register function
 if(isset($_POST['submit'])){
   $username = $_POST['username'];
@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
 }
 ?>
 
-<?php include 'templates/header.php'; ?>
+
 <!-- Material form register -->
 <form action="" method="post">
     <p class="h4 text-center mb-4">Sign up</p>

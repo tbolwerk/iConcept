@@ -115,6 +115,14 @@ if(isset($_POST['submit'])){
                 <label for="materialFormCardPasswordEx" class="font-weight-light">Confirm your password</label>
             </div>
 
+            <!-- Material input text -->
+            <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="materialFormCardNameEx" class="form-control" name="secretQuetion">
+                <label for="materialFormCardNameEx" class="font-weight-light">secret Quetion</label>
+            </div>
+
+
             <div class="text-center py-4 mt-3">
                 <button class="btn btn-cyan" type="submit">Register</button>
             </div>

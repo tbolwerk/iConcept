@@ -1,6 +1,6 @@
 <?php
 $current_page='login';
-require('templates/header.php');
+require_once('templates/header.php');
 
 //login SCRIPTS
 if(isset($_POST['submit'])){//if submit pressed

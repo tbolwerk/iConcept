@@ -14,10 +14,8 @@ if(isset($_POST['submit'])){
   $birthdate = $_POST['birthdate'];
   $email = $_POST['email'];
   $password = $_POST['password'];
-  $questionNumber = $_POST['questionNumber'];
-  $replyText = $_POST['replyText'];
-  $seller = $_POST['seller'];
-  register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$password,$questionNumber,$replyText,$seller);
+  $secretQuetion = $_POST['secretQuetion'];
+  register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$password,$secretQuetion);
 }
 ?>
 
@@ -117,26 +115,15 @@ if(isset($_POST['submit'])){
         <label for="materialFormRegisterPasswordEx">Confirm your password</label>
     </div>
 
-    <!-- Material input text -->
-    <div class="md-form">
-        <i class="fa fa-user prefix grey-text"></i>
-        <input type="text" id="materialFormRegisterQuetionNumberEx" class="form-control" name="questionNumber">
-        <label for="materialFormRegisterQuetionNumberEx">questionNumber</label>
-    </div>
 
     <!-- Material input text -->
     <div class="md-form">
         <i class="fa fa-user prefix grey-text"></i>
-        <input type="text" id="materialFormRegisterReplyTextEx" class="form-control" name="replyText">
-        <label for="materialFormRegisterReplyTextEx">ReplyText</label>
+        <input type="text" id="materialFormRegisterReplyTextEx" class="form-control" name="secretQuetion">
+        <label for="materialFormRegisterReplyTextEx">Secret Question</label>
     </div>
 
-    <!-- Material input text -->
-    <div class="md-form">
-        <i class="fa fa-user prefix grey-text"></i>
-        <input type="text" id="materialFormRegisterSellerEx" class="form-control" name="seller">
-        <label for="materialFormRegisterSellerEx">Seller</label>
-    </div>
+
 
     <div class="text-center mt-4">
         <button class="btn btn-primary" type="submit" name="submit">Register</button>

@@ -1,7 +1,7 @@
 <?php
 require('connect.php');
 /*Register function*/
-function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$password,$questionNumber,$replyText,$seller)
+function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$password,$secretQuetion)
 {
   global $dbh;
   global $error;

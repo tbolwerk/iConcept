@@ -10,10 +10,7 @@ if(isset($_POST['submit'])){//if submit pressed
 ?>
 
 
-<?php if(isset($error)) {
-  echo $error;
-}
-  ?>
+
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light flex-center">
   <div class="bg"></div>
@@ -52,7 +49,10 @@ if(isset($_POST['submit'])){//if submit pressed
         </form>
         <!-- Material form login -->
 
-
+        <?php if(isset($error)) {
+          echo $error;
+        }
+          ?>
     </div>
     <!-- Card body -->
 </div>

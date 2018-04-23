@@ -8,7 +8,7 @@ if(isset($_POST['submit'])){//if submit pressed
 }
 
 ?>
-<?php include 'templates/header.php'; ?>
+
 
 <?php if(isset($error)) {
   echo $error;

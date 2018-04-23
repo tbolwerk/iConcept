@@ -1,6 +1,6 @@
 <?php
 //
- $hostname = "77.174.95.152";
+ $hostname = "(local)";
  $dbname = "iConcept";
  $uid = "iConcept";
  $pw ="Welkom01!";

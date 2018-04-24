@@ -18,6 +18,9 @@ if(isset($_POST['submit'])){
 <html>
 <body>
 
+<br>
+<br>
+<br>
 <p>Er is een mail gestuurd naar <?=$_POST['email']?>.</p>
 
 </body>

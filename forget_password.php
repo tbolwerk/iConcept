@@ -6,7 +6,7 @@ if(isset($_POST['forget_password'])){
 $new_password=random_password(8);
     $to = $_POST['forget_password'];
 
-$dbh->query("update Gebruiker set password='$new_password' where email = '$to'");
+$dbh->query("update Gebruiker set wachtwoord='$new_password' where email = '$to'");
 
 
 $subject = "Reset Password EenmaalAndermaal";

@@ -129,9 +129,9 @@ if(isset($_POST['submit'])){
         </form>
         <!-- Material form register -->
 <?php
-
-echo $error;
-
+if(isset($error)){
+echo "<p class='bq-danger'>" . $error . "</p>";
+}
  ?>
     </div>
     <!-- Card body -->

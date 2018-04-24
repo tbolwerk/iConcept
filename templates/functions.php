@@ -5,7 +5,7 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 {
   global $dbh;
   global $error;
-  
+
 
 if(empty($username))
 {
@@ -27,16 +27,26 @@ if($password != $password_check)
 {
   $error = "password do not match";
 }else{
+  try {
+      $userdata = $dbh->prepare("select * from Gebruiker where email=? AND gebruikersnaam=?");
+      $userdata->execute(array($email, $username));
+  } catch (PDOException $e) {
+      $error = $e;
+  }
+  if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
+       $error = "username or password already exists";
+  }else{
     try {
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password,"", $secretAnswer,""));
+      $error = "account succesfully made";
     } catch (PDOException $e) {
       $error=$e;
     }
 
   }
-
+}
 }
 
 
@@ -86,15 +96,6 @@ function random_password( $length = 8 ) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
-}
-
-function createVerificationCode($username, $random_password) {
-    try {
-		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, tijd, code) Values(?, ?, ?)"); // tabel Verificatiecode bestaat nog niet
-		$userdata->execute(array($username, time(), $random_password));
-    } catch (PDOException $e) {
-		$error=$e;
-    }
 }
 
 ?>

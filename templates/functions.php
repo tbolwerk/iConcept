@@ -40,7 +40,7 @@ if($password != $password_check)
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password,"", $secretAnswer,""));
-      $error = "account succesfully made";
+      $error = "email vertification send";
     } catch (PDOException $e) {
       $error=$e;
     }
@@ -58,7 +58,7 @@ function login($username,$password)
 
     global $dbh;
     global $error;
-  $error = "";
+
     $username=trim($username);
     $password=trim($password);
 
@@ -82,7 +82,7 @@ function login($username,$password)
             $error = $e;
         }
         if (!($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-             $error = "username or password invalid";
+             $error = "username or password invalid <a href='forget_password.php'>Forgot password</a>";
         } else {
             $_SESSION['username'] = $username;
             header("location: index.php");

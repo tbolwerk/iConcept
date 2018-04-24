@@ -3,7 +3,6 @@ $current_page='register';
 require_once('templates/header.php');
 //Register function
 if(isset($_POST['submit'])){
-
   register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$_POST['address2'],$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer']);
 }
 ?>
@@ -132,7 +131,8 @@ if(isset($_POST['submit'])){
 if(isset($error)){
 echo "<p class='bq-danger'>" . $error . "</p>";
 }
- ?>
+?>
+
     </div>
     <!-- Card body -->
 

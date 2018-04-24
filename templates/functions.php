@@ -7,23 +7,23 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
   global $error;
 
 
-if(empty($username))
+if(empty($username))//checks if username is not empty
 {
   $error = "username empty";
 }else
-if(empty($password))
+if(empty($password) || empty($password_check))//checks if password is not empty
 {
   $error = "password empty";
 }else
-if(empty($email))
+if(empty($email) || empty($email_check))//checks if email is not empty
 {
  $error = "email empty";
 }else
-if($email != $email_check)
+if($email != $email_check)//checks if email equils email_check
 {
   $error = "email do not match";
 }else
-if($password != $password_check)
+if($password != $password_check)//checks if password equils password_check
 {
   $error = "password do not match";
 }else{

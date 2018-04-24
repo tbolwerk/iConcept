@@ -49,11 +49,13 @@ if(isset($_POST['submit'])){//if submit pressed
         </form>
         <!-- Material form login -->
 
-        <?php if(isset($error)) {
-          echo $error;
-        }
+
+        <?php  if(isset($error)){echo $error;}
+
           ?>
+              <a href="forget_password.php">Forgot password?</a>
     </div>
+
     <!-- Card body -->
 </div>
 <!-- Card -->

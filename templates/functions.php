@@ -49,12 +49,9 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
 }
 }
 
-
-
 /*login function */
 function login($username,$password)
 {
-
 
     global $dbh;
     global $error;
@@ -90,12 +87,21 @@ function login($username,$password)
     }
 }
 
-
-
 function random_password( $length = 8 ) {
-    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
 }
 
+function createVerificationCode($username, $random_password) {
+	global $dbh;
+	global $error;
+	
+    try {
+		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, tijd, code) Values(?, ?, ?)");
+		$userdata->execute(array($username, time(), $random_password));
+    } catch (PDOException $e) {
+		$error=$e;
+    }
+}
 ?>

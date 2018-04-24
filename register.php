@@ -1,10 +1,6 @@
 <?php
 $current_page='register';
 require_once('templates/header.php');
-//Register function
-if(isset($_POST['submit'])){
-  register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$_POST['address2'],$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer']);
-}
 ?>
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light">
@@ -20,7 +16,7 @@ if(isset($_POST['submit'])){
     <div class="card-body">
 
         <!-- Material form register -->
-        <form action="" method="post">
+        <form action="postregister.php" method="post">
             <p class="h4 text-center py-4">Sign up</p>
 
             <!-- Material input text -->

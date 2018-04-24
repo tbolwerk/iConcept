@@ -13,8 +13,8 @@ $subject = "Reset Password EenmaalAndermaal";
 $txt = "Your new generated password : ".$new_password;
 $headers = "From: Admin@EenmaalAndermaal.com";
 
-mail($to,$subject,$txt,$headers);
-header("Location:login.php");
+// mail($to,$subject,$txt,$headers);
+// header("Location:login.php");
 }
 
 ?>

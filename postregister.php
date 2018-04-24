@@ -12,8 +12,6 @@ if(isset($_POST['submit'])){
 	$message = wordwrap($message, 70, "\r\n");
 
 	mail($_POST['email'], "Verificatiecode EenmaalAndermaal", $message, "From: EenmaalAndermaal@iConcepts.com");
-	header("Location: index.php");
-	die();
 }
 ?>
 

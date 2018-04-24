@@ -37,9 +37,9 @@ if($password != $password_check)
        $error = "username or password already exists";
   }else{
     try {
-      $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper)
-Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?)");
-      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password,"", $secretAnswer,""));
+      $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
+Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
+      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password,0, $secretAnswer,0,0));
       $error = "email vertification send";
     } catch (PDOException $e) {
       $error=$e;

@@ -3,22 +3,8 @@ $current_page='register';
 require_once('templates/header.php');
 //Register function
 if(isset($_POST['submit'])){
-  $username = $_POST['username'];
-  $firstname = $_POST['firstname'];
-  $lastname = $_POST['lastname'];
-  $address1 = $_POST['address1'];
-  $address2 = $_POST['address2'];
-  $zipcode = $_POST['zipcode'];
-  $city = $_POST['city'];
-  $country = $_POST['country'];
-  $birthdate = $_POST['birthdate'];
-  $email = $_POST['email'];
-  $email_check = $_POST['email_check'];
-  $password = $_POST['password'];
-  $password_check = $_POST['password_check'];
-  $secretAnswer = $_POST['$secretAnswer'];
 
-  register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$email_check,$password,$password_check,$secretAnswer);
+  register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$_POST['address2'],$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer']);
 }
 ?>
 <!--Main Layout-->
@@ -132,13 +118,13 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form">
                 <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="secretQuetion">
-                <label for="materialFormCardNameEx" class="font-weight-light">secret Quetion</label>
+                <input type="text" class="form-control" name="secretAnswer">
+                <label for="materialFormCardNameEx" class="font-weight-light">secret Answer</label>
             </div>
 
 
             <div class="text-center py-4 mt-3">
-                <button class="btn btn-cyan" type="submit">Register</button>
+                <button class="btn btn-cyan" type="submit" name="submit">Register</button>
             </div>
         </form>
         <!-- Material form register -->

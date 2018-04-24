@@ -5,6 +5,7 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 {
   global $dbh;
   global $error;
+  
 
 if(empty($username))
 {
@@ -43,9 +44,11 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?)");
 /*login function */
 function login($username,$password)
 {
+
+
     global $dbh;
     global $error;
-
+  $error = "";
     $username=trim($username);
     $password=trim($password);
 

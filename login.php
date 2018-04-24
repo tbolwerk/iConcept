@@ -49,9 +49,8 @@ if(isset($_POST['submit'])){//if submit pressed
         </form>
         <!-- Material form login -->
 
-        <?php if(isset($error)) {
-          echo $error;
-        }
+        <?php  if(isset($error)){echo $error;}
+
           ?>
     </div>
     <!-- Card body -->

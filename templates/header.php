@@ -23,6 +23,7 @@ switch($current_page){
       header('Location: index.php');
     }
     break;
+
 }
 ?>
 <!DOCTYPE html>

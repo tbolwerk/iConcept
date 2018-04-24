@@ -19,7 +19,7 @@ if(isset($_POST['submit'])){
 }
 ?>
 <!--Main Layout-->
-<main class="py-5 mask rgba-black-light flex-center">
+<main class="py-5 mask rgba-black-light">
   <div class="bg"></div>
 <!-- Card -->
 <div class="container col-md-4">
@@ -38,21 +38,21 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form">
                 <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" id="materialFormCardNameEx" class="form-control" name="username">
+                <input type="text" id="materialFormCardUsernameEx" class="form-control" name="username">
                 <label for="materialFormCardNameEx" class="font-weight-light">Your username</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form">
                 <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" id="materialFormCardNameEx" class="form-control" name="firstname">
+                <input type="text" id="materialFormCardFirstnameEx" class="form-control" name="firstname">
                 <label for="materialFormCardNameEx" class="font-weight-light">Your firstname</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form">
                 <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" id="materialFormCardNameEx" class="form-control" name="lastname">
+                <input type="text" id="materialFormCardUserNameEx" class="form-control" name="lastname">
                 <label for="materialFormCardNameEx" class="font-weight-light">Your lastname</label>
             </div>
 
@@ -61,6 +61,13 @@ if(isset($_POST['submit'])){
                 <i class="fa fa-user prefix grey-text"></i>
                 <input type="text" id="materialFormCardNameEx" class="form-control" name="address1">
                 <label for="materialFormCardNameEx" class="font-weight-light">address1</label>
+            </div>
+
+            <!-- Material input text -->
+            <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="materialFormCardNameEx" class="form-control" name="address2">
+                <label for="materialFormCardNameEx" class="font-weight-light">address2</label>
             </div>
 
             <!-- Material input text -->

@@ -85,10 +85,10 @@ function random_password( $length = 8 ) {
     return $password;
 }
 
-function createVerificationCode($username) {
+function createVerificationCode($username, $random_password) {
     try {
 		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, tijd, code) Values(?, ?, ?)"); // tabel Verificatiecode bestaat nog niet
-		$userdata->execute(array($username, time(), random_password(6)));
+		$userdata->execute(array($username, time(), $random_password));
     } catch (PDOException $e) {
 		$error=$e;
     }

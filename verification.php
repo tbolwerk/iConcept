@@ -41,6 +41,7 @@ if(isset($_GET['code'])){
 </head>
 
 <body>
+	<br><br><br>
 	<p>Code Geldig: <?=$codeValid?></p>
 	<p>Opgegeven Code: <?=$submittedCode?></p>
 	<p>Verstreken tijd: <?=$deltaTime?></p>

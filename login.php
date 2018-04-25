@@ -53,7 +53,7 @@ if(isset($_POST['submit'])){//if submit pressed
         <?php  if(isset($error)){echo $error;}
 
           ?>
-              <a href="forget_password.php">Forgot password?</a>
+              <a class="red-text" href="forget_password.php">Forgot password?</a>
     </div>
 
     <!-- Card body -->

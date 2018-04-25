@@ -39,7 +39,7 @@ $results = $statement->fetch();
   <label for="birthdate">Geboortedatum</label>
   <input type="text" name="birthdate" value="<?=$results['geboortedatum']?>"><br>
   <label for="mail">E-Mail</label>
-  <input type="email" name="mail" value="<?=$results['email']?>"><br>
+  <input type="email" name="email" value="<?=$results['email']?>"><br>
   <label for="password">Wachtwoord</label>
   <input type="text" name="password" value="<?=$results['wachtwoord']?>"><br>
 

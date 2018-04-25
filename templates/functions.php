@@ -76,7 +76,7 @@ if($password != $password_check)//checks if password equils password_check
       $error = $e;
   }
   if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-       $error = "username or password already exists";
+       $error = "email or username already exists";
   }else{
     try {
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
@@ -115,7 +115,7 @@ function login($username,$password)
     }else {
 
         try {
-            $userdata = $dbh->prepare("select * from Gebruiker where email=? AND wachtwoord=?");
+            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=?");
             $userdata->execute(array($username, $password));
         } catch (PDOException $e) {
             $error = $e;

@@ -4,7 +4,7 @@ require_once('templates/header.php');
 
 //login SCRIPTS
 if(isset($_POST['submit'])){//if submit pressed
-  login($_POST['email'], $_POST['password']);//login function
+  login($_POST['username'], $_POST['password']);//login function
 }
 
 ?>
@@ -27,20 +27,20 @@ if(isset($_POST['submit'])){//if submit pressed
 
 
 
-            <!-- Material input email -->
+            <!-- Material input username -->
             <div class="md-form">
-                <i class="fa fa-envelope prefix grey-text"></i>
-                <input type="email" id="materialFormCardEmailEx" class="form-control" name="email">
-                <label for="materialFormCardEmailEx" class="font-weight-light">Your email</label>
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="materialFormCardNameEx" class="form-control" name="username">
+                <label for="materialFormCardNameEx" class="font-weight-light">Gebruikersnaam</label>
             </div>
 
 
 
-            <!-- Material input password -->
+            <!-- Material input username -->
             <div class="md-form">
                 <i class="fa fa-lock prefix grey-text"></i>
                 <input type="password" id="materialFormCardPasswordEx" class="form-control" name="password">
-                <label for="materialFormCardPasswordEx" class="font-weight-light">Your password</label>
+                <label for="materialFormCardPasswordEx" class="font-weight-light">Wachtwoord</label>
             </div>
 
             <div class="text-center py-4 mt-3">

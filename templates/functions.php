@@ -1,16 +1,17 @@
 <?php
 require('connect.php');
 /*verification function*/
-function verification($submittedCode)
+function verification($getCode)
 {
 
 	global $dbh;
   global $codeValid;
   global $submittedCode;
   global $deltaTime;
-  global $resultaten;
+  global $results;
 
 	$codeValid = false;
+  $submittedCode = $getCode;
 
 	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
@@ -29,7 +30,7 @@ function verification($submittedCode)
 	$deltaTime = time() - $storedTime;
 
 	if ($deltaTime > 14400) {
-	$codeValid = false;
+	$codeValid = true;
   $error = "Time has expired";
 	}
 

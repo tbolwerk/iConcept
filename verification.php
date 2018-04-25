@@ -8,9 +8,9 @@ require('templates/header.php');
 ?>
 
 
-
+	<br><br><br>
 	<p>Code Geldig: <?=$codeValid?></p>
 	<p>Opgegeven Code: <?=$submittedCode?></p>
 	<p>Verstreken tijd: <?=$deltaTime?></p>
-	<p><?php print_r($resultaten);?></p>
+	<p><?php print_r($results);?></p>
 <?php include('templates/footer.php'); ?>

@@ -6,8 +6,10 @@ require('templates/header.php');
 //Afblijven graag.
 
 if(isset($_POST['submit'])){
-  $statement = $dbh->prepare("update Gebruiker set gebruikersnaam = ?, voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_SESSION['username']));
+
+  $statement = $dbh->prepare("update Gebruiker set gebruikersnaam = ?, voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
+	$statement->execute(array($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
+  changePassword($_POST['password']);
 }
 
 $username = $_SESSION['username'];

@@ -5,31 +5,7 @@ $current_page='verification';
 require('templates/header.php');
 
 if(isset($_GET['code'])){
-	$submittedCode = $_GET['code'];
-	$codeValid = true;
-    try {
-		$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
-		$statement->execute(array($submittedCode));
-		
-		$resultaten = $statement->fetch();
-    } catch (PDOException $e) {
-		$error=$e;
-		$codeValid = false;
-    }
-	$storedUsername = $resultaten[0];
-	$storedTime = $resultaten[1];
-	$storedCode = $resultaten[2];
-	$deltaTime = time() - $storedTime;
-	if ($deltaTime > 14400) {
-		$codeValid = false;
-	}
-	if ($codeValid) {
-		$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");
-		$statement->execute(array($storedUsername));
-	}
-} else {
-	header("Location: index.php");
-	die();
+ verification($_GET['code']);
 }
 ?>
 

@@ -1,5 +1,39 @@
 <?php
 require('connect.php');
+/*verification function*/
+function verification($submittedCode)
+{
+	global $codeValid;
+	global $dbh;
+
+	$codeValid = true;
+
+	try {
+	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
+	$statement->execute(array($submittedCode));
+	$resultaten = $statement->fetch();
+	} catch (PDOException $e) {
+	$error=$e;
+	$codeValid = false;
+	}
+
+	$storedUsername = $resultaten[0];
+	$storedTime = $resultaten[1];
+	$storedCode = $resultaten[2];
+	$deltaTime = time() - $storedTime;
+	if ($deltaTime > 14400) {
+	$codeValid = false;
+	}
+	if ($codeValid) {
+	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");
+	$statement->execute(array($storedUsername));
+	}else {
+		header("Location: index.php");
+		die();
+}
+}
+
+
 /*Register function*/
 function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$email_check,$password,$password_check,$secretAnswer)
 {
@@ -96,7 +130,7 @@ function random_password( $length = 8 ) {
 function createVerificationCode($username, $random_password) {
 	global $dbh;
 	global $error;
-	
+
     try {
 		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, tijd, code) Values(?, ?, ?)");
 		$userdata->execute(array($username, time(), $random_password));

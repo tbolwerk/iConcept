@@ -10,14 +10,13 @@ function verification($getCode)
   global $deltaTime;
   global $results;
 
-	$codeValid = false;
+	$codeValid = true;//codeValid is true until proven that it's not
   $submittedCode = $getCode;
 
 	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
 	$statement->execute(array($submittedCode));
 	$resultaten = $statement->fetch();
-  $codeValid = true;
 	} catch (PDOException $e) {
 	$error= "Code invalid";
 	$codeValid = false;
@@ -29,8 +28,8 @@ function verification($getCode)
 
 	$deltaTime = time() - $storedTime;
 
-	if ($deltaTime > 14400) {
-	$codeValid = true;
+	if ($deltaTime > 14400) {//14400 seconds = 4 hours
+	$codeValid = false;
   $error = "Time has expired";
 	}
 
@@ -76,7 +75,7 @@ if($password != $password_check)//checks if password equils password_check
       $error = $e;
   }
   if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-       $error = "username or password already exists";
+       $error = "email or username already exists";
   }else{
     try {
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
@@ -115,7 +114,7 @@ function login($username,$password)
     }else {
 
         try {
-            $userdata = $dbh->prepare("select * from Gebruiker where email=? AND wachtwoord=?");
+            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=?");
             $userdata->execute(array($username, $password));
         } catch (PDOException $e) {
             $error = $e;
@@ -173,21 +172,16 @@ try {
 }
 
 function  auctionTimer($voorwerpnummer){
-  global timer;
+  global $timer;
   getAuctionTime($voorwerpnummer);
   $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
   $days_remaining = floor($remaining/86400);
   $hours_remaining = floor(($remaining/86400)/ 3600);
   if($days_remaining>1){
-    timer = $days_remaining;
+    $timer = $days_remaining;
   }else{
-    timer = $days_remaining + $hours_remaining;
+    $timer = $days_remaining + $hours_remaining;
   }
-}
-
-
-
-
 }
 
 ?>

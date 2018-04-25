@@ -6,9 +6,9 @@ switch($current_page){
 //Identify page with $current_page variable in php file
   case 'index':
     if(isset($_SESSION['username'])){
-      // echo "Logged in as: " .$_SESSION['username']. " <a href='logout.php'>Log out</a>";
+
     }else{
-      // echo "<a href='login.php'>Log in</a>";
+    
     }
     break;
 

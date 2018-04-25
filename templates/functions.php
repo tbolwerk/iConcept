@@ -91,13 +91,16 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
 }
 
 /*login function */
-function login($username,$password)
+function login($username_input,$password)
 {
 
     global $dbh;
     global $error;
 
-    $username=trim($username);
+		$username = $username_input;
+		$email = $username_input;
+
+    // $username=trim($username);
     $password=trim($password);
 
     if(strlen($username)>=50){
@@ -112,17 +115,18 @@ function login($username,$password)
     if(empty($password)){
          $error = "password is empty";
     }else {
-
         try {
-            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=?");
-            $userdata->execute(array($username, $password));
+            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
+            $userdata->execute(array($username,$password,$email, $password));
+
         } catch (PDOException $e) {
             $error = $e;
         }
         if (!($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
              $error = "username or password invalid";
         } else {
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = $result['gebruikersnaam'];
+						header('Location: index.php');
         }
     }
 }
@@ -198,7 +202,7 @@ try {
 }
 
 function addPicture(){
-//in production 
+//in production
    $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
         $extension = end(explode(".", $_FILES["file"]["name"]));
 $avatarnaam = $_FILES["file"]["name"];

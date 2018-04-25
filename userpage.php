@@ -47,4 +47,4 @@ $results = $statement->fetch();
 </form>
 
 
-<?php require('templates/footer.php'); ?>
+<?php include('templates/footer.php'); ?>

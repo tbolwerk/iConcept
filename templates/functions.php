@@ -120,10 +120,9 @@ function login($username,$password)
             $error = $e;
         }
         if (!($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-             $error = "username or password invalid <a href='forget_password.php'>Forgot password</a>";
+             $error = "username or password invalid";
         } else {
             $_SESSION['username'] = $username;
-            header("location: index.php");
         }
     }
 }
@@ -183,5 +182,22 @@ function  auctionTimer($voorwerpnummer){
     $timer = $days_remaining + $hours_remaining;
   }
 }
+
+
+function changePassword($new_password)
+{
+global $error;
+global $dbh;
+$username=$_SESSION['username'];
+try {
+	$dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
+
+} catch (PDOException $e) {
+ 	$error =  $e;
+}
+}
+
+
+
 
 ?>

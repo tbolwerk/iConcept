@@ -13,16 +13,21 @@ switch($current_page){
     break;
 
   case 'login':
-    if(isset($_SESSION['username'])){
+    if(isset($_SESSION['username'])){//when logged in go to home
       header('Location: index.php');
     }
     break;
 
   case 'register':
-    if(isset($_SESSION['username'])){
+    if(isset($_SESSION['username'])){//when logged in go to home
       header('Location: index.php');
     }
     break;
+
+  case 'account':
+    if(!isset($_SESSION['username'])){//when not logged in go to login page
+      header('Location: login.php');
+    }
 
 }
 ?>

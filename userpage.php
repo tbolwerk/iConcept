@@ -7,7 +7,7 @@ require('templates/header.php');
 
 if(isset($_POST['submit'])){
   $statement = $dbh->prepare("update Gebruiker set gebruikersnaam = ?, voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['username']));
+	$statement->execute(array($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_SESSION['username']));
 }
 
 $username = $_SESSION['username'];

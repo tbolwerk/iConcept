@@ -10,14 +10,13 @@ function verification($getCode)
   global $deltaTime;
   global $results;
 
-	$codeValid = false;
+	$codeValid = true;//codeValid is true until proven that it's not
   $submittedCode = $getCode;
 
 	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
 	$statement->execute(array($submittedCode));
 	$resultaten = $statement->fetch();
-  $codeValid = true;
 	} catch (PDOException $e) {
 	$error= "Code invalid";
 	$codeValid = false;
@@ -29,8 +28,8 @@ function verification($getCode)
 
 	$deltaTime = time() - $storedTime;
 
-	if ($deltaTime > 14400) {
-	$codeValid = true;
+	if ($deltaTime > 14400) {//14400 seconds = 4 hours
+	$codeValid = false;
   $error = "Time has expired";
 	}
 

@@ -7,8 +7,8 @@ require('templates/header.php');
 
 if(isset($_POST['submit'])){
 
-  $statement = $dbh->prepare("update Gebruiker set gebruikersnaam = ?, voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
+	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
   changePassword($_POST['password']);
 }
 
@@ -24,8 +24,6 @@ $results = $statement->fetch();
 <?php print_r($results) ?><br>
 
 <form method="post" action="" >
-  <label for="username">Gebruikersnaam</label>
-  <input type="text" name="username" value="<?=$results['gebruikersnaam']?>"><br>
   <label for="firstname">Voornaam</label>
   <input type="text" name="firstname" value="<?=$results['voornaam']?>"><br>
   <label for="lastname">Achternaam</label>

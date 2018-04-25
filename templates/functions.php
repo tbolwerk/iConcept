@@ -146,4 +146,48 @@ function createVerificationCode($username, $random_password) {
 		$error=$e;
     }
 }
+
+function getAuctionTime($voorwerpnummer)
+{
+  global $dbh;
+
+  global $looptijd;
+  global $looptijdbegindag;
+  global $looptijdeindedag;
+  global $looptijdeindetijdstip;
+  global $looptijdbegintijdstip;
+
+try {
+  $userdata = $dhb->prepare("select looptijd, looptijdbegindag, looptijdbegintijdstip,looptijdeindedag,looptijdeindetijdstip from Voorwerp where ?");
+  $userdata->execute(array($voorwerpnummer));
+  $userdata->fetch();
+  $looptijd = $userdata[0];
+    $looptijdbegindag = $userdata[1];
+      $looptijdbegintijdstip = $userdata[2];
+      $looptijdeindedag = $userdata[3];
+      $looptijdeindetijdstip = $userdata[4];
+}catch (PDOException $e) {
+  $error=$e;
+}
+
+}
+
+function  auctionTimer($voorwerpnummer){
+  global timer;
+  getAuctionTime($voorwerpnummer);
+  $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
+  $days_remaining = floor($remaining/86400);
+  $hours_remaining = floor(($remaining/86400)/ 3600);
+  if($days_remaining>1){
+    timer = $days_remaining;
+  }else{
+    timer = $days_remaining + $hours_remaining;
+  }
+}
+
+
+
+
+}
+
 ?>

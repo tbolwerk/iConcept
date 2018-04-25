@@ -33,7 +33,7 @@ if(!isset($_SESSION['username'])){
 }else{
 ?>
           <li class="nav-item active">
-              <a class="nav-link" href="userpage.php?user=<?=$_SESSION['username']?>"><?=$_SESSION['username']?></a>
+              <a class="nav-link" href="userpage.php"><?=$_SESSION['username']?></a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="logout.php">Logout</a>

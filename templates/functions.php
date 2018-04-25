@@ -173,21 +173,16 @@ try {
 }
 
 function  auctionTimer($voorwerpnummer){
-  global timer;
+  global $timer;
   getAuctionTime($voorwerpnummer);
   $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
   $days_remaining = floor($remaining/86400);
   $hours_remaining = floor(($remaining/86400)/ 3600);
   if($days_remaining>1){
-    timer = $days_remaining;
+    $timer = $days_remaining;
   }else{
-    timer = $days_remaining + $hours_remaining;
+    $timer = $days_remaining + $hours_remaining;
   }
-}
-
-
-
-
 }
 
 ?>

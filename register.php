@@ -16,7 +16,7 @@ require_once('templates/header.php');
     <div class="card-body">
 
         <!-- Material form register -->
-        <form action="postregister.php" method="post">
+        <form action="post_register.php" method="post">
             <p class="h4 text-center py-4">Sign up</p>
 
             <!-- Material input text -->

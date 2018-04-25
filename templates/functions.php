@@ -1,7 +1,7 @@
 <?php
 require('connect.php');
 /*verification function*/
-function verification($getCode)
+function verification($getUsername,$getCode)
 {
 
 	global $dbh;
@@ -12,10 +12,11 @@ function verification($getCode)
 
 	$codeValid = true;//codeValid is true until proven that it's not
   $submittedCode = $getCode;
+	$username = $getUsername;
 
 	try {//checks if code exists in database
-	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
-	$statement->execute(array($submittedCode));
+	$statement = $dbh->prepare("select * from Verificatiecode where gebruikersnaam = ? AND code = ?");
+	$statement->execute(array($username,$submittedCode));
 	$resultaten = $statement->fetch();
 	} catch (PDOException $e) {
 	$error= "Code invalid";

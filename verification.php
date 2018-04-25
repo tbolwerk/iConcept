@@ -1,9 +1,9 @@
 <?php
-$current_page='verification';
+$current_page='register';
 require('templates/header.php');
 
 
- verification($_GET['code']);
+ verification($_GET['username'],$_GET['code']);
 
 ?>
 

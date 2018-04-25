@@ -3,34 +3,41 @@ require('connect.php');
 /*verification function*/
 function verification($submittedCode)
 {
-	global $codeValid;
+
 	global $dbh;
+  global $codeValid;
+  global $submittedCode;
+  global $deltaTime;
+  global $resultaten;
 
-	$codeValid = true;
+	$codeValid = false;
 
-	try {
+	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where code = ?");
 	$statement->execute(array($submittedCode));
 	$resultaten = $statement->fetch();
+  $codeValid = true;
 	} catch (PDOException $e) {
-	$error=$e;
+	$error= "Code invalid";
 	$codeValid = false;
 	}
 
 	$storedUsername = $resultaten[0];
 	$storedTime = $resultaten[1];
 	$storedCode = $resultaten[2];
+
 	$deltaTime = time() - $storedTime;
+
 	if ($deltaTime > 14400) {
 	$codeValid = false;
+  $error = "Time has expired";
 	}
+
 	if ($codeValid) {
 	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");
 	$statement->execute(array($storedUsername));
-	}else {
-		header("Location: index.php");
-		die();
-}
+	}
+
 }
 
 

@@ -1,19 +1,20 @@
 <?php
 $current_page='userpage';
-require('templates/header.php');
+require_once('templates/header.php');
 
 //Janno is hiermee bezig.
 //Afblijven graag.
 
 if(isset($_POST['submit'])){
 
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?sadresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
 	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
   changePassword($_POST['password']);
 }
 
 if(isset($_POST['change_avatar'])){
-  addPicture($_FILES['file']);
+  $picture = $_FILES['file'];
+  addPicture($picture);
 }
 
 $username = $_SESSION['username'];

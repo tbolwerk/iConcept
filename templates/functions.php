@@ -206,57 +206,67 @@ try {
 }
 }
 
-function addPicture($file){
+function addPicture($picture){
+	// $file = array();
+	// foreach ($picture as $key1 => $value1) {
+	// 	foreach ($value1 as $key2 => $value2) {
+	// 	$file[$key2][$key1] = $value2;
+	// }
+	// }
 global $error;
 global $dbh;
 
 $error="";
 //in production
-   $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
-        $extension = end(explode(".", $file["name"]));
+$file = $picture;
+$error="";
+//in production
+	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+				$tmp_extension = explode(".", $file["name"]);
+				$extension = end($tmp_extension);
 				$pr = $file["name"];
-        echo $file["size"];
+				echo $file["size"];
 
-        if (
-            (
-            	 ($file["type"] == "image/gif")
-            || ($file["type"] == "image/jpeg")
-            || ($file["type"] == "image/png")
-            || ($file["type"] == "image/pjpeg")
-            )
-            && ($file["size"] < 2000000)
-            && in_array($extension, $allowedExts))
-          {
+				if (
+						(
+							 ($file["type"] == "image/gif")
+						|| ($file["type"] == "image/jpeg")
+						|| ($file["type"] == "image/png")
+						|| ($file["type"] == "image/pjpeg")
+						)
+						&& ($file["size"] < 2000000)
+						&& in_array($extension, $allowedExts))
+					{
 
 
-         if ($file["error"] > 0)
-                {
+				 if ($file["error"] > 0)
+								{
 
-                    $error.= "Return Code: " . $file["error"] . "<br />";
+										$error.= "Return Code: " . $file["error"] . "<br />";
 
-                } else {
+								} else {
 
-                    $error.= "Upload: " . $file["name"] . "<br />";
-                    $error.= "Type: " . $file["type"] . "<br />";
-                    $error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
-                    $error.= "Temp file: " . $file["tmp_name"] . "<br />";
+										$error.= "Upload: " . $file["name"] . "<br />";
+										$error.= "Type: " . $file["type"] . "<br />";
+										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
+										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
 
-                    if (file_exists("upload/" . $file["file"]["name"])) {
-                      $error.= $file["file"]["name"] . " already exists. ";
+										if (file_exists("upload/" . $file["file"]["name"])) {
+											$error.= $file["file"]["name"] . " already exists. ";
 
-                    } else {
-                      move_uploaded_file($file["file"]["tmp_name"],
-                      "upload/" . $file["file"]["name"]);
-                      $error.= "Stored in: " . "upload/" . $file["name"];
-                    }
-                }
+										} else {
+											move_uploaded_file($file["file"]["tmp_name"],
+											"upload/" . $file["file"]["name"]);
+											$error.= "Stored in: " . "upload/" . $file["name"];
+										}
+								}
 
-          }    else {
+					}    else {
 
-            $error.= $file["type"]."<br />";
-              $error.= "Invalid file try another Image";
+						$error.= $file["type"]."<br />";
+							$error.= "Invalid file try another Image";
 
-          }
+					}
 }
 
 

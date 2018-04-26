@@ -7,7 +7,7 @@ if(isset($_POST['submit'])){
 	$username = $_POST['username'];
 	$code = random_password(6);
 	$url = "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);
-	createVerificationCode($_POST['username'], $random_password);
+	createVerificationCode($_POST['username'], $code);
 
 	$message = "http://http://iconcept.tpnb.nl/".$url;
 	$message = wordwrap($message, 70, "\r\n");

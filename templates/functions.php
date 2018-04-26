@@ -207,15 +207,19 @@ try {
 }
 
 function addPicture(){
+global $error;
+global $dbh;
+
+$error="";
 //in production
    $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
         $extension = end(explode(".", $_FILES["file"]["name"]));
-$avatarnaam = $_FILES["file"]["name"];
+				$pr = $_FILES["file"]["name"];
         echo $_FILES["file"]["size"];
 
         if (
             (
-            ($_FILES["file"]["type"] == "image/gif")
+            	 ($_FILES["file"]["type"] == "image/gif")
             || ($_FILES["file"]["type"] == "image/jpeg")
             || ($_FILES["file"]["type"] == "image/png")
             || ($_FILES["file"]["type"] == "image/pjpeg")
@@ -228,32 +232,29 @@ $avatarnaam = $_FILES["file"]["name"];
          if ($_FILES["file"]["error"] > 0)
                 {
 
-                    $error= "Return Code: " . $_FILES["file"]["error"] . "<br />";
+                    $error.= "Return Code: " . $_FILES["file"]["error"] . "<br />";
 
                 } else {
 
-                    $error= "Upload: " . $_FILES["file"]["name"] . "<br />";
-                    $error= "Type: " . $_FILES["file"]["type"] . "<br />";
-                    $error=  "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
-                    $error= "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
+                    $error.= "Upload: " . $_FILES["file"]["name"] . "<br />";
+                    $error.= "Type: " . $_FILES["file"]["type"] . "<br />";
+                    $error.=  "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
+                    $error.= "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
 
-                    if (file_exists("avatar/" . $_FILES["file"]["name"])) {
-                      $error= $_FILES["file"]["name"] . " already exists. ";
-$result = mysql_query("UPDATE users SET avatarnaam='$avatarnaam' WHERE name='$name'")
-or die(mysql_error());
+                    if (file_exists("upload/" . $_FILES["file"]["name"])) {
+                      $error.= $_FILES["file"]["name"] . " already exists. ";
+
                     } else {
                       move_uploaded_file($_FILES["file"]["tmp_name"],
-                      "avatar/" . $_FILES["file"]["name"]);
-                      $error= "Stored in: " . "upload/" . $_FILES["file"]["name"];
-					  $result = mysql_query("UPDATE users SET avatarnaam='$avatarnaam' WHERE name='$name'")
-or die(mysql_error());
+                      "upload/" . $_FILES["file"]["name"]);
+                      $error.= "Stored in: " . "upload/" . $_FILES["file"]["name"];
                     }
                 }
 
           }    else {
 
-            $error= $_FILES["file"]["type"]."<br />";
-              $error = "Invalid file try another Image";
+            $error.= $_FILES["file"]["type"]."<br />";
+              $error.= "Invalid file try another Image";
 
           }
 }

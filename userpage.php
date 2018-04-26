@@ -12,6 +12,10 @@ if(isset($_POST['submit'])){
   changePassword($_POST['password']);
 }
 
+if(isset($_POST['change_avatar'])){
+  
+}
+
 $username = $_SESSION['username'];
 
 $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
@@ -43,8 +47,19 @@ $results = $statement->fetch();
   <label for="password">Wachtwoord</label>
   <input type="text" name="password" value="<?=$results['wachtwoord']?>"><br>
 
+
+  <label for="file">Filename:</label>
+  <input type="file" name="file" id="file" />  </textarea>
+
+
+<input type="submit" name="change_avatar" value="Submit" />
+
+
   <button type="submit" name="submit">Pas aan</button>
+
 </form>
+
+
 
 
 <?php include('templates/footer.php'); ?>

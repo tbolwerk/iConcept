@@ -1,6 +1,21 @@
 <?php
 $current_page='register';
 require_once('templates/header.php');
+
+$secret_question_options;
+try {
+    $data = $dbh->prepare("select * from Vraag");
+    $data->execute();
+} catch (PDOException $e) {
+    $error = $e;
+}
+while($question = $data->fetch()){
+  $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+}
+
+if(isset($_POST['submit'])){
+	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$_POST['address2'],$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
+}
 ?>
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light">
@@ -16,7 +31,7 @@ require_once('templates/header.php');
     <div class="card-body">
 
         <!-- Material form register -->
-        <form action="post_register.php" method="post">
+        <form action="" method="post">
             <p class="h4 text-center py-4">Sign up</p>
 
             <!-- Material input text -->
@@ -110,6 +125,14 @@ require_once('templates/header.php');
                 <label for="materialFormCardPasswordEx" class="font-weight-light">Confirm your password</label>
             </div>
 
+            <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <select name="secretQuestion">
+                  <option value="kies">Kies geheime vraag...</option>
+                  <?=$secret_question_options?>
+                </select>
+
+            </div>
             <!-- Material input text -->
             <div class="md-form">
                 <i class="fa fa-user prefix grey-text"></i>
@@ -126,7 +149,9 @@ require_once('templates/header.php');
 <?php
 if(isset($error)){
 echo "<p class='bq-danger'>" . $error . "</p>";
+
 }
+
 ?>
 
     </div>

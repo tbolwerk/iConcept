@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['change_avatar'])){
-  
+  addPicture($_FILES['file']);
 }
 
 $username = $_SESSION['username'];

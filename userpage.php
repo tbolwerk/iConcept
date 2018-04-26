@@ -2,12 +2,8 @@
 $current_page='userpage';
 require_once('templates/header.php');
 
-//Janno is hiermee bezig.
-//Afblijven graag.
-
 if(isset($_POST['submit'])){
-
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?sadresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
 	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
   changePassword($_POST['password']);
 }
@@ -24,9 +20,19 @@ $statement->execute(array($username));
 $results = $statement->fetch();
 ?>
 
-
 <br><br><br>
-<?php print_r($results) ?><br>
+
+<p>ontvangen bestanden: </p>
+<?php print_r($_FILES); ?><br>
+<br>
+
+<p>ontvangen post gegevens: </p>
+<?php print_r($_POST); ?><br>
+<br>
+
+<p>ontvangen database gegevens: </p>
+<?php print_r($results); ?><br>
+<br>
 
 <form method="post" action="" >
   <label for="firstname">Voornaam</label>
@@ -48,19 +54,16 @@ $results = $statement->fetch();
   <label for="password">Wachtwoord</label>
   <input type="text" name="password" value="<?=$results['wachtwoord']?>"><br>
 
+  <button type="submit" name="submit">Pas aan</button>
+</form>
 
+<br>
+
+<form method="post" action="" enctype="multipart/form-data">
   <label for="file">Filename:</label>
   <input type="file" name="file" id="file" />  </textarea>
 
-
-<input type="submit" name="change_avatar" value="Submit" />
-
-
-  <button type="submit" name="submit">Pas aan</button>
-
+  <button type="submit" name="change_avatar">Upload</button>
 </form>
-
-
-
 
 <?php include('templates/footer.php'); ?>

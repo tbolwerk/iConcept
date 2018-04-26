@@ -9,9 +9,8 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['change_avatar'])){
-  $username = $_SESSION['username'];
   $picture = $_FILES['file'];
-  addPicture($picture,$username);
+  addPicture($picture);
 }
 
 $username = $_SESSION['username'];
@@ -23,7 +22,7 @@ $results = $statement->fetch();
 
 <br><br><br>
 
-<!-- <p>ontvangen bestanden: </p>
+<p>ontvangen bestanden: </p>
 <?php print_r($_FILES); ?><br>
 <br>
 
@@ -33,7 +32,7 @@ $results = $statement->fetch();
 
 <p>ontvangen database gegevens: </p>
 <?php print_r($results); ?><br>
-<br> -->
+<br>
 
 <form method="post" action="" >
   <label for="firstname">Voornaam</label>
@@ -66,5 +65,5 @@ $results = $statement->fetch();
 
   <button type="submit" name="change_avatar">Upload</button>
 </form>
-<?php if(isset($error)){echo $error;}?>
+
 <?php include('templates/footer.php'); ?>

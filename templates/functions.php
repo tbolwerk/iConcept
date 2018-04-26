@@ -206,7 +206,7 @@ try {
 }
 }
 
-function addPicture($picture){
+function addPicture($picture,$file_name){
 	// $file = array();
 	// foreach ($picture as $key1 => $value1) {
 	// 	foreach ($value1 as $key2 => $value2) {
@@ -224,7 +224,6 @@ $error="";
 	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
 				$tmp_extension = explode(".", $file["name"]);
 				$extension = end($tmp_extension);
-
 				if (
 						(
 							 ($file["type"] == "image/gif")
@@ -235,39 +234,22 @@ $error="";
 						&& ($file["size"] < 2000000)
 						&& in_array($extension, $allowedExts))
 					{
-
-
 				 if ($file["error"] > 0)
 								{
-
 										$error.= "Return Code: " . $file["error"] . "<br />";
-
 								} else {
-
 										$error.= "Upload: " . $file["name"] . "<br />";
 										$error.= "Type: " . $file["type"] . "<br />";
 										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
 										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
-
-										if (file_exists("upload/" . $file["name"])) {
-											$error.= $file["name"] . " already exists. ";
-
-										} else {
-											move_uploaded_file($file["tmp_name"],
-											"upload/" . $_SESSION["username"] . "." . $extension);
-											$error.= "Stored in: " . "upload/" . $_SESSION["username"] . "." . $extension;
-										}
+										move_uploaded_file($file["tmp_name"],
+										"upload/" . $_SESSION["username"] . "." . $extension);
+										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
 								}
-
 					}    else {
 
 						$error.= $file["type"]."<br />";
 							$error.= "Invalid file try another Image";
-
 					}
 }
-
-
-
-
 ?>

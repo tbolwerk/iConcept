@@ -195,7 +195,9 @@ global $error;
 global $dbh;
 $username=$_SESSION['username'];
 try {
-	$dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
+	// $dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
+	$statement=$dbh->prepare("update Gebruiker set wachtwoord = ? where gebruikersnaam=?");
+	$statement->execute(array($new_password,$username));
 
 } catch (PDOException $e) {
  	$error =  $e;

@@ -37,6 +37,8 @@ function verification($getUsername,$getCode)
 	if ($codeValid) {
 	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");
 	$statement->execute(array($storedUsername));
+	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");
+	$statement->execute(array($storedUsername));
 	}
 
 }

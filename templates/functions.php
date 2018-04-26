@@ -145,7 +145,7 @@ function createVerificationCode($username, $random_password) {
 	global $error;
 
     try {
-		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, tijd, code) Values(?, ?, ?)");
+		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, begintijd, code) Values(?, ?, ?)");
 		$userdata->execute(array($username, time(), $random_password));
     } catch (PDOException $e) {
 		$error=$e;

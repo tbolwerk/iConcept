@@ -7,7 +7,7 @@ try {
     $data = $dbh->prepare("select * from Vraag");
     $data->execute();
 } catch (PDOException $e) {
-    $error = $e; 
+    $error = $e;
 }
 while($question = $data->fetch()){
   $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";

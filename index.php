@@ -25,6 +25,7 @@ require_once('templates/header.php');
 <!--Main Layout-->
 <main class="py-5">
 <div class="container">
+  <?php if(isset($error)){echo $error;}else if(isset($searchResults)){echo "iets gevonden";}?>
   <h1><i class="fa fa-fire fa-lg"></i> Populaire veilingen op dit moment</h1><hr />
   <div class="row">
     <?php

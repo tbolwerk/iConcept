@@ -1,3 +1,5 @@
+<?php if(isset($_GET['zoeken'])){search(Voorwerp,titel,$_GET['zoeken']);}?>
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark">
 
@@ -23,7 +25,7 @@
                 </a>
             </li>
             <div class="nav-search">
-            <form class="form-inline my-2 my-lg-0 ml-auto">
+            <form method="get" action="" class="form-inline my-2 my-lg-0 ml-auto">
               <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken">
             </form>
           </div>

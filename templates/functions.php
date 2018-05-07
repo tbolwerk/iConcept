@@ -1,17 +1,24 @@
 <?php
 require('connect.php');
 /*search function database table database column and search item EXAMPLE: search(Voorwerp,titel,bank); will give $searchResults is an array else $error*/
-function search($table,$column,$searchKey)
+function search($searchKey)
 {
 	global $dbh;
 	global $error;
 	global $searchResults;
+	$searchResults="";
 	try {
-		$statement=$dbh->prepare("select * from ? where ? like %?%");
-		$statement->execute(array($table,$column,$searchKey));
-		$searchResults = $statement->fetch();
+		$data = $dbh->prepare("select * from Voorwerp where titel like ?");
+		$data->execute(array('%'.$searchKey.'%'));
+
+
+        while ($row = $data->fetch()) {
+			$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+		}
 	}catch(PDOException $e){
-		$error = "Niks gevonden!";
+
+		$error = $e;
+
 	}
 }
 
@@ -288,7 +295,7 @@ $error="";
 $file = $picture;
 $error="";
 //in production
-	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+	 $allowedExts = array("png");
 				$tmp_extension = explode(".", $file["name"]);
 				$extension = end($tmp_extension);
 				if (

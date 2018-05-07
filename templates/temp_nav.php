@@ -1,4 +1,7 @@
-<?php if(isset($_GET['zoeken'])){search(Voorwerp,titel,$_GET['zoeken']);}?>
+<?php
+
+
+if(isset($_POST['zoeken'])){search($_POST['zoeken']);}?>
 
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -25,7 +28,7 @@
                 </a>
             </li>
             <div class="nav-search">
-            <form method="get" action="" class="form-inline my-2 my-lg-0 ml-auto">
+            <form method="post" action="" class="form-inline my-2 my-lg-0 ml-auto">
               <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken" name="zoeken">
             </form>
           </div>

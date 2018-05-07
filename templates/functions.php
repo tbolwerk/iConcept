@@ -136,7 +136,7 @@ if(count($errors) == 0){//checks if there are errors
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
-      header("Location: post_register.php?username='.$username.'&email='.$email.'");
+      header("Location: post_register.php?username={$username}");
     } catch (PDOException $e) {
       $error=$e;
     }

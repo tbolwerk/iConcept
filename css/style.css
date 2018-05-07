@@ -133,3 +133,8 @@ p {
   color: #4584A4;
   background: none;
 }
+
+.project-team {
+  flex-direction: row;
+  display: flex;
+}

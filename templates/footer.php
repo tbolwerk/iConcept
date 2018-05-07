@@ -1,6 +1,9 @@
 
 <footer>
 
+  <a class="navbar-brand" href="overons.php">
+    Over ons
+  </a>
 </footer>
 
     <!-- SCRIPTS -->

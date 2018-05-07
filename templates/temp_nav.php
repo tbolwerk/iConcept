@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
 
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="index.php">
       <img src="img/logo/logo.png" height="50" alt="EenmaalAndermaal" />
     </a>
 

@@ -26,7 +26,7 @@
             </li>
             <div class="nav-search">
             <form method="get" action="" class="form-inline my-2 my-lg-0 ml-auto">
-              <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken">
+              <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken" name="zoeken">
             </form>
           </div>
         </ul>
@@ -35,10 +35,10 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Registreren</a>
+                <a class="nav-link" href="register.php">Registreren</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Inloggen</a>
+                <a class="nav-link" href="login.php">Inloggen</a>
             </li>
         </ul>
 

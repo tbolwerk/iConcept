@@ -1,27 +1,46 @@
 <?php
 require('connect.php');
-/*search function database table database column and search item EXAMPLE: search(Voorwerp,titel,bank); will give $searchResults is an array else $error*/
-function search($searchKey)
+/*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
+function search($searchKey,$searchType)
 {
 	global $dbh;
 	global $error;
 	global $searchResults;
 	$searchResults="";
 	try {
-		$data = $dbh->prepare("select * from Voorwerp where titel like ?");
+		if($searchType == 'voorwerp'){
+		$data = $dbh->prepare("SELECT * FROM Voorwerp WHERE titel LIKE ?");
 		$data->execute(array('%'.$searchKey.'%'));
+    while ($row = $data->fetch()) {
+		$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+	}
+}else if($searchType == 'rubriek'){
+	$data = $dbh->prepare("SELECT * FROM Voorwerp_in_Rubriek vr RIGHT JOIN Voorwerp v ON v.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
+	$data->execute(array($searchKey));
+	while($row = $data->fetch()){
+	$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+	}
 
-
-        while ($row = $data->fetch()) {
-			$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
-		}
+}
 	}catch(PDOException $e){
-
 		$error = $e;
-
 	}
 }
 
+
+/*display auction*/
+function displayAuction()
+{
+	global $dbh;
+	global $auction;
+
+	try{
+		data = $dbh->prepare("select * from Voorwerp");
+	}catch(PDOException $e){
+		$error = $e;
+	}
+
+}
 
 /*verification function*/
 function verification($getUsername,$getCode)

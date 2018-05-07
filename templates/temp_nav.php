@@ -1,7 +1,7 @@
 <?php
 
 
-if(isset($_POST['zoeken'])){search($_POST['zoeken']);}?>
+if(isset($_POST['zoeken'])){search($_POST['zoeken'] ,'voorwerp');}?>
 
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark">

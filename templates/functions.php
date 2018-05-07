@@ -1,5 +1,21 @@
 <?php
 require('connect.php');
+
+function search($table,$column,$searchKey)
+{
+	global $dbh;
+	global $error;
+	global $searchResults;
+	try {
+		$statement=$dbh->prepare("select * from ? where ? like %?%");
+		$statement->execute(array($table,$column,$searchKey));
+		$searchResults = $statement->fetch();
+	}catch(PDOException $e){
+		$error = "Niks gevonden!";
+	}
+}
+
+
 /*verification function*/
 function verification($getUsername,$getCode)
 {
@@ -17,7 +33,7 @@ function verification($getUsername,$getCode)
 	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where gebruikersnaam = ? AND code = ?");
 	$statement->execute(array($username,$submittedCode));
-	$resultaten = $statement->fetch();
+	$results = $statement->fetch();
 	} catch (PDOException $e) {
 	$error= "Code invalid";
 	$codeValid = false;

@@ -8,7 +8,7 @@ switch($current_page){
     if(isset($_SESSION['username'])){
 
     }else{
-    
+
     }
     break;
 
@@ -50,5 +50,5 @@ switch($current_page){
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
 </head>
-  <?php include 'templates/nav.php'; ?>
+  <?php include 'templates/temp_nav.php'; ?>
 <body>

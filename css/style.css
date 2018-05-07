@@ -20,7 +20,6 @@ p {
 
 .bg {
     position: fixed;
-    background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
     background-position: center;
     top: 0;
     bottom: 0;
@@ -29,17 +28,24 @@ p {
     z-index: -1;
     background-size: cover;
 }
+
+.bg-home {
+  background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
+}
+.bg-login {
+  background-image: url("https://i.imgur.com/yf2IHMV.jpg");
+}
 .auction-card {
   margin: 20px 0;
 }
 
 .card-login {
   margin-top: 100px;
-  background: rgba(229, 228, 255, 0.2);
+  background: #3333335e;
 }
 
 .navbar {
-  background-color: #2E2E2E;
+  background-color: #3D3D3D;
 }
 .nav a {
   color: #FFFFFF;
@@ -75,4 +81,55 @@ p {
 
 .card-body ul {
   margin: 0px;
+}
+
+.login-form-header {
+  color: #fff;
+    text-align: center;
+    margin-top: -3.13rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    -webkit-border-radius: .125rem;
+    border-radius: .125rem;
+    /* background: linear-gradient(40deg,#4584a4,#a5a5a5)!important; */
+}
+
+.login-logo {
+  display: inline-block;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  position: absolute;
+  padding: 1.2rem 0 0 2rem;
+}
+.login-logo img {
+  width: 50%;
+}
+
+.blur {
+  filter: blur(5px);
+  position: absolute;
+  overflow: hidden;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+}
+
+.btn-niagara{
+  background-color: #4584A4 !important;
+  color: #FFFFFF !important;
+}
+
+.elegant {
+  background-color: #2e2e2e;
+}
+
+.materialFormRegisterConfirmEx {
+  color: #c40000 !important;
+}
+
+.navbar.navbar-dark .breadcrumb .nav-item.active>.nav-link, .navbar.navbar-dark .navbar-nav .nav-item.active>.nav-link {
+  color: #4584A4;
+  background: none;
 }

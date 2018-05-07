@@ -14,15 +14,28 @@ if(isset($_POST['change_avatar'])){
   addPicture($picture,$username);
 }
 
+if(isset($_POST['addphone'])) {
+  $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
+  $statement->execute(array($_SESSION['username'], $_POST['phone']));
+}
+
+if(isset($_POST['delete'])) {
+  $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
+	$statement->execute(array((int)$_POST['delete']));
+}
+
 $username = $_SESSION['username'];
 
 $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
 $statement->execute(array($username));
 $results = $statement->fetch();
+
+$statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
+$statement->execute(array($username));
+$phones = $statement->fetchAll();
 ?>
 
-<br><br><br>
-<!-- 
+<!--
 <p>ontvangen bestanden: </p>
 <?php print_r($_FILES); ?><br>
 <br>
@@ -33,7 +46,14 @@ $results = $statement->fetch();
 
 <p>ontvangen database gegevens: </p>
 <?php print_r($results); ?><br>
-<br> -->
+<br>
+
+<p>ontvangen telefoon gegevens: </p>
+<?php print_r($phones); ?><br>
+<br>
+-->
+
+<br>
 
 <form method="post" action="" >
   <label for="firstname">Voornaam</label>
@@ -56,6 +76,24 @@ $results = $statement->fetch();
   <input type="text" name="password" value="<?=$results['wachtwoord']?>"><br>
 
   <button type="submit" name="submit">Pas aan</button>
+</form>
+
+<br>
+
+<form method="post" action="" >
+  <?php
+  foreach ($phones as $phone) {
+    echo <<<HTML
+      <input type="tel" name="{$phone['volgnummer']}" value="{$phone['telefoonnummer']}">
+      <button type="submit" name="delete" value="{$phone['volgnummer']};">Verwijder</button><br>
+HTML;
+  }
+  ?>
+</form>
+
+<form method="post" action="" >
+  <input type="tel" name="phone">
+  <button type="submit" name="addphone">Voeg toe</button><br>
 </form>
 
 <br>

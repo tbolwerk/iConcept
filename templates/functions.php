@@ -1,6 +1,10 @@
 <?php
 require('connect.php');
+<<<<<<< HEAD
 //search function database table database column and search item EXAMPLE: search(Voorwerp,titel,bank); will give $searchResults is an array else $error
+=======
+
+>>>>>>> 2e3770e106fde121e96d3591ab838cf1029727dd
 function search($table,$column,$searchKey)
 {
 	global $dbh;

@@ -235,7 +235,7 @@ function login($username_input,$password)
 					$error['password'] = "wachtwoord klopt niet";
 				}
 				if($password_result && $username_result) {
-            $_SESSION['username'] = $result['gebruikersnaam'];
+            $_SESSION['username'] = $username_result['gebruikersnaam'];
 						header('Location: index.php');
         }
     }

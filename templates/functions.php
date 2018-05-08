@@ -200,28 +200,41 @@ function login($username_input,$password)
     // $username=trim($username);
     $password=trim($password);
 
+		$error = array();
+
     if(strlen($username)>=50){
-         $error = "username has more than 50 characters";
+         $error['username'] = "username has more than 50 characters";
     }else
     if(strlen($password)>=20){
-         $error = "password has more than 20 characters";
+         $error['password'] = "password has more than 20 characters";
     }else
     if(empty($username)){
-         $error = "username is empty";
+         $error['username'] = "username is empty";
     }else
     if(empty($password)){
-         $error = "password is empty";
+         $error['password'] = "password is empty";
     }else {
         try {
-            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-            $userdata->execute(array($username,$password,$email, $password));
+            $username_check = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? OR email=?");
+            $username_check->execute(array($username,$email));
 
         } catch (PDOException $e) {
             $error = $e;
         }
-        if (!($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-             $error = "username or password invalid";
-        } else {
+        if (!($username_result = $username_check->fetch(PDO::FETCH_ASSOC))) {
+             $error['username'] = "gebruikersnaam klopt niet";
+        }
+
+				try{
+					$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
+					$password_check->execute(array($username,$password,$email,$password));
+				}catch(PDOException $e){
+					$error = $e;
+				}
+				if(!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
+					$error['password'] = "wachtwoord klopt niet";
+				}
+				if($password_result && $username_result) {
             $_SESSION['username'] = $result['gebruikersnaam'];
 						header('Location: index.php');
         }

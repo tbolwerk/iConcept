@@ -1,20 +1,54 @@
 <?php
 require('connect.php');
-/*search function database table database column and search item EXAMPLE: search(Voorwerp,titel,bank); will give $searchResults is an array else $error*/
-function search($table,$column,$searchKey)
+/*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
+function search($searchKey,$searchType)
 {
 	global $dbh;
 	global $error;
 	global $searchResults;
+	$searchResults="";
 	try {
-		$statement=$dbh->prepare("select * from ? where ? like %?%");
-		$statement->execute(array($table,$column,$searchKey));
-		$searchResults = $statement->fetch();
+		if($searchType == 'voorwerp'){
+		$data = $dbh->prepare("SELECT * FROM Voorwerp WHERE titel LIKE ?");
+		$data->execute(array('%'.$searchKey.'%'));
+    while ($row = $data->fetch()) {
+		$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+	}
+}else if($searchType == 'rubriek'){
+	$data = $dbh->prepare("SELECT * FROM Voorwerp_in_Rubriek vr RIGHT JOIN Voorwerp v ON v.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
+	$data->execute(array($searchKey));
+	while($row = $data->fetch()){
+	$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+	}
+
+}
 	}catch(PDOException $e){
-		$error = "Niks gevonden!";
+		$error = $e;
 	}
 }
 
+
+/*display auction*/
+function displayAuction()
+{
+	global $dbh;
+	global $auction;
+	$auction = "";
+
+	try{
+<<<<<<< HEAD
+		$data = $dbh->prepare("select * from Voorwerp");
+=======
+		$data = $dbh->query("select * from Voorwerp");
+		while($row = $data->fetch()){
+			$auction.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+		}
+>>>>>>> 962e3813e9223384f208abbfaf59efd65e648070
+	}catch(PDOException $e){
+		$error = $e;
+	}
+
+}
 
 /*verification function*/
 function verification($getUsername,$getCode)
@@ -288,7 +322,7 @@ $error="";
 $file = $picture;
 $error="";
 //in production
-	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+	 $allowedExts = array("png");
 				$tmp_extension = explode(".", $file["name"]);
 				$extension = end($tmp_extension);
 				if (

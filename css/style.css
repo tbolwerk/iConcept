@@ -27,13 +27,15 @@ p {
     right: 0;
     z-index: -1;
     background-size: cover;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .bg-home {
   background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
 }
 .bg-login {
-  background-image: url("https://i.imgur.com/yf2IHMV.jpg");
+  background-image: url("../img/bgs/login-bg.png");
 }
 .auction-card {
   margin: 20px 0;
@@ -90,7 +92,7 @@ p {
     margin-bottom: 3rem;
     padding: 2rem;
     -webkit-border-radius: .125rem;
-    border-radius: .125rem;
+    border-radius: 5px;
     /* background: linear-gradient(40deg,#4584a4,#a5a5a5)!important; */
 }
 
@@ -115,14 +117,23 @@ p {
   right: -50px;
   bottom: -50px;
 }
+.md-form {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 0 10px 0;
+}
 
-.btn-niagara{
-  background-color: #4584A4 !important;
-  color: #FFFFFF !important;
+.niagara{
+  color: #4584A4 !important;
 }
 
 .elegant {
   background-color: #2e2e2e;
+}
+
+.login-register-card {
+  background: #1313133b;
 }
 
 .materialFormRegisterConfirmEx {
@@ -132,4 +143,107 @@ p {
 .navbar.navbar-dark .breadcrumb .nav-item.active>.nav-link, .navbar.navbar-dark .navbar-nav .nav-item.active>.nav-link {
   color: #4584A4;
   background: none;
+}
+<<<<<<< HEAD
+.nav-search .waves-input-wrapper {
+  display: block;
+}
+
+.nav-search input {
+  background-color: #4E4E4E;
+  border: none;
+  font-size: 23px;
+  color: #888888;
+}
+
+.nav-search input:focus {
+  color: #888888;
+  background-color: #4E4E4E;
+}
+.vl {
+  border-left: 2px solid #4E4E4E;
+  height: 40px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+#passwordHelp a {
+  font-size: 80%;
+  color: #ff2929;
+}
+
+input:focus:not([readonly]) + label {
+  color: #4584A4 !important;
+}
+
+input:focus:not([readonly]) {
+  border-bottom: 1px solid #4584A4 !important;
+  box-shadow: 0 1px 0 0 #4584A4 !important; */
+}
+
+
+
+
+
+/* The Overlay (background) */
+.overlay_rubrieken {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */
+    height: 0;
+    width: 100%;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: #4584A4; /* Black fallback color */
+    background-color: #4584A4EE; /* Black w/opacity */
+    overflow-y: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+    position: relative;
+    top: 25%; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+/* The navigation links inside the overlay */
+.overlay_rubrieken a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #FFFFFF;
+    font-weight: bold;
+    display: block; /* Display block instead of inline */
+    transition: 0.3s; /* Transition effects on hover (color) */
+}
+
+/* When you mouse over the navigation links, change their color */
+.overlay_rubrieken a:hover, .overlay a:focus {
+    color: #f1f1f1;
+}
+
+/* Position the close button (top right corner) */
+.overlay_rubrieken .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+    .overlay_rubrieken a {font-size: 20px}
+    .overlay_rubrieken .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+
+.project-team {
+  flex-direction: row;
+  display: flex;
+
 }

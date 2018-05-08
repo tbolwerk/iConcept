@@ -31,12 +31,45 @@ function search($searchKey,$searchType)
 /*display auction*/
 function displayAuction()
 {
+
+
 	global $dbh;
 	global $auction;
 	$auction = "";
 
 	try{
-		$data = $dbh->prepare("select * from Voorwerp");
+		$data = $dbh->query("select * from Voorwerp");
+		while ($row = $data->fetch()) {
+
+			$auction.="  <div class='col-md-4'>
+          <div class='card auction-card'>
+            <div class='view overlay'>
+              <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+            </div>
+            <div class='card-body'>
+              <span class='small-font'>20345322</span>
+              <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
+              <hr>
+              <div class='card-text'>
+                <p>
+                ".$row['beschrijving']."
+                </p>
+              </div>
+              <hr />
+              <ul class='list-unstyled list-inline'>
+                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
+              </ul>
+            </div>
+            <div class='view overlay mdb-blue'>
+              <a href='auction.php/?key=".$row['voorwerpnummer']."' class='veiling-bieden'>
+                <div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+                  <p style='text-align:center'>Bieden</p>
+                </div>
+              </a>
+            </div>
+          </div>";
+		}
 	}catch(PDOException $e){
 		$error = $e;
 	}
@@ -179,7 +212,9 @@ if(count($errors) == 0){//checks if there are errors
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
-      header("Location: post_register.php?username={$username}");
+			copy("img/avatar/avatar.png","img/avatar/".$username.".png");
+			header("Location: post_register.php?username={$username}");
+
     } catch (PDOException $e) {
       $error=$e;
     }
@@ -200,29 +235,42 @@ function login($username_input,$password)
     // $username=trim($username);
     $password=trim($password);
 
+		$error = array();
+
     if(strlen($username)>=50){
-         $error = "username has more than 50 characters";
+         $error['username'] = "username has more than 50 characters";
     }else
     if(strlen($password)>=20){
-         $error = "password has more than 20 characters";
+         $error['password'] = "password has more than 20 characters";
     }else
     if(empty($username)){
-         $error = "username is empty";
+         $error['username'] = "username is empty";
     }else
     if(empty($password)){
-         $error = "password is empty";
+         $error['password'] = "password is empty";
     }else {
         try {
-            $userdata = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-            $userdata->execute(array($username,$password,$email, $password));
+            $username_check = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? OR email=?");
+            $username_check->execute(array($username,$email));
 
         } catch (PDOException $e) {
             $error = $e;
         }
-        if (!($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-             $error = "username or password invalid";
-        } else {
-            $_SESSION['username'] = $result['gebruikersnaam'];
+        if (!($username_result = $username_check->fetch(PDO::FETCH_ASSOC))) {
+             $error['username'] = "gebruikersnaam klopt niet";
+        }
+
+				try{
+					$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
+					$password_check->execute(array($username,$password,$email,$password));
+				}catch(PDOException $e){
+					$error = $e;
+				}
+				if(!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
+					$error['password'] = "wachtwoord klopt niet";
+				}
+				if($password_result && $username_result) {
+            $_SESSION['username'] = $username_result['gebruikersnaam'];
 						header('Location: index.php');
         }
     }
@@ -246,42 +294,34 @@ function createVerificationCode($username, $random_password) {
     }
 }
 
-function getAuctionTime($voorwerpnummer)
-{
-  global $dbh;
 
-  global $looptijd;
-  global $looptijdbegindag;
-  global $looptijdeindedag;
-  global $looptijdeindetijdstip;
-  global $looptijdbegintijdstip;
-
-try {
-  $userdata = $dhb->prepare("select looptijd, looptijdbegindag, looptijdbegintijdstip,looptijdeindedag,looptijdeindetijdstip from Voorwerp where ?");
-  $userdata->execute(array($voorwerpnummer));
-  $userdata->fetch();
-  $looptijd = $userdata[0];
-    $looptijdbegindag = $userdata[1];
-      $looptijdbegintijdstip = $userdata[2];
-      $looptijdeindedag = $userdata[3];
-      $looptijdeindetijdstip = $userdata[4];
-}catch (PDOException $e) {
-  $error=$e;
-}
-
-}
 
 function  auctionTimer($voorwerpnummer){
-  global $timer;
-  getAuctionTime($voorwerpnummer);
-  $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-  $days_remaining = floor($remaining/86400);
-  $hours_remaining = floor(($remaining/86400)/ 3600);
-  if($days_remaining>1){
-    $timer = $days_remaining;
-  }else{
-    $timer = $days_remaining + $hours_remaining;
-  }
+global $dbh;
+global $error;
+$timer = "3 uur";
+	try {
+	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
+	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
+	  $voorwerpdata->fetch();
+	  $looptijd = $voorwerpdata['looptijd'];
+	    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
+	      $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
+	      $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
+	      $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
+				$remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
+				$days_remaining = floor($remaining/86400);
+				$hours_remaining = floor(($remaining/86400)/ 3600);
+				if($days_remaining>1){
+					$timer = $days_remaining;
+				}else{
+					$timer = $days_remaining + $hours_remaining;
+				}
+	}catch (PDOException $e) {
+	  $error=$e;
+	}
+
+	return $timer;
 }
 
 
@@ -337,8 +377,13 @@ $error="";
 										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
 										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
 										move_uploaded_file($file["tmp_name"],
+<<<<<<< HEAD
 										"upload/" . $file_name . "." . $extension);
 										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
+=======
+										"img/avatar/" . $_SESSION["username"] . "." . $extension);
+										$error.= "Stored in: " . "img/avatar/" . $file_name . "." . $extension;
+>>>>>>> ef81c3dc6095eaa0f038376bec00b06c2de1628e
 								}
 					}    else {
 

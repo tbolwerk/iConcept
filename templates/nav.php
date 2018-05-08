@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
 
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="index.php">
       <img src="img/logo/logo.png" height="50" alt="EenmaalAndermaal" />
     </a>
 
@@ -52,13 +52,13 @@
                     </a>
                   </li>
                   <li class='nav-item'>
-                    <a class='nav-link waves-effect waves-light'>
+                    <a class='nav-link waves-effect waves-light' href='userpage.php'>
                       <i class='fa fa-cog'></i>
                     </a>
                   </li>
                   <li class='nav-item avatar'>
                     <span class='navbar-text white-text' style='margin-top: 7px;'>" . $_SESSION['username'] . "</span>
-                    <img style='margin-left: 10px;' src='img/avatar/avatar.png' height='50' />
+                    <img style='border-radius: 50%; margin-left: 10px;' src='img/avatar/" .$_SESSION['username']. ".png' height='50' />
                   </li>";
           } else {
             include 'templates/not_logged_in.php';

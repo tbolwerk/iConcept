@@ -8,7 +8,7 @@ switch($current_page){
     if(isset($_SESSION['username'])){
 
     }else{
-    
+
     }
     break;
 
@@ -28,6 +28,17 @@ switch($current_page){
     if(!isset($_SESSION['username'])){//when not logged in go to login page
       header('Location: login.php');
     }
+
+<<<<<<< HEAD
+=======
+  case 'overons':
+  if(isset($_SESSION['username'])){
+
+  }else{
+
+  }
+  break;
+>>>>>>> 906d280dd90d4e56b9b3e36597b695f0fd61720b
 
 }
 ?>
@@ -49,6 +60,16 @@ switch($current_page){
     <link href="css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
+    <!-- Search overlay styles -->
+    <!-- <link rel="stylesheet" href="css/search_overlay.css"> -->
 </head>
-  <?php include 'templates/nav.php'; ?>
+<?php
+if ($current_page == 'login' || $current_page == 'register') {
+  include 'templates/logo_nav.php';
+} else {
+  include 'templates/nav.php';
+}
+
+
+?>
 <body>

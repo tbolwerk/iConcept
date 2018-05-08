@@ -48,7 +48,11 @@ p {
 
 .navbar {
   background-color: #3D3D3D;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
+
 .nav a {
   color: #FFFFFF;
 }
@@ -189,7 +193,7 @@ input:focus:not([readonly]) {
     height: 0;
     width: 100%;
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 99; /* Sit on top */
     left: 0;
     top: 0;
     background-color: #4584A4; /* Black fallback color */

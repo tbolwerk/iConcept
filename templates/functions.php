@@ -62,20 +62,16 @@ function displayAuction()
               <hr />
               <ul class='list-unstyled list-inline'>
                 <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
-<<<<<<< HEAD
                 <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
               </ul>
             </div>
             <div class='view overlay mdb-blue'>
               <a href='auction.php/?key=".$row['voorwerpnummer']."' class='veiling-bieden'>
-=======
                 <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></p></li>
               </ul>
             </div>
             <div class='view overlay mdb-blue'>
-              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'>
->>>>>>> d2b4cd6580164a420d71b1a76f19fb1c268bd1de
-                <div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>
                 </div>
               </a>

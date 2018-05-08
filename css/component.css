@@ -12,6 +12,11 @@ body {
 	overflow-y: scroll;
 }
 
+/* width */
+::-webkit-scrollbar {
+    display: none;
+}
+
 .search-scroll {
 	overflow: scroll;
 	height: 500px;

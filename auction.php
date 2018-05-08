@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 $current_page = "index";
 require('templates/header.php');
 if(isset($_GET['key'])){
@@ -19,7 +18,6 @@ if($data['voorwerpnummer']==$voorwerpnummer){
 }else{
   header("Location: index.php");
 }
-=======
 $current_page='auction';
 require_once('templates/header.php');
 ?>
@@ -49,6 +47,5 @@ echo $auctionInfo;
 
 
 <?php
->>>>>>> d2b4cd6580164a420d71b1a76f19fb1c268bd1de
 include("templates/footer.php");
 ?>

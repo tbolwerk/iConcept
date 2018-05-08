@@ -30,24 +30,14 @@ if(isset($_POST['submit'])){//if submit pressed
           <!-- Material input username -->
           <div class="md-form">
             <i class="fa fa-user prefix niagara"></i>
-<<<<<<< HEAD
             <input type="text" id="materialFormCardNameEx" class="form-control white-text" name="username">
             <label for="materialFormCardNameEx" class="font-weight-light grey-text">Gebruikersnaam</label>
-=======
-            <input type="text" id="materialFormCardNameEx" class="form-control black-text" name="username">
-            <label for="materialFormCardNameEx" class="font-weight-light">Gebruikersnaam</label>
->>>>>>> f9ab24e01ab942bf76ecd441b8e8277beffa9e99
           </div>
           <!-- Material input username -->
           <div class="md-form">
             <i class="fa fa-lock prefix niagara"></i>
-<<<<<<< HEAD
             <input type="password" id="materialFormCardPasswordEx" class="form-control white-text" name="password" aria-describedby="passwordHelp">
             <label for="materialFormCardPasswordEx" class="font-weight-light grey-text">Wachtwoord</label>
-=======
-            <input type="password" id="materialFormCardPasswordEx" class="form-control black-text" name="password" aria-describedby="passwordHelp">
-            <label for="materialFormCardPasswordEx" class="font-weight-light">Wachtwoord</label>
->>>>>>> f9ab24e01ab942bf76ecd441b8e8277beffa9e99
             <small id="passwordHelp" class="form-text text-muted red-text" href="forget_password.php"><a href="forget_password.php">Wachtwoord vergeten?</a></small>
           </div>
 
@@ -58,7 +48,7 @@ if(isset($_POST['submit'])){//if submit pressed
         <!-- Material form login -->
 
 
-        <?php  if(isset($error)){print_r($error);}
+        <?php  if(isset($error)){echo $error;}
 
           ?>
 

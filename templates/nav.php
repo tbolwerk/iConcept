@@ -52,13 +52,13 @@
                     </a>
                   </li>
                   <li class='nav-item'>
-                    <a class='nav-link waves-effect waves-light'>
+                    <a class='nav-link waves-effect waves-light' href='userpage.php'>
                       <i class='fa fa-cog'></i>
                     </a>
                   </li>
                   <li class='nav-item avatar'>
                     <span class='navbar-text white-text' style='margin-top: 7px;'>" . $_SESSION['username'] . "</span>
-                    <img style='margin-left: 10px;' src='img/avatar/avatar.png' height='50' />
+                    <img style='margin-left: 10px;' src='img/avatar/" .$_SESSION['username']. ".png' height='50' />
                   </li>";
           } else {
             include 'templates/not_logged_in.php';

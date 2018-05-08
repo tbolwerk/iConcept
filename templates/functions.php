@@ -33,9 +33,13 @@ function displayAuction()
 {
 	global $dbh;
 	global $auction;
+	$auction = "";
 
 	try{
-		data = $dbh->prepare("select * from Voorwerp");
+		$data = $dbh->query("select * from Voorwerp");
+		while($row = $data->fetch()){
+			$auction.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
+		}
 	}catch(PDOException $e){
 		$error = $e;
 	}

@@ -31,12 +31,45 @@ function search($searchKey,$searchType)
 /*display auction*/
 function displayAuction()
 {
+
+
 	global $dbh;
 	global $auction;
 	$auction = "";
 
 	try{
-		$data = $dbh->prepare("select * from Voorwerp");
+		$data = $dbh->query("select * from Voorwerp");
+		while ($row = $data->fetch()) {
+
+			$auction.="  <div class='col-md-4'>
+          <div class='card auction-card'>
+            <div class='view overlay'>
+              <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+            </div>
+            <div class='card-body'>
+              <span class='small-font'>20345322</span>
+              <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
+              <hr>
+              <div class='card-text'>
+                <p>
+                ".$row['beschrijving']."
+                </p>
+              </div>
+              <hr />
+              <ul class='list-unstyled list-inline'>
+                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
+              </ul>
+            </div>
+            <div class='view overlay mdb-blue'>
+              <a href='auction.php/?key=".$row['voorwerpnummer']."' class='veiling-bieden'>
+                <div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+                  <p style='text-align:center'>Bieden</p>
+                </div>
+              </a>
+            </div>
+          </div>";
+		}
 	}catch(PDOException $e){
 		$error = $e;
 	}
@@ -261,42 +294,34 @@ function createVerificationCode($username, $random_password) {
     }
 }
 
-function getAuctionTime($voorwerpnummer)
-{
-  global $dbh;
 
-  global $looptijd;
-  global $looptijdbegindag;
-  global $looptijdeindedag;
-  global $looptijdeindetijdstip;
-  global $looptijdbegintijdstip;
-
-try {
-  $userdata = $dhb->prepare("select looptijd, looptijdbegindag, looptijdbegintijdstip,looptijdeindedag,looptijdeindetijdstip from Voorwerp where ?");
-  $userdata->execute(array($voorwerpnummer));
-  $userdata->fetch();
-  $looptijd = $userdata[0];
-    $looptijdbegindag = $userdata[1];
-      $looptijdbegintijdstip = $userdata[2];
-      $looptijdeindedag = $userdata[3];
-      $looptijdeindetijdstip = $userdata[4];
-}catch (PDOException $e) {
-  $error=$e;
-}
-
-}
 
 function  auctionTimer($voorwerpnummer){
-  global $timer;
-  getAuctionTime($voorwerpnummer);
-  $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-  $days_remaining = floor($remaining/86400);
-  $hours_remaining = floor(($remaining/86400)/ 3600);
-  if($days_remaining>1){
-    $timer = $days_remaining;
-  }else{
-    $timer = $days_remaining + $hours_remaining;
-  }
+global $dbh;
+global $error;
+$timer = "3 uur";
+	try {
+	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
+	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
+	  $voorwerpdata->fetch();
+	  $looptijd = $voorwerpdata['looptijd'];
+	    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
+	      $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
+	      $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
+	      $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
+				$remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
+				$days_remaining = floor($remaining/86400);
+				$hours_remaining = floor(($remaining/86400)/ 3600);
+				if($days_remaining>1){
+					$timer = $days_remaining;
+				}else{
+					$timer = $days_remaining + $hours_remaining;
+				}
+	}catch (PDOException $e) {
+	  $error=$e;
+	}
+
+	return $timer;
 }
 
 

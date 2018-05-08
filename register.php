@@ -148,7 +148,7 @@ if(isset($_POST['submit'])){
         <!-- Material form register -->
 <?php
 if(isset($error)){
-echo "<p class='bq-danger'>" . $error . "</p>";
+print_r($error);
 
 }
 

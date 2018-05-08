@@ -13,8 +13,15 @@ while($question = $data->fetch()){
   $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
 }
 
+
+
+
 if(isset($_POST['submit'])){
-	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$_POST['address2'],$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
+  $address2=NULL;
+  if($_POST['address2']!=""){
+    $address2=$_POST['address2'];
+  }
+  	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
 }
 ?>
 <!--Main Layout-->
@@ -147,9 +154,12 @@ if(isset($_POST['submit'])){
         </form>
         <!-- Material form register -->
 <?php
-if(isset($error)){
-echo "<p class='bq-danger'>" . $error . "</p>";
+if(isset($errors)){
+print_r($errors);
 
+}
+if(isset($error)){
+  echo $error;
 }
 
 ?>

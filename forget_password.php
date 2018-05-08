@@ -21,21 +21,31 @@ $headers = "From: Admin@EenmaalAndermaal.com";
 
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light flex-center">
-  <div class="bg"></div>
+  <div class="bg bg-login"></div>
 <!-- Card -->
 <div class="container col-md-4">
-<div class="card">
+<div class="card login-register-card">
+
     <!-- Card body -->
     <div class="card-body">
+    <!-- forget password text -->
+      <div class="login-form-header elegant">
+        <h3>Wachtwoord vergeten?</h3>
+      </div>
 
 <form method="post" action="" >
-    <label for="forget_password">Send E-mail with new Generated password</label>
-    <input type="email" name="forget_password">
+  <div class="md-form">
+    <i class="fa fa-envelope prefix niagara"></i>
+    <input type="email" class="form-control white-text" name="forget_password">
+    <label for="forget_password" class="font-weight-light" >Uw email</label>
+  </div>
+  <div class="niagara">
     <?=$txt?>
+  </div>
 </form>
 </div>
 
-</div>
+
 
 <!-- Card body -->
 </div>

@@ -352,8 +352,8 @@ $error="";
 										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
 										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
 										move_uploaded_file($file["tmp_name"],
-										"upload/" . $_SESSION["username"] . "." . $extension);
-										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
+										"img/avatar/" . $_SESSION["username"] . "." . $extension);
+										$error.= "Stored in: " . "img/avatar/" . $file_name . "." . $extension;
 								}
 					}    else {
 

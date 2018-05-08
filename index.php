@@ -3,6 +3,15 @@ $current_page='index';
 require_once('templates/header.php');
 displayAuction();
 ?>
+
+<script>
+var myVar = setInterval(myTimer, 1000);
+
+function myTimer() {
+    var d = new Date();
+    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+}
+</script>
 <!--Main Navigation-->
 <header>
   <div class="view view-main-header intro-2">

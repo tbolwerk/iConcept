@@ -35,6 +35,9 @@ switch($current_page){
   }else{
 
   }
+
+  case 'auction':
+
   break;
 
 }

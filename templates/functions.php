@@ -35,7 +35,7 @@ function displayAuction()
 	global $auction;
 
 	try{
-		data = $dbh->prepare("select * from Voorwerp");
+		$data = $dbh->prepare("select * from Voorwerp");
 	}catch(PDOException $e){
 		$error = $e;
 	}

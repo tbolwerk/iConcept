@@ -29,8 +29,6 @@ switch($current_page){
       header('Location: login.php');
     }
 
-<<<<<<< HEAD
-=======
   case 'overons':
   if(isset($_SESSION['username'])){
 
@@ -38,7 +36,6 @@ switch($current_page){
 
   }
   break;
->>>>>>> 906d280dd90d4e56b9b3e36597b695f0fd61720b
 
 }
 ?>

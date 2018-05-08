@@ -241,10 +241,9 @@ input:focus:not([readonly]) {
         top: 15px;
         right: 35px;
     }
-=======
 
 .project-team {
   flex-direction: row;
   display: flex;
->>>>>>> 906d280dd90d4e56b9b3e36597b695f0fd61720b
+
 }

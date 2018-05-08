@@ -144,13 +144,13 @@ p {
   color: #4584A4;
   background: none;
 }
-<<<<<<< HEAD
+
 .nav-search .waves-input-wrapper {
-  display: block;
+  display: inline !important;
 }
 
 .nav-search input {
-  background-color: #4E4E4E;
+  /* background-color: #4E4E4E; */
   border: none;
   font-size: 23px;
   color: #888888;
@@ -158,7 +158,7 @@ p {
 
 .nav-search input:focus {
   color: #888888;
-  background-color: #4E4E4E;
+  /* background-color: #4E4E4E; */
 }
 .vl {
   border-left: 2px solid #4E4E4E;

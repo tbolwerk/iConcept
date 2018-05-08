@@ -2,7 +2,7 @@
 $current_page='register';
 require_once('templates/header.php');
 
-$secret_question_options = null;
+$secret_question_options;
 try {
     $data = $dbh->prepare("select * from Vraag");
     $data->execute();

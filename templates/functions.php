@@ -1,47 +1,5 @@
 <?php
 require('connect.php');
-/*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
-function search($searchKey,$searchType)
-{
-	global $dbh;
-	global $error;
-	global $searchResults;
-	$searchResults="";
-	try {
-		if($searchType == 'voorwerp'){
-		$data = $dbh->prepare("SELECT * FROM Voorwerp WHERE titel LIKE ?");
-		$data->execute(array('%'.$searchKey.'%'));
-    while ($row = $data->fetch()) {
-		$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
-	}
-}else if($searchType == 'rubriek'){
-	$data = $dbh->prepare("SELECT * FROM Voorwerp_in_Rubriek vr RIGHT JOIN Voorwerp v ON v.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
-	$data->execute(array($searchKey));
-	while($row = $data->fetch()){
-	$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
-	}
-
-}
-	}catch(PDOException $e){
-		$error = $e;
-	}
-}
-
-
-/*display auction*/
-function displayAuction()
-{
-	global $dbh;
-	global $auction;
-
-	try{
-		data = $dbh->prepare("select * from Voorwerp");
-	}catch(PDOException $e){
-		$error = $e;
-	}
-
-}
-
 /*verification function*/
 function verification($getUsername,$getCode)
 {
@@ -59,7 +17,7 @@ function verification($getUsername,$getCode)
 	try {//checks if code exists in database
 	$statement = $dbh->prepare("select * from Verificatiecode where gebruikersnaam = ? AND code = ?");
 	$statement->execute(array($username,$submittedCode));
-	$results = $statement->fetch();
+	$resultaten = $statement->fetch();
 	} catch (PDOException $e) {
 	$error= "Code invalid";
 	$codeValid = false;
@@ -82,6 +40,7 @@ function verification($getUsername,$getCode)
 	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");
 	$statement->execute(array($storedUsername));
 	}
+
 }
 
 
@@ -178,7 +137,7 @@ if(count($errors) == 0){//checks if there are errors
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
-      header("Location: post_register.php?username={$username}");
+      header("Location: post_register.php?username=$username&email=$email");
     } catch (PDOException $e) {
       $error=$e;
     }
@@ -314,7 +273,7 @@ $error="";
 $file = $picture;
 $error="";
 //in production
-	 $allowedExts = array("png");
+	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
 				$tmp_extension = explode(".", $file["name"]);
 				$extension = end($tmp_extension);
 				if (

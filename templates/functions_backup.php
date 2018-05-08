@@ -381,13 +381,8 @@ $error="";
 										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
 										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
 										move_uploaded_file($file["tmp_name"],
-<<<<<<< HEAD
-										"upload/" . $file_name . "." . $extension);
-										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
-=======
 										"img/avatar/" . $_SESSION["username"] . "." . $extension);
 										$error.= "Stored in: " . "img/avatar/" . $file_name . "." . $extension;
->>>>>>> ef81c3dc6095eaa0f038376bec00b06c2de1628e
 								}
 					}    else {
 

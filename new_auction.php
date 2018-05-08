@@ -1,7 +1,7 @@
 <?php
 
 $current_page='new_auction';
-require_once('templates/connect.php');
+require_once('templates/header.php');
 
 function new_auction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method)
 {
@@ -50,15 +50,15 @@ if(count($errors) == 0)//checks if there are errors
   }
 
 
-  $seller = "janbeenham";
+  $seller = $_SESSION['username'];
   echo ($current_date);
   echo ($end_date);
   echo ($current_time);
   echo ($id);
     try {
-      $data = $dbh->prepare("insert into Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdbegintijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, looptijdeindetijdstip, veilinggesloten)
-Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $data->execute(array($id, $title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, $current_time, 0));
+      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
+Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
     } catch (PDOException $e) {
       $error=$e;
       echo $error;

@@ -7,7 +7,13 @@ function displayColumn(){
   try{
     $data = $dbh->query("SELECT * FROM Rubriek");
     while($row = $data->fetch()){
-      $column.="<a href='#'>".$row['rubrieknaam']."</a>";
+			if($row['rubrieknummerOuder'] == NULL){
+      $column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
+		}else if(isset($_GET['rubrieknummer'])){
+			if($row['rubrieknummerOuder'] == $_GET['rubrieknummer']){
+				$column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
+			}
+		}
     }
     }catch(PDOException $e){
       $column = $e;

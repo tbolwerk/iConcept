@@ -1,6 +1,4 @@
-<?php require_once("functions.php");
-displayColumn();
-?>
+
 
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark">

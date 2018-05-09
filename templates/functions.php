@@ -1,8 +1,18 @@
 <?php
 require('connect.php');
-
-
-
+function displayColumn(){
+	global $dbh;
+	global $column;
+  $column = "";
+  try{
+    $data = $dbh->query("SELECT * FROM Rubriek");
+    while($row = $data->fetch()){
+      $column.="<a href='#'>".$row['rubrieknaam']."</a>";
+    }
+    }catch(PDOException $e){
+      $column = $e;
+  }
+}
 
 /*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
 function search($searchKey,$searchType)

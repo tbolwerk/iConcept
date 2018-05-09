@@ -1,3 +1,7 @@
+<?php require_once("functions.php");
+displayColumn();
+?>
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark">
 
@@ -11,10 +15,8 @@
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="basicExampleNav">
-
         <!-- Links -->
         <div>
           <ul class="navbar-nav">
@@ -206,8 +208,6 @@
 
   <!-- Overlay content -->
   <div class="overlay-content">
-        <a href="index.php">Auto's, boten en motoren</a>
-        <a href="login.php">Baby</a>
-        <a href="navtest.php">Muziek- en instrumenten</a>
+<?php echo $column; ?>
   </div>
 </div>

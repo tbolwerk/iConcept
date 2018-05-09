@@ -75,11 +75,7 @@ function displayAuction()
                 <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
               </ul>
             </div>
-            <div class='view overlay mdb-blue'>
-              <a href='auction.php/?key=".$row['voorwerpnummer']."' class='veiling-bieden'>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></p></li>
-              </ul>
-            </div>
+
             <div class='view overlay mdb-blue'>
               <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>

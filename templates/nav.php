@@ -181,25 +181,7 @@
         <ul class="navbar-nav ml-auto nav-flex-icons">
           <?php
           if (isset($_SESSION['username'])) {
-            echo "<li class='nav-item'>
-                    <a class='nav-link waves-effect waves-light' href='logout.php'>
-                      <i class='fa fa-sign-out-alt'></i>
-                    </a>
-                  </li>
-                  <li class='nav-item'>
-                    <a class='nav-link waves-effect waves-light'>
-                      <i class='fa fa-heart'></i>
-                    </a>
-                  </li>
-                  <li class='nav-item'>
-                    <a class='nav-link waves-effect waves-light' href='userpage.php'>
-                      <i class='fa fa-cog'></i>
-                    </a>
-                  </li>
-                  <li class='nav-item avatar'>
-                    <span class='navbar-text white-text' style='margin-top: 7px;'>" . $_SESSION['username'] . "</span>
-                    <img style='border-radius: 50%; margin-left: 10px;' src='img/avatar/" .$_SESSION['username']. ".png' height='50' />
-                  </li>";
+            include 'templates/logged_in.php';
           } else {
             include 'templates/not_logged_in.php';
           }

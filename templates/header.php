@@ -37,7 +37,7 @@ switch($current_page){
   }
 
   case 'auction':
-  
+
   break;
 
 }
@@ -61,12 +61,9 @@ switch($current_page){
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
     <!-- Search overlay styles -->
-    <!-- <link rel="stylesheet" href="css/search_overlay.css"> -->
-<<<<<<< HEAD
-  
-=======
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/component.css">
 
->>>>>>> d2b4cd6580164a420d71b1a76f19fb1c268bd1de
 </head>
 <?php
 if ($current_page == 'login' || $current_page == 'register') {

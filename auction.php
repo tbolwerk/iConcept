@@ -1,6 +1,6 @@
 <?php
 $current_page = "index";
-require('templates/header.php');
+require_once('templates/header.php');
 if(isset($_GET['key'])){
 $voorwerpnummer = $_GET['key'];
 try{

@@ -25,6 +25,9 @@ if(isset($_POST['submit'])){//if submit pressed
         <div class="login-form-header elegant">
           <h3>Inloggen</h3>
         </div>
+        <div class="red-text" style="text-align: center;font-weight: bold;">
+        <?php if(isset($error)) {echo $error['password'];} ?>
+      </div>
         <!-- Material form login -->
         <form action="" method="post" autocomplete="on">
           <!-- Material input username -->
@@ -32,9 +35,11 @@ if(isset($_POST['submit'])){//if submit pressed
             <i class="fa fa-user prefix niagara"></i>
             <input type="text" id="materialFormCardNameEx" class="form-control white-text" name="username">
             <label for="materialFormCardNameEx" class="font-weight-light grey-text">Gebruikersnaam</label>
+            <?php if(isset($error)) {echo $error['username'];} ?>
           </div>
           <!-- Material input username -->
           <div class="md-form">
+
             <i class="fa fa-lock prefix niagara"></i>
             <input type="password" id="materialFormCardPasswordEx" class="form-control white-text" name="password" aria-describedby="passwordHelp">
             <label for="materialFormCardPasswordEx" class="font-weight-light grey-text">Wachtwoord</label>
@@ -48,9 +53,9 @@ if(isset($_POST['submit'])){//if submit pressed
         <!-- Material form login -->
 
 
-        <?php  if(isset($error)){echo $error;}
+        <!-- <?php  if(isset($error)){echo $error;}
 
-          ?>
+          ?> -->
 
       </div>
 

@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once("functions.php");
+displayColumn();
+
 // require_once('functions.php');
 switch($current_page){
 //Configure header for each page

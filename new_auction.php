@@ -22,7 +22,7 @@ function reArrayFiles(&$file_post) {
 
 
 
-function addPicture($picture,$file_name){
+function addPicture2($picture,$file_name){
 	// $file = array();
 	// foreach ($picture as $key1 => $value1) {
 	// 	foreach ($value1 as $key2 => $value2) {
@@ -137,26 +137,18 @@ if(count($errors) == 0)//checks if there are errors
   }
 
 
-<<<<<<< HEAD
-  $seller = $_SESSION['username'];
-  echo ($current_date);
-  echo ($end_date);
-  echo ($current_time);
-=======
+
   $seller = "janbeenham";
   // echo ($current_date);
   // echo ($end_date);
   // echo ($current_time);
->>>>>>> bcf690057d12dcb6a86d86aae048952ddcd0d826
   echo ($id);
   echo ($picture['name']);
 
     try {
-<<<<<<< HEAD
-      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
-=======
+
       $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
->>>>>>> bcf690057d12dcb6a86d86aae048952ddcd0d826
+
 Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
     } catch (PDOException $e) {
@@ -168,7 +160,7 @@ Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for ($i = 0; $i<$num_pictures; $i++) {
       echo $pictures[$i]['name'];
       try {
-        $filename = $id . "_" . $i . addPicture($pictures[$i],$id);
+        $filename = $id . "_" . $i . addPicture2($pictures[$i],$id);
         $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
         $data->execute(array($id, $filename));
       } catch (PDOException $e) {

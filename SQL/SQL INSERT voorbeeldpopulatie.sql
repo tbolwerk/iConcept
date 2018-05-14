@@ -17,22 +17,26 @@ DBCC CHECKIDENT(Voorwerp, RESEED, 0);
 DBCC CHECKIDENT(Gebruikerstelefoon, RESEED, 0);
 DBCC CHECKIDENT(Vraag, RESEED, 0);
 
+/*
 insert into Rubriek
-values	(1, 'Auto''s, boten en motoren', null, 1),
-		(2, 'Auto''s', 1, 1),
-		(3, 'Aanhangers', 1, 2),
-		(4, 'Zeilboten', 1, 3),
-		(5, 'Scooters', 1, 4),
-		(6, 'Boeken', null, 2),
-		(7, 'Fictie', 6, 1),
-		(8, 'Actie', 7, 1),
-		(9, 'Literatuur', 7, 2),
-		(10, 'Science fiction', 7, 3),
-		(11, 'School', 6, 2),
-		(12, 'Eten en Koken', 6, 3),
-		(13, 'Gezondheid en Voeding', 12, 1),
-		(14, 'Kookboeken', 12, 2),
-		(15, 'Stripboeken', 6, 4)
+values	(1, 'Auto''s, boten en motoren', null),
+		(2, 'Auto''s', 1),
+		(3, 'Aanhangers', 1),
+		(4, 'Zeilboten', 1),
+		(5, 'Scooters', 1),
+		(6, 'Boeken', null),
+		(7, 'Fictie', 6),
+		(8, 'Actie', 7),
+		(9, 'Literatuur', 7),
+		(10, 'Science fiction', 7),
+		(11, 'School', 6),
+		(12, 'Eten en Koken', 6),
+		(13, 'Gezondheid en Voeding', 12),
+		(14, 'Kookboeken', 12),
+		(15, 'Stripboeken', 6);
+		niet nodig met conversie script
+
+*/
 
 Insert into Vraag(vraag)
 VALUES
@@ -107,7 +111,7 @@ VALUES
 
 
 
-
+/* bleek onnodig te zijn omdat de land tabel van de andere database meer gegevens bevat en bijna dezelfde waardes heeft 
 SET NOCOUNT ON /* zodat de console niet gespammed wordt, voeg deze bovenaan toe zodra voorbeeldpopulatie/insert script compleet is */
 INSERT [dbo].[Landen] (landnaam) VALUES ('Afghanistan')
 GO
@@ -587,3 +591,5 @@ INSERT [dbo].[Landen] (landnaam) VALUES ('Zimbabwe')
 GO
 
 SET NOCOUNT OFF; 
+
+*/

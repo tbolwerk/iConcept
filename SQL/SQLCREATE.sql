@@ -54,7 +54,7 @@ achternaam varchar(35) not null,  /* zie hierboven */
 adresregel1 varchar(35) not null,  /* zie hierboven*/
 adresregel2 varchar(35) null,   
 postcode varchar(10) not null,  /* https://en.wikipedia.org/wiki/Postal_code */
-plaatsnaam varchar(85) not null, /* https://www.alletop10lijstjes.nl/10-langste-plaatsnamen-in-de-wereld/ */  
+plaatsnaam nvarchar(85) not null, /* https://www.alletop10lijstjes.nl/10-langste-plaatsnamen-in-de-wereld/ */  
 land varchar(48) not null,  /* http://www.funtrivia.com/askft/Question33835.html */
 geboortedatum date not null, 
 email varchar(100) not null,  /* Kan niet met dezelfde email registeren, MOET AANGEPAST NOG WORDEN 25-04-2018 */
@@ -105,8 +105,8 @@ CONSTRAINT CHK_domain_CreditOfPost CHECK (controleoptienaam IN ('Creditcard','Po
 create table dbo.Voorwerp  
 (  
 voorwerpnummer bigint identity(1,1) not null,  /* toelichting: zodat we veel voorwerpnummers kunnen opslaan */
-titel varchar(50) not null,  /* titel is altijd variabel */
-beschrijving varchar(255) not null,  /* Beschrijving is variabel en kan van alles bevatten zoals specificatie, historie */
+titel nvarchar(50) not null,  /* titel is altijd variabel */
+beschrijving nvarchar(255) not null,  /* Beschrijving is variabel en kan van alles bevatten zoals specificatie, historie */
 startprijs numeric(9,2) not null,  
 betalingswijze varchar(25) not null,  
 betalingsinstructie char(255),  /* instructie om het geld te verzenden */
@@ -194,7 +194,7 @@ create table dbo.Rubriek
 rubrieknummer int not null,  
 rubrieknaam varchar(50) not null, /* De rubrieknaam kan langer zijn dan 24 en is ook variabel daarom Varchar 50 */ 
 rubrieknummerOuder int,  
-volgnummer int not null,  
+volgnummer int identity(1,1) not null,  
 CONSTRAINT pk_rubrieknummer PRIMARY KEY (rubrieknummer),  
 CONSTRAINT fk_RubOudNr_Rub_Nr FOREIGN KEY (rubrieknummerOuder)  
 REFERENCES Rubriek (rubrieknummer)  
@@ -215,10 +215,17 @@ REFERENCES Rubriek (rubrieknummer)
 )  
 
 
-create table dbo.Landen
+create table dbo.Landen --AANGEPAST ZODAT ER GEEN GEGEVENS VERLOREN GAAN VAN DE BEDRIJFS DATABASE.
 (
-landnaam varchar(49) not null /* http://www.funtrivia.com/askft/Question33835.html */
-CONSTRAINT pk_landen PRIMARY KEY (landnaam)
+landcode char(4) not null,
+landnaam varchar(49) not null /* http://www.funtrivia.com/askft/Question33835.html */,
+begindatum date null,
+einddatum date null,
+eer_lid bit not null default 0,
+CONSTRAINT pk_landen PRIMARY KEY (landnaam),
+CONSTRAINT UQ_landcode UNIQUE (landcode),
+CONSTRAINT CHK_CODE CHECK ( LEN(landcode) = 4 ),
+CONSTRAINT CHK_DATUM CHECK (begindatum < einddatum)
 )
 
 

@@ -1,4 +1,3 @@
-<br><br><br><br>
 <?php
 if(!isset($_SESSION['username'])){header('Location: index.php');}
 $current_page='register_seller';

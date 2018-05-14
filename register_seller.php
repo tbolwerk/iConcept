@@ -1,4 +1,6 @@
+<br><br><br><br>
 <?php
+if(!isset($_SESSION['username'])){header('Location: index.php');}
 $current_page='register_seller';
 require_once('templates/header.php');
 require_once('templates/connect.php');
@@ -10,7 +12,7 @@ function createVerificationCodeSeller($username, $random_password) {
 	global $error;
 
     try {
-		$userdata = $dbh->prepare("insert into VerificatieVerkoper(gebruikersnaam, code) Values(?, ?, ?)");
+		$userdata = $dbh->prepare("insert into VerificatieVerkoper(gebruikersnaam, code) Values(?, ?)");
 		$userdata->execute(array($username, $random_password));
     } catch (PDOException $e) {
 		$error=$e;
@@ -52,28 +54,29 @@ function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber
     }
 
     if(count($errors) == 0){//checks if there are errors
-      try {
-        $data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
-        $data->execute(array($username, $checkoption, $creditcard, $bank, $banknumber));
-      }
-      catch (PDOException $e) {
-        $error=$e;
-        echo $error;
-      }
       if($checkoption == "creditcard"){
-        $userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
-        $userdata->execute(array($username));
+				try {
+					$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
+					$data->execute(array($username, $checkoption, $creditcard,  null, null));
+					$userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
+	        $userdata->execute(array($username));
+				}
+				catch (PDOException $e) {
+					$error=$e;
+					echo $error;
+				}
       }
       else {
+				$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
+				$data->execute(array($username, $checkoption, null,  $bank, $banknumber));
         $code = random_password(6);
-  			createVerificationCode($username, $code);
+  			createVerificationCodeSeller($username, $code);
       }
     }
   }
-
 }
 
-if(isset($_POST['submit'])){
+if(isset($_POST['registerseller'])){
   registerSeller($username, $_POST['checkoption'],$_POST['creditcard'],$_POST['bank'],$_POST['banknumber']);
 }
 
@@ -96,5 +99,5 @@ if(isset($_POST['submit'])){
   <label>Rekeningnummer</label>
   <input type="text" name="banknumber" value="<?php if(isset($_POST['banknumber'])){echo $_POST['banknumber'];}?>"><br>
   <?php if(isset($errors['banknumber'])){echo $errors['banknumber'];}?><br>
-  <button type="submit" name="submit">Word verkoper</button>
+  <button type="submit" name="registerseller">Word verkoper</button>
 </form>

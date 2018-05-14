@@ -3,6 +3,7 @@ Veilingsite Eenmaal Andermaal
 Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Janno Onink 602808, Suzanne Bogaard 603439, Auke Onvlee 604640
 Datum: 07-05-2018
 */
+delete from Rubriek;
 delete from Bestand;
 delete from Voorwerp;
 delete from Verkoper;
@@ -15,6 +16,23 @@ delete from Landen;
 DBCC CHECKIDENT(Voorwerp, RESEED, 0);
 DBCC CHECKIDENT(Gebruikerstelefoon, RESEED, 0);
 DBCC CHECKIDENT(Vraag, RESEED, 0);
+
+insert into Rubriek
+values	(1, 'Auto''s, boten en motoren', null, 1),
+		(2, 'Auto''s', 1, 1),
+		(3, 'Aanhangers', 1, 2),
+		(4, 'Zeilboten', 1, 3),
+		(5, 'Scooters', 1, 4),
+		(6, 'Boeken', null, 2),
+		(7, 'Fictie', 6, 1),
+		(8, 'Actie', 7, 1),
+		(9, 'Literatuur', 7, 2),
+		(10, 'Science fiction', 7, 3),
+		(11, 'School', 6, 2),
+		(12, 'Eten en Koken', 6, 3),
+		(13, 'Gezondheid en Voeding', 12, 1),
+		(14, 'Kookboeken', 12, 2),
+		(15, 'Stripboeken', 6, 4)
 
 Insert into Vraag(vraag)
 VALUES

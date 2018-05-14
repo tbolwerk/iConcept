@@ -63,7 +63,14 @@ while($question = $data->fetch()){
 }
 ?>
 
-<img class="view index-header" src="http://via.placeholder.com/800x150" style="width: 100%; height: 250px;">
+<div class="view index-header">
+    <img src="https://images.unsplash.com/photo-1453060590797-2d5f419b54cb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f42332c3b8e749209b9ce1c2f7d212d0&auto=format&fit=crop&w=2250&q=80" class="img-fluid" height="450">
+    <div class="mask index-banner pattern-5">
+    <div class="mask index-banner rgba-cyan-light">
+        <h1 class="white-text banner-text">Accountinstellingen</h1>
+    </div>
+  </div>
+</div>
 
 <img class="" src="img/avatar/<?=$_SESSION['username']?>.png" style="border-radius: 50%; width: 300px; height: 300px; position: relative; top: -100px; left: 100px; float: left;">
 
@@ -95,6 +102,7 @@ while($question = $data->fetch()){
 
 <button type="button" class="black-text" id="tab1knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab1()">Persoonlijke instellingen</button>
 <button type="button" class="grey-text" id="tab2knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab2()">Wachtwoord</button>
+<button type="button" class="grey-text" id="tab3knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab3()">Placeholder</button>
 
 <div class="" id="tab1" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid;">
 
@@ -225,6 +233,13 @@ HTML;
 
 </div>
 
+<div class="" id="tab3" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
+  <?php
+  // vul dit in
+  // include(bestand.php);
+  ?>
+</div>
+
 </div>
 
 <br>
@@ -240,19 +255,37 @@ HTML;
 function switchToTab1() {
   document.getElementById("tab1").style.display = "block";
   document.getElementById("tab2").style.display = "none";
+  document.getElementById("tab3").style.display = "none";
   document.getElementById("tab1knop").classList.remove("grey-text");
   document.getElementById("tab1knop").classList.add("black-text");
   document.getElementById("tab2knop").classList.remove("black-text");
   document.getElementById("tab2knop").classList.add("grey-text");
+  document.getElementById("tab3knop").classList.remove("black-text");
+  document.getElementById("tab3knop").classList.add("grey-text");
 }
 
 function switchToTab2() {
   document.getElementById("tab1").style.display = "none";
   document.getElementById("tab2").style.display = "block";
+  document.getElementById("tab3").style.display = "none";
   document.getElementById("tab1knop").classList.remove("black-text");
   document.getElementById("tab1knop").classList.add("grey-text");
   document.getElementById("tab2knop").classList.remove("grey-text");
   document.getElementById("tab2knop").classList.add("black-text");
+  document.getElementById("tab3knop").classList.remove("black-text");
+  document.getElementById("tab3knop").classList.add("grey-text");
+}
+
+function switchToTab3() {
+  document.getElementById("tab1").style.display = "none";
+  document.getElementById("tab2").style.display = "none";
+  document.getElementById("tab3").style.display = "block";
+  document.getElementById("tab1knop").classList.remove("black-text");
+  document.getElementById("tab1knop").classList.add("grey-text");
+  document.getElementById("tab2knop").classList.remove("black-text");
+  document.getElementById("tab2knop").classList.add("grey-text");
+  document.getElementById("tab3knop").classList.remove("grey-text");
+  document.getElementById("tab3knop").classList.add("black-text");
 }
 
 function passwordConfirmation() {

@@ -30,12 +30,7 @@ if(isset($_POST['submit'])){//if submit pressed
           <div class="md-form">
             <i class="fa fa-user prefix niagara"></i>
             <input type="text" id="materialFormCardNameEx" class="form-control white-text" name="username">
-<<<<<<< HEAD
-            <label for="materialFormCardNameEx" class="font-weight-light grey-text">Gebruikersnaam</label>
-            <?php if(isset($error)) {echo $error['username'];} ?>
-=======
             <label for="materialFormCardNameEx" class="font-weight-light">Gebruikersnaam</label>
->>>>>>> bb2a86b6b260bffcffd25def116601fb5f34462a
           </div>
           <!-- Material input username -->
           <div class="md-form">

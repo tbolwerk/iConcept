@@ -291,7 +291,11 @@ input[type="search"] { /* reset normalize */
 
 .dummy-media-object:hover,
 .dummy-media-object:focus {
+<<<<<<< HEAD
 	background: rgba(118,117,128,0.1);
+=======
+	background: rgba(121, 121, 121, 0.17);
+>>>>>>> 0da942ec63d22704729fa81fd7fc517810cc3b8e
 }
 
 .dummy-media-object img {

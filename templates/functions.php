@@ -1,8 +1,24 @@
 <?php
 require('connect.php');
-
-
-
+function displayColumn(){
+	global $dbh;
+	global $column;
+  $column = "";
+  try{
+    $data = $dbh->query("SELECT * FROM Rubriek");
+    while($row = $data->fetch()){
+			if($row['rubrieknummerOuder'] == NULL){
+      $column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
+		}else if(isset($_GET['rubrieknummer'])){
+			if($row['rubrieknummerOuder'] == $_GET['rubrieknummer']){
+				$column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
+			}
+		}
+    }
+    }catch(PDOException $e){
+      $column = $e;
+  }
+}
 
 /*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
 function search($searchKey,$searchType)
@@ -62,12 +78,12 @@ function displayAuction()
               <hr />
               <ul class='list-unstyled list-inline'>
                 <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></p></li>
+                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
               </ul>
             </div>
+
             <div class='view overlay mdb-blue'>
-              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'>
-                <div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>
                 </div>
               </a>

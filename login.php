@@ -9,10 +9,6 @@ if(isset($_POST['submit'])){//if submit pressed
 
 ?>
 
-
-
-
-
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light flex-center">
   <div class="bg bg-login"></div>
@@ -31,13 +27,13 @@ if(isset($_POST['submit'])){//if submit pressed
           <div class="md-form">
             <i class="fa fa-user prefix niagara"></i>
             <input type="text" id="materialFormCardNameEx" class="form-control white-text" name="username">
-            <label for="materialFormCardNameEx" class="font-weight-light grey-text">Gebruikersnaam</label>
+            <label for="materialFormCardNameEx" class="font-weight-light">Gebruikersnaam</label>
           </div>
           <!-- Material input username -->
           <div class="md-form">
             <i class="fa fa-lock prefix niagara"></i>
             <input type="password" id="materialFormCardPasswordEx" class="form-control white-text" name="password" aria-describedby="passwordHelp">
-            <label for="materialFormCardPasswordEx" class="font-weight-light grey-text">Wachtwoord</label>
+            <label for="materialFormCardPasswordEx" class="font-weight-light">Wachtwoord</label>
             <small id="passwordHelp" class="form-text text-muted red-text" href="forget_password.php"><a href="forget_password.php">Wachtwoord vergeten?</a></small>
           </div>
 

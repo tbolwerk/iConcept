@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('functions.php');
+// require_once('functions.php');
 switch($current_page){
 //Configure header for each page
 //Identify page with $current_page variable in php file
@@ -37,7 +37,7 @@ switch($current_page){
   }
 
   case 'auction':
-  
+
   break;
 
 }
@@ -61,7 +61,8 @@ switch($current_page){
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
     <!-- Search overlay styles -->
-    <!-- <link rel="stylesheet" href="css/search_overlay.css"> -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/component.css">
 
 </head>
 <?php

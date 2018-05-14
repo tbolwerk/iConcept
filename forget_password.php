@@ -42,7 +42,8 @@ $headers = "From: Admin@EenmaalAndermaal.com";
     <input type="email" class="form-control white-text" name="forget_password">
     <label for="forget_password" class="font-weight-light" >Uw email</label>
   </div>
-  <div class="niagara">
+  <div class="text-center py-1 mt-3">
+    <button class="btn elegant" type="submit" name="submit">Wachtwoord opvragen</button>
   </div>
 </form>
 </div>

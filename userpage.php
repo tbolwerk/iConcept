@@ -111,21 +111,21 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="lastname">Achternaam</label>
-            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>">
+            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form">
-            <label for="birthdate">Geboortedatum</label>
-            <input type="text" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}">
+            <!-- <label for="birthdate">Geboortedatum</label> -->
+            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="country">Land</label>
-            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="city">Plaatsnaam</label>
-            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
@@ -172,7 +172,7 @@ while($question = $data->fetch()){
       </div>
       <div class="md-form">
         <label for="secretAnswer">Geheim antwoord</label>
-        <input type="text" class="form-control" name="secretAnswer" value="<?=$results['antwoordtekst']?>">
+        <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
       </div>
     </fieldset>
 

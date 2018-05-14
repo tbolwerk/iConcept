@@ -168,8 +168,8 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="secretAnswer">
-                <label class="font-weight-light white-text">Antwoord op de geheime vraag</label>
+                <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer">
+                <label class="font-weight-light white-text" for="secretAnswer">Antwoord op de geheime vraag</label>
             </div>
           </div>
 

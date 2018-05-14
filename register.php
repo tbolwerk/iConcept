@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
   if($_POST['address2']!=""){
     $address2=$_POST['address2'];
   }
-  	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
+  	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthday'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
 }
 ?>
 <!--Main Layout-->
@@ -43,15 +43,15 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="firstname">
-                <label class="font-weight-light white-text">Voornaam</label>
+                <input type="text" class="form-control white-text" name="firstname" id=firstname>
+                <label class="font-weight-light white-text" for="firstname">Voornaam</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="lastname">
-                <label class="font-weight-light white-text">Achternaam</label>
+                <input type="text" class="form-control white-text" name="lastname" id="lastname">
+                <label class="font-weight-light white-text" for="lastname">Achternaam</label>
             </div>
           </div>
 
@@ -59,42 +59,33 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="username">
-                <label class="font-weight-light white-text">Gebruikersnaam</label>
+                <input type="text" class="form-control white-text" name="username" id="username">
+                <label class="font-weight-light white-text" for="username">Gebruikersnaam</label>
             </div>
           </div>
 
           <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthday">
-                <label class="font-weight-light white-text">Geboortedag</label>
+                <input type="date"  class="form-control white-text" name="birthday" id="birthday">
+                <label class="font-weight-light white-text" for="birthday"></label>
             </div>
-            <div class="md-form ml-3 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthmonth">
-                <label class="font-weight-light white-text">Geboortemaand</label>
-            </div>
-            <div class="md-form ml-3 mr-5">
-                <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthyear">
-                <label for="materialFormCardNameEx" class="font-weight-light white-text">Geboortejaar</label>
-            </div>
+
           </div>
 
           <div class="d-flex flex-row">
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password">
-                <label class="font-weight-light white-text">Wachtwoord</label>
+                <input type="password" class="form-control white-text" name="password" id="password">
+                <label class="font-weight-light white-text" for="password">Wachtwoord</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password_check">
-                <label class="font-weight-light white-text">Herhaal wachtwoord</label>
+                <input type="password" class="form-control white-text" name="password_check" id="password_check">
+                <label class="font-weight-light white-text" for="password_check">Herhaal wachtwoord</label>
             </div>
           </div>
 
@@ -102,15 +93,15 @@ if(isset($_POST['submit'])){
             <!-- Material input email -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-envelope prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email">
-                <label class="font-weight-light white-text">Emailadres</label>
+                <input type="email" class="form-control white-text" name="email" id="email">
+                <label class="font-weight-light white-text" for="email">Emailadres</label>
             </div>
 
             <!-- Material input email -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-exclamation-triangle prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email_check">
-                <label class="font-weight-light white-text">Bevestig emailadres</label>
+                <input type="email" class="form-control white-text" name="email_check" id="email_check">
+                <label class="font-weight-light white-text" for="email_check">Bevestig emailadres</label>
             </div>
           </div>
 
@@ -118,16 +109,16 @@ if(isset($_POST['submit'])){
             <!-- Material input password -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-home prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="address1">
-                <label class="font-weight-light white-text">Adres</label>
+                <input type="text" class="form-control white-text" name="address1" id="address1">
+                <label class="font-weight-light white-text" for="address1">Adres</label>
             </div>
           </div>
 
           <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-home prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="address2">
-                <label class="font-weight-light white-text">Adres (optioneel)</label>
+                <input type="text" class="form-control white-text" name="address2" id="address2">
+                <label class="font-weight-light white-text" for="address2">Adres (optioneel)</label>
             </div>
           </div>
 
@@ -135,15 +126,15 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="zipcode">
-                <label class="font-weight-light white-text">Postcode</label>
+                <input type="text" class="form-control white-text" name="zipcode" id="zipcode">
+                <label class="font-weight-light white-text" for="zipcode">Postcode</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="city">
-                <label class="font-weight-light white-text">Stad</label>
+                <input type="text" class="form-control white-text" name="city" id="city">
+                <label class="font-weight-light white-text" for="city">Stad</label>
             </div>
           </div>
 
@@ -151,8 +142,8 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="country">
-                <label class="font-weight-light white-text">Land</label>
+                <input type="text" class="form-control white-text" name="country" id="country">
+                <label class="font-weight-light white-text" for="country">Land</label>
             </div>
           </div>
 
@@ -161,7 +152,7 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
                 <select name="secretQuestion" class="register-select-form">
-                  <option value="kies" class="font-weight-light white-text disabled selected">Kies een geheime vraag...</option>
+                  <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 
@@ -177,8 +168,8 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="secretAnswer">
-                <label class="font-weight-light white-text">Antwoord op de geheime vraag</label>
+                <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer">
+                <label class="font-weight-light white-text" for="secretAnswer">Antwoord op de geheime vraag</label>
             </div>
           </div>
 

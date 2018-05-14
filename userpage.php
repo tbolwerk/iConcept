@@ -63,7 +63,14 @@ while($question = $data->fetch()){
 }
 ?>
 
-<img class="view index-header" src="http://via.placeholder.com/800x150" style="width: 100%; height: 250px;">
+<div class="view index-header">
+    <img src="https://images.unsplash.com/photo-1453060590797-2d5f419b54cb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f42332c3b8e749209b9ce1c2f7d212d0&auto=format&fit=crop&w=2250&q=80" class="img-fluid" height="450">
+    <div class="mask index-banner pattern-5">
+    <div class="mask index-banner rgba-cyan-light">
+        <h1 class="white-text banner-text">Accountinstellingen</h1>
+    </div>
+  </div>
+</div>
 
 <img class="" src="img/avatar/<?=$_SESSION['username']?>.png" style="border-radius: 50%; width: 300px; height: 300px; position: relative; top: -100px; left: 100px; float: left;">
 
@@ -95,6 +102,7 @@ while($question = $data->fetch()){
 
 <button type="button" class="black-text" id="tab1knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab1()">Persoonlijke instellingen</button>
 <button type="button" class="grey-text" id="tab2knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab2()">Wachtwoord</button>
+<button type="button" class="grey-text" id="tab3knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab3()">Placeholder</button>
 
 <div class="" id="tab1" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid;">
 
@@ -105,27 +113,27 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="firstname">Voornaam</label>
-            <input type="text" class="form-control" name="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
+            <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="lastname">Achternaam</label>
-            <input type="text" class="form-control" name="lastname" value="<?=$results['achternaam']?>">
+            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form">
-            <label for="birthdate">Geboortedatum</label>
-            <input type="text" class="form-control" name="birthdate" value="<?=$results['geboortedatum']?>" required pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}">
+            <!-- <label for="birthdate">Geboortedatum</label> -->
+            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="country">Land</label>
-            <input type="text" class="form-control" name="country" value="<?=$results['land']?>">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
@@ -137,13 +145,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="postalcode">Postcode</label>
-            <input type="text" class="form-control" name="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="city">Plaatsnaam</label>
-            <input type="text" class="form-control" name="city" value="<?=$results['plaatsnaam']?>">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+">
           </div>
         </div>
       </div>
@@ -151,13 +159,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="address1">Adres</label>
-            <input type="text" class="form-control" name="address1" value="<?=$results['adresregel1']?>" required>
+            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required>
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="email">E-Mail</label>
-            <input type="email" class="form-control" name="email" value="<?=$results['email']?>" required>
+            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" required>
           </div>
         </div>
       </div>
@@ -172,7 +180,7 @@ while($question = $data->fetch()){
       </div>
       <div class="md-form">
         <label for="secretAnswer">Geheim antwoord</label>
-        <input type="text" class="form-control" name="secretAnswer" value="<?=$results['antwoordtekst']?>">
+        <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
       </div>
     </fieldset>
 
@@ -207,22 +215,29 @@ HTML;
   <form method="post" action="">
     <div class="md-form">
       <label for="currentPassword">Huidig wachtwoord</label>
-      <input type="password" class="form-control" name="currentPassword" value="">
+      <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
     </div>
 
     <div class="md-form">
       <label for="newPassword">Nieuw wachtwoord</label>
-      <input type="password" id="newPassword" class="form-control" name="newPassword" value="">
+      <input type="password" class="form-control" name="newPassword" id="newPassword" value="" required>
     </div>
 
     <div class="md-form">
       <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
-      <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" value="">
+      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="" required>
     </div>
 
     <button type="submit" name="tab2submit">Opslaan</button>
   </form>
 
+</div>
+
+<div class="" id="tab3" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
+  <?php
+  // vul dit in
+  // include(bestand.php);
+  ?>
 </div>
 
 </div>
@@ -240,19 +255,37 @@ HTML;
 function switchToTab1() {
   document.getElementById("tab1").style.display = "block";
   document.getElementById("tab2").style.display = "none";
+  document.getElementById("tab3").style.display = "none";
   document.getElementById("tab1knop").classList.remove("grey-text");
   document.getElementById("tab1knop").classList.add("black-text");
   document.getElementById("tab2knop").classList.remove("black-text");
   document.getElementById("tab2knop").classList.add("grey-text");
+  document.getElementById("tab3knop").classList.remove("black-text");
+  document.getElementById("tab3knop").classList.add("grey-text");
 }
 
 function switchToTab2() {
   document.getElementById("tab1").style.display = "none";
   document.getElementById("tab2").style.display = "block";
+  document.getElementById("tab3").style.display = "none";
   document.getElementById("tab1knop").classList.remove("black-text");
   document.getElementById("tab1knop").classList.add("grey-text");
   document.getElementById("tab2knop").classList.remove("grey-text");
   document.getElementById("tab2knop").classList.add("black-text");
+  document.getElementById("tab3knop").classList.remove("black-text");
+  document.getElementById("tab3knop").classList.add("grey-text");
+}
+
+function switchToTab3() {
+  document.getElementById("tab1").style.display = "none";
+  document.getElementById("tab2").style.display = "none";
+  document.getElementById("tab3").style.display = "block";
+  document.getElementById("tab1knop").classList.remove("black-text");
+  document.getElementById("tab1knop").classList.add("grey-text");
+  document.getElementById("tab2knop").classList.remove("black-text");
+  document.getElementById("tab2knop").classList.add("grey-text");
+  document.getElementById("tab3knop").classList.remove("grey-text");
+  document.getElementById("tab3knop").classList.add("black-text");
 }
 
 function passwordConfirmation() {

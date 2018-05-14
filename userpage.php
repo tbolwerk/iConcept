@@ -312,6 +312,7 @@ function passwordConfirmation() {
 }
 
 document.getElementById("confirmPassword").onchange = passwordConfirmation;
+document.getElementById("newPassword").onchange = passwordConfirmation;
 </script>
 
 </div>

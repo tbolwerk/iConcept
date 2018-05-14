@@ -14,6 +14,7 @@ if(isset($_GET['username'])){
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
 		$email = $result['email'];
+		mailUser($email,'registratie');
 
 			$code = random_password(6);
 			$url = "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);

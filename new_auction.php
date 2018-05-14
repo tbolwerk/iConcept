@@ -19,6 +19,59 @@ function reArrayFiles(&$file_post) {
     return $file_ary;
 }
 
+
+
+
+function addPicture($picture,$file_name){
+	// $file = array();
+	// foreach ($picture as $key1 => $value1) {
+	// 	foreach ($value1 as $key2 => $value2) {
+	// 	$file[$key2][$key1] = $value2;
+	// }
+	// }
+global $error;
+global $dbh;
+
+$error="";
+//in production
+$file = $picture;
+$error="";
+//in production
+	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+				$tmp_extension = explode(".", $file["name"]);
+				$extension = end($tmp_extension);
+				if (
+						(
+							 ($file["type"] == "image/gif")
+						|| ($file["type"] == "image/jpeg")
+						|| ($file["type"] == "image/png")
+						|| ($file["type"] == "image/pjpeg")
+						)
+						&& ($file["size"] < 2000000)
+						&& in_array($extension, $allowedExts))
+					{
+				 if ($file["error"] > 0)
+								{
+										$error.= "Return Code: " . $file["error"] . "<br />";
+								} else {
+										$error.= "Upload: " . $file["name"] . "<br />";
+										$error.= "Type: " . $file["type"] . "<br />";
+										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
+										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
+										move_uploaded_file($file["tmp_name"],
+										"upload/" . $file_name . "." . $extension);
+										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
+								}
+					}    else {
+
+						$error.= $file["type"]."<br />";
+							$error.= "Invalid file try another Image";
+					}
+					return $extension;
+
+}
+
+
 function new_auction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method,$picture)
 {
   global $dbh;
@@ -83,15 +136,27 @@ if(count($errors) == 0)//checks if there are errors
     echo $error;
   }
 
-$seller = $_SESSION['username'];
+
+<<<<<<< HEAD
+  $seller = $_SESSION['username'];
   echo ($current_date);
   echo ($end_date);
   echo ($current_time);
+=======
+  $seller = "janbeenham";
+  // echo ($current_date);
+  // echo ($end_date);
+  // echo ($current_time);
+>>>>>>> bcf690057d12dcb6a86d86aae048952ddcd0d826
   echo ($id);
   echo ($picture['name']);
 
     try {
+<<<<<<< HEAD
       $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
+=======
+      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
+>>>>>>> bcf690057d12dcb6a86d86aae048952ddcd0d826
 Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
     } catch (PDOException $e) {
@@ -126,7 +191,6 @@ Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 }
 }
-
 
 
 

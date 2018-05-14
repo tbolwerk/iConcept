@@ -102,7 +102,7 @@ while($question = $data->fetch()){
 
 <button type="button" class="black-text" id="tab1knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab1()">Persoonlijke instellingen</button>
 <button type="button" class="grey-text" id="tab2knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab2()">Wachtwoord</button>
-<button type="button" class="grey-text" id="tab3knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab3()">Placeholder</button>
+<button type="button" class="grey-text" id="tab3knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab3()">Word verkoper</button>
 
 <div class="" id="tab1" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid;">
 
@@ -237,6 +237,21 @@ HTML;
   <?php
   // vul dit in
   // include(bestand.php);
+  $username = $_SESSION['username'];
+  try {//checks if user needs verification
+  	$statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
+  	$statement->execute(array($username));
+  	$results = $statement->fetch();
+	} catch (PDOException $e) {
+    $error=$e;
+    echo $error;
+	}
+  if(empty($results[0])){
+    include('register_seller.php');
+  }
+  else {
+    include('verification_seller.php');
+  }
   ?>
 </div>
 

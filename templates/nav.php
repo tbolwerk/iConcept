@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 <?php require_once("functions.php");
 displayColumn();
 ?>
-=======
-
->>>>>>> 0da942ec63d22704729fa81fd7fc517810cc3b8e
 
 <!--Navbar-->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
 
     <!-- Navbar brand -->
     <a class="navbar-brand" href="index.php">

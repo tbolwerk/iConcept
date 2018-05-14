@@ -1,11 +1,5 @@
 <?php
 session_start();
-<<<<<<< HEAD
-=======
-require_once("functions.php");
-displayColumn();
-
->>>>>>> 0da942ec63d22704729fa81fd7fc517810cc3b8e
 // require_once('functions.php');
 switch($current_page){
 //Configure header for each page
@@ -69,11 +63,6 @@ switch($current_page){
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
-<<<<<<< HEAD
-=======
-
-    
->>>>>>> 0da942ec63d22704729fa81fd7fc517810cc3b8e
 
 </head>
 <?php

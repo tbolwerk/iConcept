@@ -32,9 +32,6 @@ $headers = "From: Admin@EenmaalAndermaal.com";
       <div class="login-form-header elegant">
         <h3>Wachtwoord vergeten?</h3>
       </div>
-      <div class="green-text" style="text-align: center; font-weight: bold;">
-        <?=$txt?>
-      </div>
 
 <form method="post" action="" >
   <div class="md-form">
@@ -43,6 +40,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
     <label for="forget_password" class="font-weight-light" >Uw email</label>
   </div>
   <div class="niagara">
+    <?=$txt?>
   </div>
 </form>
 </div>

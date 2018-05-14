@@ -233,6 +233,7 @@ if(count($errors) == 0){//checks if there are errors
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
 			copy("img/avatar/avatar.png","img/avatar/".$username.".png");
+			mailuser($username,'registratie');
 			header("Location: post_register.php?username={$username}");
 
     } catch (PDOException $e) {

@@ -78,11 +78,11 @@ GO
 
 Insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, koper, looptijdeindedag, veilinggesloten, verkoopprijs)
 VALUES
-		('Product 1#', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
-		Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,GETDATE(), 0, 100),
-		('Product 2#', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. ', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2019-05-05, 0, 100),
-		('Product 3#', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100)
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,GETDATE(), 0, 100),
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2019-05-05, 0, 100),
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100)
 		;
+
 
 
 

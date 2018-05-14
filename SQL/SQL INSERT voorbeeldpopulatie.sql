@@ -69,8 +69,8 @@ GO
 
 Insert into Verkoper(gebruikersnaam, banknaam, rekeningnummer, controleoptienaam, creditcardnummer)
 VALUES
-		('janbeenham', 'Post', 12345, 'Creditcard', 54321),
-		('aukeonfleek', 'Post', 54321, 'Creditcard', 4324)
+		('janbeenham', null,null, 'creditcard', 54321),
+		('aukeonfleek', null,null, 'creditcard', 4324)
 		;
 GO
 
@@ -80,7 +80,10 @@ Insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsi
 VALUES
 		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,GETDATE(), 0, 100),
 		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2019-05-05, 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100)
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
+		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100)
 		;
 
 

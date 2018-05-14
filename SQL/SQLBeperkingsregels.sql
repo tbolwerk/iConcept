@@ -80,7 +80,7 @@ Als kolom Controle-optie de waarde ‘Creditcard’ heeft, dan moet kolom Creditcard
  en anders moet kolom Creditcard een NULL-waarde bevatten. */
 ALTER TABLE Verkoper 
 ADD CONSTRAINT CHK_CreditcardGevuld
-CHECK ((controleoptienaam = 'Creditcard') AND creditcardnummer IS NOT NULL OR controleoptienaam = 'Post' AND creditcardnummer is NULL);
+CHECK (controleoptienaam = 'creditcard' AND creditcardnummer IS NOT NULL AND rekeningnummer is null OR controleoptienaam = 'post' AND creditcardnummer is NULL AND rekeningnummer is not null);
 GO
 
 

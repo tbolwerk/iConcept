@@ -2,10 +2,19 @@
 $current_page='userpage';
 require_once('templates/header.php');
 
-if(isset($_POST['submit'])){
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, email = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'],$_POST['email'], $_SESSION['username']));
-  changePassword($_POST['password']);
+if(isset($_POST['tab1submit'])){
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['city'], $_POST['country'], $_POST['birthdate'], $_POST['email'], $_POST['secretQuestion'], $_POST['secretAnswer'], $_SESSION['username']));
+}
+
+if(isset($_POST['tab2submit'])){
+  $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
+  $statement->execute(array($_SESSION['username']));
+  $password = $statement->fetch();
+
+  if ($password[0] == $_POST['currentPassword']) {
+    changePassword($_POST['newPassword']);
+  }
 }
 
 if(isset($_POST['change_avatar'])){
@@ -33,7 +42,30 @@ $results = $statement->fetch();
 $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
 $statement->execute(array($username));
 $phones = $statement->fetchAll();
+
+$statement = $dbh->prepare("select * from Vraag where vraagnummer = ?");
+$statement->execute(array($results['vraagnummer']));
+$questions = $statement->fetch();
+
+$secret_question_options = null;
+try {
+    $data = $dbh->prepare("select * from Vraag");
+    $data->execute();
+} catch (PDOException $e) {
+    $error = $e;
+}
+while($question = $data->fetch()){
+  if ($question['vraagnummer'] == $results['vraagnummer']) {
+    $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
+  } else {
+    $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+  }
+}
 ?>
+
+<img class="" src="http://via.placeholder.com/800x150" style="width: 100%; height: 250px;">
+
+<img class="" src="img/avatar/<?=$_SESSION['username']?>.png" style="border-radius: 50%; width: 300px; height: 300px; position: relative; top: -100px; left: 100px; float: left;">
 
 <!--
 <p>ontvangen bestanden: </p>
@@ -51,58 +83,189 @@ $phones = $statement->fetchAll();
 <p>ontvangen telefoon gegevens: </p>
 <?php print_r($phones); ?><br>
 <br>
--->
 
-<br>
+<p>ontvangen vraag gegevens: </p>
+<?php print_r($questions); ?><br>
+<br> -->
 
-<form method="post" action="" >
-  <label for="firstname">Voornaam</label>
-  <input type="text" name="firstname" value="<?=$results['voornaam']?>"><br>
-  <label for="lastname">Achternaam</label>
-  <input type="text" name="lastname" value="<?=$results['achternaam']?>"><br>
-  <label for="address1">Adres</label>
-  <input type="text" name="address1" value="<?=$results['adresregel1']?>"><br>
-  <label for="postalcode">Postcode</label>
-  <input type="text" name="postalcode" value="<?=$results['postcode']?>"><br>
-  <label for="city">Plaatsnaam</label>
-  <input type="text" name="city" value="<?=$results['plaatsnaam']?>"><br>
-  <label for="country">Land</label>
-  <input type="text" name="country" value="<?=$results['land']?>"><br>
-  <label for="birthdate">Geboortedatum</label>
-  <input type="text" name="birthdate" value="<?=$results['geboortedatum']?>"><br>
-  <label for="mail">E-Mail</label>
-  <input type="email" name="email" value="<?=$results['email']?>"><br>
-  <label for="password">Wachtwoord</label>
-  <input type="text" name="password" value="<?=$results['wachtwoord']?>"><br>
 
-  <button type="submit" name="submit">Pas aan</button>
-</form>
+<div class="container-fluid" style="background-color: WhiteSmoke;">
 
-<br>
+<div class="" style="margin: auto; max-width: 700px; text-align: center; padding: 20px;">
 
-<form method="post" action="" >
-  <?php
-  foreach ($phones as $phone) {
-    echo <<<HTML
-      <input type="tel" name="{$phone['volgnummer']}" value="{$phone['telefoonnummer']}">
-      <button type="submit" name="delete" value="{$phone['volgnummer']};">Verwijder</button><br>
+<button type="button" class="black-text" id="tab1knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab1()">Persoonlijke instellingen</button>
+<button type="button" class="grey-text" id="tab2knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab2()">Wachtwoord</button>
+
+<div class="" id="tab1" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid;">
+
+  <form method="post" action="">
+    <fieldset style="border-radius: 20px;">
+      <legend>Naam</legend>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="firstname">Voornaam</label>
+            <input type="text" class="form-control" name="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="lastname">Achternaam</label>
+            <input type="text" class="form-control" name="lastname" value="<?=$results['achternaam']?>">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="birthdate">Geboortedatum</label>
+            <input type="text" class="form-control" name="birthdate" value="<?=$results['geboortedatum']?>" required pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="country">Land</label>
+            <input type="text" class="form-control" name="country" value="<?=$results['land']?>">
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset style="border-radius: 20px;">
+      <legend>Contactgegevens</legend>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="postalcode">Postcode</label>
+            <input type="text" class="form-control" name="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="city">Plaatsnaam</label>
+            <input type="text" class="form-control" name="city" value="<?=$results['plaatsnaam']?>">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="address1">Adres</label>
+            <input type="text" class="form-control" name="address1" value="<?=$results['adresregel1']?>" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form">
+            <label for="email">E-Mail</label>
+            <input type="email" class="form-control" name="email" value="<?=$results['email']?>" required>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset style="border-radius: 20px;">
+      <legend>Geheime vraag</legend>
+      <div class="md-form">
+        <select name="secretQuestion" class="form-control">
+          <?=$secret_question_options?>
+        </select>
+      </div>
+      <div class="md-form">
+        <label for="secretAnswer">Geheim antwoord</label>
+        <input type="text" class="form-control" name="secretAnswer" value="<?=$results['antwoordtekst']?>">
+      </div>
+    </fieldset>
+
+    <button type="submit" name="tab1submit">Opslaan</button>
+  </form>
+
+  <br><hr>
+
+  <h4>Telefoon</h4>
+
+  <form method="post" action="" >
+    <?php
+    foreach ($phones as $phone) {
+      echo <<<HTML
+        <input type="tel" name="{$phone['volgnummer']}" value="{$phone['telefoonnummer']}">
+        <button type="submit" name="delete" value="{$phone['volgnummer']};">Verwijder</button><br>
+        <!--NEVER touch the following line, the page WILL break-->
 HTML;
-  }
-  ?>
-</form>
+    }
+    ?>
+  </form>
 
-<form method="post" action="" >
-  <input type="tel" name="phone">
-  <button type="submit" name="addphone">Voeg toe</button><br>
-</form>
+  <form method="post" action="" >
+    <input type="tel" name="phone">
+    <button type="submit" name="addphone">Voeg toe</button><br>
+  </form>
+
+</div>
+
+<div class="" id="tab2" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
+
+  <form method="post" action="">
+    <div class="md-form">
+      <label for="currentPassword">Huidig wachtwoord</label>
+      <input type="password" class="form-control" name="currentPassword" value="">
+    </div>
+
+    <div class="md-form">
+      <label for="newPassword">Nieuw wachtwoord</label>
+      <input type="password" id="newPassword" class="form-control" name="newPassword" value="">
+    </div>
+
+    <div class="md-form">
+      <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
+      <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" value="">
+    </div>
+
+    <button type="submit" name="tab2submit">Opslaan</button>
+  </form>
+
+</div>
+
+</div>
 
 <br>
 
 <form method="post" action="" enctype="multipart/form-data">
   <label for="file">Filename:</label>
-  <input type="file" name="file" id="file" />  </textarea>
+  <input type="file" name="file" accept=".png">
 
   <button type="submit" name="change_avatar">Upload</button>
 </form>
+
+<script>
+function switchToTab1() {
+  document.getElementById("tab1").style.display = "block";
+  document.getElementById("tab2").style.display = "none";
+  document.getElementById("tab1knop").classList.remove("grey-text");
+  document.getElementById("tab1knop").classList.add("black-text");
+  document.getElementById("tab2knop").classList.remove("black-text");
+  document.getElementById("tab2knop").classList.add("grey-text");
+}
+
+function switchToTab2() {
+  document.getElementById("tab1").style.display = "none";
+  document.getElementById("tab2").style.display = "block";
+  document.getElementById("tab1knop").classList.remove("black-text");
+  document.getElementById("tab1knop").classList.add("grey-text");
+  document.getElementById("tab2knop").classList.remove("grey-text");
+  document.getElementById("tab2knop").classList.add("black-text");
+}
+
+function passwordConfirmation() {
+  if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
+    document.getElementById("confirmPassword").setCustomValidity("Wachtwoorden komen niet overeen");
+  } else {
+    document.getElementById("confirmPassword").setCustomValidity("");
+  }
+}
+
+document.getElementById("confirmPassword").onchange = passwordConfirmation;
+</script>
+
+</div>
 <?php if(isset($error)){echo $error;}?>
 <?php include('templates/footer.php'); ?>

@@ -67,6 +67,8 @@ switch($current_page){
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
 
+    
+
 </head>
 <?php
 if ($current_page == 'login' || $current_page == 'register') {

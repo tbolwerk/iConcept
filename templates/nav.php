@@ -1,7 +1,7 @@
 
 
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark">
 
     <!-- Navbar brand -->
     <a class="navbar-brand" href="index.php">

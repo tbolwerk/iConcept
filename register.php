@@ -26,130 +26,165 @@ if(isset($_POST['submit'])){
 ?>
 <!--Main Layout-->
 <main class="py-5 mask rgba-black-light">
-  <div class="bg"></div>
+  <div class="bg bg-login"></div>
 <!-- Card -->
-<div class="container col-md-4">
-
-
+<div class="container col-md-6">
 <!-- Card -->
-<div class="card">
-
+<div class="card login-register-card">
     <!-- Card body -->
     <div class="card-body">
-
+      <!-- Register header -->
+      <div class="login-form-header elegant">
+        <h3>Registreren</h3>
+      </div>
         <!-- Material form register -->
-        <form action="" method="post">
-            <p class="h4 text-center py-4">Sign up</p>
-
+        <form action="" method="post" autocomplete="on">
             <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="username">
-                <label for="materialFormCardNameEx" class="font-weight-light">Your username</label>
+            <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="firstname">
+                <label class="font-weight-light white-text">Voornaam</label>
             </div>
 
             <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="firstname">
-                <label for="materialFormCardNameEx" class="font-weight-light">Your firstname</label>
+            <div class="md-form mr-5 ml-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="lastname">
+                <label class="font-weight-light white-text">Achternaam</label>
+            </div>
+          </div>
+
+            <!-- Material input text -->
+            <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-5">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="username">
+                <label class="font-weight-light white-text">Gebruikersnaam</label>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text"  class="form-control white-text" name="birthday">
+                <label class="font-weight-light white-text">Geboortedag</label>
+            </div>
+            <div class="md-form ml-3 mr-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text"  class="form-control white-text" name="birthmonth">
+                <label class="font-weight-light white-text">Geboortemaand</label>
+            </div>
+            <div class="md-form ml-3 mr-5">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text"  class="form-control white-text" name="birthyear">
+                <label for="materialFormCardNameEx" class="font-weight-light white-text">Geboortejaar</label>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row">
+            <!-- Material input text -->
+            <div class="md-form ml-5 mr-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="password" class="form-control white-text" name="password">
+                <label class="font-weight-light white-text">Wachtwoord</label>
             </div>
 
             <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text"  class="form-control" name="lastname">
-                <label for="materialFormCardNameEx" class="font-weight-light">Your lastname</label>
+            <div class="md-form mr-5 ml-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="password" class="form-control white-text" name="password_check">
+                <label class="font-weight-light white-text">Herhaal wachtwoord</label>
             </div>
+          </div>
 
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="address1">
-                <label for="materialFormCardNameEx" class="font-weight-light">address1</label>
-            </div>
-
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="address2">
-                <label for="materialFormCardNameEx" class="font-weight-light">address2</label>
-            </div>
-
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="zipcode">
-                <label for="materialFormCardNameEx" class="font-weight-light">Zipcode</label>
-            </div>
-
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="city">
-                <label for="materialFormCardNameEx" class="font-weight-light">City</label>
-            </div>
-
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="country">
-                <label for="materialFormCardNameEx" class="font-weight-light">Country</label>
-            </div>
-
-            <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="birthdate">
-                <label for="materialFormCardNameEx" class="font-weight-light">Birthdate</label>
+          <div class="d-flex flex-row">
+            <!-- Material input email -->
+            <div class="md-form ml-5 mr-3">
+                <i class="fa fa-envelope prefix niagara"></i>
+                <input type="email" class="form-control white-text" name="email">
+                <label class="font-weight-light white-text">Emailadres</label>
             </div>
 
             <!-- Material input email -->
-            <div class="md-form">
-                <i class="fa fa-envelope prefix grey-text"></i>
-                <input type="email" class="form-control" name="email">
-                <label for="materialFormCardEmailEx" class="font-weight-light">Your email</label>
+            <div class="md-form mr-5 ml-3">
+                <i class="fa fa-exclamation-triangle prefix niagara"></i>
+                <input type="email" class="form-control white-text" name="email_check">
+                <label class="font-weight-light white-text">Bevestig emailadres</label>
             </div>
+          </div>
 
-            <!-- Material input email -->
-            <div class="md-form">
-                <i class="fa fa-exclamation-triangle prefix grey-text"></i>
-                <input type="email" class="form-control" name="email_check">
-                <label for="materialFormCardConfirmEx" class="font-weight-light">Confirm your email</label>
-            </div>
-
+          <div class="d-flex flex-row">
             <!-- Material input password -->
-            <div class="md-form">
-                <i class="fa fa-lock prefix grey-text"></i>
-                <input type="password" class="form-control" name="password">
-                <label for="materialFormCardPasswordEx" class="font-weight-light">Your password</label>
+            <div class="md-form ml-5 mr-5">
+                <i class="fa fa-home prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="address1">
+                <label class="font-weight-light white-text">Adres</label>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-5">
+                <i class="fa fa-home prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="address2">
+                <label class="font-weight-light white-text">Adres (optioneel)</label>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row">
+            <!-- Material input text -->
+            <div class="md-form ml-5 mr-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="zipcode">
+                <label class="font-weight-light white-text">Postcode</label>
             </div>
 
-            <!-- Material input password -->
-            <div class="md-form">
-                <i class="fa fa-exclamation-triangle prefix grey-text"></i>
-                <input type="password" class="form-control" name="password_check">
-                <label for="materialFormCardPasswordEx" class="font-weight-light">Confirm your password</label>
+            <!-- Material input text -->
+            <div class="md-form mr-5 ml-3">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="city">
+                <label class="font-weight-light white-text">Stad</label>
             </div>
+          </div>
 
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <select name="secretQuestion">
-                  <option value="kies">Kies geheime vraag...</option>
+          <div class="d-flex flex-row">
+            <!-- Material input text -->
+            <div class="md-form ml-5 mr-5">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="country">
+                <label class="font-weight-light white-text">Land</label>
+            </div>
+          </div>
+
+            <!-- Material input text -->
+            <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-5 register-select">
+                <i class="fa fa-user prefix niagara"></i>
+                <select name="secretQuestion" class="">
+                  <option value="kies" class="font-weight-light white-text disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 
+
             </div>
+          </div>
+
+
+
+            <!-- Material input password -->
+
             <!-- Material input text -->
-            <div class="md-form">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control" name="secretAnswer">
-                <label for="materialFormCardNameEx" class="font-weight-light">secret Answer</label>
+            <div class="d-flex flex-row">
+            <div class="md-form ml-5 mr-5">
+                <i class="fa fa-user prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="secretAnswer">
+                <label class="font-weight-light white-text">Antwoord op de geheime vraag</label>
             </div>
+          </div>
 
 
-            <div class="text-center py-4 mt-3">
-                <button class="btn btn-cyan" type="submit" name="submit">Register</button>
+            <div class="text-center py-4 mt-4 ml-5 mr-5">
+                <button class="btn elegant" type="submit" name="submit">Registreren</button>
             </div>
         </form>
         <!-- Material form register -->
@@ -174,6 +209,5 @@ if(isset($error)){
 
 </main>
 <!--Main Layout-->
-
 <!-- Material form register -->
 <?php include 'templates/footer.php'; ?>

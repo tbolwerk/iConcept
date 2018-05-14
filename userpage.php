@@ -105,13 +105,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="firstname">Voornaam</label>
-            <input type="text" class="form-control" name="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
+            <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="lastname">Achternaam</label>
-            <input type="text" class="form-control" name="lastname" value="<?=$results['achternaam']?>">
+            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>">
           </div>
         </div>
       </div>
@@ -119,13 +119,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="birthdate">Geboortedatum</label>
-            <input type="text" class="form-control" name="birthdate" value="<?=$results['geboortedatum']?>" required pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}">
+            <input type="text" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="country">Land</label>
-            <input type="text" class="form-control" name="country" value="<?=$results['land']?>">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>">
           </div>
         </div>
       </div>
@@ -137,13 +137,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="postalcode">Postcode</label>
-            <input type="text" class="form-control" name="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="city">Plaatsnaam</label>
-            <input type="text" class="form-control" name="city" value="<?=$results['plaatsnaam']?>">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>">
           </div>
         </div>
       </div>
@@ -151,13 +151,13 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="address1">Adres</label>
-            <input type="text" class="form-control" name="address1" value="<?=$results['adresregel1']?>" required>
+            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required>
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form">
             <label for="email">E-Mail</label>
-            <input type="email" class="form-control" name="email" value="<?=$results['email']?>" required>
+            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" required>
           </div>
         </div>
       </div>
@@ -207,17 +207,17 @@ HTML;
   <form method="post" action="">
     <div class="md-form">
       <label for="currentPassword">Huidig wachtwoord</label>
-      <input type="password" class="form-control" name="currentPassword" value="">
+      <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
     </div>
 
     <div class="md-form">
       <label for="newPassword">Nieuw wachtwoord</label>
-      <input type="password" id="newPassword" class="form-control" name="newPassword" value="">
+      <input type="password" class="form-control" name="newPassword" id="newPassword" value="" required>
     </div>
 
     <div class="md-form">
       <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
-      <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" value="">
+      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="" required>
     </div>
 
     <button type="submit" name="tab2submit">Opslaan</button>

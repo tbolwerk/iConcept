@@ -33,22 +33,7 @@ function myTimer() {
 
 
 <!--Carousel Wrapper-->
-<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
-
-    <!--Controls-->
-    <div class="controls-top">
-        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
-        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
-    </div>
-    <!--/.Controls-->
-
-    <!--Indicators-->
-    <ol class="carousel-indicators">
-        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-        <li data-target="#multi-item-example" data-slide-to="1"></li>
-        <li data-target="#multi-item-example" data-slide-to="2"></li>
-    </ol>
-    <!--/.Indicators-->
+<div id="multi-item-example" class="carousel slide carousel-multi-item mt-5" data-ride="carousel">
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
@@ -56,39 +41,74 @@ function myTimer() {
         <!--First slide-->
         <div class="carousel-item active">
 
-            <div class="col-md-4">
-                <div class="card mb-2">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title">Card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a class="btn btn-primary">Button</a>
-                    </div>
+          <div class="col-md-4">
+              <div class="card auction-card mb-2">
+                <div class="view overlay">
+                  <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
                 </div>
+                <div class="card-body">
+                  <span class="small-font">20345322</span>
+                  <h4 class="card-title">Veiling voorbeeld</h4>
+                  <hr>
+                  <div class="card-text">
+                    <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                  </div>
+                  <hr />
+                  <ul class="list-unstyled list-inline">
+                    <li class="list-inline-item pr-2"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
+                    <li class="list-inline-item pr-2"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div class="col-md-4 clearfix d-none d-md-block">
-                <div class="card mb-2">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title">Card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a class="btn btn-primary">Button</a>
+                <div class="card auction-card mb-2">
+                  <div class="view overlay">
+                    <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                  </div>
+                  <div class="card-body">
+                    <span class="small-font">20345322</span>
+                    <h4 class="card-title">Veiling voorbeeld</h4>
+                    <hr>
+                    <div class="card-text">
+                      <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      </p>
                     </div>
+                    <hr />
+                    <ul class="list-unstyled list-inline">
+                      <li class="list-inline-item pr-2"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
+                      <li class="list-inline-item pr-2"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+                    </ul>
+                  </div>
                 </div>
-            </div>
+              </div>
 
-            <div class="col-md-4 clearfix d-none d-md-block">
-                <div class="card mb-2">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title">Card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a class="btn btn-primary">Button</a>
+              <div class='col-md-4 clearfix d-none d-md-block'>
+                  <div class='card auction-card mb-2'>
+                    <div class='view overlay'>
+                      <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
                     </div>
+                    <div class='card-body'>
+                      <span class='small-font'>20345322</span>
+                      <h4 class='card-title'>Veiling voorbeeld</h4>
+                      <hr>
+                      <div class='card-text'>
+                        <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                      </div>
+                      <hr />
+                      <ul class='list-unstyled list-inline'>
+                        <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;40,50</li>
+                        <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i>02:01:21</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-            </div>
-
         </div>
         <!--/.First slide-->
 
@@ -175,7 +195,7 @@ function myTimer() {
 
 </div>
 <!--/.Carousel Wrapper-->
-                        
+
 
 
 

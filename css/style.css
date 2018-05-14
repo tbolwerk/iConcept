@@ -329,7 +329,7 @@ input:focus:not([readonly]) {
     display: block;
     width: 95%;
 }
- select {
+ .register-select-form {
    border: none !important;
 background: transparent !important;
 width: 100% !important;

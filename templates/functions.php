@@ -119,9 +119,9 @@ function verification($getUsername,$getCode)
 	$codeValid = false;
 	}
 
-	$storedUsername = $resultaten[0];
-	$storedTime = $resultaten[1];
-	$storedCode = $resultaten[2];
+	$storedUsername = $results[0];
+	$storedTime = $results[1];
+	$storedCode = $results[2];
 
 	$deltaTime = time() - $storedTime;
 

@@ -63,7 +63,7 @@ while($question = $data->fetch()){
 }
 ?>
 
-<img class="" src="http://via.placeholder.com/800x150" style="width: 100%; height: 250px;">
+<img class="view index-header" src="http://via.placeholder.com/800x150" style="width: 100%; height: 250px;">
 
 <img class="" src="img/avatar/<?=$_SESSION['username']?>.png" style="border-radius: 50%; width: 300px; height: 300px; position: relative; top: -100px; left: 100px; float: left;">
 

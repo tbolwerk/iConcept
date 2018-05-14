@@ -160,7 +160,7 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
-                <select name="secretQuestion" class="">
+                <select name="secretQuestion" class="register-select-form">
                   <option value="kies" class="font-weight-light white-text disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>

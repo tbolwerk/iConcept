@@ -1,4 +1,3 @@
-<br><br><br><br>
 <?php
 $current_page='register_verification';
 require_once('templates/header.php');

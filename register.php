@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
   if($_POST['address2']!=""){
     $address2=$_POST['address2'];
   }
-  	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthdate'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
+  	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthday'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
 }
 ?>
 <!--Main Layout-->
@@ -67,19 +67,10 @@ if(isset($_POST['submit'])){
           <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthday" id="birthday">
-                <label class="font-weight-light white-text" for="birthday">Geboortedag</label>
+                <input type="date"  class="form-control white-text" name="birthday" id="birthday">
+                <label class="font-weight-light white-text" for="birthday"></label>
             </div>
-            <div class="md-form ml-3 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthmonth" id="birthmonth">
-                <label class="font-weight-light white-text" for="birthmonth">Geboortemaand</label>
-            </div>
-            <div class="md-form ml-3 mr-5">
-                <i class="fa fa-user prefix niagara"></i>
-                <input type="text"  class="form-control white-text" name="birthyear" id="birthyear">
-                <label class="font-weight-light white-text" for="birthyear">Geboortejaar</label>
-            </div>
+
           </div>
 
           <div class="d-flex flex-row">
@@ -161,7 +152,7 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
                 <select name="secretQuestion" class="register-select-form">
-                  <option value="kies" class="font-weight-light white-text disabled selected">Kies een geheime vraag...</option>
+                  <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 

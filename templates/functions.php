@@ -407,4 +407,56 @@ $error="";
 							$error.= "Invalid file try another Image";
 					}
 }
+
+
+function mailUser($username, $soort){
+	$email_address = $dbh->prepare("select email from Gebruiker where gebruikersnaam=?");
+	$email_addres->execute(array($username));
+
+	$to = $email_address;
+
+	switch($soort){
+	case 'registratie':
+		$subject = 'Registratie gelukt!';
+		$message = 'Uw registratie is gelukt'. $username .' !';
+	break;
+
+	case 'veilingaanmaken':
+		$subject = 'Veiling aangemaakt!';
+		$message = 'Beste '. $username .', Uw veiling is aangemaakt!';
+	break;
+
+	case 'overboden':
+		$subject = 'U bent overboden!';
+		$message = 'Beste '. $username .', U bent overboden!';
+	break;
+
+	case 'veilinggewonnen':
+		$veilinggew = $dbh->prepare("select titel from Voorwerp where koper=?");
+		$veilinggew->execute(array($username));
+
+		$to = $email_address;
+		$subject = 'U heeft de veiling gewonnen!';
+		$message = 'Beste '. $username .', U heeft veiling'. $veilinggew.'gewonnen!';
+	break;
+
+	case 'wachtwoordvergeten':
+
+	break;
+
+
+}
+
+	$headers = 'From: webmaster@iproject40.icasites.nl' . "\r\n" .
+	    'Reply-To: webmaster@iproject40.icasites.nl' . "\r\n" .
+	    'X-Mailer: PHP/' . phpversion();
+	
+	mail($to, $subject, $message, $headers);
+
+
+
+}
+
+
+
 ?>

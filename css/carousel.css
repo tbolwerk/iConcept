@@ -285,9 +285,9 @@
 }
 
 @media (min-width:768px) {
-    .carousel-multi-item .col-md-4 {
+    .carousel-multi-item .col-md-3 {
         float: left;
-        width: 33.333333%;
+        width: 25%;
         max-width: 100%
     }
 }

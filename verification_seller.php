@@ -1,3 +1,4 @@
+<br><br><br><br>
 <?php
 $current_page='register_verification';
 require_once('templates/header.php');
@@ -6,6 +7,10 @@ $username = $_SESSION['username'];
 
 function verificationSeller($username,$code)
 {
+	global $dbh;
+	global $errors;
+	$errors = array();
+
 	$codeValid = true;//codeValid is true until proven that it's not
 
 	try {//checks if code exists in database
@@ -25,7 +30,7 @@ function verificationSeller($username,$code)
 	}
 }
 
-if(isset($_POST['submit'])){
+if(isset($_POST['verify'])){
   verificationSeller($username, $_POST['code']);
 }
 
@@ -34,5 +39,5 @@ if(isset($_POST['submit'])){
 <form action="" method="post">
   <label>Verificatiecode</label>
 	<input type="text" name="code"><br>
-	<button type="submit" name="submit">Verifieer</button>
+	<button type="submit" name="verify">Verifieer</button>
 </form>

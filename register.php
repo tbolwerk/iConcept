@@ -43,14 +43,14 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="firstname" id=firstname>
+                <input type="text" class="form-control white-text" name="firstname" id=firstname required pattern="[A-z]+">
                 <label class="font-weight-light white-text" for="firstname">Voornaam</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="lastname" id="lastname">
+                <input type="text" class="form-control white-text" name="lastname" id="lastname" required pattern="[A-z]+">
                 <label class="font-weight-light white-text" for="lastname">Achternaam</label>
             </div>
           </div>
@@ -59,7 +59,7 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="username" id="username">
+                <input type="text" class="form-control white-text" name="username" id="username" required >
                 <label class="font-weight-light white-text" for="username">Gebruikersnaam</label>
             </div>
           </div>
@@ -67,7 +67,7 @@ if(isset($_POST['submit'])){
           <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="date"  class="form-control white-text" name="birthday" id="birthday">
+                <input type="date"  class="form-control white-text" name="birthday" id="birthday" required>
                 <label class="font-weight-light white-text" for="birthday"></label>
             </div>
 
@@ -77,14 +77,14 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password" id="password">
+                <input type="password" class="form-control white-text" name="password" id="password" required>
                 <label class="font-weight-light white-text" for="password">Wachtwoord</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password_check" id="password_check">
+                <input type="password" class="form-control white-text" name="password_check" id="password_check" required>
                 <label class="font-weight-light white-text" for="password_check">Herhaal wachtwoord</label>
             </div>
           </div>
@@ -93,14 +93,14 @@ if(isset($_POST['submit'])){
             <!-- Material input email -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-envelope prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email" id="email">
+                <input type="email" class="form-control white-text" name="email" id="email" required>
                 <label class="font-weight-light white-text" for="email">Emailadres</label>
             </div>
 
             <!-- Material input email -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-exclamation-triangle prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email_check" id="email_check">
+                <input type="email" class="form-control white-text" name="email_check" id="email_check" required>
                 <label class="font-weight-light white-text" for="email_check">Bevestig emailadres</label>
             </div>
           </div>
@@ -109,7 +109,7 @@ if(isset($_POST['submit'])){
             <!-- Material input password -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-home prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="address1" id="address1">
+                <input type="text" class="form-control white-text" name="address1" id="address1" required>
                 <label class="font-weight-light white-text" for="address1">Adres</label>
             </div>
           </div>
@@ -126,14 +126,14 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="zipcode" id="zipcode">
+                <input type="text" class="form-control white-text" name="zipcode" id="zipcode" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
                 <label class="font-weight-light white-text" for="zipcode">Postcode</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="city" id="city">
+                <input type="text" class="form-control white-text" name="city" id="city" required pattern="[A-z]+">
                 <label class="font-weight-light white-text" for="city">Stad</label>
             </div>
           </div>
@@ -142,7 +142,7 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="country" id="country">
+                <input type="text" class="form-control white-text" name="country" id="country" required pattern="[A-z]+">
                 <label class="font-weight-light white-text" for="country">Land</label>
             </div>
           </div>
@@ -151,8 +151,8 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
-                <select name="secretQuestion" class="register-select-form">
-                  <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
+                <select name="secretQuestion" id="secretQuestion" class="register-select-form" required>
+                  <option value="" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 
@@ -168,7 +168,7 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer">
+                <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer" required>
                 <label class="font-weight-light white-text" for="secretAnswer">Antwoord op de geheime vraag</label>
             </div>
           </div>
@@ -201,4 +201,32 @@ if(isset($error)){
 </main>
 <!--Main Layout-->
 <!-- Material form register -->
+<script>
+function passwordConfirmation() {
+  if (document.getElementById("password").value != document.getElementById("password_check").value) {
+    document.getElementById("password_check").setCustomValidity("Wachtwoorden komen niet overeen");
+  } else {
+    document.getElementById("password_check").setCustomValidity("");
+  }
+}
+
+function emailConfirmation() {
+  if (document.getElementById("email").value != document.getElementById("email_check").value) {
+    document.getElementById("email_check").setCustomValidity("Emailadressen komen niet overeen");
+  } else {
+    document.getElementById("email_check").setCustomValidity("");
+  }
+}
+
+function upperCaseF(a){
+    setTimeout(function(){
+        a.value = a.value.toUpperCase();
+    }, 1);
+}
+
+document.getElementById("password_check").onchange = passwordConfirmation;
+document.getElementById("password").onchange = passwordConfirmation;
+document.getElementById("email_check").onchange = emailConfirmation;
+document.getElementById("email").onchange = emailConfirmation;
+</script>
 <?php include 'templates/footer.php'; ?>

@@ -145,7 +145,7 @@ while($question = $data->fetch()){
         <div class="col-md-6">
           <div class="md-form">
             <label for="postalcode">Postcode</label>
-            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
           </div>
         </div>
         <div class="col-md-6">
@@ -311,7 +311,14 @@ function passwordConfirmation() {
   }
 }
 
+function upperCaseF(a){
+    setTimeout(function(){
+        a.value = a.value.toUpperCase();
+    }, 1);
+}
+
 document.getElementById("confirmPassword").onchange = passwordConfirmation;
+document.getElementById("newPassword").onchange = passwordConfirmation;
 </script>
 
 </div>

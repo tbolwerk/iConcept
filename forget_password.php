@@ -1,20 +1,54 @@
 <?php
 $current_page = 'login';
 require_once("templates/header.php");
+
 $txt="";
+$secret_question_options = null;
+try {
+
+    $data = $dbh->query("select * from Vraag");
+
+    while($question = $data->fetch()){
+        $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+      }
+
+} catch (PDOException $e) {
+    $error = $e;
+}
+
+
+
 if(isset($_POST['forget_password'])){
+// print_r($secret_question_options);
+
+
+  $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
+  $user_check->execute(array($_POST['forget_password'],$_POST['secretAnswer'],$_POST['secretQuestion']));
+
+
+
+
+if($statement = $user_check->fetch()){
+
 $new_password=random_password(8);
     $to = $_POST['forget_password'];
-
-$dbh->query("update Gebruiker set wachtwoord='$new_password' where email = '$to'");
-
+try{
+$update_password= $dbh->prepare("UPDATE Gebruiker SET wachtwoord=? WHERE email=?");
+$update_password->execute(array($new_password,$to));
+}catch(PDOException $e){
+  $error = $e;
+}
 
 $subject = "Reset Password EenmaalAndermaal";
 $txt = "Your new generated password : ".$new_password;
 $headers = "From: Admin@EenmaalAndermaal.com";
 
 // mail($to,$subject,$txt,$headers);
-// header("Location:login.php");
+  echo "Het nieuwe wachtwoord is verzonden naar ".$to;
+
+}else{
+  echo "Email of vraag en antwoord incorrect";
+}
 }
 
 ?>
@@ -36,12 +70,31 @@ $headers = "From: Admin@EenmaalAndermaal.com";
         <?=$txt?>
       </div>
 
+
+
 <form method="post" action="" >
   <div class="md-form">
+
     <i class="fa fa-envelope prefix niagara"></i>
     <input type="email" class="form-control white-text" name="forget_password">
     <label for="forget_password" class="font-weight-light" >Uw email</label>
+
+
+    <div class="md-form">
+        <i class="fa fa-user prefix niagara"></i>
+        <select name="secretQuestion" class="form-control">
+          <option value="kies" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
+          <?=$secret_question_options?>
+        </select>
+    </div>
+      <div class="md-form">
+        <input type="text" class="form-control" name="secretAnswer" id="secretAnswer">
+        <label for="secretAnswer" class"font-weight-light">Antwoord</label>
+      </div>
+
   </div>
+
+
   <div class="text-center py-1 mt-3">
     <button class="btn elegant" type="submit" name="submit">Wachtwoord opvragen</button>
   </div>

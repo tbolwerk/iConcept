@@ -83,20 +83,54 @@ if(isset($_POST['registerseller'])){
 
 
 
-<form action="" method="post">
-  <label>Controleoptie</label>
-  <select name="checkoption">
-    <option value="post">Code via post</option>
-    <option value="creditcard">Creditcard</option>
-  </select><br>
-  <label>Creditcardnummer</label>
-  <input type="text" name="creditcard" value="<?php if(isset($_POST['creditcard'])){echo $_POST['creditcard'];}?>"><br>
-  <?php if(isset($errors['creditcard'])){echo $errors['creditcard'];}?><br>
-  <label>Banknaam</label>
-  <input type="text" name="bank" value="<?php if(isset($_POST['bank'])){echo $_POST['bank'];}?>"><br>
-  <?php if(isset($errors['bank'])){echo $errors['bank'];}?><br>
-  <label>Rekeningnummer</label>
-  <input type="text" name="banknumber" value="<?php if(isset($_POST['banknumber'])){echo $_POST['banknumber'];}?>"><br>
-  <?php if(isset($errors['banknumber'])){echo $errors['banknumber'];}?><br>
-  <button type="submit" name="registerseller">Word verkoper</button>
+<form method="post" action="">
+
+	<div class="md-form">
+		<select name="checkoption" id="checkoption" class="form-control" required>
+			<option value="">Kies controleoptie...</option>
+			<option value="post">Code via post</option>
+			<option value="creditcard">Creditcard</option>
+		</select>
+	</div>
+
+	<div class="md-form" id="creditcardDiv" style="display: none;">
+		<label for="creditcard">Creditcardnummer</label>
+		<input type="text" class="form-control" name="creditcard" id="creditcard" value="">
+	</div>
+
+	<div class="md-form" id="bankDiv" style="display: none;">
+		<label for="bank">Banknaam</label>
+		<input type="text" class="form-control" name="bank" id="bank" value="">
+	</div>
+
+	<div class="md-form" id="banknumberDiv" style="display: none;">
+		<label for="banknumber">Rekeningnummer</label>
+		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
+	</div>
+
+	<button type="submit" name="registerseller">Word verkoper</button>
 </form>
+<script>
+function updateForm() {
+  if (document.getElementById("checkoption").value == "post") {
+    document.getElementById("bankDiv").style.display = "block";
+		document.getElementById("banknumberDiv").style.display = "block";
+		document.getElementById("bank").required = true;
+		document.getElementById("banknumber").required = true;
+  } else {
+		document.getElementById("bankDiv").style.display = "none";
+		document.getElementById("banknumberDiv").style.display = "none";
+		document.getElementById("bank").required = false;
+		document.getElementById("banknumber").required = false;
+	}
+	if (document.getElementById("checkoption").value == "creditcard") {
+    document.getElementById("creditcardDiv").style.display = "block";
+		document.getElementById("creditcard").required = true;
+  } else {
+		document.getElementById("creditcardDiv").style.display = "none";
+		document.getElementById("creditcard").required = false;
+	}
+}
+
+document.getElementById("checkoption").onchange = updateForm;
+</script>

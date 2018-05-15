@@ -90,4 +90,4 @@ function myTimer() {
 
 </main>
 <!--Main Layout-->
-<?php include 'templates/footer.php';?>
+<?php include 'templates/footer.php'; ?>

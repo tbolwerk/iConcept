@@ -143,9 +143,15 @@ while($question = $data->fetch()){
       <legend>Contactgegevens</legend>
       <div class="form-row">
         <div class="col-md-6">
+<<<<<<< HEAD
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+            <label style="black-text" for="postalcode">Postcode</label>
+=======
           <div class="md-form">
             <label for="postalcode">Postcode</label>
             <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+>>>>>>> 3d82e79ce0c6a6b5a0691137fb2bdde745f8da03
           </div>
         </div>
         <div class="col-md-6">

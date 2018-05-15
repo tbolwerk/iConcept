@@ -68,6 +68,17 @@ switch($current_page){
     <link rel="stylesheet" href="css/component.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
+<!-- Rubrieken overlay styling -->
+<link rel="stylesheet" href="css/rubrieken_overlay.css">
+
+<?php if ($current_page == 'userpage') {
+  echo "<!-- userpage styling -->
+  <link rel='stylesheet' href='css/userpage.css'>";
+} ?>
+    <!-- Including jQuery is required. -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!-- Including our scripting file. -->
+    <script type="text/javascript" src="livesearch/livesearch.js"></script>
 
 
 </head>

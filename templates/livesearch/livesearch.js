@@ -46,7 +46,7 @@ $(document).ready(function() {
 
                //Data will be sent to "ajax.php".
 
-               url: "ajax.php",
+               url: "livesearch/ajax.php",
 
                //Data, that will be sent to "ajax.php".
 

@@ -1,5 +1,5 @@
 <!--Carousel Wrapper-->
-<div id="multi-item-example" class="carousel slide carousel-multi-item mt-5" data-ride="carousel">
+<div id="multi-item-carousel" class="carousel slide carousel-multi-item mt-5" data-ride="carousel" data-interval="2000">
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">

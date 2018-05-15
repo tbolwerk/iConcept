@@ -6,10 +6,6 @@
   include 'templates/footer_links.php';
 }?>
 <!--/.Footer-->
-<!-- Including jQuery is required. -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<!-- Including our scripting file. -->
-<script type="text/javascript" src="livesearch/livesearch.js"></script>
 
     <!-- SCRIPTS -->
     <!-- JQuery -->
@@ -26,7 +22,6 @@
     <script type="text/javascript" src="js/category_overlay.js"></script>
     <script type="text/javascript" src="js/search_overlay.js"></script>
     <script type="text/javascript">
-
 
     $('.carousel[data-type="multi"] .item').each(function() {
 	var next = $(this).next();

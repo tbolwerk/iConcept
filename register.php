@@ -126,7 +126,7 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="zipcode" id="zipcode" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+                <input type="text" class="form-control white-text" name="zipcode" id="zipcode" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
                 <label class="font-weight-light white-text" for="zipcode">Postcode</label>
             </div>
 
@@ -218,6 +218,11 @@ function emailConfirmation() {
   }
 }
 
+function upperCaseF(a){
+    setTimeout(function(){
+        a.value = a.value.toUpperCase();
+    }, 1);
+}
 
 document.getElementById("password_check").onchange = passwordConfirmation;
 document.getElementById("password").onchange = passwordConfirmation;

@@ -32,7 +32,7 @@ function myTimer() {
 </div>
 
  <!-- Include file for the carousel on the index page -->
-<? include 'templates/carousel.php'; ?>
+<?php include "templates/carousel.php";?>
 
 
 
@@ -75,4 +75,4 @@ function myTimer() {
 
 </main>
 <!--Main Layout-->
-<?php include('templates/footer.php'); ?>
+<?php include 'templates/footer.php';?>

@@ -276,10 +276,11 @@ function login($username_input,$password)
         } catch (PDOException $e) {
             $error = $e;
         }
+
+
         if (!($username_result = $username_check->fetch(PDO::FETCH_ASSOC))) {
              $error['username'] = "gebruikersnaam klopt niet";
         }
-
 				try{
 					$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
 					$password_check->execute(array($username,$password,$email,$password));
@@ -293,7 +294,8 @@ function login($username_input,$password)
             $_SESSION['username'] = $username_result['gebruikersnaam'];
 						header('Location: index.php');
         }
-    }
+			}
+
 }
 
 function random_password( $length = 8 ) {

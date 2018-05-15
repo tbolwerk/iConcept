@@ -86,7 +86,7 @@ if(isset($_POST['registerseller'])){
 <form method="post" action="">
 
 	<div class="md-form">
-		<select name="checkoption" id="checkoption" class="form-control dropdown-userpage" required>
+		<select name="checkoption" id="checkoption" class="form-control" required>
 			<option value="">Kies controleoptie...</option>
 			<option value="post">Code via post</option>
 			<option value="creditcard">Creditcard</option>
@@ -108,9 +108,7 @@ if(isset($_POST['registerseller'])){
 		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
 	</div>
 
-	<div class="py-1 mt-3 text-center">
-  	<button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
-	</div>
+	<button type="submit" name="registerseller">Word verkoper</button>
 </form>
 <script>
 function updateForm() {

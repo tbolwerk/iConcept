@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("functions.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/functions.php');
 displayColumn();
 
 // require_once('functions.php');
@@ -68,18 +68,14 @@ switch($current_page){
     <link rel="stylesheet" href="css/component.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
-    <!-- Including jQuery is required. -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <!-- Including our scripting file. -->
-    <script type="text/javascript" src="livesearch/livesearch.js"></script>
 
 
 </head>
 <?php
 if ($current_page == 'login' || $current_page == 'register') {
-  include 'templates/logo_nav.php';
+  include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/logo_nav.php');
 } else {
-  include 'templates/nav.php';
+  include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/nav.php');
 }
 
 

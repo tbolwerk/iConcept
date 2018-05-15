@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("functions.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/functions.php');
 displayColumn();
 
 // require_once('functions.php');
@@ -68,7 +68,7 @@ switch($current_page){
     <link rel="stylesheet" href="css/component.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
-<<<<<<< HEAD
+
     <!-- Rubrieken overlay styling -->
     <link rel="stylesheet" href="css/rubrieken_overlay.css">
 
@@ -76,20 +76,15 @@ switch($current_page){
       echo "<!-- userpage styling -->
       <link rel='stylesheet' href='css/userpage.css'>";
     } ?>
-=======
-    <!-- Including jQuery is required. -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <!-- Including our scripting file. -->
-    <script type="text/javascript" src="livesearch/livesearch.js"></script>
->>>>>>> 38a6a91649b925c7700271ca5fd2693940cd43df
+
 
 
 </head>
 <?php
 if ($current_page == 'login' || $current_page == 'register') {
-  include 'templates/logo_nav.php';
+  include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/logo_nav.php');
 } else {
-  include 'templates/nav.php';
+  include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/nav.php');
 }
 
 

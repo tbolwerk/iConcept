@@ -1,6 +1,6 @@
 <?php require_once("functions.php"); ?>
 <?php
-
+$test = false;
 $statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
 $rubrieken="";
 while($row = $statement->fetch()){
@@ -53,6 +53,8 @@ while($row = $statement->fetch()){
             </li>
           </ul>
         </div>
+      <!-- start of overlay"-->
+
         <div class="nav-search" style="flex:1">
           <!-- <form class="my-2 my-lg-0 ml-auto">
             <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken">
@@ -62,7 +64,9 @@ while($row = $statement->fetch()){
     					<input class="search_overlay-input niagara" id="search" type="search" placeholder="Zoeken..."/>
     					<button class="search_overlay-submit" type="submit">Search</button>
     				</form>
+
     				<div class="search_overlay-content">
+<?php if($test==true){?>
     					<div class="dummy-column" style="">
     						<h2>Rubrieken</h2>
     						<div class="search-scroll">
@@ -82,13 +86,14 @@ while($row = $statement->fetch()){
 <?=$veilingen?>
     					</div>
     				</div>
-
+<?php }else{ echo '<div id="display" style="z-index: 999999999999"></div>';}?>
     				</div><!-- /morphsearch-content -->
     				<span class="search_overlay-close"></span>
     			</div><!-- /morphsearch -->
     			<div class="overlay"></div>
 
         </div>
+        <!--end of search overlay-->
 
         <div class="vl d-none d-md-block"></div>
 
@@ -98,9 +103,9 @@ while($row = $statement->fetch()){
         <ul class="navbar-nav ml-auto nav-flex-icons">
           <?php
           if (isset($_SESSION['username'])) {
-            include 'templates/logged_in.php';
+            include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/logged_in.php');
           } else {
-            include 'templates/not_logged_in.php';
+            include($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/not_logged_in.php');
           }
            ?>
         </ul>

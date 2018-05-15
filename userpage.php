@@ -180,9 +180,15 @@ while($question = $data->fetch()){
     </div>
       <div class="form-row">
         <div class="col-md-6">
+<<<<<<< HEAD
           <div class="md-form form-group">
             <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
             <label style="black-text" for="postalcode">Postcode</label>
+=======
+          <div class="md-form">
+            <label for="postalcode">Postcode</label>
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+>>>>>>> 38a6a91649b925c7700271ca5fd2693940cd43df
           </div>
         </div>
         <div class="col-md-6">
@@ -383,7 +389,14 @@ function passwordConfirmation() {
   }
 }
 
+function upperCaseF(a){
+    setTimeout(function(){
+        a.value = a.value.toUpperCase();
+    }, 1);
+}
+
 document.getElementById("confirmPassword").onchange = passwordConfirmation;
+document.getElementById("newPassword").onchange = passwordConfirmation;
 </script>
 
 </div>

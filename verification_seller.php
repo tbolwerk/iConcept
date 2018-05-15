@@ -10,22 +10,25 @@ function verificationSeller($username,$code)
 	global $errors;
 	$errors = array();
 
-	$codeValid = true;//codeValid is true until proven that it's not
-
 	try {//checks if code exists in database
-	$statement = $dbh->prepare("select * from VerificatieVerkoper where gebruikersnaam = ? AND code = ?");
-	$statement->execute(array($username,$code));
-	$results = $statement->fetch();
+		$statement = $dbh->prepare("SELECT code FROM VerificatieVerkoper WHERE gebruikersnaam = ?");
+		$statement->execute(array($username));
+		$results = $statement->fetch();
 	} catch (PDOException $e) {
-	$error= "Code invalid";
-	$codeValid = false;
+		$error = $e;
+		echo $error;
 	}
-
-	if ($codeValid) {
-	$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
-	$statement->execute(array($username));
-	$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
-	$statement->execute(array($username));
+	// print_r($results['gebruikersnaam']);
+	if($results[0] == $code){
+		try {
+			$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
+			$statement->execute(array($username));
+			$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
+			$statement->execute(array($username));
+		} catch (PDOException $e) {
+			$error = $e;
+			echo $error;
+		}
 	}
 }
 
@@ -35,8 +38,18 @@ if(isset($_POST['verify'])){
 
 ?>
 
-<form action="" method="post">
+<!-- <form action="" method="post">
   <label>Verificatiecode</label>
 	<input type="text" name="code"><br>
 	<button type="submit" name="verify">Verifieer</button>
+</form> -->
+
+<form method="post" action="">
+
+	<div class="md-form">
+		<label for="code">Verificatiecode</label>
+		<input type="text" class="form-control" name="code" id="code" value="" required>
+	</div>
+
+	<button type="submit" name="verify">Word verkoper</button>
 </form>

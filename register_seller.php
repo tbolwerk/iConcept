@@ -83,52 +83,56 @@ if(isset($_POST['registerseller'])){
 
 
 
-<form action="" method="post">
-	<div class="userpage-form-header">
-		<h1>Verkoper worden</h1>
-	</div>
-	<div class="form-row">
-		<div class="col-md-12">
-		<div class="form-group">
-			<label style="black-text" for="checkoption">Selecteer een controleoptie</label>
-  <select name="checkoption" class="form-control dropdown-userpage">
-    <option value="post">Code via post</option>
-    <option value="creditcard">Creditcard</option>
-  </select>
-</div>
-</div>
-</div>
-	<div class="form-row">
-		<div class="col-md-12">
-			<div class="md-form">
-	  		<label class="black-text" for="creditcard">Creditcardnummer</label>
-	  		<input type="text" class="form-control" name="creditcard" value="<?php if(isset($_POST['creditcard'])){echo $_POST['creditcard'];}?>">
-				<?php if(isset($errors['creditcard'])){echo $errors['creditcard'];}?>
-			</div>
-		</div>
-	</div>
-	<div class="form-row">
-		<div class="col-md-12">
-			<div class="md-form">
-				<label style="black-text" for="bank">Banknaam</label>
-			  <input type="text" class="form-control" name="bank" value="<?php if(isset($_POST['bank'])){echo $_POST['bank'];}?>">
-			  <?php if(isset($errors['bank'])){echo $errors['bank'];}?>
-			</div>
-		</div>
-	</div>
-	<div class="form-row">
-		<div class="col-md-12">
-			<div class="md-form">
-				<label style="black-text" for="banknumber">Rekeningnummer</label>
-			  <input type="text" class="form-control" name="banknumber" value="<?php if(isset($_POST['banknumber'])){echo $_POST['banknumber'];}?>">
-			  <?php if(isset($errors['banknumber'])){echo $errors['banknumber'];}?>
-			</div>
-		</div>
+<form method="post" action="">
+
+	<div class="md-form">
+		<select name="checkoption" id="checkoption" class="form-control dropdown-userpage" required>
+			<option value="">Kies controleoptie...</option>
+			<option value="post">Code via post</option>
+			<option value="creditcard">Creditcard</option>
+		</select>
 	</div>
 
+	<div class="md-form" id="creditcardDiv" style="display: none;">
+		<label for="creditcard">Creditcardnummer</label>
+		<input type="text" class="form-control" name="creditcard" id="creditcard" value="">
+	</div>
 
+	<div class="md-form" id="bankDiv" style="display: none;">
+		<label for="bank">Banknaam</label>
+		<input type="text" class="form-control" name="bank" id="bank" value="">
+	</div>
+
+	<div class="md-form" id="banknumberDiv" style="display: none;">
+		<label for="banknumber">Rekeningnummer</label>
+		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
+	</div>
 
 	<div class="py-1 mt-3 text-center">
-  <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
-</div>
+  	<button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+	</div>
 </form>
+<script>
+function updateForm() {
+  if (document.getElementById("checkoption").value == "post") {
+    document.getElementById("bankDiv").style.display = "block";
+		document.getElementById("banknumberDiv").style.display = "block";
+		document.getElementById("bank").required = true;
+		document.getElementById("banknumber").required = true;
+  } else {
+		document.getElementById("bankDiv").style.display = "none";
+		document.getElementById("banknumberDiv").style.display = "none";
+		document.getElementById("bank").required = false;
+		document.getElementById("banknumber").required = false;
+	}
+	if (document.getElementById("checkoption").value == "creditcard") {
+    document.getElementById("creditcardDiv").style.display = "block";
+		document.getElementById("creditcard").required = true;
+  } else {
+		document.getElementById("creditcardDiv").style.display = "none";
+		document.getElementById("creditcard").required = false;
+	}
+}
+
+document.getElementById("checkoption").onchange = updateForm;
+</script>

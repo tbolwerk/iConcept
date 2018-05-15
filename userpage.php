@@ -235,8 +235,7 @@ HTML;
 
 <div class="" id="tab3" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
   <?php
-  // vul dit in
-  // include(bestand.php);
+  global $username;
   $username = $_SESSION['username'];
   try {//checks if user needs verification
   	$statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
@@ -246,7 +245,11 @@ HTML;
     $error=$e;
     echo $error;
 	}
-  if(empty($results[0])){
+
+  if($_SESSION['seller']){
+    echo "U bent al verkoper.";
+  }
+  else if(empty($results[0])){
     include('register_seller.php');
   }
   else {

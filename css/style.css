@@ -11,6 +11,10 @@ p {
   margin: 5px;
 }
 
+.rgba-niagara-strong {
+  background-color: #4584a4b3 !important;
+}
+
 .view-main-header {
   background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
   background-repeat: no-repeat;
@@ -84,7 +88,7 @@ p {
  */
 
 .index-header {
-  height: 300px;
+  height: 350px;
   background: #4584A4;
   margin-top: 75px;
 }
@@ -97,7 +101,7 @@ p {
 
 .index-banner {
   text-align: center;
-  padding-top: 35px;
+  padding-top: 65px;
 }
 .index-banner h1 {
   font-weight: bold;
@@ -114,97 +118,7 @@ p {
 }
 
 
-/* Carousel styling */
-
-.col-centered {
-    float: none;
-    margin: 0 auto;
-}
-
-.carousel-control {
-    width: 8%;
-    width: 0px;
-}
-.carousel-control.left,
-.carousel-control.right {
-    margin-right: 40px;
-    margin-left: 32px;
-    background-image: none;
-    opacity: 1;
-}
-.carousel-control > a > span {
-    color: white;
-	  font-size: 29px !important;
-}
-
-.carousel-col {
-    position: relative;
-    min-height: 1px;
-    padding: 5px;
-    float: left;
- }
-
- .active > div { display:none; }
- .active > div:first-child { display:block; }
-
-/*xs*/
-@media (max-width: 767px) {
-  .carousel-inner .active.left { left: -50%; }
-  .carousel-inner .active.right { left: 50%; }
-	.carousel-inner .next        { left:  50%; }
-	.carousel-inner .prev		     { left: -50%; }
-  .carousel-col                { width: 50%; }
-	.active > div:first-child + div { display:block; }
-}
-
-/*sm*/
-@media (min-width: 768px) and (max-width: 991px) {
-  .carousel-inner .active.left { left: -50%; }
-  .carousel-inner .active.right { left: 50%; }
-	.carousel-inner .next        { left:  50%; }
-	.carousel-inner .prev		     { left: -50%; }
-  .carousel-col                { width: 50%; }
-	.active > div:first-child + div { display:block; }
-}
-
-/*md*/
-@media (min-width: 992px) and (max-width: 1199px) {
-  .carousel-inner .active.left { left: -33%; }
-  .carousel-inner .active.right { left: 33%; }
-	.carousel-inner .next        { left:  33%; }
-	.carousel-inner .prev		     { left: -33%; }
-  .carousel-col                { width: 33%; }
-	.active > div:first-child + div { display:block; }
-  .active > div:first-child + div + div { display:block; }
-}
-
-/*lg*/
-@media (min-width: 1200px) {
-  .carousel-inner .active.left { left: -25%; }
-  .carousel-inner .active.right{ left:  25%; }
-	.carousel-inner .next        { left:  25%; }
-	.carousel-inner .prev		     { left: -25%; }
-  .carousel-col                { width: 25%; }
-	.active > div:first-child + div { display:block; }
-  .active > div:first-child + div + div { display:block; }
-	.active > div:first-child + div + div + div { display:block; }
-}
-
-.block {
-	width: 306px;
-	height: 230px;
-}
-
-.red {background: red;}
-
-.blue {background: blue;}
-
-.green {background: green;}
-
-.yellow {background: yellow;}
-
-
-
+/
 
 .veiling-bieden a:hover {
   color: #FFFFFF;
@@ -336,65 +250,6 @@ width: 100% !important;
 color: white !important;
  }
 
-
-
-
-/* The Overlay (background) */
-.overlay_rubrieken {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */
-    height: 0;
-    width: 100%;
-    position: fixed; /* Stay in place */
-    z-index: 99999; /* Sit on top */
-    left: 0;
-    top: 0;
-    background-color: #4584A4; /* Black fallback color */
-    background-color: #4584A4EE; /* Black w/opacity */
-    overflow-y: hidden; /* Disable horizontal scroll */
-    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
-}
-
-/* Position the content inside the overlay */
-.overlay-content {
-    position: relative;
-    top: 25%; /* 25% from the top */
-    width: 100%; /* 100% width */
-    text-align: center; /* Centered text/links */
-    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
-}
-
-/* The navigation links inside the overlay */
-.overlay_rubrieken a {
-    padding: 8px;
-    text-decoration: none;
-    font-size: 36px;
-    color: #FFFFFF;
-    font-weight: bold;
-    display: block; /* Display block instead of inline */
-    transition: 0.3s; /* Transition effects on hover (color) */
-}
-
-/* When you mouse over the navigation links, change their color */
-.overlay_rubrieken a:hover, .overlay a:focus {
-    color: #f1f1f1;
-}
-
-/* Position the close button (top right corner) */
-.overlay_rubrieken .closebtn {
-    position: absolute;
-    top: 20px;
-    right: 45px;
-    font-size: 60px;
-}
-
-/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
-@media screen and (max-height: 450px) {
-    .overlay_rubrieken a {font-size: 20px}
-    .overlay_rubrieken .closebtn {
-        font-size: 40px;
-        top: 15px;
-        right: 35px;
-    }
 
 .project-team {
   flex-direction: row;

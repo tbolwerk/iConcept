@@ -84,19 +84,51 @@ if(isset($_POST['registerseller'])){
 
 
 <form action="" method="post">
-  <label>Controleoptie</label>
-  <select name="checkoption">
+	<div class="userpage-form-header">
+		<h1>Verkoper worden</h1>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+		<div class="form-group">
+			<label style="black-text" for="checkoption">Selecteer een controleoptie</label>
+  <select name="checkoption" class="form-control dropdown-userpage">
     <option value="post">Code via post</option>
     <option value="creditcard">Creditcard</option>
-  </select><br>
-  <label>Creditcardnummer</label>
-  <input type="text" name="creditcard" value="<?php if(isset($_POST['creditcard'])){echo $_POST['creditcard'];}?>"><br>
-  <?php if(isset($errors['creditcard'])){echo $errors['creditcard'];}?><br>
-  <label>Banknaam</label>
-  <input type="text" name="bank" value="<?php if(isset($_POST['bank'])){echo $_POST['bank'];}?>"><br>
-  <?php if(isset($errors['bank'])){echo $errors['bank'];}?><br>
-  <label>Rekeningnummer</label>
-  <input type="text" name="banknumber" value="<?php if(isset($_POST['banknumber'])){echo $_POST['banknumber'];}?>"><br>
-  <?php if(isset($errors['banknumber'])){echo $errors['banknumber'];}?><br>
-  <button type="submit" name="registerseller">Word verkoper</button>
+  </select>
+</div>
+</div>
+</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<div class="md-form">
+	  		<label class="black-text" for="creditcard">Creditcardnummer</label>
+	  		<input type="text" class="form-control" name="creditcard" value="<?php if(isset($_POST['creditcard'])){echo $_POST['creditcard'];}?>">
+				<?php if(isset($errors['creditcard'])){echo $errors['creditcard'];}?>
+			</div>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<div class="md-form">
+				<label style="black-text" for="bank">Banknaam</label>
+			  <input type="text" class="form-control" name="bank" value="<?php if(isset($_POST['bank'])){echo $_POST['bank'];}?>">
+			  <?php if(isset($errors['bank'])){echo $errors['bank'];}?>
+			</div>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<div class="md-form">
+				<label style="black-text" for="banknumber">Rekeningnummer</label>
+			  <input type="text" class="form-control" name="banknumber" value="<?php if(isset($_POST['banknumber'])){echo $_POST['banknumber'];}?>">
+			  <?php if(isset($errors['banknumber'])){echo $errors['banknumber'];}?>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="py-1 mt-3 text-center">
+  <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+</div>
 </form>

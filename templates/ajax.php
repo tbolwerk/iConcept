@@ -5,9 +5,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/functions.php');
 
 $return = "";
   echo "<ul>";
+  $rubrieken="";
+  $subrubrieken="";
+  $veilingen="";
+  if(isset($_POST['search'])){
 $livesearch = $_POST['search'];
         livesearch($livesearch);
-
+}
 $return.='
         <div class="dummy-column" style="">
           <h2>Rubrieken</h2>

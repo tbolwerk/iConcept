@@ -15,5 +15,5 @@
       </li>
       <li class='nav-item avatar'>
         <span class='navbar-text white-text' style='margin-top: 7px;'><?= $_SESSION['username'];?></span>
-        <img style='border-radius: 50%; margin-left: 10px;' src='img/avatar/<?=$_SESSION['username']?>.png' height='50' />
+        <img style='border-radius: 50%; margin-left: 10px;' src='img/avatar/<?=$_SESSION['username']?>.png' height='50' width='50' />
       </li>

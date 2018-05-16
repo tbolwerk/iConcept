@@ -1,126 +1,44 @@
+<br><br><br><br>
 <?php
-
 $current_page='new_auction';
 require_once('templates/header.php');
 
+$errors;
+$errors = array();
 
-function reArrayFiles(&$file_post) {
 
-    $file_ary = array();
-    $file_count = count($file_post['name']);
-    $file_keys = array_keys($file_post);
 
-    for ($i=0; $i<$file_count; $i++) {
-        foreach ($file_keys as $key) {
-            $file_ary[$i][$key] = $file_post[$key][$i];
-        }
-    }
+function checkPicture($picture, $id, $i){
+  global $errors;
 
-    return $file_ary;
+  $pictures = array();
+  $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+  $tmp_extension = explode(".", $picture["name"]);
+  $extension = end($tmp_extension);
+  $filename = $id . "_" . $i . "." . $extension;
+  if (
+      !(
+         ($picture["type"] == "image/gif")
+      || ($picture["type"] == "image/jpeg")
+      || ($picture["type"] == "image/png")
+      || ($picture["type"] == "image/pjpeg")
+      )
+      || ($picture["size"] > 3000000)
+      || !in_array($extension, $allowedExts)
+      || $picture["error"] > 0)
+      {
+        $errors['upload'] = 'Afbeeldingen moeten een jpg of png van maximaal 3MB zijn.';
+      }
+      else {
+        return $filename;
+      }
 }
 
-
-
-
-function addPicture2($picture,$file_name){
-	// $file = array();
-	// foreach ($picture as $key1 => $value1) {
-	// 	foreach ($value1 as $key2 => $value2) {
-	// 	$file[$key2][$key1] = $value2;
-	// }
-	// }
-global $error;
-global $dbh;
-
-$error="";
-//in production
-$file = $picture;
-$error="";
-//in production
-	 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
-				$tmp_extension = explode(".", $file["name"]);
-				$extension = end($tmp_extension);
-				if (
-						(
-							 ($file["type"] == "image/gif")
-						|| ($file["type"] == "image/jpeg")
-						|| ($file["type"] == "image/png")
-						|| ($file["type"] == "image/pjpeg")
-						)
-						&& ($file["size"] < 2000000)
-						&& in_array($extension, $allowedExts))
-					{
-				 if ($file["error"] > 0)
-								{
-										$error.= "Return Code: " . $file["error"] . "<br />";
-								} else {
-										$error.= "Upload: " . $file["name"] . "<br />";
-										$error.= "Type: " . $file["type"] . "<br />";
-										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
-										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
-										move_uploaded_file($file["tmp_name"],
-										"upload/" . $file_name . "." . $extension);
-										$error.= "Stored in: " . "upload/" . $file_name . "." . $extension;
-								}
-					}    else {
-
-						$error.= $file["type"]."<br />";
-							$error.= "Invalid file try another Image";
-					}
-					return $extension;
-
-}
-
-
-function new_auction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method,$picture)
-{
+function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method,$picture){
   global $dbh;
   global $errors;
-  $errors = array();
 
-
-if(empty($title))//checks if title is not empty
-{
-  $errors['title'] = "Dit is een verplicht veld.";
-}
-if(empty($description))//checks if description is not empty
-{
-  $errors['description'] = "Dit is een verplicht veld.";
-}
-if(empty($startprice))//checks if startprice is not empty
-{
-  $errors['startprice'] = "Dit is een verplicht veld.";
-}
-if(empty($place))//checks if place is not empty
-{
-  $errors['place'] = "Dit is een verplicht veld.";
-}
-if(empty($country))//checks if country is not empty
-{
-  $errors['country'] = "Dit is een verplicht veld.";
-}
-
-$pictures = array();
-$num_pictures = count($picture['name']);
-$picture_keys = array_keys($picture);
-
-for ($i=0; $i<$num_pictures; $i++) {
-		foreach ($picture_keys as $key) {
-				$pictures[$i][$key] = $picture[$key][$i];
-		}
-}
-
-print_r($pictures);
-for ($i = 0; $i<$num_pictures; $i++) {
-  echo $pictures[$i]['name'];
-}
-echo $pictures[1]['size'];
-// echo $file_ary[0]['name'];
-// print_r($picture);
-// echo $picture["type"][1];
-
-if(count($errors) == 0)//checks if there are errors
-{
+  $seller = $_SESSION['username'];
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');
   $end_date = date('Y-m-d', strtotime($current_date. ' + ' . $duration . 'days'));
@@ -130,77 +48,77 @@ if(count($errors) == 0)//checks if there are errors
     $objectdata->execute();
     $lastid = $objectdata->fetch();
     $id = $lastid[0] + 1;
-
   } catch (PDOException $e) {
-    $error=$e;
-    echo $error;
+    $errors['db']=$e;
+    echo $errors['db'];
   }
 
+  $pictures = array();
+  $picture_keys = array_keys($picture);
+  for ($i = 0; $i < 4; $i++) {
+  	foreach ($picture_keys as $key) {
+  		$pictures[$i][$key] = $picture[$key][$i];
+    }
+  }
 
+  $num_pictures = 0;
+  for ($i = 0; $i < 4; $i++){
+    if(!empty($pictures[$i]['name'])){
+      $num_pictures++;
+    }
+  }
 
-  $seller = "janbeenham";
-  // echo ($current_date);
-  // echo ($end_date);
-  // echo ($current_time);
-  echo ($id);
-  echo ($picture['name']);
+  for($i = 0; $i < $num_pictures; $i++){
+    if(empty($pictures[$i]['name'])){
+      $pictures[$i] = $pictures[$i+1];
+      $pictures[$i+1] = null;
+      $i--;
+    }
+    else {
+      $filenames[$i] = checkPicture($pictures[$i],$id,$i);
+    }
+  }
 
+  if(count($errors) == 0){
     try {
-
       $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
-
-Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
     } catch (PDOException $e) {
       $error=$e;
       echo $error;
     }
-
-
-    for ($i = 0; $i<$num_pictures; $i++) {
-      echo $pictures[$i]['name'];
+    for($i = 0; $i < $num_pictures; $i++){
+      move_uploaded_file($pictures[$i]["tmp_name"],
+      "upload/" . $filenames[$i]);
       try {
-        $filename = $id . "_" . $i . addPicture2($pictures[$i],$id);
         $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
-        $data->execute(array($id, $filename));
+        $data->execute(array($id, $filenames[$i]));
       } catch (PDOException $e) {
-        $error=$e;
-        echo $error;
+          $error = $e;
+          echo $error;
       }
     }
-    // foreach ($pictures as $picture) {
-    //   echo $picture['name'];
-    //   try {
-    //     $filename = addPicture($picture,$id) . "_" .
-    //     $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
-    //     $data->execute(array($id, ));
-    //   } catch (PDOException $e) {
-    //     $error=$e;
-    //     echo $error;
-    //   }
-    // }
-
-
+  }
 }
-}
-
 
 
 
 if(isset($_POST['submit'])){
-  new_auction($_POST['title'],$_POST['description'],$_POST['startprice'],$_POST['duration'],$_POST['pay_method'],$_POST['pay_instructions'],$_POST['place'],$_POST['country'],$_POST['shipping_costs'],$_POST['shipping_instructions'],$_FILES['picture']);
+  newAuction($_POST['title'],$_POST['description'],$_POST['startprice'],$_POST['duration'],$_POST['pay_method'],$_POST['pay_instructions'],$_POST['place'],$_POST['country'],$_POST['shipping_costs'],$_POST['shipping_instructions'],$_FILES['picture']);
+  if(isset($errors['upload'])){
+    echo $errors['upload'];
+  }
 }
+
 ?>
-<br><br><br><br>
 <form action="" method="post" enctype="multipart/form-data">
   <label>Titel</label>
-  <input type="text" name="title" value="<?php if(isset($_POST['title'])){echo $_POST['title'];}?>"><br>
-  <?php if(isset($errors['title'])){echo $errors['title'];}?><br>
+  <input type="text" name="title" required><br>
   <label>Beschrijving</label>
-  <textarea name="description" value=""><?php if(isset($_POST['description'])){echo $_POST['description'];}?></textarea><br>
-  <?php if(isset($errors['description'])){echo $errors['description'];}?><br>
+  <textarea name="description" required></textarea><br>
   <label>Startprijs</label>
-  <input type="text" name="startprice" value="<?php if(isset($_POST['startprice'])){echo $_POST['startprice'];}?>"><br>
+  <input type="number" name="startprice" required><br>
   <label>Looptijd</label>
   <select name="duration">
     <option value="1">1 dagen</option>
@@ -216,17 +134,38 @@ if(isset($_POST['submit'])){
   <label>Betalingsinstructies</label>
   <input type="text" name="pay_instructions"><br>
   <label>Plaats</label>
-  <input type="text" name="place"><br>
+  <input type="text" name="place" required><br>
   <label>Land</label>
-  <input type="text" name="country"><br>
+  <input type="text" name="country" required><br>
   <label>Verzendkosten</label>
-  <input type="text" name="shipping_costs"><br>
+  <input type="number" name="shipping_costs"><br>
   <label>Verzendinstructies</label>
   <input type="text" name="shipping_instructions"><br>
   <label>Afbeeldingen</label><br>
-  <input name="picture[]" type="file"><br>
-	<input name="picture[]" type="file"><br>
-	<input name="picture[]" type="file"><br>
-	<input name="picture[]" type="file"><br>
+  <input name="picture[]" id="picture1" type="file"><br>
+	<input name="picture[]" id="picture2" type="file" style="display: none;">
+	<input name="picture[]" id="picture3" type="file" style="display: none;">
+	<input name="picture[]" id="picture4" type="file" style="display: none;">
   <button type="submit" name="submit">Plaats veiling</button>
 </form>
+<script>
+function adduploadbox1(){
+  if(document.getElementById("picture1").value != "") {
+     document.getElementById("picture2").style.display = "block";
+  }
+}
+function adduploadbox2(){
+  if(document.getElementById("picture2").value != "") {
+     document.getElementById("picture3").style.display = "block";
+  }
+}
+function adduploadbox3(){
+  if(document.getElementById("picture3").value != "") {
+     document.getElementById("picture4").style.display = "block";
+  }
+}
+document.getElementById("picture1").onchange = adduploadbox1;
+document.getElementById("picture2").onchange = adduploadbox2;
+document.getElementById("picture3").onchange = adduploadbox3;
+
+</script>

@@ -291,6 +291,15 @@ function login($username_input,$password)
 					$error['password'] = "wachtwoord klopt niet";
 				}
 				if($password_result && $username_result) {
+						try {//checks if user needs verification
+							$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
+							$statement->execute(array($username));
+							$results = $statement->fetch();
+						} catch (PDOException $e) {
+								$error=$e;
+								echo $error;
+						}
+						$_SESSION['seller'] = $results[0];
             $_SESSION['username'] = $username_result['gebruikersnaam'];
 						header('Location: index.php');
         }

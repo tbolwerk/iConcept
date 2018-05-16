@@ -59,6 +59,7 @@ function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber
 					$data->execute(array($username, $checkoption, $creditcard,  null, null));
 					$userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
 	        $userdata->execute(array($username));
+					$_SESSION['seller'] = $results[0];
 				}
 				catch (PDOException $e) {
 					$error=$e;

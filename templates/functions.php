@@ -20,8 +20,9 @@ $name = $post_livesearch;
 
   while($row = $statement->fetch()){
     $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $rubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='#'><h3>".$rubrieknaam."</h3></li></a>";
+    $rubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
   }
   //Sub-rubrieken
   $subrubrieken="";
@@ -34,8 +35,9 @@ $name = $post_livesearch;
 
   while($row = $statement->fetch()){
     $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='#'><h3>".$rubrieknaam."</h3></li></a>";
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
   }
 
   $veilingen="";
@@ -48,8 +50,9 @@ $name = $post_livesearch;
 
   while($row = $statement->fetch()){
     $voorwerptitel = $row['titel'];
+    $voorwerpnummer = $row['voorwerpnummer'];
     $function = "fill('".$rubrieknaam."')";
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='#'><h3>".$voorwerptitel."</h3></li></a>";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h3>".$voorwerptitel."</h3></li></a>";
   }
 
 

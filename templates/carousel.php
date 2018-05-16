@@ -22,13 +22,15 @@
                     </p>
                   </div>
                   <hr />
-                  <ul class="list-unstyled list-inline">
-                    <li class="list-inline-item pr-2"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
-                    <li class="list-inline-item pr-2"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+                  <ul class="list-unstyled list-inline d-flex" style="text-align:center">
+                    <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
+                    <div class="card-line"></div>
+                    <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
                   </ul>
                 </div>
               </div>
             </div>
+          </div>
 
             <div class="col-md-3 clearfix d-md-block">
                 <div class="card auction-card mb-2">
@@ -45,9 +47,10 @@
                       </p>
                     </div>
                     <hr />
-                    <ul class="list-unstyled list-inline">
-                      <li class="list-inline-item pr-2"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
-                      <li class="list-inline-item pr-2"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+                    <ul class="list-unstyled list-inline d-flex" style="text-align:center">
+                      <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
+                      <div class="card-line"></div>
+                      <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
                     </ul>
                   </div>
                 </div>
@@ -68,9 +71,10 @@
                         </p>
                       </div>
                       <hr />
-                      <ul class='list-unstyled list-inline'>
-                        <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;40,50</li>
-                        <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i>02:01:21</li>
+                      <ul class="list-unstyled list-inline d-flex">
+                        <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;40,50</li>
+                        <div class="card-line"></div>
+                        <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
                       </ul>
                     </div>
                   </div>

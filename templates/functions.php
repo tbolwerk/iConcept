@@ -116,7 +116,7 @@ function displayAuction()
 		$data = $dbh->query("select * from Voorwerp");
 		while ($row = $data->fetch()) {
 
-			$auction.="  <div class='col-md-4'>
+			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
               <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
@@ -131,9 +131,10 @@ function displayAuction()
                 </p>
               </div>
               <hr />
-              <ul class='list-unstyled list-inline'>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
+              <ul class='list-unstyled list-inline d-flex'>
+                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+								<div class='card-line'></div>
+                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$row['looptijd']."</li>
               </ul>
             </div>
 

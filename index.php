@@ -67,19 +67,19 @@ function myTimer() {
    </div>
    <div class="row ml-3 mr-3 pb-3">
      <div class="col-md-4">
-       <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0f388c03c3f15daa78a7afd93b2ff3e3&auto=format&fit=crop&w=2300&q=80" width="500" height="350" alt="test" style="border-radius: 5px">
+       <img src="https://picsum.photos/500/350?image=532" class="img-fluid" alt="test" style="border-radius: 5px">
        <div class="mt-2">
        <h4 class="white-text" style="text-align: center;">Registreer jezelf via de website</h4>
      </div>
      </div>
      <div class="col-md-4">
-       <img src="https://images.unsplash.com/photo-1484100356142-db6ab6244067?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=287b89ab963953c2301037e788c2eb99&auto=format&fit=crop&w=1924&q=80" width="500" height="350" alt="test" style="border-radius: 5px">
+       <img src="https://picsum.photos/500/350?image=120" class="img-fluid" alt="test" style="border-radius: 5px">
        <div class="mt-2">
        <h4 class="white-text" style="text-align: center;">Activeer je account</h4>
      </div>
      </div>
      <div class="col-md-4">
-       <img src="https://images.unsplash.com/photo-1491974162517-a7541284efe7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e0c4664b504f632d31f49fb757f9335f&auto=format&fit=crop&w=3310&q=80" width="500" height="350" alt="test" style="border-radius: 5px">
+       <img src="https://picsum.photos/500/350?image=421" class="img-fluid" alt="test" style="border-radius: 5px">
        <div class="mt-2">
        <h4 class="white-text" style="text-align: center;">Bieden maar!</h4>
      </div>

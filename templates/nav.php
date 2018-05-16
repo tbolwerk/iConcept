@@ -58,30 +58,13 @@ while($row = $statement->fetch()){
             <input class="form-control mr-sm-2" type="text" placeholder="Zoeken" aria-label="Zoeken">
           </form> -->
           <div id="search_overlay" class="search_overlay" style="flex:1;">
+
     				<form class="search_overlay-form">
     					<input class="search_overlay-input niagara" id="search" type="search" placeholder="Zoeken..."/>
     					<button class="search_overlay-submit" type="submit">Search</button>
     				</form>
     				<div class="search_overlay-content">
-    					<div class="dummy-column" style="">
-    						<h2>Rubrieken</h2>
-    						<div class="search-scroll">
-<?=$rubrieken?>
-    					</div>
-    				</div>
-
-    				<div class="dummy-column">
-    						<h2>Sub-rubrieken</h2>
-    						<div class="search-scroll">
-<?=$subrubrieken?>
-    					</div>
-    				</div>
-    				<div class="dummy-column">
-    						<h2>Veilingen</h2>
-    						<div class="search-scroll">
-<?=$veilingen?>
-    					</div>
-    				</div>
+    				<div id="display"></div>
 
     				</div><!-- /morphsearch-content -->
     				<span class="search_overlay-close"></span>

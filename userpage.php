@@ -64,16 +64,34 @@ while($question = $data->fetch()){
 ?>
 
 <div class="view index-header">
-    <img src="https://images.unsplash.com/photo-1453060590797-2d5f419b54cb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f42332c3b8e749209b9ce1c2f7d212d0&auto=format&fit=crop&w=2250&q=80" class="img-fluid" height="450">
-    <div class="mask index-banner pattern-5">
-    <div class="mask index-banner rgba-cyan-light">
-        <h1 class="white-text banner-text">Accountinstellingen</h1>
-    </div>
-  </div>
+  <img src="img/bgs/account-bg.png" class="" height="350">
+<div class="mask index-banner rgba-niagara-strong">
+  <h1 class="white-text userpage-header">Accountinstellingen</h1>
+</div>
+</div>
 </div>
 
-<img class="" src="img/avatar/<?=$_SESSION['username']?>.png" style="border-radius: 50%; width: 300px; height: 300px; position: relative; top: -100px; left: 100px; float: left;">
+<div id="wrapper">
+      <div class="left col-lg-4">
+        <div class="profile-picture-settings">
+          <label for="profile-picture">
+          <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png"/>
+          <div class="profile-picture-overlay">
+            <div class="pf-icon">
+              <i class="fa fa-lg fa-plus"></i>
+            </div>
+          </div>
+          </label>
+          <input type="file" id="profile-picture" accept="image/*">
+        </div>
 
+        <form method="post" action="" enctype="multipart/form-data">
+          <div class="profile-picture-upload">
+          <button type="submit" name="change_avatar">Upload</button>
+        </div>
+        </form>
+      </div>
+    </div>
 <!--
 <p>ontvangen bestanden: </p>
 <?php print_r($_FILES); ?><br>
@@ -96,51 +114,61 @@ while($question = $data->fetch()){
 <br> -->
 
 
-<div class="container-fluid" style="background-color: WhiteSmoke;">
+<div class="container-fluid usersettings-page" id="wrapper">
 
-<div class="" style="margin: auto; max-width: 700px; text-align: center; padding: 20px;">
+<div class="col-md-6 ml-auto mr-5 usersettings-content">
 
-<button type="button" class="black-text" id="tab1knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab1()">Persoonlijke instellingen</button>
-<button type="button" class="grey-text" id="tab2knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab2()">Wachtwoord</button>
-<button type="button" class="grey-text" id="tab3knop" style="padding: 0; border: none; background: none; font-size: 1.5em;" onclick="switchToTab3()">Word verkoper</button>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" onclick="switchToTab1()" role="tab">Persoonlijke Instellingen</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab2" onclick="switchToTab2()" role="tab">Wachtwoord veranderen</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab3" onclick="switchToTab3()" role="tab">Verkoper worden</a>
+  </li>
+</ul>
+<div class="tab-content">
 
-<div class="" id="tab1" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid;">
 
-  <form method="post" action="">
-    <fieldset style="border-radius: 20px;">
-      <legend>Naam</legend>
-      <div class="form-row">
-        <div class="col-md-6">
-          <div class="md-form">
-            <label for="firstname">Voornaam</label>
-            <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="md-form">
-            <label for="lastname">Achternaam</label>
-            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+">
-          </div>
-        </div>
+  <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
+    <form method="post" action="">
+      <div class="userpage-form-header">
+        <h1>Naam</h1>
       </div>
       <div class="form-row">
         <div class="col-md-6">
-          <div class="md-form">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
+            <label class="black-text" for="firstname">Voornaam</label>
+        </div>
+      </div>
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
+            <label class="black-text" for="lastname">Achternaam</label>
+        </div>
+      </div>
+    </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form form-group">
             <!-- <label for="birthdate">Geboortedatum</label> -->
-            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
+            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum"> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
           </div>
         </div>
         <div class="col-md-6">
-          <div class="md-form">
-            <label for="country">Land</label>
-            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+">
-          </div>
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+" placeholder="Selecteer uw land">
+            <label style="black-text" for="country">Land</label>
         </div>
       </div>
-    </fieldset>
+    </div>
 
-    <fieldset style="border-radius: 20px;">
-      <legend>Contactgegevens</legend>
+    <div class="userpage-form-header">
+      <h1>Contactgegevens</h1>
+    </div>
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form form-group">
@@ -149,70 +177,89 @@ while($question = $data->fetch()){
           </div>
         </div>
         <div class="col-md-6">
-          <div class="md-form">
-            <label for="city">Plaatsnaam</label>
-            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+" placeholder="Vul uw plaatsnaam in">
+            <label style="black-text" for="city">Plaatsnaam</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" >
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required placeholder="Vul hier uw adres in">
+            <label style="black-text" for="address1">Adres</label>
           </div>
         </div>
       </div>
       <div class="form-row">
         <div class="col-md-6">
-          <div class="md-form">
-            <label for="address1">Adres</label>
-            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required>
+          <div class="md-form form-group">
+            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" required placeholder="Vul uw emailadres in">
+            <label style="black-text" for="email">E-Mail</label>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="md-form">
-            <label for="email">E-Mail</label>
-            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" required>
+          <div class="md-form form-group">
+            <input type="email" class="form-control" name="emailcheck" id="email" value="<?=$results['email']?>" required placeholder="Herhaal uw emailadres">
+            <label style="black-text" for="emailcheck">E-Mail herhalen</label>
           </div>
         </div>
       </div>
-    </fieldset>
-
-    <fieldset style="border-radius: 20px;">
-      <legend>Geheime vraag</legend>
-      <div class="md-form">
-        <select name="secretQuestion" class="form-control">
-          <?=$secret_question_options?>
-        </select>
+      <div class="form-row">
+        <div class="col-md-4">
+          <div class="md-form">
+            <input type="number" class="form-control" name="phone1" id="phone1" value="<?=$results['telefoonnummer']?>" required placeholder="Vul hier uw telefoonnummer in">
+            <label style="black-text" for="phone1">Telefoonnummer #1</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="md-form">
+            <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
+            <label style="black-text" for="phone2">Telefoonnummer #2</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="md-form">
+            <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
+            <label style="black-text" for="phone3">Telefoonnummer #3</label>
+          </div>
+        </div>
       </div>
-      <div class="md-form">
-        <label for="secretAnswer">Geheim antwoord</label>
-        <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+
+      <div class="userpage-form-header">
+        <h1>Geheime vraag</h1>
       </div>
-    </fieldset>
+      <div class="form-row">
+        <div class="col-md-12">
+          <div class="md-form">
+            <select name="secretQuestion" class="form-control">
+              <option class="disabled">Selecteer een geheime vraag..</option>
+              <?=$secret_question_options?>
+            </select>
+          </div>
+        </div>
+      </div>
 
-    <button type="submit" name="tab1submit">Opslaan</button>
+      <div class="form-row">
+        <div class="col-md-12">
+          <div class="md-form">
+            <label for="secretAnswer">Geheim antwoord</label>
+            <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 py-1 text-center">
+      <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
+    </div>
   </form>
-
-  <br><hr>
-
-  <h4>Telefoon</h4>
-
-  <form method="post" action="" >
-    <?php
-    foreach ($phones as $phone) {
-      echo <<<HTML
-        <input type="tel" name="{$phone['volgnummer']}" value="{$phone['telefoonnummer']}">
-        <button type="submit" name="delete" value="{$phone['volgnummer']};">Verwijder</button><br>
-        <!--NEVER touch the following line, the page WILL break-->
-HTML;
-    }
-    ?>
-  </form>
-
-  <form method="post" action="" >
-    <input type="tel" name="phone">
-    <button type="submit" name="addphone">Voeg toe</button><br>
-  </form>
-
 </div>
 
-<div class="" id="tab2" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
-
+<div class="tab-pane fade in show active" id="tab2" role="tabpanel" style="display: none;">
   <form method="post" action="">
+    <div class="userpage-form-header">
+      <h1>Wachtwoord wijzigen</h1>
+    </div>
     <div class="md-form">
       <label for="currentPassword">Huidig wachtwoord</label>
       <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
@@ -228,12 +275,14 @@ HTML;
       <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="" required>
     </div>
 
-    <button type="submit" name="tab2submit">Opslaan</button>
+    <div class="mt-3 py-1 text-center">
+      <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
+    </div>
   </form>
 
 </div>
 
-<div class="" id="tab3" style="background-color: White; padding: 20px; border-radius: 20px; border-color: black; border-width: 1px; border-style: solid; display: none;">
+<div class="tab-pane fade in show active" id="tab3" role="tabpanel" style="display: none;">
   <?php
   global $username;
   $username = $_SESSION['username'];
@@ -259,16 +308,7 @@ HTML;
 </div>
 
 </div>
-
-<br>
-
-<form method="post" action="" enctype="multipart/form-data">
-  <label for="file">Filename:</label>
-  <input type="file" name="file" accept=".png">
-
-  <button type="submit" name="change_avatar">Upload</button>
-</form>
-
+</div>
 <script>
 function switchToTab1() {
   document.getElementById("tab1").style.display = "block";

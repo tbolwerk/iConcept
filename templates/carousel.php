@@ -10,7 +10,7 @@
           <div class="col-md-3">
               <div class="card auction-card mb-4">
                 <div class="view overlay">
-                  <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                  <img class="card-img-top" src="https://picsum.photos/388/258/?image=4" alt="Test Card" />
                 </div>
                 <div class="card-body">
                   <span class="small-font">20345322</span>
@@ -33,7 +33,7 @@
             <div class="col-md-3 clearfix d-md-block">
                 <div class="card auction-card mb-2">
                   <div class="view overlay">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                    <img class="card-img-top" src="https://picsum.photos/388/258/?image=12" alt="Test Card" />
                   </div>
                   <div class="card-body">
                     <span class="small-font">20345322</span>
@@ -56,7 +56,7 @@
               <div class='col-md-3 clearfix d-md-block'>
                   <div class='card auction-card mb-2'>
                     <div class='view overlay'>
-                      <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+                      <img class='card-img-top' src='https://picsum.photos/388/258/?image=54' alt='Test Card' />
                     </div>
                     <div class='card-body'>
                       <span class='small-font'>20345322</span>
@@ -79,7 +79,7 @@
                 <div class='col-md-3 clearfix d-md-block'>
                     <div class='card auction-card mb-2'>
                       <div class='view overlay'>
-                        <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+                        <img class='card-img-top' src='https://picsum.photos/388/258/?image=55' alt='Test Card' />
                       </div>
                       <div class='card-body'>
                         <span class='small-font'>20345322</span>
@@ -108,7 +108,7 @@
           <div class="col-md-3">
               <div class="card auction-card mb-4">
                 <div class="view overlay">
-                  <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                  <img class="card-img-top" src="https://picsum.photos/388/258/?image=87" alt="Test Card" />
                 </div>
                 <div class="card-body">
                   <span class="small-font">20345322</span>
@@ -131,7 +131,7 @@
             <div class="col-md-3">
                 <div class="card auction-card mb-4">
                   <div class="view overlay">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                    <img class="card-img-top" src="https://picsum.photos/388/258/?image=90" alt="Test Card" />
                   </div>
                   <div class="card-body">
                     <span class="small-font">20345322</span>
@@ -153,7 +153,7 @@
               <div class="col-md-3">
                   <div class="card auction-card mb-4">
                     <div class="view overlay">
-                      <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                      <img class="card-img-top" src="https://picsum.photos/388/258/?image=28" alt="Test Card" />
                     </div>
                     <div class="card-body">
                       <span class="small-font">20345322</span>
@@ -175,7 +175,7 @@
                 <div class="col-md-3">
                     <div class="card auction-card mb-4">
                       <div class="view overlay">
-                        <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                        <img class="card-img-top" src="https://picsum.photos/388/258/?image=47" alt="Test Card" />
                       </div>
                       <div class="card-body">
                         <span class="small-font">20345322</span>
@@ -204,7 +204,7 @@
           <div class="col-md-3">
               <div class="card auction-card mb-4">
                 <div class="view overlay">
-                  <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                  <img class="card-img-top" src="https://picsum.photos/388/258/?image=62" alt="Test Card" />
                 </div>
                 <div class="card-body">
                   <span class="small-font">20345322</span>
@@ -227,7 +227,7 @@
             <div class="col-md-3">
                 <div class="card auction-card mb-4">
                   <div class="view overlay">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                    <img class="card-img-top" src="https://picsum.photos/388/258/?image=75" alt="Test Card" />
                   </div>
                   <div class="card-body">
                     <span class="small-font">20345322</span>
@@ -250,7 +250,7 @@
               <div class="col-md-3">
                   <div class="card auction-card mb-4">
                     <div class="view overlay">
-                      <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                      <img class="card-img-top" src="https://picsum.photos/388/258/?image=93" alt="Test Card" />
                     </div>
                     <div class="card-body">
                       <span class="small-font">20345322</span>
@@ -273,7 +273,7 @@
                 <div class="col-md-3">
                     <div class="card auction-card mb-4">
                       <div class="view overlay">
-                        <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Test Card" />
+                        <img class="card-img-top" src="https://picsum.photos/388/258/?image=2" alt="Test Card" />
                       </div>
                       <div class="card-body">
                         <span class="small-font">20345322</span>

@@ -6,6 +6,8 @@
   position: relative;
 }
 
+.left input {display: none;}
+
 #wrapper {
   background-color: #ebebeb;
 }

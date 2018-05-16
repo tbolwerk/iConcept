@@ -2,25 +2,30 @@
 $current_page='userpage';
 require_once('templates/header.php');
 
+//If user submits updated account data
 if(isset($_POST['tab1submit'])){
   $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
 	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['city'], $_POST['country'], $_POST['birthdate'], $_POST['email'], $_POST['secretQuestion'], $_POST['secretAnswer'], $_SESSION['username']));
 }
 
+//If user tries to change password...
 if(isset($_POST['tab2submit'])){
   $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
   $statement->execute(array($_SESSION['username']));
   $password = $statement->fetch();
-
+  //...and provides his current password
   if ($password[0] == $_POST['currentPassword']) {
+    //changePassword() can be found in functions.php
     changePassword($_POST['newPassword']);
   }
 }
 
+//If user submits a profile picture, upload it to the server
 if(isset($_POST['change_avatar'])){
   $username = $_SESSION['username'];
   $picture = $_FILES['file'];
-  addPicture($picture,$username);
+  //addAvatar() can be found in functions.php
+  addAvatar($picture,$username);
 }
 
 if(isset($_POST['addphone'])) {
@@ -35,26 +40,33 @@ if(isset($_POST['delete'])) {
 
 $username = $_SESSION['username'];
 
+//Receive account data from database
 $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
 $statement->execute(array($username));
 $results = $statement->fetch();
 
+//Receive phone numbers for this user from database
 $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
 $statement->execute(array($username));
 $phones = $statement->fetchAll();
 
+//Receive secret question from database
 $statement = $dbh->prepare("select * from Vraag where vraagnummer = ?");
 $statement->execute(array($results['vraagnummer']));
 $questions = $statement->fetch();
 
+//Construct a list with <option> tags for the secret question dropdown menu
 $secret_question_options = null;
+//Receive all secret questions from database
 try {
     $data = $dbh->prepare("select * from Vraag");
     $data->execute();
 } catch (PDOException $e) {
     $error = $e;
 }
+//Construct the list by iterating over each received secret question
 while($question = $data->fetch()){
+  //The current secret question is put at the top of the list, all others are appended
   if ($question['vraagnummer'] == $results['vraagnummer']) {
     $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
   } else {
@@ -72,27 +84,30 @@ while($question = $data->fetch()){
 </div>
 
 <div id="wrapper">
-      <div class="left col-lg-4">
-        <div class="profile-picture-settings">
-          <label for="profile-picture">
-          <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png"/>
-          <div class="profile-picture-overlay">
-            <div class="pf-icon">
-              <i class="fa fa-lg fa-plus"></i>
-            </div>
-          </div>
-          </label>
-          <input type="file" id="profile-picture" accept="image/*">
+  <div class="left col-lg-4">
+    <div class="profile-picture-settings">
+      <label for="profile-picture">
+      <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png?342038402"/>
+      <div class="profile-picture-overlay">
+        <div class="pf-icon">
+          <i class="fa fa-lg fa-plus"></i>
         </div>
-
-        <form method="post" action="" enctype="multipart/form-data">
-          <div class="profile-picture-upload">
-          <button type="submit" name="change_avatar">Upload</button>
-        </div>
-        </form>
       </div>
+      </label>
     </div>
+
+    <form method="post" action="" enctype="multipart/form-data">
+      <input type="file" name="file" id="profile-picture" accept="image/*">
+      <div class="profile-picture-upload">
+        <button type="submit" name="change_avatar">Upload</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!--
+These values are for debugging purposes and are visible by inspecting the page source
+
 <p>ontvangen bestanden: </p>
 <?php print_r($_FILES); ?><br>
 <br>
@@ -111,8 +126,8 @@ while($question = $data->fetch()){
 
 <p>ontvangen vraag gegevens: </p>
 <?php print_r($questions); ?><br>
-<br> -->
-
+<br>
+-->
 
 <div class="container-fluid usersettings-page" id="wrapper">
 
@@ -120,41 +135,39 @@ while($question = $data->fetch()){
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" onclick="switchToTab1()" role="tab">Persoonlijke Instellingen</a>
+    <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link panel-name" data-toggle="tab" href="#tab2" onclick="switchToTab2()" role="tab">Wachtwoord veranderen</a>
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab2" role="tab">Wachtwoord veranderen</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link panel-name" data-toggle="tab" href="#tab3" onclick="switchToTab3()" role="tab">Verkoper worden</a>
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab3" role="tab">Verkoper worden</a>
   </li>
 </ul>
 <div class="tab-content">
 
-
-  <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
-    <form method="post" action="">
-      <div class="userpage-form-header">
-        <h1>Naam</h1>
+<div class="tab-pane fade in show active" id="tab1" role="tabpanel">
+  <form method="post" action="">
+    <div class="userpage-form-header">
+      <h1>Naam</h1>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
+          <label class="black-text" for="firstname">Voornaam</label>
       </div>
-      <div class="form-row">
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
-            <label class="black-text" for="firstname">Voornaam</label>
-        </div>
-      </div>
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
-            <label class="black-text" for="lastname">Achternaam</label>
+    </div>
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
+          <label class="black-text" for="lastname">Achternaam</label>
         </div>
       </div>
     </div>
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form form-group">
-            <!-- <label for="birthdate">Geboortedatum</label> -->
             <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum"> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
           </div>
         </div>
@@ -194,13 +207,13 @@ while($question = $data->fetch()){
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form form-group">
-            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" required placeholder="Vul uw emailadres in">
+            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
             <label style="black-text" for="email">E-Mail</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form form-group">
-            <input type="email" class="form-control" name="emailcheck" id="email" value="<?=$results['email']?>" required placeholder="Herhaal uw emailadres">
+            <input type="email" class="form-control" name="emailcheck" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
             <label style="black-text" for="emailcheck">E-Mail herhalen</label>
           </div>
         </div>
@@ -233,7 +246,6 @@ while($question = $data->fetch()){
         <div class="col-md-12">
           <div class="md-form">
             <select name="secretQuestion" class="form-control">
-              <option class="disabled">Selecteer een geheime vraag..</option>
               <?=$secret_question_options?>
             </select>
           </div>
@@ -255,7 +267,7 @@ while($question = $data->fetch()){
   </form>
 </div>
 
-<div class="tab-pane fade in show active" id="tab2" role="tabpanel" style="display: none;">
+<div class="tab-pane fade" id="tab2" role="tabpanel"
   <form method="post" action="">
     <div class="userpage-form-header">
       <h1>Wachtwoord wijzigen</h1>
@@ -267,12 +279,12 @@ while($question = $data->fetch()){
 
     <div class="md-form">
       <label for="newPassword">Nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="newPassword" id="newPassword" value="" required>
+      <input type="password" class="form-control" name="newPassword" id="newPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
     </div>
 
     <div class="md-form">
       <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="" required>
+      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
     </div>
 
     <div class="mt-3 py-1 text-center">
@@ -282,7 +294,7 @@ while($question = $data->fetch()){
 
 </div>
 
-<div class="tab-pane fade in show active" id="tab3" role="tabpanel" style="display: none;">
+<div class="tab-pane fade" id="tab3" role="tabpanel">
   <?php
   global $username;
   $username = $_SESSION['username'];
@@ -309,61 +321,9 @@ while($question = $data->fetch()){
 
 </div>
 </div>
-<script>
-function switchToTab1() {
-  document.getElementById("tab1").style.display = "block";
-  document.getElementById("tab2").style.display = "none";
-  document.getElementById("tab3").style.display = "none";
-  document.getElementById("tab1knop").classList.remove("grey-text");
-  document.getElementById("tab1knop").classList.add("black-text");
-  document.getElementById("tab2knop").classList.remove("black-text");
-  document.getElementById("tab2knop").classList.add("grey-text");
-  document.getElementById("tab3knop").classList.remove("black-text");
-  document.getElementById("tab3knop").classList.add("grey-text");
-}
 
-function switchToTab2() {
-  document.getElementById("tab1").style.display = "none";
-  document.getElementById("tab2").style.display = "block";
-  document.getElementById("tab3").style.display = "none";
-  document.getElementById("tab1knop").classList.remove("black-text");
-  document.getElementById("tab1knop").classList.add("grey-text");
-  document.getElementById("tab2knop").classList.remove("grey-text");
-  document.getElementById("tab2knop").classList.add("black-text");
-  document.getElementById("tab3knop").classList.remove("black-text");
-  document.getElementById("tab3knop").classList.add("grey-text");
-}
-
-function switchToTab3() {
-  document.getElementById("tab1").style.display = "none";
-  document.getElementById("tab2").style.display = "none";
-  document.getElementById("tab3").style.display = "block";
-  document.getElementById("tab1knop").classList.remove("black-text");
-  document.getElementById("tab1knop").classList.add("grey-text");
-  document.getElementById("tab2knop").classList.remove("black-text");
-  document.getElementById("tab2knop").classList.add("grey-text");
-  document.getElementById("tab3knop").classList.remove("grey-text");
-  document.getElementById("tab3knop").classList.add("black-text");
-}
-
-function passwordConfirmation() {
-  if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
-    document.getElementById("confirmPassword").setCustomValidity("Wachtwoorden komen niet overeen");
-  } else {
-    document.getElementById("confirmPassword").setCustomValidity("");
-  }
-}
-
-function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
-}
-
-document.getElementById("confirmPassword").onchange = passwordConfirmation;
-document.getElementById("newPassword").onchange = passwordConfirmation;
-</script>
+<script src="js/functions.js"></script>
 
 </div>
-<?php if(isset($error)){echo $error;}?>
+<!-- <?php if(isset($error)){echo $error;}?> -->
 <?php include('templates/footer.php'); ?>

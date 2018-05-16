@@ -371,53 +371,38 @@ try {
 }
 }
 
-function addPicture($picture,$file_name){
-	// $file = array();
-	// foreach ($picture as $key1 => $value1) {
-	// 	foreach ($value1 as $key2 => $value2) {
-	// 	$file[$key2][$key1] = $value2;
-	// }
-	// }
-global $error;
-global $dbh;
+//Takes an image and stores it as {username}.png in /img/avatar
+function addAvatar($file, $username){
+	global $error;
+	global $dbh; //database object
 
-$error="";
-//in production
-$file = $picture;
-$error="";
-//in production
-	 $allowedExts = array("png");
-				$tmp_extension = explode(".", $file["name"]);
-				$extension = end($tmp_extension);
-				if (
-						(
-							 ($file["type"] == "image/gif")
-						|| ($file["type"] == "image/jpeg")
-						|| ($file["type"] == "image/png")
-						|| ($file["type"] == "image/pjpeg")
-						)
-						&& ($file["size"] < 2000000)
-						&& in_array($extension, $allowedExts))
-					{
-				 if ($file["error"] > 0)
-								{
-										$error.= "Return Code: " . $file["error"] . "<br />";
-								} else {
-										$error.= "Upload: " . $file["name"] . "<br />";
-										$error.= "Type: " . $file["type"] . "<br />";
-										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
-										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
-										move_uploaded_file($file["tmp_name"],
-										"img/avatar/" . $_SESSION["username"] . "." . $extension);
-										$error.= "Stored in: " . "img/avatar/" . $file_name . "." . $extension;
-								}
-					}    else {
+	$error="";
 
-						$error.= $file["type"]."<br />";
-							$error.= "Invalid file try another Image";
-					}
+	//If the file is a supported image
+	if ((
+			 ($file["type"] == "image/jpeg")
+		|| ($file["type"] == "image/png")
+		|| ($file["type"] == "image/pjpeg")
+	) && ($file["size"] < 4000000)) {
+		if ($file["error"] > 0) {
+			$error.= "Return Code: " . $file["error"] . "<br />";
+		} else {
+			$error.= "Upload: " . $file["name"] . "<br />";
+			$error.= "Type: " . $file["type"] . "<br />";
+			$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
+			$error.= "Temp file: " . $file["tmp_name"] . "<br />";
+
+			//Move and rename uploaded image
+			$filename = "img/avatar/" . $username . ".png";
+			move_uploaded_file($file["tmp_name"], $filename);
+
+			$error.= "Stored in: " . $filename;
+		}
+	} else {
+		$error.= $file["type"]."<br />";
+		$error.= "Verkeerd bestand, selecteer een nieuwe";
+	}
 }
-
 
 function mailUser($username, $soort){
 	//

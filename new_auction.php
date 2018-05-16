@@ -6,6 +6,14 @@ require_once('templates/header.php');
 $errors;
 $errors = array();
 
+try {
+  $seller = $_SESSION['username'];
+  $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
+  $statement->execute(array($seller));
+  $results = $statement->fetch();
+} catch (PDOException $e) {
+  echo $e;
+}
 
 
 function checkPicture($picture, $id, $i){
@@ -38,7 +46,8 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   global $dbh;
   global $errors;
 
-  $seller = $_SESSION['username'];
+
+
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');
   $end_date = date('Y-m-d', strtotime($current_date. ' + ' . $duration . 'days'));
@@ -134,9 +143,9 @@ if(isset($_POST['submit'])){
   <label>Betalingsinstructies</label>
   <input type="text" name="pay_instructions"><br>
   <label>Plaats</label>
-  <input type="text" name="place" required><br>
+  <input type="text" name="place" value="<?=$results['plaatsnaam']?>" required><br>
   <label>Land</label>
-  <input type="text" name="country" required><br>
+  <input type="text" name="country" value="<?=$results['land']?>" required><br>
   <label>Verzendkosten</label>
   <input type="number" name="shipping_costs"><br>
   <label>Verzendinstructies</label>
@@ -169,3 +178,4 @@ document.getElementById("picture2").onchange = adduploadbox2;
 document.getElementById("picture3").onchange = adduploadbox3;
 
 </script>
+<?php include 'templates/footer.php'; ?>

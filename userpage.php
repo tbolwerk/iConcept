@@ -3,6 +3,7 @@ $current_page='userpage';
 require_once('templates/header.php');
 
 //If user submits updated account data
+
 if(isset($_POST['tab1submit'])){
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
@@ -19,33 +20,33 @@ if(isset($_POST['tab1submit'])){
 }
 
 //If user tries to change password...
-if(isset($_POST['tab2submit'])){
-  $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
-  $statement->execute(array($_SESSION['username']));
-  $password = $statement->fetch();
-  //...and provides his current password
-  if ($password[0] == $_POST['currentPassword']) {
-    //changePassword() can be found in functions.php
-    changePassword($_POST['newPassword']);
-  }
+if (isset($_POST['tab2submit'])) {
+    $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
+    $statement->execute(array($_SESSION['username']));
+    $password = $statement->fetch();
+    //...and provides his current password
+    if ($password[0] == $_POST['currentPassword']) {
+        //changePassword() can be found in functions.php
+        changePassword($_POST['newPassword']);
+    }
 }
 
 //If user submits a profile picture, upload it to the server
-if(isset($_POST['change_avatar'])){
-  $username = $_SESSION['username'];
-  $picture = $_FILES['file'];
-  //addAvatar() can be found in functions.php
-  addAvatar($picture,$username);
+if (isset($_POST['change_avatar'])) {
+    $username = $_SESSION['username'];
+    $picture = $_FILES['file'];
+    //addAvatar() can be found in functions.php
+    addAvatar($picture, $username);
 }
 
-if(isset($_POST['addphone'])) {
-  $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
-  $statement->execute(array($_SESSION['username'], $_POST['phone']));
+if (isset($_POST['addphone'])) {
+    $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
+    $statement->execute(array($_SESSION['username'], $_POST['phone']));
 }
 
-if(isset($_POST['delete'])) {
-  $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
-	$statement->execute(array((int)$_POST['delete']));
+if (isset($_POST['delete'])) {
+    $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
+    $statement->execute(array((int)$_POST['delete']));
 }
 
 $username = $_SESSION['username'];
@@ -75,28 +76,28 @@ try {
     $error = $e;
 }
 //Construct the list by iterating over each received secret question
-while($question = $data->fetch()){
-  //The current secret question is put at the top of the list, all others are appended
-  if ($question['vraagnummer'] == $results['vraagnummer']) {
-    $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
-  } else {
-    $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
-  }
+while ($question = $data->fetch()) {
+    //The current secret question is put at the top of the list, all others are appended
+    if ($question['vraagnummer'] == $results['vraagnummer']) {
+        $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
+    } else {
+        $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+    }
 }
 ?>
-
-<div class="view index-header">
-  <img src="img/bgs/account-bg.png" class="" height="350">
-<div class="mask index-banner rgba-niagara-strong">
-  <h1 class="white-text userpage-header">Accountinstellingen</h1>
-</div>
-</div>
-</div>
-
-<div id="wrapper">
-  <div class="left col-lg-4">
-    <div class="profile-picture-settings">
-      <label for="profile-picture">
+  <!-- Banner -->
+  <div class="view index-header">
+    <img src="img/bgs/account-bg.png" class="" height="350">
+    <div class="mask index-banner rgba-niagara-strong">
+      <h1 class="white-text userpage-header">Accountinstellingen</h1>
+    </div>
+  </div>
+  </div>
+  <!-- Profile picture -->
+  <div id="wrapper">
+    <div class="left col-lg-4">
+      <div class="profile-picture-settings">
+        <label for="profile-picture">
       <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png?342038402"/>
       <div class="profile-picture-overlay">
         <div class="pf-icon">
@@ -104,18 +105,18 @@ while($question = $data->fetch()){
         </div>
       </div>
       </label>
-    </div>
-
-    <form method="post" action="" enctype="multipart/form-data">
-      <input type="file" name="file" id="profile-picture" accept="image/*">
-      <div class="profile-picture-upload">
-        <button type="submit" name="change_avatar">Upload</button>
       </div>
-    </form>
-  </div>
-</div>
 
-<!--
+      <form method="post" action="" enctype="multipart/form-data">
+        <input type="file" name="file" id="profile-picture" accept="image/*">
+        <div class="profile-picture-upload">
+          <button type="submit" name="change_avatar">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--
 These values are for debugging purposes and are visible by inspecting the page source
 
 <p>ontvangen bestanden: </p>
@@ -138,6 +139,11 @@ These values are for debugging purposes and are visible by inspecting the page s
 <?php print_r($questions); ?><br>
 <br>
 -->
+
+
+
+
+
 
 <div class="container-fluid usersettings-page" id="wrapper">
 
@@ -262,105 +268,99 @@ These values are for debugging purposes and are visible by inspecting the page s
             <label style="black-text" for="phone1">Telefoonnummer #1</label>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="md-form">
-            <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
-            <label style="black-text" for="phone2">Telefoonnummer #2</label>
+          <div class="col-md-4">
+            <div class="md-form">
+              <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
+              <label style="black-text" for="phone2">Telefoonnummer #2</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="md-form">
+              <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
+              <label style="black-text" for="phone3">Telefoonnummer #3</label>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="md-form">
-            <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
-            <label style="black-text" for="phone3">Telefoonnummer #3</label>
+        <div class="userpage-form-header">
+          <h1>Geheime vraag</h1>
+        </div>
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="md-form">
+              <select name="secretQuestion" class="form-control">
+          <?=$secret_question_options?>
+        </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="md-form">
+              <label for="secretAnswer">Geheim antwoord</label>
+              <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="userpage-form-header">
-        <h1>Geheime vraag</h1>
-      </div>
-      <div class="form-row">
-        <div class="col-md-12">
-          <div class="md-form">
-            <select name="secretQuestion" class="form-control">
-              <?=$secret_question_options?>
-            </select>
+        <!-- Settings to change current password -->
+        <div class="tab-pane fade" id="tab2" role="tabpanel" <form method="post" action="">
+          <div class="userpage-form-header">
+            <h1>Wachtwoord wijzigen</h1>
           </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-12">
           <div class="md-form">
-            <label for="secretAnswer">Geheim antwoord</label>
-            <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required pattern="[A-z0-9\- ]+">
+            <label for="currentPassword">Huidig wachtwoord</label>
+            <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
           </div>
+
+          <div class="md-form">
+            <label for="newPassword">Nieuw wachtwoord</label>
+            <input type="password" class="form-control" name="newPassword" id="newPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
+          </div>
+
+          <div class="md-form">
+
+            <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
+            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
+          </div>
+
+          <div class="mt-3 py-1 text-center">
+            <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
+          </div>
+          </form>
+
         </div>
-      </div>
-
-      <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
-    </div>
-  </form>
-</div>
-
-<div class="tab-pane fade" id="tab2" role="tabpanel"
-  <form method="post" action="">
-    <div class="userpage-form-header">
-      <h1>Wachtwoord wijzigen</h1>
-    </div>
-    <div class="md-form">
-      <label for="currentPassword">Huidig wachtwoord</label>
-      <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
-    </div>
-
-    <div class="md-form">
-      <label for="newPassword">Nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="newPassword" id="newPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
-    </div>
-
-    <div class="md-form">
-      <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
-    </div>
-
-    <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
-    </div>
-  </form>
-
-</div>
-
-<div class="tab-pane fade" id="tab3" role="tabpanel">
-  <?php
+        <!-- Settings to register as a seller -->
+        <div class="tab-pane fade" id="tab3" role="tabpanel">
+          <?php
   global $username;
   $username = $_SESSION['username'];
   try {//checks if user needs verification
-  	$statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
-  	$statement->execute(array($username));
-  	$results = $statement->fetch();
-	} catch (PDOException $e) {
-    $error=$e;
-    echo $error;
-	}
+      $statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
+      $statement->execute(array($username));
+      $results = $statement->fetch();
+  } catch (PDOException $e) {
+      $error=$e;
+      echo $error;
+  }
 
-  if($_SESSION['seller']){
-    echo "U bent al verkoper.";
-  }
-  else if(empty($results[0])){
-    include('register_seller.php');
-  }
-  else {
-    include('verification_seller.php');
+  if ($_SESSION['seller']) {
+      echo "U bent al verkoper.";
+  } elseif (empty($results[0])) {
+      include('register_seller.php');
+  } else {
+      include('verification_seller.php');
   }
   ?>
-</div>
+        </div>
 
-</div>
-</div>
+      </div>
+    </div>
 
-<script src="js/functions.js"></script>
+    <script src="js/functions.js"></script>
 
-</div>
-<!-- <?php if(isset($error)){echo $error;}?> -->
-<?php include('templates/footer.php'); ?>
+  </div>
+  <!-- <?php if (isset($error)) {
+      echo $error;
+  }?> -->
+  <?php include('templates/footer.php'); ?>

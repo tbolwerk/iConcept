@@ -1,3 +1,5 @@
+//JavaScript for the search overlay
+
   (function() {
     var overlaySearch = document.getElementById( 'search_overlay' ),
       input = overlaySearch.querySelector( 'input.search_overlay-input' ),
@@ -13,7 +15,6 @@
           classie.remove( overlaySearch, 'open' );
 
           // trick to hide input text once the search overlay closes
-          // todo: hardcoded times, should be done after transition ends
           if( input.value !== '' ) {
             setTimeout(function() {
               classie.add( overlaySearch, 'hideInput' );
@@ -43,8 +44,4 @@
         toggleSearch(ev);
       }
     } );
-
-
-    /***** for demo purposes only: don't allow to submit the form *****/
-    overlaySearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { ev.preventDefault(); } );
   })();

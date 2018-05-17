@@ -3,11 +3,19 @@
           <i class='fa fa-sign-out-alt'></i>
         </a>
       </li>
+      <?php if($_SESSION['seller'] == 1){?>
       <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light'>
+        <a class='nav-link waves-effect waves-light' href='new_auction.php'>
+          <i class='fa fa-edit'></i>
+        </a>
+      </li>
+    <?php }else{ ?>
+      <li class='nav-item'>
+        <a class='nav-link waves-effect waves-light' href='new_auction.php'>
           <i class='fa fa-heart'></i>
         </a>
       </li>
+    <?php }?>
       <li class='nav-item'>
         <a class='nav-link waves-effect waves-light' href='userpage.php'>
           <i class='fa fa-cog'></i>

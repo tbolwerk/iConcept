@@ -133,6 +133,13 @@ p {
 }
 
 
+.form-requirements {
+  display: none;
+}
+
+input:focus + .form-requirements {
+  display: block;
+}
 
 
 .veiling-bieden a:hover {

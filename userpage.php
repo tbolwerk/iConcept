@@ -4,8 +4,18 @@ require_once('templates/header.php');
 
 //If user submits updated account data
 if(isset($_POST['tab1submit'])){
+  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
+  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
+  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
+  $city = str_replace("\"", "", strip_tags($_POST['city']));
+  $country = str_replace("\"", "", strip_tags($_POST['country']));
+  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
+  $email = str_replace("\"", "", strip_tags($_POST['email']));
+  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
+  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
   $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['city'], $_POST['country'], $_POST['birthdate'], $_POST['email'], $_POST['secretQuestion'], $_POST['secretAnswer'], $_SESSION['username']));
+	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
 }
 
 //If user tries to change password...
@@ -154,13 +164,27 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="firstname">Voornaam</label>
       </div>
     </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="lastname">Achternaam</label>
         </div>
       </div>
@@ -168,12 +192,20 @@ These values are for debugging purposes and are visible by inspecting the page s
       <div class="form-row">
         <div class="col-md-6">
           <div class="md-form form-group">
-            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum"> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
+            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum">
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form form-group">
-            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+" placeholder="Selecteer uw land">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Selecteer uw land">
+            <div class="form-requirements">
+              <ul>
+                <li>Minimaal 2 tekens</li>
+                <li>Maximaal 48 tekens</li>
+                <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+                <li>Wordt nog vervangen met dropdown list</li>
+              </ul>
+            </div>
             <label style="black-text" for="country">Land</label>
         </div>
       </div>
@@ -186,12 +218,17 @@ These values are for debugging purposes and are visible by inspecting the page s
         <div class="col-md-6">
           <div class="md-form form-group">
             <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+            <div class="form-requirements">
+              <ul>
+                <li>Vier cijfers gevolgd door twee hoofdletters</li>
+              </ul>
+            </div>
             <label style="black-text" for="postalcode">Postcode</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="md-form form-group">
-            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+" placeholder="Vul uw plaatsnaam in">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
             <label style="black-text" for="city">Plaatsnaam</label>
           </div>
         </div>
@@ -199,7 +236,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       <div class="row">
         <div class="col-md-12" >
           <div class="md-form form-group">
-            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required placeholder="Vul hier uw adres in">
+            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-z ]+ [0-9]+[A-z]{0,1}">
             <label style="black-text" for="address1">Adres</label>
           </div>
         </div>
@@ -256,7 +293,7 @@ These values are for debugging purposes and are visible by inspecting the page s
         <div class="col-md-12">
           <div class="md-form">
             <label for="secretAnswer">Geheim antwoord</label>
-            <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+            <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required pattern="[A-z0-9\- ]+">
           </div>
         </div>
       </div>

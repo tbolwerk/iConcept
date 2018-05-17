@@ -4,6 +4,8 @@ Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Jan
 Datum: 24-04-2018
 */
 
+use iConcept;
+
 /* B1 */
 /*
 ALTER TABLE Verkoper 

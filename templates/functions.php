@@ -65,7 +65,7 @@ function displayColumn(){
   try{
     $data = $dbh->query("SELECT * FROM Rubriek");
     while($row = $data->fetch()){
-			if($row['rubrieknummerOuder'] == NULL){
+			if($row['rubrieknummerOuder'] == -1){
       $column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
 		}else if(isset($_GET['rubrieknummer'])){
 			if($row['rubrieknummerOuder'] == $_GET['rubrieknummer']){

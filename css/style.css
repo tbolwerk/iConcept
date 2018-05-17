@@ -61,6 +61,10 @@ p {
   flex: 1;
 }
 
+.form-requirements {
+  display: none;
+}
+
 .elegant {
   background-color: #2e2e2e;
 }

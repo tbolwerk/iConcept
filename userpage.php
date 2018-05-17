@@ -3,9 +3,20 @@ $current_page='userpage';
 require_once('templates/header.php');
 
 //If user submits updated account data
-if (isset($_POST['tab1submit'])) {
-    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-    $statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['city'], $_POST['country'], $_POST['birthdate'], $_POST['email'], $_POST['secretQuestion'], $_POST['secretAnswer'], $_SESSION['username']));
+
+if(isset($_POST['tab1submit'])){
+  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
+  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
+  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
+  $city = str_replace("\"", "", strip_tags($_POST['city']));
+  $country = str_replace("\"", "", strip_tags($_POST['country']));
+  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
+  $email = str_replace("\"", "", strip_tags($_POST['email']));
+  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
+  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
 }
 
 //If user tries to change password...
@@ -129,144 +140,169 @@ These values are for debugging purposes and are visible by inspecting the page s
 <br>
 -->
 
-  <div class="container-fluid usersettings-page" id="wrapper">
 
-    <div class="col-md-6 ml-auto mr-5 usersettings-content">
-      <!-- Tabs to switch to different settings -->
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link panel-name" data-toggle="tab" href="#tab2" role="tab">Wachtwoord veranderen</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link panel-name" data-toggle="tab" href="#tab3" role="tab">Verkoper worden</a>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <!-- Personal settings -->
-        <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
-          <form method="post" action="">
-            <div class="userpage-form-header">
-              <h1>Naam</h1>
-            </div>
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
-                  <label class="black-text" for="firstname">Voornaam</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
-                  <label class="black-text" for="lastname">Achternaam</label>
-                </div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum">
-                  <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+" placeholder="Selecteer uw land">
-                  <label style="black-text" for="country">Land</label>
-                </div>
-              </div>
-            </div>
 
-            <div class="userpage-form-header">
-              <h1>Contactgegevens</h1>
-            </div>
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
-                  <label style="black-text" for="postalcode">Postcode</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+" placeholder="Vul uw plaatsnaam in">
-                  <label style="black-text" for="city">Plaatsnaam</label>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="md-form form-group">
-                  <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required placeholder="Vul hier uw adres in">
-                  <label style="black-text" for="address1">Adres</label>
-                </div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
-                  <label style="black-text" for="email">E-Mail</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="md-form form-group">
-                  <input type="email" class="form-control" name="emailcheck" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
-                  <label style="black-text" for="emailcheck">E-Mail herhalen</label>
-                </div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-md-4">
-                <div class="md-form">
-                  <input type="number" class="form-control" name="phone1" id="phone1" value="<?=$results['telefoonnummer']?>" required placeholder="Vul hier uw telefoonnummer in">
-                  <label style="black-text" for="phone1">Telefoonnummer #1</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="md-form">
-                  <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
-                  <label style="black-text" for="phone2">Telefoonnummer #2</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="md-form">
-                  <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
-                  <label style="black-text" for="phone3">Telefoonnummer #3</label>
-                </div>
-              </div>
-            </div>
 
-            <div class="userpage-form-header">
-              <h1>Geheime vraag</h1>
-            </div>
-            <div class="form-row">
-              <div class="col-md-12">
-                <div class="md-form">
-                  <select name="secretQuestion" class="form-control">
-              <?=$secret_question_options?>
-            </select>
-                </div>
-              </div>
-            </div>
 
-            <div class="form-row">
-              <div class="col-md-12">
-                <div class="md-form">
-                  <label for="secretAnswer">Geheim antwoord</label>
-                  <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
-                </div>
-              </div>
-            </div>
 
-            <div class="mt-3 py-1 text-center">
-              <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
-            </div>
-          </form>
+<div class="container-fluid usersettings-page" id="wrapper">
+
+<div class="col-md-6 ml-auto mr-5 usersettings-content">
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab2" role="tab">Wachtwoord veranderen</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link panel-name" data-toggle="tab" href="#tab3" role="tab">Verkoper worden</a>
+  </li>
+</ul>
+<div class="tab-content">
+
+<div class="tab-pane fade in show active" id="tab1" role="tabpanel">
+  <form method="post" action="">
+    <div class="userpage-form-header">
+      <h1>Naam</h1>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
+          <label class="black-text" for="firstname">Voornaam</label>
+      </div>
+    </div>
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
+          <label class="black-text" for="lastname">Achternaam</label>
         </div>
+      </div>
+    </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Selecteer uw land">
+            <div class="form-requirements">
+              <ul>
+                <li>Minimaal 2 tekens</li>
+                <li>Maximaal 48 tekens</li>
+                <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+                <li>Wordt nog vervangen met dropdown list</li>
+              </ul>
+            </div>
+            <label style="black-text" for="country">Land</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="userpage-form-header">
+      <h1>Contactgegevens</h1>
+    </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+            <div class="form-requirements">
+              <ul>
+                <li>Vier cijfers gevolgd door twee hoofdletters</li>
+              </ul>
+            </div>
+            <label style="black-text" for="postalcode">Postcode</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
+            <label style="black-text" for="city">Plaatsnaam</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" >
+          <div class="md-form form-group">
+            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-z ]+ [0-9]+[A-z]{0,1}">
+            <label style="black-text" for="address1">Adres</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
+            <label style="black-text" for="email">E-Mail</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form form-group">
+            <input type="email" class="form-control" name="emailcheck" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
+            <label style="black-text" for="emailcheck">E-Mail herhalen</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-4">
+          <div class="md-form">
+            <input type="number" class="form-control" name="phone1" id="phone1" value="<?=$results['telefoonnummer']?>" required placeholder="Vul hier uw telefoonnummer in">
+            <label style="black-text" for="phone1">Telefoonnummer #1</label>
+          </div>
+        </div>
+          <div class="col-md-4">
+            <div class="md-form">
+              <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
+              <label style="black-text" for="phone2">Telefoonnummer #2</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="md-form">
+              <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
+              <label style="black-text" for="phone3">Telefoonnummer #3</label>
+            </div>
+          </div>
+        </div>
+        <div class="userpage-form-header">
+          <h1>Geheime vraag</h1>
+        </div>
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="md-form">
+              <select name="secretQuestion" class="form-control">
+          <?=$secret_question_options?>
+        </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="md-form">
+              <label for="secretAnswer">Geheim antwoord</label>
+              <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+            </div>
+          </div>
+        </div>
+      </div>
         <!-- Settings to change current password -->
         <div class="tab-pane fade" id="tab2" role="tabpanel" <form method="post" action="">
           <div class="userpage-form-header">
@@ -283,6 +319,7 @@ These values are for debugging purposes and are visible by inspecting the page s
           </div>
 
           <div class="md-form">
+
             <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
             <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
           </div>

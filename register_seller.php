@@ -85,6 +85,9 @@ if(isset($_POST['registerseller'])){
 
 
 <form method="post" action="">
+	<div class="userpage-form-header">
+		<h1>Verkoper worden</h1>
+	</div>
 
 	<div class="md-form">
 		<select name="checkoption" id="checkoption" class="form-control" required>
@@ -109,7 +112,9 @@ if(isset($_POST['registerseller'])){
 		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
 	</div>
 
-	<button type="submit" name="registerseller">Word verkoper</button>
+	<div class="py-1 mt-3 text-center">
+  <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+</div>
 </form>
 <script>
 function updateForm() {

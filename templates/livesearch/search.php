@@ -8,7 +8,7 @@
 
 
 <form class="search_overlay-form">
-  <input class="search_overlay-input niagara" id="search" type="search" placeholder="Zoeken..."/>
+  <input class="search_overlay-input niagara" id="livesearch" type="search" placeholder="Zoeken..."/>
   <button class="search_overlay-submit" type="submit">Search</button>
 </form>
-<div id="display"></div>
+<div id="displaySearch"></div>

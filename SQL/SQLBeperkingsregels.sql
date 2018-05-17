@@ -4,13 +4,18 @@ Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Jan
 Datum: 24-04-2018
 */
 
+use iConcept;
+
 /* B1 */
+/*
 ALTER TABLE Verkoper 
 DROP CONSTRAINT CHK_IsVerkoper;
 GO
 
 DROP FUNCTION dbo.IsVerkoper;
 GO
+Gecomment, besproken met productowner, het is niet mogelijk om het uit te voeren want waar moeten de gegevens voordat een koper geverifieerd is? Tijdelijk tabel onhandig.
+*/ 
 
 /* B2 */
 ALTER TABLE Verkoper
@@ -54,6 +59,7 @@ GO
 /* B1 Tabellen Verkoper en Gebruiker:
 Kolom Verkoper(Gebruiker) moet uitsluitend alle gebruikers bevatten, die in kolom Gebruiker(Verkoper?) de waarde ‘wel’ hebben. */
 
+/* 
 CREATE FUNCTION dbo.IsVerkoper (@gebruikersnaam VARCHAR(25))
 RETURNS BIT
 AS
@@ -71,6 +77,9 @@ ALTER TABLE Verkoper
 ADD CONSTRAINT CHK_IsVerkoper 
 CHECK (dbo.IsVerkoper(gebruikersnaam) = 1)
 GO
+Gecomment, besproken met productowner, het is niet mogelijk om het uit te voeren want waar moeten de gegevens voordat een koper geverifieerd is? Tijdelijk tabel onhandig.
+
+*/
 
 
 

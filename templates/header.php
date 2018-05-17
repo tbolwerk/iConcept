@@ -61,8 +61,14 @@ switch($current_page){
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Navigation bar styling -->
+    <link rel="stylesheet" href="css/nav.css">
+    <!-- Login and register forms styling -->
+    <link rel="stylesheet" href="css/register-login-styles.css">
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
+    <!-- Styling for the index page -->
+    <link rel="stylesheet" href="css/index.css">
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">

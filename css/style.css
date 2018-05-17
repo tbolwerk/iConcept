@@ -65,6 +65,10 @@ p {
   display: none;
 }
 
+input:focus + .form-requirements {
+  display: block;
+}
+
 .elegant {
   background-color: #2e2e2e;
 }

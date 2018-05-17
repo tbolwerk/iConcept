@@ -25,6 +25,7 @@ function verificationSeller($username,$code)
 			$statement->execute(array($username));
 			$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
 			$statement->execute(array($username));
+			$_SESSION['seller'] = 1;
 		} catch (PDOException $e) {
 			$error = $e;
 			echo $error;

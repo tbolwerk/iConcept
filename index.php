@@ -22,9 +22,8 @@ function myTimer() {
 
 <!-- </div> -->
 <div class="view index-header">
-    <img src="https://images.unsplash.com/photo-1453060590797-2d5f419b54cb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f42332c3b8e749209b9ce1c2f7d212d0&auto=format&fit=crop&w=2250&q=80" class="img-fluid" height="450">
-    <div class="mask index-banner pattern-5">
-    <div class="mask index-banner rgba-cyan-light">
+    <img src="img/bgs/home-bg.png" class="" height="350">
+    <div class="mask index-banner rgba-niagara-strong">
         <h1 class="white-text banner-text">EenmaalAndermaal</h1>
         <h3 class="white-text">...verkocht! Zo simpel is het</h3>
     </div>
@@ -32,7 +31,7 @@ function myTimer() {
 </div>
 
  <!-- Include file for the carousel on the index page -->
-<?php include "templates/carousel.php";?>
+<?php include 'templates/carousel.php'; ?>
 
 
 
@@ -61,18 +60,34 @@ function myTimer() {
       </div>
     </div>
 
- <!-- <div class="container-fluid mt-3 mb-3" style="background-color: #4584A4; height: 350px;">
-   <div class="">
-     <h1 style="text-align: center">Hoe werkt het?</h1>
+    <!-- "Hoe werkt het?" section -->
+ <div class="container-fluid mt-3 mb-3" style="background-color: #4584A4;">
+   <div class="pt-3 white-text">
+     <h1 style="text-align: center; font-weight: bold;">Hoe werkt het?</h1>
    </div>
-   <div class="row">
+   <div class="row ml-3 mr-3 pb-3">
      <div class="col-md-4">
-       <img src="" alt="test">
+       <img src="https://picsum.photos/500/350?image=532" class="img-fluid" alt="test" style="border-radius: 5px">
+       <div class="mt-2">
+       <h4 class="white-text" style="text-align: center;">Registreer jezelf via de website</h4>
+     </div>
+     </div>
+     <div class="col-md-4">
+       <img src="https://picsum.photos/500/350?image=120" class="img-fluid" alt="test" style="border-radius: 5px">
+       <div class="mt-2">
+       <h4 class="white-text" style="text-align: center;">Activeer je account</h4>
+     </div>
+     </div>
+     <div class="col-md-4">
+       <img src="https://picsum.photos/500/350?image=421" class="img-fluid" alt="test" style="border-radius: 5px">
+       <div class="mt-2">
+       <h4 class="white-text" style="text-align: center;">Bieden maar!</h4>
+     </div>
      </div>
    </div>
- </div> -->
+ </div>
 
 
 </main>
 <!--Main Layout-->
-<?php include 'templates/footer.php';?>
+<?php include 'templates/footer.php'; ?>

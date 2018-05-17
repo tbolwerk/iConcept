@@ -1,5 +1,63 @@
 <?php
 require('connect.php');
+function livesearch($post_livesearch){
+  global $dbh;
+  global $rubrieken;
+  global $subrubrieken;
+  global $veilingen;
+
+//Getting value of "search" variable from "script.js".
+$return ="";
+$rubrieken="";
+$name = $post_livesearch;
+  // $name = $_POST['livesearch'];
+  try{
+  $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder=-1");
+  $statement->execute(array("%".$name."%"));
+}catch(PDOException $e){
+  $error = $e;
+}
+
+  while($row = $statement->fetch()){
+    $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknummer = $row['rubrieknummer'];
+    $function = "fill('".$rubrieknaam."')";
+    $rubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
+  }
+  //Sub-rubrieken
+  $subrubrieken="";
+  try{
+    $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder!=-1 AND rubrieknummerOuder!=1");
+    $statement->execute(array("%".$name."%"));
+  }catch(PDOException $e){
+    $error = $e;
+  }
+
+  while($row = $statement->fetch()){
+    $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknummer = $row['rubrieknummer'];
+    $function = "fill('".$rubrieknaam."')";
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
+  }
+
+  $veilingen="";
+  try{
+    $statement = $dbh->prepare("SELECT * FROM Voorwerp where titel LIKE ?");
+    $statement->execute(array("%".$name."%"));
+  }catch(PDOException $e){
+    $error = $e;
+  }
+
+  while($row = $statement->fetch()){
+    $voorwerptitel = $row['titel'];
+    $voorwerpnummer = $row['voorwerpnummer'];
+    $function = "fill('".$rubrieknaam."')";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h3>".$voorwerptitel."</h3></li></a>";
+  }
+
+
+}
+
 function displayColumn(){
 	global $dbh;
 	global $column;
@@ -61,7 +119,7 @@ function displayAuction()
 		$data = $dbh->query("select * from Voorwerp");
 		while ($row = $data->fetch()) {
 
-			$auction.="  <div class='col-md-4'>
+			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
               <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
@@ -76,9 +134,10 @@ function displayAuction()
                 </p>
               </div>
               <hr />
-              <ul class='list-unstyled list-inline'>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
-                <li class='list-inline-item pr-2'><i class='fa fa-lg fa-clock pr-2'></i></li>
+              <ul class='list-unstyled list-inline d-flex'>
+                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+								<div class='card-line'></div>
+                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$row['looptijd']."</li>
               </ul>
             </div>
 
@@ -291,6 +350,15 @@ function login($username_input,$password)
 					$error['password'] = "wachtwoord klopt niet";
 				}
 				if($password_result && $username_result) {
+						try {//checks if user needs verification
+							$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
+							$statement->execute(array($username));
+							$results = $statement->fetch();
+						} catch (PDOException $e) {
+								$error=$e;
+								echo $error;
+						}
+						$_SESSION['seller'] = $results[0];
             $_SESSION['username'] = $username_result['gebruikersnaam'];
 						header('Location: index.php');
         }
@@ -362,53 +430,38 @@ try {
 }
 }
 
-function addPicture($picture,$file_name){
-	// $file = array();
-	// foreach ($picture as $key1 => $value1) {
-	// 	foreach ($value1 as $key2 => $value2) {
-	// 	$file[$key2][$key1] = $value2;
-	// }
-	// }
-global $error;
-global $dbh;
+//Takes an image and stores it as {username}.png in /img/avatar
+function addAvatar($file, $username){
+	global $error;
+	global $dbh; //database object
 
-$error="";
-//in production
-$file = $picture;
-$error="";
-//in production
-	 $allowedExts = array("png");
-				$tmp_extension = explode(".", $file["name"]);
-				$extension = end($tmp_extension);
-				if (
-						(
-							 ($file["type"] == "image/gif")
-						|| ($file["type"] == "image/jpeg")
-						|| ($file["type"] == "image/png")
-						|| ($file["type"] == "image/pjpeg")
-						)
-						&& ($file["size"] < 2000000)
-						&& in_array($extension, $allowedExts))
-					{
-				 if ($file["error"] > 0)
-								{
-										$error.= "Return Code: " . $file["error"] . "<br />";
-								} else {
-										$error.= "Upload: " . $file["name"] . "<br />";
-										$error.= "Type: " . $file["type"] . "<br />";
-										$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
-										$error.= "Temp file: " . $file["tmp_name"] . "<br />";
-										move_uploaded_file($file["tmp_name"],
-										"img/avatar/" . $_SESSION["username"] . "." . $extension);
-										$error.= "Stored in: " . "img/avatar/" . $file_name . "." . $extension;
-								}
-					}    else {
+	$error="";
 
-						$error.= $file["type"]."<br />";
-							$error.= "Invalid file try another Image";
-					}
+	//If the file is a supported image
+	if ((
+			 ($file["type"] == "image/jpeg")
+		|| ($file["type"] == "image/png")
+		|| ($file["type"] == "image/pjpeg")
+	) && ($file["size"] < 4000000)) {
+		if ($file["error"] > 0) {
+			$error.= "Return Code: " . $file["error"] . "<br />";
+		} else {
+			$error.= "Upload: " . $file["name"] . "<br />";
+			$error.= "Type: " . $file["type"] . "<br />";
+			$error.=  "Size: " . ($file["size"] / 1024) . " Kb<br />";
+			$error.= "Temp file: " . $file["tmp_name"] . "<br />";
+
+			//Move and rename uploaded image
+			$filename = "img/avatar/" . $username . ".png";
+			move_uploaded_file($file["tmp_name"], $filename);
+
+			$error.= "Stored in: " . $filename;
+		}
+	} else {
+		$error.= $file["type"]."<br />";
+		$error.= "Verkeerd bestand, selecteer een nieuwe";
+	}
 }
-
 
 function mailUser($username, $soort){
 	//

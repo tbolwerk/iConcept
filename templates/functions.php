@@ -94,6 +94,14 @@ function displayAuction()
 	try{
 		$data = $dbh->query("select * from Voorwerp");
 		while ($row = $data->fetch()) {
+      $looptijd = $row['looptijd'];
+      $looptijdbegindag =strtotime($row['looptijdbegindag']);
+      $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
+      $countdown_date = date("Y-m-d",$looptijdbegindag);
+      $countdown_time = date("h:i:s",$looptijdbegintijdstip);
+      $countdown = $countdown_date . " " . $countdown_time;
+
+
 
 			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
@@ -113,7 +121,7 @@ function displayAuction()
               <ul class='list-unstyled list-inline d-flex'>
                 <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
 								<div class='card-line'></div>
-                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$row['looptijd']."</li>
+                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$countdown."</li>
               </ul>
             </div>
 
@@ -123,7 +131,8 @@ function displayAuction()
                 </div>
               </a>
             </div>
-          </div>";
+          </div>
+          ";
 		}
 	}catch(PDOException $e){
 		$error = $e;
@@ -336,7 +345,7 @@ function login($username_input,$password)
 						}
 						$_SESSION['seller'] = $results[0];
             $_SESSION['username'] = $username_result['gebruikersnaam'];
-            
+
 						header('Location: index.php');
         }
 			}

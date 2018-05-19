@@ -17,7 +17,7 @@
 /* Position the content inside the overlay */
 .overlay-content {
     position: relative;
-    top: 25%; /* 25% from the top */
+    top: 10%; /* 25% from the top */
     width: 100%; /* 100% width */
     text-align: center; /* Centered text/links */
     margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
@@ -45,6 +45,18 @@
     top: 20px;
     right: 45px;
     font-size: 60px;
+}
+
+.current-category h1 {
+  color: #dddbdb;
+  font-size: 60px;
+  font-weight: bold;
+  margin-bottom: 60px;
+}
+
+.category-list{
+  height: 550px;
+  overflow-y: auto;
 }
 
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */

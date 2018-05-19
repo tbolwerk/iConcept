@@ -106,6 +106,11 @@ while($row = $statement->fetch()){
 
   <!-- Overlay content -->
   <div class="overlay-content">
+    <div class="current-category">
+      <h1>Huidige rubriek: test</h1>
+    </div>
+    <div class="category-list">
 <?php echo $column; ?>
+</div>
   </div>
 </div>

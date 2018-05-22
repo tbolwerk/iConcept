@@ -285,71 +285,64 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
   }
 }
 
-
 /*login function */
-function login($username_input,$password)
+function login($username_input, $password)
 {
+  global $dbh;
+  global $error;
 
-    global $dbh;
-    global $error;
+	$username = $username_input;
+	$email = $username_input;
 
-		$username = $username_input;
-		$email = $username_input;
+  // $username=trim($username);
+  $password = trim($password);
 
-    // $username=trim($username);
-    $password=trim($password);
+  $error = array();
 
-		$error = array();
+  if (strlen($username) >= 25){
+    $error['username'] = "Username has more than 25 characters";
+  } else
+  if (strlen($password) >= 50){
+    $error['password'] = "Password has more than 50 characters";
+  } else
+  if (empty($username)){
+    $error['username'] = "Username is empty";
+  } else
+  if (empty($password)){
+    $error['password'] = "Password is empty";
+  } else {
+    try {
+    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
+    	$password_check->execute(array($username, $password, $email, $password));
+    } catch(PDOException $e){
+    	$error = $e;
+    }
+    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
+    	$error['password'] = "Wachtwoord klopt niet";
+    } else {
+      //Has the user activated his account yet?
+      $activation_check = $dbh->prepare("SELECT geactiveerd FROM Gebruiker WHERE gebruikersnaam=?");
+      $activation_check->execute(array($password_result['gebruikersnaam']));
 
-    if(strlen($username)>=50){
-         $error['username'] = "username has more than 50 characters";
-    }else
-    if(strlen($password)>=20){
-         $error['password'] = "password has more than 20 characters";
-    }else
-    if(empty($username)){
-         $error['username'] = "username is empty";
-    }else
-    if(empty($password)){
-         $error['password'] = "password is empty";
-    }else {
-        try {
-            $username_check = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? OR email=?");
-            $username_check->execute(array($username,$email));
-
+      if (!($activation_result = $activation_check->fetch(PDO::FETCH_NUM)[0])) {
+        $error['verification'] = "Account is nog niet geactiveerd";
+      } else {
+        try {//checks if user needs verification
+        	$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
+        	$statement->execute(array($password_result['gebruikersnaam']));
+        	$results = $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $error = $e;
+      		$error=$e;
+      		echo $error;
         }
+        $_SESSION['seller'] = $results['gebruikersnaam'];
+        $_SESSION['username'] = $password_result['gebruikersnaam'];
+        $_SESSION['email'] = $password_result['email'];
 
-
-        if (!($username_result = $username_check->fetch(PDO::FETCH_ASSOC))) {
-             $error['username'] = "gebruikersnaam klopt niet";
-        }
-				try{
-					$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-					$password_check->execute(array($username,$password,$email,$password));
-				}catch(PDOException $e){
-					$error = $e;
-				}
-				if(!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
-					$error['password'] = "wachtwoord klopt niet";
-				}
-				if($password_result && $username_result) {
-						try {//checks if user needs verification
-							$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
-							$statement->execute(array($username));
-							$results = $statement->fetch();
-						} catch (PDOException $e) {
-								$error=$e;
-								echo $error;
-						}
-						$_SESSION['seller'] = $results[0];
-            $_SESSION['username'] = $username_result['gebruikersnaam'];
-
-						header('Location: index.php');
-        }
-			}
-
+        header('Location: index.php');
+      }
+    }
+  }
 }
 
 function random_password( $length = 8 ) {

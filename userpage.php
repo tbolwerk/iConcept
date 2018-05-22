@@ -138,7 +138,6 @@ while ($question = $data->fetch()) {
       <h1 class="white-text banner-text">Accountinstellingen</h1>
     </div>
   </div>
-  </div>
   <!-- Profile picture -->
   <div id="wrapper">
     <div class="left col-lg-4">

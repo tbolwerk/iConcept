@@ -5,16 +5,23 @@ require_once('templates/header.php');
 function updatePhones() {
   global $dbh;
 
+  //Receive all phone numbers associated with this account
   $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
   $statement->execute(array($_SESSION['username']));
   $phones = $statement->fetchAll();
 
   $numbersToKeep = array();
 
-  insertNumberUnderSpecificConditions($_POST['phone1'], $phones, $numbersToKeep);
-  insertNumberUnderSpecificConditions($_POST['phone2'], $phones, $numbersToKeep);
-  insertNumberUnderSpecificConditions($_POST['phone3'], $phones, $numbersToKeep);
+  //Put all submitted numbers in an array and strip all duplicate numbers
+  $submittedPhones = array_unique(array($_POST['phone1'], $_POST['phone2'], $_POST['phone3']));
 
+  //Make sure all numbers are present in the database
+  foreach ($submittedPhones as $submittedPhone) {
+    if ($submittedPhone != "") {
+      insertNumber($submittedPhone, $phones, $numbersToKeep);
+    }
+  }
+  //Delete all phones associated with this account that shouldn't be kept
   foreach ($phones as $phone) {
     $hit = 0;
 
@@ -30,22 +37,25 @@ function updatePhones() {
   }
 }
 
-function insertNumberUnderSpecificConditions($number, $phones, &$numbersToKeep) {
+//Insert a number into the database if the number can't be found in the $phones array, which should contain
+// all numbers in the database associated with this account
+function insertNumber($number, $phones, &$numbersToKeep) {
   global $dbh;
 
-  if ($number != "") {
-    $hit = 0;
-    foreach ($phones as $phone) {
-      if ($number == $phone['telefoonnummer']) {
-        $hit = 1;
-      }
+  $hit = 0;
+  foreach ($phones as $phone) {
+    if ($number == $phone['telefoonnummer']) {
+      $hit = 1;
     }
-    if ($hit == 0) {
-      $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
-      $statement->execute(array($_SESSION['username'], $number));
-    }
-    array_push($numbersToKeep, $number);
   }
+  //If the phone can't be found in the database
+  if ($hit == 0) {
+    //Insert it
+    $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
+    $statement->execute(array($_SESSION['username'], $number));
+  }
+  //This number should not be deleted
+  array_push($numbersToKeep, $number);
 }
 
 //If user submits updated account data
@@ -175,8 +185,6 @@ These values are for debugging purposes and are visible by inspecting the page s
 <?php print_r($questions); ?><br>
 <br>
 -->
-
-
 
 <div class="container-fluid usersettings-page" id="wrapper">
 
@@ -387,7 +395,6 @@ These values are for debugging purposes and are visible by inspecting the page s
           </div>
 
           <div class="md-form">
-
             <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
             <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
           </div>

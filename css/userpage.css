@@ -91,10 +91,6 @@
   color: #2e2e2e;
 }
 
-.userpage-header {
-  font-size: 5rem;
-}
-
 .tab-content {
   padding: 20px;
   background: #FFFFFF;
@@ -129,14 +125,5 @@
   }
   .usersettings-content .panel-name {
     font-size: 17px;
-  }
-  .userpage-header {
-    font-size: 4.5rem;
-  }
-}
-
-@media only screen and (max-width: 650px) {
-  .userpage-header {
-    font-size: 3rem;
   }
 }

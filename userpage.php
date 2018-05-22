@@ -135,7 +135,7 @@ while ($question = $data->fetch()) {
   <div class="view index-header">
     <img src="img/bgs/account-bg.png" class="" height="350">
     <div class="mask index-banner rgba-niagara-strong">
-      <h1 class="white-text userpage-header">Accountinstellingen</h1>
+      <h1 class="white-text banner-text">Accountinstellingen</h1>
     </div>
   </div>
   </div>

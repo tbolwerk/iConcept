@@ -76,3 +76,21 @@ input:focus + .form-requirements {
 footer.page-footer a {
   color: #fff;
   font-size: 15px !important;
+}
+
+.banner-text {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 992px) {
+  .banner-text {
+    font-size: 4.5rem;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .banner-text {
+    font-size: 3rem;
+  }
+}

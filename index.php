@@ -24,7 +24,7 @@ function myTimer() {
 <div class="view index-header">
     <img src="img/bgs/home-bg.png" class="" height="350">
     <div class="mask index-banner rgba-niagara-strong">
-        <h1 class="white-text banner-text">EenmaalAndermaal</h1>
+        <h1 class="white-text index-text banner-text">EenmaalAndermaal</h1>
         <h3 class="white-text">...verkocht! Zo simpel is het</h3>
     </div>
   </div>

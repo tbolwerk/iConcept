@@ -54,10 +54,14 @@ displayCarousel();
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
-<?=$carousel?>
-
-
-  </div>
+      <?=$carousel?>
+    <div class="carousel-item">
+      <?=$carousel?>
+    </div>
+    <div class="carousel-item">
+      <?=$carousel?>
+    </div>
+    
   <!--/.Third slide-->
 
 </div>

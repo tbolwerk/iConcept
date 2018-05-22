@@ -69,6 +69,8 @@ switch($current_page){
     <link href="css/style.css" rel="stylesheet">
     <!-- Styling for the index page -->
     <link rel="stylesheet" href="css/index.css">
+    <!-- Category page styling -->
+    <link rel="stylesheet" href="css/rubriek.css">
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">

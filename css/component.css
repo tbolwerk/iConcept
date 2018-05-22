@@ -314,6 +314,12 @@ input[type="search"] { /* reset normalize */
 	color: #4584A4;
 }
 
+.dummy-media-object h6 {
+  font-weight: bold !important;
+  color: #4584a4 !important;
+  margin: 0 !important;
+}
+
 /* Overlay */
 .overlay_search {
 	position: fixed;

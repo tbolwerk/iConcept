@@ -38,7 +38,7 @@ $name = $post_livesearch;
     $rubrieknaam = $row['rubrieknaam'];
     $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h6>Vorige rubriek</h6><h3>".$rubrieknaam."</h3></li></a>";
   }
 
   $veilingen="";
@@ -54,7 +54,7 @@ $name = $post_livesearch;
     $voorwerptitel = $row['titel'];
     $voorwerpnummer = $row['voorwerpnummer'];
     $function = "fill('".$rubrieknaam."')";
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h3>".$voorwerptitel."</h3></li></a>";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>Vorige rubriek</h6><h3>".$voorwerptitel."</h3></li></a>";
   }
 
 

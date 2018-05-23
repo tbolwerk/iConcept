@@ -53,6 +53,14 @@ p {
   margin-bottom: auto;
 }
 
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
 .list-inline-item p {
   margin: 2px;
 }

@@ -300,8 +300,10 @@ input[type="search"] {
   color: rgba(145, 145, 145, 0.7);
 }
 
-.dummy-media-object:hover h3 {
-  color: rgba(236, 90, 98, 1);
+.dummy-media-object h6 {
+  font-weight: bold !important;
+  color: #4584a4 !important;
+  margin: 0 !important;
 }
 
 /* Overlay */

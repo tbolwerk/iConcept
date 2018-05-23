@@ -1,0 +1,26 @@
+.flex-parent {
+  display: flex
+}
+
+.category-sidebar {
+  background-color: #eeeeee;
+  height: 100%;
+  padding: 0 0 !important;
+}
+.category-title h3 {
+    text-align: center;
+    padding: 30px 0 0 0;
+    font-weight: bold;
+}
+
+
+
+
+.category-page {
+
+}
+.category-content {
+  height: 100%;
+  max-width: 100%;
+  padding: 20px;
+}

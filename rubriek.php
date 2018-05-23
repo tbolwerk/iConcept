@@ -1,6 +1,7 @@
 <?php
   $current_page='rubriek';
   require_once ('templates/header.php');
+  
 ?>
 <div class="view index-header">
   <img src="img/rubriek/car-boats-motorcycles.png" class="" height="350">

@@ -37,6 +37,7 @@ $carousel.=	'			<div class="col-md-3">
     <div class="carousel-inner" role="listbox">
 			<div class="carousel-item active">
 <?=$carousel?>
+</div>
 			<!-- Second slide -->
 			<div class="carousel-item">
 <?=$carousel?>
@@ -53,4 +54,3 @@ $carousel.=	'			<div class="col-md-3">
 
 </div>
 <!--/.Carousel Wrapper-->
-</div>

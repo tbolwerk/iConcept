@@ -28,18 +28,25 @@ $name = $post_livesearch;
   $subrubrieken="";
   //zoekt in subrubrieken
   try{
-    $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder!=-1 AND rubrieknummerOuder!=1");
+    $statement = $dbh->prepare("SELECT kind.rubrieknummer,kind.rubrieknaam,kind.rubrieknummerOuder,ouder.rubrieknaam as 'ouderRubriek'
+FROM Rubriek kind INNER JOIN Rubriek ouder ON kind.rubrieknummerOuder = ouder.rubrieknummer
+WHERE kind.rubrieknaam LIKE ?");
     $statement->execute(array("%".$name."%"));
+
   }catch(PDOException $e){
     $error = $e;
   }
-
   while($row = $statement->fetch()){
+
     $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknaamOuder = $row['ouderRubriek'];
     $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h6>Vorige rubriek</h6><h3>".$rubrieknaam."</h3></li></a>";
+      if($row['rubrieknummerOuder'] !=-1){
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h6>".$rubrieknaamOuder."</h6><h3>".$rubrieknaam."</h3></li></a>";
+}
   }
+
 
   $veilingen="";
   //zoekt in veilingen
@@ -51,10 +58,15 @@ $name = $post_livesearch;
   }
 
   while($row = $statement->fetch()){
+
+
     $voorwerptitel = $row['titel'];
     $voorwerpnummer = $row['voorwerpnummer'];
+
     $function = "fill('".$rubrieknaam."')";
+
     $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>Vorige rubriek</h6><h3>".$voorwerptitel."</h3></li></a>";
+
   }
 
 

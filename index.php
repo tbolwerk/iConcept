@@ -4,14 +4,7 @@ require_once('templates/header.php');
 displayAuction();
 ?>
 
-<script>
-var myVar = setInterval(myTimer, 1000);
 
-function myTimer() {
-    var d = new Date();
-    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
-}
-</script>
 <!--Main Navigation-->
 <!-- <div class="index-header"> -->
 

@@ -20,29 +20,46 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- JavaScript for the sidemenu on category page -->
+    <script type="text/javascript" src="js/jquery.flypanels.min.js"></script>
     <!-- Classie.js -->
     <script type="text/javascript" src="js/classie.js"></script>
     <!-- Rubrieken overlay JavaScript -->
     <script type="text/javascript" src="js/category_overlay.js"></script>
     <script type="text/javascript" src="js/search_overlay.js"></script>
+    <!-- JavaScript for the sidebar on the category page to collapse items -->
+    <script type="text/javascript" src="js/kitUtils.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('.flypanels-container').flyPanels({
+          treeMenu: {
+            init: true
+          },
+        });
+        FastClick.attach(document.body);
+      });
+    </script>
 
     <script type="text/javascript">
 
+    $('.carousel').carousel({
+      interval: 5000
+    })
     $('.carousel[data-type="multi"] .item').each(function() {
-	var next = $(this).next();
-	if (!next.length) {
-		next = $(this).siblings(':first');
-	}
-	next.children(':first-child').clone().appendTo($(this));
+    var next = $(this).next();
+    if (!next.length) {
+      next = $(this).siblings(':first');
+    }
+    next.children(':first-child').clone().appendTo($(this));
 
 
-  if (next.next().length>0) {
-  next.next().children(':first-child').clone().appendTo($(this));
-}
-else {
-  $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-}
-});
+    if (next.next().length > 0) {
+      next.next().children(':first-child').clone().appendTo($(this));
+    } else {
+      $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+    }
+    });
     </script>
 
     <script>

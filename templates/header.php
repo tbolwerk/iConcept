@@ -79,9 +79,15 @@ switch($current_page){
     <!-- Rubrieken overlay styling -->
     <link rel="stylesheet" href="css/rubrieken_overlay.css">
 
-<?php if ($current_page == 'userpage') {
-  echo "<!-- userpage styling -->
-  <link rel='stylesheet' href='css/userpage.css'>";
+<?php
+  switch ($current_page) {
+    case 'userpage':
+      echo "<!-- userpage styling -->
+      <link rel='stylesheet' href='css/userpage.css'>";
+      break;
+    case 'rubriek':
+      echo "<link rel='stylesheet' href='css/flyPanels.css'>";
+      break;
 } ?>
 
 

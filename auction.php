@@ -37,6 +37,7 @@ if(empty($_GET['voorwerpnummer'])){
     $auctionInfo.="Beschrijving: ".$row['beschrijving'];
   }
 }
+include "timer.php";
 ?>
 
 <?php

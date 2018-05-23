@@ -1,7 +1,6 @@
-html, body {
-	height: 100%;
-	overflow: hidden;
-}
+/*
+	Styling for the search overlay that's imbedded into the navbar
+ */
 
 *, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
 .clearfix:before, .clearfix:after { content: ''; display: table; }
@@ -313,6 +312,12 @@ input[type="search"] { /* reset normalize */
 
 .dummy-media-object:hover h3 {
 	color: #4584A4;
+}
+
+.dummy-media-object h6 {
+  font-weight: bold !important;
+  color: #4584a4 !important;
+  margin: 0 !important;
 }
 
 /* Overlay */

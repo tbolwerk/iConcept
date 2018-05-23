@@ -1,12 +1,20 @@
-/* Your custom styles */
-html, body {font-family: 'Montserrat', sans-serif; height:auto;}
+/*
+  Custom styles for the whole website
+*/
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 nav a {
   font-size: 25px;
   color: #FFFFFF;
 }
+
 a:hover {
   color: #FFFFFF;
 }
+
 p {
   margin: 5px;
 }
@@ -15,68 +23,21 @@ p {
   background-color: #4584a4b3 !important;
 }
 
-.view-main-header {
-  background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+.niagara {
+  color: #4584A4 !important;
 }
 
 .bg {
-    position: fixed;
-    background-position: center;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: -1;
-    background-size: cover;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
-
-.bg-home {
-  background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(1).jpg");
-}
-.bg-login {
-  background-image: url("../img/bgs/login-bg.png");
-}
-.auction-card {
-  margin: 20px 0;
-}
-
-.card-title {
-  overflow-x: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-.card-text {
-  overflow-y: auto;
-  height: 60px;
-}
-
-.card-line {
-  border-left: 1px solid #d2d2d2;
-    margin: 0 10px;
-}
-
-.card-login {
-  margin-top: 100px;
-  background: #3333335e;
-}
-
-.navbar {
-  background-color: #3D3D3D;
-  /* position: fixed;
-  width: 100%;
-  z-index: 10; */
-}
-
-.nav a {
-  color: #FFFFFF;
-}
-.nav .fa {
-  color: white;
+  position: fixed;
+  background-position: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-size: cover;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .mdb-blue {
@@ -84,12 +45,14 @@ p {
   height: 50px;
   border-radius: 0 0 5px 5px;
 }
+
 .mdb-blue a {
   color: #FFFFFF;
   font-size: 25px;
   margin-top: auto;
   margin-bottom: auto;
 }
+
 .list-inline-item p {
   margin: 2px;
 }
@@ -98,182 +61,36 @@ p {
   flex: 1;
 }
 
-/*
-  Index page styles
- */
-
-.index-header {
-  height: 350px;
-  background: #4584A4;
-  margin-top: 75px;
+.form-requirements {
+  display: none;
 }
 
-.banner-text{
-  font-weight: bold;
-    font-size: 5em;
-    margin-bottom: 2px;
-}
-
-.index-banner {
-  text-align: center;
-  padding-top: 65px;
-}
-.index-banner h1 {
-  font-weight: bold;
-  color: white;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.banner-image{
-  height: 30% !important;
-}
-.banner-image img {
-
-}
-
-
-
-
-.veiling-bieden a:hover {
-  color: #FFFFFF;
-}
-
-.small-font {
-  font-size: 12px;
-}
-
-.card-body ul {
-  margin: 0px;
-  text-align: center;
-  max-height: 25px;
-}
-
-.login-form-header {
-  color: #fff;
-    text-align: center;
-    margin-top: -3.13rem;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    -webkit-border-radius: .125rem;
-    border-radius: 5px;
-    /* background: linear-gradient(40deg,#4584a4,#a5a5a5)!important; */
-}
-
-.login-logo {
-  display: inline-block;
-  margin-right: 1rem;
-  font-size: 1.25rem;
-  line-height: inherit;
-  position: absolute;
-  padding: 1.2rem 0 0 2rem;
-}
-.login-logo img {
-  width: 50%;
-}
-
-.blur {
-  filter: blur(5px);
-  position: absolute;
-  overflow: hidden;
-  top: -50px;
-  left: -50px;
-  right: -50px;
-  bottom: -50px;
-}
-.md-form {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 0 10px 0;
-}
-
-.niagara{
-  color: #4584A4 !important;
+input:focus + .form-requirements {
+  display: block;
 }
 
 .elegant {
   background-color: #2e2e2e;
 }
 
-.login-register-card {
-  background: #1313133b;
-}
-
-.materialFormRegisterConfirmEx {
-  color: #c40000 !important;
-}
-
-.navbar.navbar-dark .breadcrumb .nav-item.active>.nav-link, .navbar.navbar-dark .navbar-nav .nav-item.active>.nav-link {
-  color: #4584A4;
-  background: none;
-}
-
-.nav-search .waves-input-wrapper {
-  display: inline !important;
-}
-
-.nav-search input {
-  /* background-color: #4E4E4E; */
-  border: none;
-  font-size: 23px;
-  color: #888888;
-}
-
-.nav-search input:focus {
-  color: #888888;
-  /* background-color: #4E4E4E; */
-}
-.vl {
-  border-left: 2px solid #4E4E4E;
-  height: 40px;
-  margin-left: 20px;
-  margin-right: 10px;
-}
-
-#passwordHelp a {
-  font-size: 80%;
-  color: #ff2929;
-}
-
-input:focus:not([readonly]) + label {
-  color: #4584A4 !important;
-}
-
-input:focus:not([readonly]) {
-  border-bottom: 1px solid #4584A4 !important;
-  box-shadow: 0 1px 0 0 #4584A4 !important; */
-}
-
-
-.register-select {
-    cursor: pointer;
-    border: none;
-    border-bottom: 1px solid #ced4da;
-    outline: 0;
-    height: 2.9rem;
-    line-height: 2.9rem;
-    width: 100%;
-    font-size: 1rem;
-    margin: 0 0 .94rem 0;
-    padding: 0;
-    display: block;
-    width: 95%;
-}
- .register-select-form {
-   border: none !important;
-background: transparent !important;
-width: 100% !important;
-color: white !important;
- }
-
-
-.project-team {
-  flex-direction: row;
-  display: flex;
-
-}
-
 footer.page-footer a {
-    color: #fff;
-    font-size: 15px !important;
+  color: #fff;
+  font-size: 15px !important;
+}
+
+.banner-text {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 992px) {
+  .banner-text {
+    font-size: 4.5rem;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .banner-text {
+    font-size: 3rem;
+  }
+}

@@ -22,7 +22,13 @@ if(isset($_POST['submit'])){//if submit pressed
           <h3>Inloggen</h3>
         </div>
         <div class="red-text" style="text-align: center;font-weight: bold;">
-        <?php if(isset($error)) {echo $error['password'];} ?>
+        <?php
+        if(isset($error)) {
+          foreach ($error as $errortext) {
+            echo $errortext;
+          }
+        }
+        ?>
       </div>
         <!-- Material form login -->
         <form action="" method="post" autocomplete="on">

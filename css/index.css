@@ -1,0 +1,70 @@
+/*
+  Index page styles
+ */
+
+.index-header {
+  height: 350px;
+  background: #4584A4;
+  margin-top: 75px;
+}
+
+.index-text {
+  margin-bottom: 2px;
+}
+
+.index-banner {
+  text-align: center;
+  padding-top: 65px;
+}
+
+.index-banner h1 {
+  font-weight: bold;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.banner-image {
+  height: 30% !important;
+}
+
+.veiling-bieden a:hover {
+  color: #FFFFFF;
+}
+
+.auction-card {
+  margin: 20px 0;
+}
+
+.card-title {
+  overflow-x: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.card-text {
+  overflow-y: auto;
+  height: 60px;
+}
+
+.card-line {
+  border-left: 1px solid #d2d2d2;
+  margin: 0 10px;
+}
+
+.small-font {
+  font-size: 12px;
+}
+
+.card-body ul {
+  margin: 0px;
+  text-align: center;
+  max-height: 25px;
+}
+
+.md-form {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 0 10px 0;
+}

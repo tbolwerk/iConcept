@@ -2,40 +2,97 @@
 $current_page='userpage';
 require_once('templates/header.php');
 
-//If user submits updated account data
-if(isset($_POST['tab1submit'])){
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-	$statement->execute(array($_POST['firstname'], $_POST['lastname'], $_POST['address1'], $_POST['postalcode'], $_POST['city'], $_POST['country'], $_POST['birthdate'], $_POST['email'], $_POST['secretQuestion'], $_POST['secretAnswer'], $_SESSION['username']));
-}
+function updatePhones() {
+  global $dbh;
 
-//If user tries to change password...
-if(isset($_POST['tab2submit'])){
-  $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
+  //Receive all phone numbers associated with this account
+  $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
   $statement->execute(array($_SESSION['username']));
-  $password = $statement->fetch();
-  //...and provides his current password
-  if ($password[0] == $_POST['currentPassword']) {
-    //changePassword() can be found in functions.php
-    changePassword($_POST['newPassword']);
+  $phones = $statement->fetchAll();
+
+  $numbersToKeep = array();
+
+  //Put all submitted numbers in an array and strip all duplicate numbers
+  $submittedPhones = array_unique(array($_POST['phone1'], $_POST['phone2'], $_POST['phone3']));
+
+  //Make sure all numbers are present in the database
+  foreach ($submittedPhones as $submittedPhone) {
+    if ($submittedPhone != "") {
+      insertNumber($submittedPhone, $phones, $numbersToKeep);
+    }
+  }
+  //Delete all phones associated with this account that shouldn't be kept
+  foreach ($phones as $phone) {
+    $hit = 0;
+
+    foreach ($numbersToKeep as $number) {
+      if ($phone['telefoonnummer'] == $number) {
+        $hit = 1;
+      }
+    }
+    if ($hit == 0) {
+      $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
+      $statement->execute(array($phone['volgnummer']));
+    }
   }
 }
 
+//Insert a number into the database if the number can't be found in the $phones array, which should contain
+// all numbers in the database associated with this account
+function insertNumber($number, $phones, &$numbersToKeep) {
+  global $dbh;
+
+  $hit = 0;
+  foreach ($phones as $phone) {
+    if ($number == $phone['telefoonnummer']) {
+      $hit = 1;
+    }
+  }
+  //If the phone can't be found in the database
+  if ($hit == 0) {
+    //Insert it
+    $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
+    $statement->execute(array($_SESSION['username'], $number));
+  }
+  //This number should not be deleted
+  array_push($numbersToKeep, $number);
+}
+
+//If user submits updated account data
+if(isset($_POST['tab1submit'])){
+  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
+  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
+  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
+  $city = str_replace("\"", "", strip_tags($_POST['city']));
+  $country = str_replace("\"", "", strip_tags($_POST['country']));
+  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
+  $email = str_replace("\"", "", strip_tags($_POST['email']));
+  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
+  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
+  updatePhones();
+}
+
+//If user tries to change password...
+if (isset($_POST['tab2submit'])) {
+    $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
+    $statement->execute(array($_SESSION['username']));
+    $password = $statement->fetch();
+    //...and provides his current password
+    if ($password[0] == $_POST['currentPassword']) {
+        //changePassword() can be found in functions.php
+        changePassword($_POST['newPassword']);
+    }
+}
+
 //If user submits a profile picture, upload it to the server
-if(isset($_POST['change_avatar'])){
-  $username = $_SESSION['username'];
-  $picture = $_FILES['file'];
-  //addAvatar() can be found in functions.php
-  addAvatar($picture,$username);
-}
-
-if(isset($_POST['addphone'])) {
-  $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
-  $statement->execute(array($_SESSION['username'], $_POST['phone']));
-}
-
-if(isset($_POST['delete'])) {
-  $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
-	$statement->execute(array((int)$_POST['delete']));
+if (isset($_POST['change_avatar'])) {
+    $username = $_SESSION['username'];
+    $picture = $_FILES['file'];
+    //addAvatar() can be found in functions.php
+    addAvatar($picture, $username);
 }
 
 $username = $_SESSION['username'];
@@ -46,7 +103,7 @@ $statement->execute(array($username));
 $results = $statement->fetch();
 
 //Receive phone numbers for this user from database
-$statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
+$statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
 $statement->execute(array($username));
 $phones = $statement->fetchAll();
 
@@ -65,47 +122,46 @@ try {
     $error = $e;
 }
 //Construct the list by iterating over each received secret question
-while($question = $data->fetch()){
-  //The current secret question is put at the top of the list, all others are appended
-  if ($question['vraagnummer'] == $results['vraagnummer']) {
-    $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
-  } else {
-    $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
-  }
+while ($question = $data->fetch()) {
+    //The current secret question is put at the top of the list, all others are appended
+    if ($question['vraagnummer'] == $results['vraagnummer']) {
+        $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
+    } else {
+        $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+    }
 }
 ?>
-
-<div class="view index-header">
-  <img src="img/bgs/account-bg.png" class="" height="350">
-<div class="mask index-banner rgba-niagara-strong">
-  <h1 class="white-text userpage-header">Accountinstellingen</h1>
-</div>
-</div>
-</div>
-
-<div id="wrapper">
-  <div class="left col-lg-4">
-    <div class="profile-picture-settings">
-      <label for="profile-picture">
-      <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png?342038402"/>
+  <!-- Banner -->
+  <div class="view index-header">
+    <img src="img/bgs/account-bg.png" class="" height="350">
+    <div class="mask index-banner rgba-niagara-strong">
+      <h1 class="white-text banner-text">Accountinstellingen</h1>
+    </div>
+  </div>
+  <!-- Profile picture -->
+  <div id="wrapper">
+    <div class="left col-lg-4">
+      <div class="profile-picture-settings">
+        <label for="profile-picture">
+      <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png"/>
       <div class="profile-picture-overlay">
         <div class="pf-icon">
           <i class="fa fa-lg fa-plus"></i>
         </div>
       </div>
       </label>
-    </div>
-
-    <form method="post" action="" enctype="multipart/form-data">
-      <input type="file" name="file" id="profile-picture" accept="image/*">
-      <div class="profile-picture-upload">
-        <button type="submit" name="change_avatar">Upload</button>
       </div>
-    </form>
-  </div>
-</div>
 
-<!--
+      <form method="post" action="" enctype="multipart/form-data">
+        <input type="file" name="file" id="profile-picture" accept="image/png, image/jpeg">
+        <div class="profile-picture-upload">
+          <button type="submit" name="change_avatar">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--
 These values are for debugging purposes and are visible by inspecting the page source
 
 <p>ontvangen bestanden: </p>
@@ -154,176 +210,234 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw voornaam in">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="firstname">Voornaam</label>
+        </div>
       </div>
-    </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-z]+" placeholder="Vul hier uw achternaam in">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="lastname">Achternaam</label>
         </div>
       </div>
     </div>
-      <div class="form-row">
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum"> <!-- pattern="[0-9]{4,4}-[0-9]{1,2}-[0-9]{1,2}" -->
-          </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum">
         </div>
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-z]+" placeholder="Selecteer uw land">
-            <label style="black-text" for="country">Land</label>
+      </div>
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <select name="country" id="country" class="register-select-form" required>
+  <option value="" class="font-weight-light black-text disabled selected">Kies een land...</option>
+  <option value='Nederland'>Nederland</option>
+  <option value='Duitsland'>Duitsland</option>
+  <option value='Frankrijk'>Frankrijk</option>
+  <option value='België'>België</option>
+</select>
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 48 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+              <li>Wordt nog vervangen met dropdown list</li>
+            </ul>
+          </div>
+          <label style="black-text" for="country"><?=$results['land']?></label>
         </div>
       </div>
     </div>
-
     <div class="userpage-form-header">
       <h1>Contactgegevens</h1>
     </div>
-      <div class="form-row">
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
-            <label style="black-text" for="postalcode">Postcode</label>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+          <div class="form-requirements">
+            <ul>
+              <li>Vier cijfers gevolgd door twee hoofdletters</li>
+            </ul>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-z]+" placeholder="Vul uw plaatsnaam in">
-            <label style="black-text" for="city">Plaatsnaam</label>
-          </div>
+          <label style="black-text" for="postalcode">Postcode</label>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12" >
-          <div class="md-form form-group">
-            <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" required placeholder="Vul hier uw adres in">
-            <label style="black-text" for="address1">Adres</label>
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
+          <div class="form-requirements">
+            <ul>
+              <li>Minimaal 2 tekens</li>
+              <li>Maximaal 85 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
           </div>
+          <label style="black-text" for="city">Plaatsnaam</label>
         </div>
       </div>
-      <div class="form-row">
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
-            <label style="black-text" for="email">E-Mail</label>
+    </div>
+    <div class="row">
+      <div class="col-md-12" >
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <div class="form-requirements">
+            <ul>
+              <li>Straatnaam gevolgd door huisnummer</li>
+              <li>Bijvoorbeeld: De goudenstraat 25B</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="md-form form-group">
-            <input type="email" class="form-control" name="emailcheck" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
-            <label style="black-text" for="emailcheck">E-Mail herhalen</label>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="col-md-4">
-          <div class="md-form">
-            <input type="number" class="form-control" name="phone1" id="phone1" value="<?=$results['telefoonnummer']?>" required placeholder="Vul hier uw telefoonnummer in">
-            <label style="black-text" for="phone1">Telefoonnummer #1</label>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="md-form">
-            <input type="number" class="form-control" name="phone2" id="phone2" value="" placeholder="Optioneel telefoonnummer">
-            <label style="black-text" for="phone2">Telefoonnummer #2</label>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="md-form">
-            <input type="number" class="form-control" name="phone3" id="phone3" value="" placeholder="Optioneel telefoonnummer">
-            <label style="black-text" for="phone3">Telefoonnummer #3</label>
-          </div>
+          <label style="black-text" for="address1">Adres</label>
         </div>
       </div>
-
-      <div class="userpage-form-header">
-        <h1>Geheime vraag</h1>
-      </div>
-      <div class="form-row">
-        <div class="col-md-12">
-          <div class="md-form">
-            <select name="secretQuestion" class="form-control">
-              <?=$secret_question_options?>
-            </select>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
+          <div class="form-requirements">
+            <ul>
+              <li>Placeholder</li>
+              <li>Bijvoorbeeld: hermanreinhart@hotmail.com</li>
+              <li>Maximaal 100 tekens</li>
+              <li>De meeste speciale tekens worden niet toegestaan</li>
+            </ul>
           </div>
+          <label style="black-text" for="email">E-Mail</label>
         </div>
       </div>
-
-      <div class="form-row">
-        <div class="col-md-12">
-          <div class="md-form">
-            <label for="secretAnswer">Geheim antwoord</label>
-            <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required>
+      <div class="col-md-6">
+        <div class="md-form form-group">
+          <input type="email" class="form-control" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
+          <div class="form-requirements">
+            <ul>
+              <li>Moet gelijk zijn aan het andere email veld</li>
+            </ul>
           </div>
+          <label style="black-text" for="emailcheck">E-Mail herhalen</label>
         </div>
       </div>
-
-      <div class="mt-3 py-1 text-center">
+    </div>
+    <div class="form-row">
+      <div class="col-md-4">
+        <div class="md-form">
+          <input type="tel" class="form-control" name="phone1" id="phone1" value="<?php if(isset($phones[0]['telefoonnummer'])) {echo $phones[0]['telefoonnummer'];} ?>" placeholder="Vul hier uw telefoonnummer in" required pattern="[0-9]{2}-[0-9]{8}">
+          <div class="form-requirements">
+            <ul>
+              <li>XX-XXXXXXXX</li>
+            </ul>
+          </div>
+          <label style="black-text" for="phone1">Telefoonnummer #1</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="md-form">
+          <input type="tel" class="form-control" name="phone2" id="phone2" value="<?php if(isset($phones[1]['telefoonnummer'])) {echo $phones[1]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
+          <label style="black-text" for="phone2">Telefoonnummer #2</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="md-form">
+          <input type="tel" class="form-control" name="phone3" id="phone3" value="<?php if(isset($phones[2]['telefoonnummer'])) {echo $phones[2]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
+          <label style="black-text" for="phone3">Telefoonnummer #3</label>
+        </div>
+      </div>
+    </div>
+    <div class="userpage-form-header">
+      <h1>Geheime vraag</h1>
+    </div>
+    <div class="form-row">
+      <div class="col-md-12">
+        <div class="md-form">
+          <select name="secretQuestion" class="form-control">
+            <?=$secret_question_options?>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-12">
+        <div class="md-form">
+          <label for="secretAnswer">Geheim antwoord</label>
+          <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required pattern="[A-z0-9\- ]+">
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 py-1 text-center">
       <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
     </div>
   </form>
 </div>
+        <!-- Settings to change current password -->
+        <div class="tab-pane fade" id="tab2" role="tabpanel" <form method="post" action="">
+          <div class="userpage-form-header">
+            <h1>Wachtwoord wijzigen</h1>
+          </div>
+          <div class="md-form">
+            <label for="currentPassword">Huidig wachtwoord</label>
+            <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
+          </div>
 
-<div class="tab-pane fade" id="tab2" role="tabpanel"
-  <form method="post" action="">
-    <div class="userpage-form-header">
-      <h1>Wachtwoord wijzigen</h1>
-    </div>
-    <div class="md-form">
-      <label for="currentPassword">Huidig wachtwoord</label>
-      <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="" required>
-    </div>
+          <div class="md-form">
+            <label for="newPassword">Nieuw wachtwoord</label>
+            <input type="password" class="form-control" name="newPassword" id="newPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
+          </div>
 
-    <div class="md-form">
-      <label for="newPassword">Nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="newPassword" id="newPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
-    </div>
+          <div class="md-form">
+            <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
+            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
+          </div>
 
-    <div class="md-form">
-      <label for="confirmPassword">Herhaling nieuw wachtwoord</label>
-      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" onchange="confirmation('newPassword', 'confirmPassword')" onkeyup="confirmation('newPassword', 'confirmPassword')" value="" required>
-    </div>
+          <div class="mt-3 py-1 text-center">
+            <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
+          </div>
+          </form>
 
-    <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
-    </div>
-  </form>
-
-</div>
-
-<div class="tab-pane fade" id="tab3" role="tabpanel">
-  <?php
+        </div>
+        <!-- Settings to register as a seller -->
+        <div class="tab-pane fade" id="tab3" role="tabpanel">
+          <?php
   global $username;
   $username = $_SESSION['username'];
   try {//checks if user needs verification
-  	$statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
-  	$statement->execute(array($username));
-  	$results = $statement->fetch();
-	} catch (PDOException $e) {
-    $error=$e;
-    echo $error;
-	}
+      $statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
+      $statement->execute(array($username));
+      $results = $statement->fetch();
+  } catch (PDOException $e) {
+      $error=$e;
+      echo $error;
+  }
 
-  if($_SESSION['seller']){
-    echo "U bent al verkoper.";
-  }
-  else if(empty($results[0])){
-    include('register_seller.php');
-  }
-  else {
-    include('verification_seller.php');
+  if ($_SESSION['seller']) {
+      echo "U bent al verkoper.";
+  } elseif (empty($results[0])) {
+      include('register_seller.php');
+  } else {
+      include('verification_seller.php');
   }
   ?>
-</div>
+        </div>
 
-</div>
-</div>
+      </div>
+    </div>
 
-<script src="js/functions.js"></script>
+    <script src="js/functions.js"></script>
 
-</div>
-<!-- <?php if(isset($error)){echo $error;}?> -->
-<?php include('templates/footer.php'); ?>
+  </div>
+  <?php include('templates/footer.php'); ?>

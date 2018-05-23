@@ -1,0 +1,79 @@
+/*
+  Styling for the login and registration forms
+*/
+
+.card-login {
+  margin-top: 100px;
+  background: #3333335e;
+}
+
+#passwordHelp a {
+  font-size: 80%;
+  color: #ff2929;
+}
+
+input:focus:not([readonly])+label {
+  color: #4584A4 !important;
+}
+
+input:focus:not([readonly]) {
+  border-bottom: 1px solid #4584A4 !important;
+  box-shadow: 0 1px 0 0 #4584A4 !important;
+}
+
+.register-select {
+  cursor: pointer;
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  outline: 0;
+  height: 2.9rem;
+  line-height: 2.9rem;
+  width: 100%;
+  font-size: 1rem;
+  margin: 0 0 .94rem 0;
+  padding: 0;
+  display: block;
+  width: 95%;
+}
+
+.register-select-form {
+  border: none !important;
+  background: transparent !important;
+  width: 100% !important;
+  color: white !important;
+}
+
+.login-register-card {
+  background: #1313133b;
+}
+
+.materialFormRegisterConfirmEx {
+  color: #c40000 !important;
+}
+
+.login-form-header {
+  color: #fff;
+  text-align: center;
+  margin-top: -3.13rem;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  -webkit-border-radius: .125rem;
+  border-radius: 5px;
+}
+
+.login-logo {
+  display: inline-block;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  position: absolute;
+  padding: 1.2rem 0 0 2rem;
+}
+
+.login-logo img {
+  width: 50%;
+}
+
+.bg-login {
+  background-image: url("../img/bgs/login-bg.png");
+}

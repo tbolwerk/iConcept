@@ -1,6 +1,6 @@
 <?php
 require('connect.php');
-function livesearch($post_livesearch){
+function livesearch($post_livesearch){//livesearch function met parameter $_POST['search']
   global $dbh;
   global $rubrieken;
   global $subrubrieken;
@@ -12,7 +12,7 @@ $rubrieken="";
 $name = $post_livesearch;
   // $name = $_POST['livesearch'];
   try{
-  $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder=-1");
+  $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder=-1");//zoekt in hoofdrubrieken
   $statement->execute(array("%".$name."%"));
 }catch(PDOException $e){
   $error = $e;
@@ -26,48 +26,69 @@ $name = $post_livesearch;
   }
   //Sub-rubrieken
   $subrubrieken="";
+  //zoekt in subrubrieken
   try{
-    $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknaam LIKE ? AND rubrieknummerOuder!=-1 AND rubrieknummerOuder!=1");
+    $statement = $dbh->prepare("SELECT kind.rubrieknummer,kind.rubrieknaam,kind.rubrieknummerOuder,ouder.rubrieknaam as 'ouderRubriek'
+FROM Rubriek kind INNER JOIN Rubriek ouder ON kind.rubrieknummerOuder = ouder.rubrieknummer
+WHERE kind.rubrieknaam LIKE ?");
     $statement->execute(array("%".$name."%"));
+
   }catch(PDOException $e){
     $error = $e;
   }
-
   while($row = $statement->fetch()){
+
     $rubrieknaam = $row['rubrieknaam'];
+    $rubrieknaamOuder = $row['ouderRubriek'];
     $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
+      if($row['rubrieknummerOuder'] !=-1){
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h6>".$rubrieknaamOuder."</h6><h3>".$rubrieknaam."</h3></li></a>";
+}
   }
 
+
   $veilingen="";
+  //zoekt in veilingen
   try{
-    $statement = $dbh->prepare("SELECT * FROM Voorwerp where titel LIKE ?");
+    $statement = $dbh->prepare("SELECT vw.voorwerpnummer,vw.titel,vr.rubrieknummer,r.rubrieknaam
+FROM Rubriek r,Voorwerp vw INNER JOIN Voorwerp_in_Rubriek vr ON
+vw.voorwerpnummer = vr.voorwerpnummer
+WHERE  r.rubrieknummer = vr.rubrieknummer
+AND titel LIKE ?");
     $statement->execute(array("%".$name."%"));
   }catch(PDOException $e){
     $error = $e;
   }
 
   while($row = $statement->fetch()){
+
+
     $voorwerptitel = $row['titel'];
     $voorwerpnummer = $row['voorwerpnummer'];
+    $rubrieknummer = $row['rubrieknummer'];
+    $rubrieknaam = $row['rubrieknaam'];
+
     $function = "fill('".$rubrieknaam."')";
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h3>".$voorwerptitel."</h3></li></a>";
+
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
+
   }
 
 
 }
 
 function displayColumn(){
+
 	global $dbh;
 	global $column;
   $column = "";
   try{
     $data = $dbh->query("SELECT * FROM Rubriek");
     while($row = $data->fetch()){
-			if($row['rubrieknummerOuder'] == NULL){
+			if($row['rubrieknummerOuder'] == -1){//als rubrieknummerOuder == -1 geeft hoofdrubrieken
       $column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
-		}else if(isset($_GET['rubrieknummer'])){
+		}else if(isset($_GET['rubrieknummer'])){//als er een get request is , zoekt bij behorende rubrieknummerOuder
 			if($row['rubrieknummerOuder'] == $_GET['rubrieknummer']){
 				$column.="<a href='?rubrieknummer=".$row['rubrieknummer']."'>".$row['rubrieknaam']."</a>";
 			}
@@ -78,33 +99,6 @@ function displayColumn(){
   }
 }
 
-/*search function database table database column and search item EXAMPLE: search(bank); will give $searchResults is an array else $error*/
-function search($searchKey,$searchType)
-{
-	global $dbh;
-	global $error;
-	global $searchResults;
-	$searchResults="";
-	try {
-		if($searchType == 'voorwerp'){
-		$data = $dbh->prepare("SELECT * FROM Voorwerp WHERE titel LIKE ?");
-		$data->execute(array('%'.$searchKey.'%'));
-    while ($row = $data->fetch()) {
-		$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
-	}
-}else if($searchType == 'rubriek'){
-	$data = $dbh->prepare("SELECT * FROM Voorwerp_in_Rubriek vr RIGHT JOIN Voorwerp v ON v.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
-	$data->execute(array($searchKey));
-	while($row = $data->fetch()){
-	$searchResults.="Titel: ".$row['titel']." Beschrijving: ".$row['beschrijving'];
-	}
-
-}
-	}catch(PDOException $e){
-		$error = $e;
-	}
-}
-
 
 /*display auction*/
 function displayAuction()
@@ -113,19 +107,32 @@ function displayAuction()
 
 	global $dbh;
 	global $auction;
-	$auction = "";
+	$auction = "<script>
+        var countDownDate = [];
+        </script>";
 
 	try{
-		$data = $dbh->query("select * from Voorwerp");
+		$data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+
 		while ($row = $data->fetch()) {
+      $i++;
+      $timer="timer".$i;
+      $looptijd = $row['looptijd'];
+      $looptijdbegindag =strtotime($row['looptijdbegindag']);
+      $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
+      $countdown_date = date("Y-m-d",$looptijdbegindag);
+      $countdown_time = date("h:i:s",$looptijdbegintijdstip);
+      $countdown = $countdown_date . " " . $countdown_time;
+
+
 
 			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+              <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
-              <span class='small-font'>20345322</span>
+              <span class='small-font'>".$row['voorwerpnummer']."</span>
               <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
               <hr>
               <div class='card-text'>
@@ -137,7 +144,7 @@ function displayAuction()
               <ul class='list-unstyled list-inline d-flex'>
                 <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
 								<div class='card-line'></div>
-                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$row['looptijd']."</li>
+                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i><div id='".$timer."'></div></li>
               </ul>
             </div>
 
@@ -147,7 +154,12 @@ function displayAuction()
                 </div>
               </a>
             </div>
-          </div>";
+          </div>
+          <script>
+                countDownDate.push(new Date('".$countdown."').getTime());
+          </script>
+
+          ";
 		}
 	}catch(PDOException $e){
 		$error = $e;
@@ -170,7 +182,7 @@ function verification($getUsername,$getCode)
 	$username = $getUsername;
 
 	try {//checks if code exists in database
-	$statement = $dbh->prepare("select * from Verificatiecode where gebruikersnaam = ? AND code = ?");
+	$statement = $dbh->prepare("SELECT * FROM Verificatiecode WHERE gebruikersnaam = ? AND code = ?");
 	$statement->execute(array($username,$submittedCode));
 	$results = $statement->fetch();
 	} catch (PDOException $e) {
@@ -190,9 +202,9 @@ function verification($getUsername,$getCode)
 	}
 
 	if ($codeValid) {
-	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");
+	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");//set activatie bit to 1
 	$statement->execute(array($storedUsername));
-	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");
+	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
 	$statement->execute(array($storedUsername));
 	}
 }
@@ -300,70 +312,64 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
   }
 }
 
-
 /*login function */
-function login($username_input,$password)
+function login($username_input, $password)
 {
+  global $dbh;
+  global $error;
 
-    global $dbh;
-    global $error;
+	$username = $username_input;
+	$email = $username_input;
 
-		$username = $username_input;
-		$email = $username_input;
+  // $username=trim($username);
+  $password = trim($password);
 
-    // $username=trim($username);
-    $password=trim($password);
+  $error = array();
 
-		$error = array();
+  if (strlen($username) >= 25){
+    $error['username'] = "Username has more than 25 characters";
+  } else
+  if (strlen($password) >= 50){
+    $error['password'] = "Password has more than 50 characters";
+  } else
+  if (empty($username)){
+    $error['username'] = "Username is empty";
+  } else
+  if (empty($password)){
+    $error['password'] = "Password is empty";
+  } else {
+    try {
+    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
+    	$password_check->execute(array($username, $password, $email, $password));
+    } catch(PDOException $e){
+    	$error = $e;
+    }
+    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
+    	$error['password'] = "Wachtwoord klopt niet";
+    } else {
+      //Has the user activated his account yet?
+      $activation_check = $dbh->prepare("SELECT geactiveerd FROM Gebruiker WHERE gebruikersnaam=?");
+      $activation_check->execute(array($password_result['gebruikersnaam']));
 
-    if(strlen($username)>=50){
-         $error['username'] = "username has more than 50 characters";
-    }else
-    if(strlen($password)>=20){
-         $error['password'] = "password has more than 20 characters";
-    }else
-    if(empty($username)){
-         $error['username'] = "username is empty";
-    }else
-    if(empty($password)){
-         $error['password'] = "password is empty";
-    }else {
-        try {
-            $username_check = $dbh->prepare("select * from Gebruiker where gebruikersnaam=? OR email=?");
-            $username_check->execute(array($username,$email));
-
+      if (!($activation_result = $activation_check->fetch(PDO::FETCH_NUM)[0])) {
+        $error['verification'] = "Account is nog niet geactiveerd";
+      } else {
+        try {//checks if user needs verification
+        	$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
+        	$statement->execute(array($password_result['gebruikersnaam']));
+        	$results = $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $error = $e;
+      		$error=$e;
+      		echo $error;
         }
+        $_SESSION['seller'] = $results['gebruikersnaam'];
+        $_SESSION['username'] = $password_result['gebruikersnaam'];
+        $_SESSION['email'] = $password_result['email'];
 
-
-        if (!($username_result = $username_check->fetch(PDO::FETCH_ASSOC))) {
-             $error['username'] = "gebruikersnaam klopt niet";
-        }
-				try{
-					$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-					$password_check->execute(array($username,$password,$email,$password));
-				}catch(PDOException $e){
-					$error = $e;
-				}
-				if(!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
-					$error['password'] = "wachtwoord klopt niet";
-				}
-				if($password_result && $username_result) {
-						try {//checks if user needs verification
-							$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
-							$statement->execute(array($username));
-							$results = $statement->fetch();
-						} catch (PDOException $e) {
-								$error=$e;
-								echo $error;
-						}
-						$_SESSION['seller'] = $results[0];
-            $_SESSION['username'] = $username_result['gebruikersnaam'];
-						header('Location: index.php');
-        }
-			}
-
+        header('Location: index.php');
+      }
+    }
+  }
 }
 
 function random_password( $length = 8 ) {

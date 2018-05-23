@@ -1,3 +1,7 @@
+/*
+	Main styling for the userpage
+ */
+
 .left {
   display: flex;
   align-items: center;
@@ -6,7 +10,9 @@
   position: relative;
 }
 
-.left input {display: none;}
+.left input {
+  display: none;
+}
 
 #wrapper {
   background-color: #ebebeb;
@@ -19,13 +25,15 @@
   border-radius: 10000px;
   border: 5px solid #305c73;
 }
-.profile-picture-settings > input {
+
+.profile-picture-settings>input {
   display: none;
 }
 
 .profile-picture-settings img {
   cursor: pointer;
 }
+
 .profile-picture-settings img:hover {
   background-image: url('img/picture-upload-button.png');
   width: 300px;
@@ -49,6 +57,7 @@
 .profile-picture-settings:hover .profile-picture-overlay {
   opacity: 1;
 }
+
 .pf-icon {
   color: white;
   font-size: 100px;
@@ -62,7 +71,9 @@
 
 .usersettings-page {
   margin-top: -180px;
+  min-height: 500px;
 }
+
 .usersettings-content {
   max-width: 65%;
   padding: 20px;
@@ -73,14 +84,11 @@
   color: #999999;
   font-size: 20px;
 }
+
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   background-color: transparent !important;
   border: none;
   color: #2e2e2e;
-}
-
-.userpage-header {
-  font-size: 5rem;
 }
 
 .tab-content {
@@ -94,6 +102,7 @@
   font-size: 32px;
   text-align: center;
 }
+
 .dropdown-userpage {
   width: 92% !important;
   margin-left: 4% !important;
@@ -105,7 +114,8 @@
     position: relative;
   }
   .photo {
-    margin-top: -120px;;
+    margin-top: -120px;
+    ;
   }
   .usersettings-page {
     margin-top: 0px;
@@ -115,14 +125,5 @@
   }
   .usersettings-content .panel-name {
     font-size: 17px;
-  }
-  .userpage-header {
-    font-size: 4.5rem;
-  }
-}
-
-@media only screen and (max-width: 650px) {
-  .userpage-header {
-    font-size: 3rem;
   }
 }

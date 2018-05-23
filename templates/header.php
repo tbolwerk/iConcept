@@ -61,19 +61,36 @@ switch($current_page){
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Navigation bar styling -->
+    <link rel="stylesheet" href="css/nav.css">
+    <!-- Login and register forms styling -->
+    <link rel="stylesheet" href="css/register-login-styles.css">
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
+    <!-- Styling for the index page -->
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Category page styling -->
+    <link rel="stylesheet" href="css/rubriek.css">
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
-<!-- Rubrieken overlay styling -->
-<link rel="stylesheet" href="css/rubrieken_overlay.css">
+    <!-- Rubrieken overlay styling -->
+    <link rel="stylesheet" href="css/rubrieken_overlay.css">
+    <script>
+          var countDownDate = [];
+          </script>
 
-<?php if ($current_page == 'userpage') {
-  echo "<!-- userpage styling -->
-  <link rel='stylesheet' href='css/userpage.css'>";
+<?php
+  switch ($current_page) {
+    case 'userpage':
+      echo "<!-- userpage styling -->
+      <link rel='stylesheet' href='css/userpage.css'>";
+      break;
+    case 'rubriek':
+      echo "<link rel='stylesheet' href='css/flyPanels.css'>";
+      break;
 } ?>
 
 

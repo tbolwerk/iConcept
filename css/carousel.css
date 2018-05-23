@@ -56,29 +56,29 @@
 
 .active.carousel-item-right,
 .carousel-item-next {
-    -webkit-transform: translateX(25%);
-    transform: translateX(25%)
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%)
 }
 
 @supports ((-webkit-transform-style:preserve-3d) or (transform-style:preserve-3d)) {
     .active.carousel-item-right,
     .carousel-item-next {
-        -webkit-transform: translate3d(25%, 0, 0);
-        transform: translate3d(25%, 0, 0)
+        -webkit-transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0)
     }
 }
 
 .active.carousel-item-left,
 .carousel-item-prev {
-    -webkit-transform: translateX(-25%);
-    transform: translateX(-25%)
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%)
 }
 
 @supports ((-webkit-transform-style:preserve-3d) or (transform-style:preserve-3d)) {
     .active.carousel-item-left,
     .carousel-item-prev {
-        -webkit-transform: translate3d(-25%, 0, 0);
-        transform: translate3d(-25%, 0, 0)
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0)
     }
 }
 

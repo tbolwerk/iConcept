@@ -1,7 +1,7 @@
 /*
 Veilingsite Eenmaal Andermaal
 Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Janno Onink 602808, Suzanne Bogaard 603439, Auke Onvlee 604640
-Datum: 26-04-2018
+Datum: 17-05-2018
 
 Sommige velden hebben we veranderd en Britse internationaal standaarden op gebruikt: 
 http://webarchive.nationalarchives.gov.uk/+/http://www.cabinetoffice.gov.uk/media/254290/GDS%20Catalogue%20Vol%202.pdf
@@ -215,7 +215,7 @@ REFERENCES Rubriek (rubrieknummer)
 )  
 
 
-create table dbo.Landen --AANGEPAST ZODAT ER GEEN GEGEVENS VERLOREN GAAN VAN DE BEDRIJFS DATABASE.
+create table dbo.Landen --AANGEPAST ZODAT ER GEEN GEGEVENS VERLOREN GAAN VAN DE BEDRIJFS DATABASE/CONVERSIE SCIRPT.
 (
 landcode char(4) not null,
 landnaam varchar(49) not null /* http://www.funtrivia.com/askft/Question33835.html */,
@@ -229,7 +229,7 @@ CONSTRAINT CHK_DATUM CHECK (begindatum < einddatum)
 )
 
 
-create table dbo.VerificatieVerkoper
+create table dbo.VerificatieVerkoper -- Nieuwe tabel voor de verificatie codes. Gemaakt door Janno.
 (
 gebruikersnaam varchar(25) not null,
 code char(6) not null,

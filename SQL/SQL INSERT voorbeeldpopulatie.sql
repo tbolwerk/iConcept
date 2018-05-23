@@ -4,6 +4,8 @@ Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Jan
 Datum: 07-05-2018
 */
 delete from Rubriek;
+
+delete from Bod;
 delete from Bestand;
 delete from Voorwerp;
 delete from Verkoper;
@@ -17,26 +19,6 @@ DBCC CHECKIDENT(Voorwerp, RESEED, 0);
 DBCC CHECKIDENT(Gebruikerstelefoon, RESEED, 0);
 DBCC CHECKIDENT(Vraag, RESEED, 0);
 
-/*
-insert into Rubriek
-values	(1, 'Auto''s, boten en motoren', null),
-		(2, 'Auto''s', 1),
-		(3, 'Aanhangers', 1),
-		(4, 'Zeilboten', 1),
-		(5, 'Scooters', 1),
-		(6, 'Boeken', null),
-		(7, 'Fictie', 6),
-		(8, 'Actie', 7),
-		(9, 'Literatuur', 7),
-		(10, 'Science fiction', 7),
-		(11, 'School', 6),
-		(12, 'Eten en Koken', 6),
-		(13, 'Gezondheid en Voeding', 12),
-		(14, 'Kookboeken', 12),
-		(15, 'Stripboeken', 6);
-		niet nodig met conversie script
-
-*/
 
 Insert into Vraag(vraag)
 VALUES
@@ -100,23 +82,38 @@ GO
 
 Insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, koper, looptijdeindedag, veilinggesloten, verkoopprijs)
 VALUES
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,GETDATE(), 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2019-05-05, 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100),
-		('Product', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, 100)
+		('Product nr 1', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,DATEADD(day, 60,GETDATE()), 0, NULL),
+		('Product nr 2', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2019-05-05, 0, NULL),
+		('Product nr 3', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-07-05, 0, NULL),
+		('Product nr 4', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 425, 2017-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-07-05, 0, NULL),
+		('Product nr 5', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, NULL),
+		('Product nr 6', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, 2018-05-05, CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 2018-06-05, 0, NULL)
 		;
 
 
 
 Insert into Voorwerp_in_Rubriek
 VALUES
-		(1, 1),
-		(2, 30),
-		(3, 63),
-		(4, 1),
-		(5, 57),
-		(6, 57);
+		(1, 1), --verzamelen
+		(2, 30), --overige klassiek speelgoed
+		(3, 63), --stripboeken
+		(4, 80), --verzamelstrips
+		(5, 57), -- filmobjecten
+		(6, 120);  --creatief speelgoed
 
-		select * from Gebruiker
+Insert into Bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip)
+VALUES
+		(1, 5, 'aukeonfleek',GETDATE(), CURRENT_TIMESTAMP),
+		(2, 20, 'deutschesalade',2018-05-06, CURRENT_TIMESTAMP),
+		(2, 25, 'ggwp',2018-05-07, CURRENT_TIMESTAMP)
+		;
+
+Insert into Bestand(filenaam, voorwerpnummer)
+VALUES
+		('/img/producten/template1.jpg',1),
+		('/img/producten/template2.jpg',2),
+		('/img/producten/template3.jpg',3),
+		('/img/producten/template4.jpg',4),
+		('/img/producten/template5.jpg',5),
+		('/img/producten/template6.jpg',6)
+		;

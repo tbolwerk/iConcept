@@ -243,7 +243,13 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="country" id="country" value="<?=$results['land']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Selecteer uw land">
+          <select name="country" id="country" class="register-select-form" required>
+  <option value="" class="font-weight-light black-text disabled selected">Kies een land...</option>
+  <option value='Nederland'>Nederland</option>
+  <option value='Duitsland'>Duitsland</option>
+  <option value='Frankrijk'>Frankrijk</option>
+  <option value='België'>België</option>
+</select>
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -252,7 +258,7 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          <label style="black-text" for="country">Land</label>
+          <label style="black-text" for="country"><?=$results['land']?></label>
         </div>
       </div>
     </div>

@@ -77,14 +77,14 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password" id="password" required>
+                <input type="password" class="form-control white-text" name="password" id="password" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
                 <label class="font-weight-light white-text" for="password">Wachtwoord</label>
             </div>
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="password" class="form-control white-text" name="password_check" id="password_check" required>
+                <input type="password" class="form-control white-text" name="password_check" id="password_check" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
                 <label class="font-weight-light white-text" for="password_check">Herhaal wachtwoord</label>
             </div>
           </div>
@@ -93,14 +93,14 @@ if(isset($_POST['submit'])){
             <!-- Material input email -->
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-envelope prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email" id="email" required>
+                <input type="email" class="form-control white-text" name="email" id="email" onchange="confirmation('email', 'email_check')" onkeyup="confirmation('email', 'email_check')" required>
                 <label class="font-weight-light white-text" for="email">Emailadres</label>
             </div>
 
             <!-- Material input email -->
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-exclamation-triangle prefix niagara"></i>
-                <input type="email" class="form-control white-text" name="email_check" id="email_check" required>
+                <input type="email" class="form-control white-text" name="email_check" id="email_check" onchange="confirmation('email', 'email_check')" onkeyup="confirmation('email', 'email_check')" required>
                 <label class="font-weight-light white-text" for="email_check">Bevestig emailadres</label>
             </div>
           </div>
@@ -201,32 +201,6 @@ if(isset($error)){
 </main>
 <!--Main Layout-->
 <!-- Material form register -->
-<script>
-function passwordConfirmation() {
-  if (document.getElementById("password").value != document.getElementById("password_check").value) {
-    document.getElementById("password_check").setCustomValidity("Wachtwoorden komen niet overeen");
-  } else {
-    document.getElementById("password_check").setCustomValidity("");
-  }
-}
 
-function emailConfirmation() {
-  if (document.getElementById("email").value != document.getElementById("email_check").value) {
-    document.getElementById("email_check").setCustomValidity("Emailadressen komen niet overeen");
-  } else {
-    document.getElementById("email_check").setCustomValidity("");
-  }
-}
-
-function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
-}
-
-document.getElementById("password_check").onchange = passwordConfirmation;
-document.getElementById("password").onchange = passwordConfirmation;
-document.getElementById("email_check").onchange = emailConfirmation;
-document.getElementById("email").onchange = emailConfirmation;
-</script>
+<script src="js/functions.js"></script>
 <?php include 'templates/footer.php'; ?>

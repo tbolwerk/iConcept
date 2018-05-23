@@ -107,11 +107,16 @@ function displayAuction()
 
 	global $dbh;
 	global $auction;
-	$auction = "";
+	$auction = "<script>
+        var countDownDate = [];
+        </script>";
 
 	try{
-		$data = $dbh->query("select * from Voorwerp");
+		$data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+
 		while ($row = $data->fetch()) {
+      $i++;
+      $timer="timer".$i;
       $looptijd = $row['looptijd'];
       $looptijdbegindag =strtotime($row['looptijdbegindag']);
       $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
@@ -124,10 +129,10 @@ function displayAuction()
 			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg' alt='Test Card' />
+              <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
-              <span class='small-font'>20345322</span>
+              <span class='small-font'>".$row['voorwerpnummer']."</span>
               <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
               <hr>
               <div class='card-text'>
@@ -139,7 +144,7 @@ function displayAuction()
               <ul class='list-unstyled list-inline d-flex'>
                 <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
 								<div class='card-line'></div>
-                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i>".$countdown."</li>
+                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i><div id='".$timer."'></div></li>
               </ul>
             </div>
 
@@ -150,6 +155,10 @@ function displayAuction()
               </a>
             </div>
           </div>
+          <script>
+                countDownDate.push(new Date('".$countdown."').getTime());
+          </script>
+
           ";
 		}
 	}catch(PDOException $e){

@@ -53,6 +53,9 @@ displayAuction();
       </div>
     </div>
 
+
+
+
     <!-- "Hoe werkt het?" section -->
  <div class="container-fluid mt-3 mb-3" style="background-color: #4584A4;">
    <div class="pt-3 white-text">

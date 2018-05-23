@@ -51,7 +51,11 @@ WHERE kind.rubrieknaam LIKE ?");
   $veilingen="";
   //zoekt in veilingen
   try{
-    $statement = $dbh->prepare("SELECT * FROM Voorwerp where titel LIKE ?");
+    $statement = $dbh->prepare("SELECT vw.voorwerpnummer,vw.titel,vr.rubrieknummer,r.rubrieknaam
+FROM Rubriek r,Voorwerp vw INNER JOIN Voorwerp_in_Rubriek vr ON
+vw.voorwerpnummer = vr.voorwerpnummer
+WHERE  r.rubrieknummer = vr.rubrieknummer
+AND titel LIKE ?");
     $statement->execute(array("%".$name."%"));
   }catch(PDOException $e){
     $error = $e;
@@ -62,10 +66,12 @@ WHERE kind.rubrieknaam LIKE ?");
 
     $voorwerptitel = $row['titel'];
     $voorwerpnummer = $row['voorwerpnummer'];
+    $rubrieknummer = $row['rubrieknummer'];
+    $rubrieknaam = $row['rubrieknaam'];
 
     $function = "fill('".$rubrieknaam."')";
 
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>Vorige rubriek</h6><h3>".$voorwerptitel."</h3></li></a>";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
 
   }
 

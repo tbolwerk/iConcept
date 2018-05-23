@@ -142,8 +142,13 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="country" id="country" required pattern="[A-z]+">
-                <label class="font-weight-light white-text" for="country">Land</label>
+                <select name="country" id="country" class="register-select-form" required>
+                  <option value="" class="font-weight-light black-text disabled selected">Kies een land...</option>
+                  <option value='Nederland'>Nederland</option>
+                  <option value='Duitsland'>Duitsland</option>
+                  <option value='Frankrijk'>Frankrijk</option>
+                  <option value='België'>België</option>
+                </select>
             </div>
           </div>
 

@@ -20,13 +20,12 @@ require_once('templates/header.php');
                           <h2>Wie zijn wij?</h2>
                           <h5>Groep 40</h5>
                           <div class="project-team">
-                           <!-- <img class="img" src="img/team/AukeFoto.PNG" alt="project-team">
+                           <img class="img" src="img/team/AukeFoto.PNG" alt="project-team">
                            <img class="img" src="img/team/SuusFoto.PNG" alt="project-team">
                            <img class="img" src="img/team/PartyBoyFoto.PNG" alt="project-team">
-                           <img class="img" src="img/team/vSauceFoto.PNG" alt="project-team"> -->
+                           <img class="img" src="img/team/vSauceFoto.PNG" alt="project-team">
                            <img class="img" src="img/team/JanFoto.PNG" alt="project-team">
                            <img class="img" src="img/team/TwanFoto.PNG" alt="project-team">
-                           <img class="img" src="img/team/bier.jpg" alt="project-team">
                          </div>
                           <br>
                           <p>EenmaalAndermaal is gemaakt door een groep 40 die bestaat uit een aantal studenten van de HAN.

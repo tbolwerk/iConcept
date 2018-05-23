@@ -14,45 +14,46 @@ GO
 
 DROP FUNCTION dbo.IsVerkoper;
 GO
-Gecomment, besproken met productowner, het is niet mogelijk om het uit te voeren want waar moeten de gegevens voordat een koper geverifieerd is? Tijdelijk tabel onhandig.
+Gecomment, besproken met productowner, het is niet mogelijk om het uit te voeren want waar moeten de gegevens voordat een koper geverifieerd is? Tijdelijk tabel onhandig dus hebben we de beperkingsregel gedropt.
 */ 
 
 /* B2 */
-ALTER TABLE Verkoper
-DROP CONSTRAINT CHK_CreditcardGevuld;
+IF OBJECT_ID('CHK_CreditcardGevuld') IS NOT NULL BEGIN ALTER TABLE Verkoper
+DROP CONSTRAINT CHK_CreditcardGevuld END
 GO
 
 
 
 /* B3 */
-ALTER TABLE Verkoper 
-DROP CONSTRAINT CHK_CreditOfBankNull;
+IF OBJECT_ID('CHK_CreditOfBankNull') IS NOT NULL BEGIN ALTER TABLE Verkoper 
+DROP CONSTRAINT CHK_CreditOfBankNull END
 GO
+
 
 
 /* B4 */ 
-ALTER TABLE Bestand
-DROP CONSTRAINT CHK_NietMeerDanVierAfbeeldingen;
+IF OBJECT_ID('CHK_NietMeerDanVierAfbeeldingen') IS NOT NULL BEGIN ALTER TABLE Bestand
+DROP CONSTRAINT CHK_NietMeerDanVierAfbeeldingen END
 GO
 
-DROP FUNCTION dbo.NietMeerDanVierAfbeelding;
-
+IF OBJECT_ID('dbo.NietMeerDanVierAfbeelding') IS NOT NULL BEGIN DROP FUNCTION dbo.NietMeerDanVierAfbeelding END
+GO
 /* B5 */ 
-ALTER TABLE Bod 
-DROP CONSTRAINT CHK_CheckIsHogerBod;
+IF OBJECT_ID('CHK_CheckIsHogerBod') IS NOT NULL BEGIN ALTER TABLE Bod 
+DROP CONSTRAINT CHK_CheckIsHogerBod END
+GO
 
 
-DROP FUNCTION dbo.CheckHoogsteBod;
+IF OBJECT_ID('dbo.CheckHoogsteBod') IS NOT NULL BEGIN DROP FUNCTION dbo.CheckHoogsteBod END
 GO
 
 
 /* B6 */
-ALTER TABLE Bod 
-DROP CONSTRAINT CHK_IsGeenEigenBod;
+IF OBJECT_ID('CHK_IsGeenEigenBod') IS NOT NULL BEGIN ALTER TABLE Bod 
+DROP CONSTRAINT CHK_IsGeenEigenBod END
 GO
 
-
-DROP FUNCTION dbo.GeenEigenBod;
+IF OBJECT_ID('dbo.GeenEigenBod') IS NOT NULL BEGIN DROP FUNCTION dbo.GeenEigenBod END
 GO
 
 
@@ -111,9 +112,9 @@ AS
 BEGIN
 	DECLARE @MinderDanVier BIT = 'False';
 	DECLARE @number INT
-	SET @number = (SELECT COUNT(filenaam)
+	SET @number = (SELECT COUNT(voorwerpnummer)
 	FROM dbo.Bestand
-	WHERE filenaam = @voorwerpnummer)
+	WHERE voorwerpnummer = @voorwerpnummer)
 	
 
 	IF (@number < 5)
@@ -134,12 +135,12 @@ GO
 /* B 5	Tabel Bod:
 Een nieuw bod moet hoger zijn dan al bestaande bedragen die geboden zijn voor hetzelfde voorwerp, 
 en tenminste zoveel hoger als de minimumverhoging voorschrijft (zie appendix B, proces 3.1). */
-CREATE FUNCTION dbo.CheckHoogsteBod (@voorwerpnummer INT ,@bodbedrag NUMERIC(10, 2))
+CREATE FUNCTION dbo.CheckHoogsteBod (@voorwerpnummer INT ,@bodbedrag NUMERIC(9, 2))
 RETURNS BIT
 AS
 BEGIN
-	DECLARE @hoogstebod NUMERIC(10, 2);
-	DECLARE @startprijs NUMERIC(10, 2);
+	DECLARE @hoogstebod NUMERIC(9, 2);
+	DECLARE @startprijs NUMERIC(9, 2);
 
 	SET @startprijs = (	SELECT Startprijs
 	FROM Voorwerp
@@ -202,10 +203,8 @@ GO
 /* AF 1	Tabel Voorwerp, kolom LooptijdeindeDag:
 Kolom LooptijdeindeDag heeft de datum van LooptijdbeginDag + het aantal dagen dat Looptijd aangeeft. 
  */
---declare @looptijdeind;
---set @looptijdeind = SELECT DATEADD(DAY, looptijd, LooptijdbeginDag);
 
---PHP? met de insert?
+--PHP met de insert
 
 /* AF 2	Tabel Voorwerp, kolom LooptijdeindeTijdstip:
 Kolom LooptijdeindeTijdstip heeft dezelfde waarde als kolom LooptijdbeginTijdstip. 
@@ -230,5 +229,4 @@ Dan heeft kolom Koper de waarde uit kolom Bod(Gebruiker) die bij het hoogste bod
 /* AF 5	Tabel Voorwerp, kolom Verkoopprijs:
 Kolom Verkoopprijs heeft een NULL-waarde, tenzij de veiling is gesloten en er op het voorwerp een bod is uitgebracht. 
 Dan heeft kolom Verkoopprijs de waarde uit kolom Bod(Bodbedrag) die bij het hoogste bod op hetzelfde voorwerp hoort. */
-
 

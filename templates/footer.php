@@ -30,6 +30,7 @@
     <!-- JavaScript for the sidebar on the category page to collapse items -->
     <script type="text/javascript" src="js/kitUtils.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+        <script type="text/javascript" src="js/timer.js"></script>
     <script>
       $(document).ready(function(){
         $('.flypanels-container').flyPanels({
@@ -63,31 +64,7 @@
     </script>
 
 
-    <script>
-     var teller = 0;
-     var x = [];
-         x[teller] = setInterval(function() {
-         for(i = 0;i<countDownDate.length;i++) {
-           teller = i;
-         var now = new Date().getTime();
-         var distance = countDownDate[i] - now;
-         console.log(i);
-         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-         document.getElementById("timer"+i).innerHTML = "Nog: "+ days + "d " + hours + "h "
-         + minutes + "m " + seconds + "s ";
-         if (distance < 0) {
-           clearInterval(x[i]);
-           document.getElementById("timer"+i).innerHTML = "EXPIRED";
-         }
-        }
-       },1000);
 
-
-
-     </script>
 
 
 </body>

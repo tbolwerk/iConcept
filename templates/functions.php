@@ -156,7 +156,7 @@ function displayAuction()
             </div>
           </div>
           <script>
-                countDownDate.push(new Date('".$countdown."').getTime());
+          countdown('".$timer."','".$countdown."');
           </script>
 
           ";

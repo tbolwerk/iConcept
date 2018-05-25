@@ -78,9 +78,8 @@ switch($current_page){
     <link rel="stylesheet" href="css/carousel.css">
     <!-- Rubrieken overlay styling -->
     <link rel="stylesheet" href="css/rubrieken_overlay.css">
-    <script>
-          var countDownDate = [];
-          </script>
+    <script type="text/javascript" src="js/timer.js"></script>
+  
 
 <?php
   switch ($current_page) {

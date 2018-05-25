@@ -30,6 +30,8 @@
     <!-- JavaScript for the sidebar on the category page to collapse items -->
     <script type="text/javascript" src="js/kitUtils.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+    <script type="text/javascript" src="js/twbs-pagination.js"></script>
+    <script type="text/javascript" src="js/paging.js"></script>
     <script>
       $(document).ready(function(){
         $('.flypanels-container').flyPanels({
@@ -62,6 +64,39 @@
     });
     </script>
 
+    <script type="text/javascript">
+      $(document).ready(function() {
+      appendMobileNav();
+      });
+
+      $(window).resize(function() {
+      appendMobileNav();
+      });
+
+      const appendMobileNav = () => {
+      if ($(window).width() < 768) {
+        $('#navbar-brand').addClass('ml-auto');
+        $('#navbar-brand').addClass('mr-auto');
+      }
+      else {
+        $('#navbar-brand').removeClass('ml-auto');
+        $('#navbar-brand').removeClass('mr-auto');
+      }
+      };
+      </script>
+
+      <script type="text/javascript" src="js/mdb.min.js">
+        // SideNav Button Initialization
+        $(".button-collapse").sideNav();
+        // SideNav Scrollbar Initialization
+        var sideNavScrollbar = document.querySelector('.custom-scrollbar');
+        Ps.initialize(sideNavScrollbar);
+        // SideNav Options
+        $('.button-collapse').sideNav({
+        edge: 'right', // Choose the horizontal origin
+        closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+        });
+      </script>
 
     <script>
      var teller = 0;

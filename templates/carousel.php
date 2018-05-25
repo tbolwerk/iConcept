@@ -3,6 +3,14 @@ global $dbh;
 $statement = $dbh->query("SELECT TOP 4 * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
 $carousel="";
 while($row = $statement->fetch()){
+	$i++;
+	$timer="timer".$i;
+	$looptijd = $row['looptijd'];
+	$looptijdbegindag =strtotime($row['looptijdbegindag']);
+	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
+	$countdown_date = date("Y-m-d",$looptijdbegindag);
+	$countdown_time = date("h:i:s",$looptijdbegintijdstip);
+	$countdown = $countdown_date . " " . $countdown_time;
 $carousel.=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
@@ -21,11 +29,13 @@ $carousel.=	'			<div class="col-md-3">
 							<ul class="list-unstyled list-inline d-flex" style="text-align:center">
 								<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
 								<div class="card-line"></div>
-								<li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+								<li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i><div id='.$timer.'></div></li>
 							</ul>
 						</div>
 					</div>
-				</div>';
+				</div>     <script>
+				     countdown("'.$timer.'","'.$countdown.'");
+				     </script>';
 }
 
 

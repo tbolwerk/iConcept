@@ -107,9 +107,7 @@ function displayAuction()
 
 	global $dbh;
 	global $auction;
-	$auction = "<script>
-        var countDownDate = [];
-        </script>";
+	$auction = "";
 
 	try{
 		$data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
@@ -182,7 +180,8 @@ function displayAuction()
      $data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
 
      while ($row = $data->fetch()) {
-
+       $i++;
+       $timer="timer".$i;
        $looptijd = $row['looptijd'];
        $looptijdbegindag =strtotime($row['looptijdbegindag']);
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
@@ -209,11 +208,13 @@ function displayAuction()
          <ul class="list-unstyled list-inline d-flex" style="text-align:center">
            <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
            <div class="card-line"></div>
-           <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i>02:01:21</li>
+           <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i><div id='.$timer.'></div></li>
          </ul>
        </div>
      </div>
-
+     <script>
+     countdown("'.$timer.'","'.$countdown.'");
+     </script>
            ';
      }
    }catch(PDOException $e){

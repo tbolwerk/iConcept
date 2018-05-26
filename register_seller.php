@@ -64,7 +64,6 @@ function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber
 					$data->execute(array($username, $checkoption, $creditcard,  $bank, $banknumber));
 					$userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
 	        $userdata->execute(array($username));
-					$_SESSION['seller'] = 1;
 					$code = random_password(6);
 					createVerificationCodeSeller($username, $code);
 				}

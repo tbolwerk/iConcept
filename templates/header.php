@@ -43,6 +43,19 @@ switch($current_page){
 
   break;
 
+    case 'userpage':
+      echo "<!-- userpage styling -->
+      <link rel='stylesheet' href='css/userpage.css'>";
+      break;
+    case 'rubriek':
+      echo "<link rel='stylesheet' href='css/flyPanels.css'>";
+      break;
+    case 'new_auction':
+    if(!$_SESSION['seller']){
+      header("Location: index.php");
+    }
+    break;
+
 }
 ?>
 <!DOCTYPE html>
@@ -79,18 +92,8 @@ switch($current_page){
     <!-- Rubrieken overlay styling -->
     <link rel="stylesheet" href="css/rubrieken_overlay.css">
     <script type="text/javascript" src="js/timer.js"></script>
-  
 
-<?php
-  switch ($current_page) {
-    case 'userpage':
-      echo "<!-- userpage styling -->
-      <link rel='stylesheet' href='css/userpage.css'>";
-      break;
-    case 'rubriek':
-      echo "<link rel='stylesheet' href='css/flyPanels.css'>";
-      break;
-} ?>
+
 
 
 

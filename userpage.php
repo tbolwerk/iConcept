@@ -70,9 +70,14 @@ if(isset($_POST['tab1submit'])){
   $email = str_replace("\"", "", strip_tags($_POST['email']));
   $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
   $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+  try{
   $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
 	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
   updatePhones();
+}catch(PDOException $e){
+  $error = $e;
+  echo $error;
+}
 }
 
 //If user tries to change password...
@@ -80,6 +85,7 @@ if (isset($_POST['tab2submit'])) {
     $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
     $statement->execute(array($_SESSION['username']));
     $password = $statement->fetch();
+
     //...and provides his current password
     if ($password[0] == $_POST['currentPassword']) {
         //changePassword() can be found in functions.php
@@ -98,19 +104,19 @@ if (isset($_POST['change_avatar'])) {
 $username = $_SESSION['username'];
 
 //Receive account data from database
-$statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
+$statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
 $statement->execute(array($username));
-$results = $statement->fetch();
+$results = $statement->fetchAll();
 
-//Receive phone numbers for this user from database
-$statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
-$statement->execute(array($username));
-$phones = $statement->fetchAll();
-
-//Receive secret question from database
-$statement = $dbh->prepare("select * from Vraag where vraagnummer = ?");
-$statement->execute(array($results['vraagnummer']));
-$questions = $statement->fetch();
+// //Receive phone numbers for this user from database
+// $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
+// $statement->execute(array($username));
+// $phones = $statement->fetchAll();
+//
+// //Receive secret question from database
+// $statement = $dbh->prepare("select * from Vraag where vraagnummer = ?");
+// $statement->execute(array($results['vraagnummer']));
+// $questions = $statement->fetch();
 
 //Construct a list with <option> tags for the secret question dropdown menu
 $secret_question_options = null;
@@ -121,10 +127,10 @@ try {
 } catch (PDOException $e) {
     $error = $e;
 }
-//Construct the list by iterating over each received secret question
+//Construct the list by iterating over each received secret questions
 while ($question = $data->fetch()) {
     //The current secret question is put at the top of the list, all others are appended
-    if ($question['vraagnummer'] == $results['vraagnummer']) {
+    if ($question['vraagnummer'] == $results[0]['vraagnummer']) {
         $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
     } else {
         $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
@@ -210,7 +216,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results[0]['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -223,7 +229,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results[0]['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -238,13 +244,13 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results['geboortedatum']?>" required placeholder="Geboortedatum">
+          <input type="date" class="form-control" name="birthdate" id="birthdate" value="<?=$results[0]['geboortedatum']?>" required placeholder="Geboortedatum">
         </div>
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
           <select name="country" id="country" class="register-select-form" required>
-  <option value="" class="font-weight-light black-text disabled selected">Kies een land...</option>
+  <option value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected">Kies een land...</option>
   <option value='Nederland'>Nederland</option>
   <option value='Duitsland'>Duitsland</option>
   <option value='Frankrijk'>Frankrijk</option>
@@ -258,7 +264,7 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          <label style="black-text" for="country"><?=$results['land']?></label>
+          <label style="black-text" for="country"><?=$results[0]['land']?></label>
         </div>
       </div>
     </div>
@@ -268,7 +274,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results[0]['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
           <div class="form-requirements">
             <ul>
               <li>Vier cijfers gevolgd door twee hoofdletters</li>
@@ -279,7 +285,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="city" id="city" value="<?=$results['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
+          <input type="text" class="form-control" name="city" id="city" value="<?=$results[0]['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -294,7 +300,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="row">
       <div class="col-md-12" >
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
             <ul>
               <li>Straatnaam gevolgd door huisnummer</li>
@@ -310,7 +316,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" name="email" id="email" value="<?=$results['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
+          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>
@@ -337,7 +343,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-4">
         <div class="md-form">
-          <input type="tel" class="form-control" name="phone1" id="phone1" value="<?php if(isset($phones[0]['telefoonnummer'])) {echo $phones[0]['telefoonnummer'];} ?>" placeholder="Vul hier uw telefoonnummer in" required pattern="[0-9]{2}-[0-9]{8}">
+          <input type="tel" class="form-control" name="phone1" id="phone1" value="<?php if(isset($results[0]['telefoonnummer'])) {echo $results[0]['telefoonnummer'];} ?>" placeholder="Vul hier uw telefoonnummer in" required pattern="[0-9]{2}-[0-9]{8}">
           <div class="form-requirements">
             <ul>
               <li>XX-XXXXXXXX</li>
@@ -348,13 +354,13 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-4">
         <div class="md-form">
-          <input type="tel" class="form-control" name="phone2" id="phone2" value="<?php if(isset($phones[1]['telefoonnummer'])) {echo $phones[1]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
+          <input type="tel" class="form-control" name="phone2" id="phone2" value="<?php if(isset($results[1]['telefoonnummer'])) {echo $results[1]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
           <label style="black-text" for="phone2">Telefoonnummer #2</label>
         </div>
       </div>
       <div class="col-md-4">
         <div class="md-form">
-          <input type="tel" class="form-control" name="phone3" id="phone3" value="<?php if(isset($phones[2]['telefoonnummer'])) {echo $phones[2]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
+          <input type="tel" class="form-control" name="phone3" id="phone3" value="<?php if(isset($results[2]['telefoonnummer'])) {echo $results[2]['telefoonnummer'];} ?>" placeholder="Optioneel telefoonnummer" pattern="[0-9]{2}-[0-9]{8}">
           <label style="black-text" for="phone3">Telefoonnummer #3</label>
         </div>
       </div>
@@ -375,7 +381,12 @@ These values are for debugging purposes and are visible by inspecting the page s
       <div class="col-md-12">
         <div class="md-form">
           <label for="secretAnswer">Geheim antwoord</label>
-          <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" value="<?=$results['antwoordtekst']?>" required pattern="[A-z0-9\- ]+">
+          <input type="text" class="form-control" name="secretAnswer" id="secretAnswer" maxlength="25" value="<?=$results[0]['antwoordtekst']?>" required pattern="[A-z0-9\- ]+">
+          <div class="form-requirements">
+            <ul>
+              <li>Maximaal 25 tekens</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -385,7 +396,9 @@ These values are for debugging purposes and are visible by inspecting the page s
   </form>
 </div>
         <!-- Settings to change current password -->
-        <div class="tab-pane fade" id="tab2" role="tabpanel" <form method="post" action="">
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+          <form method="post" action=""> 
+
           <div class="userpage-form-header">
             <h1>Wachtwoord wijzigen</h1>
           </div>
@@ -413,24 +426,14 @@ These values are for debugging purposes and are visible by inspecting the page s
         <!-- Settings to register as a seller -->
         <div class="tab-pane fade" id="tab3" role="tabpanel">
           <?php
-  global $username;
-  $username = $_SESSION['username'];
-  try {//checks if user needs verification
-      $statement = $dbh->prepare("select gebruikersnaam from VerificatieVerkoper where gebruikersnaam = ?");
-      $statement->execute(array($username));
-      $results = $statement->fetch();
-  } catch (PDOException $e) {
-      $error=$e;
-      echo $error;
-  }
-
-  if ($_SESSION['seller']) {
-      echo "U bent al verkoper.";
-  } elseif (empty($results[0])) {
+if(!empty($results[0]['code'])){//checks for verification code
+    include('verification_seller.php');
+}else if($results[0]['verkoper'] == 1 && empty($results[0]['code'])){//checks if user is seller and no verification code *double check
+  echo "U bent al verkoper.";
+}else{//else option to register as seller
       include('register_seller.php');
-  } else {
-      include('verification_seller.php');
-  }
+}
+
   ?>
         </div>
 

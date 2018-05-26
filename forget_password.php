@@ -78,21 +78,22 @@ $headers = "From: Admin@EenmaalAndermaal.com";
     <i class="fa fa-envelope prefix niagara"></i>
     <input type="email" class="form-control white-text" name="forget_password">
     <label for="forget_password" class="font-weight-light" >Uw email</label>
-
+  </div>
 
     <div class="md-form">
         <i class="fa fa-user prefix niagara"></i>
-        <select name="secretQuestion" class="form-control">
-          <option value="kies" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
+        <select name="secretQuestion" class="form-control black-text">
+          <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
           <?=$secret_question_options?>
         </select>
     </div>
       <div class="md-form">
+        <i class="fa fa-lock prefix niagara"></i>
         <input type="text" class="form-control" name="secretAnswer" id="secretAnswer">
         <label for="secretAnswer" class"font-weight-light">Antwoord</label>
       </div>
 
-  </div>
+
 
 
   <div class="text-center py-1 mt-3">

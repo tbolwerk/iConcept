@@ -1,2 +1,12 @@
+<<<<<<< current
 templates/connect.php
 connect.php
+<<<<<<< HEAD
+=======
+templates/connect.php
+connect.php
+templates/footer.php
+>>>>>>> before discard
+=======
+templates/connect.php
+>>>>>>> 170ba6e84e49ad3faf4f1ea8e10847af5d27065d

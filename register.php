@@ -43,7 +43,12 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="firstname" id=firstname required pattern="[A-z]+">
+                <input type="text" class="form-control white-text" name="firstname" id=firstname maxlength="35"  required pattern="[A-z]+">
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Mag maximaal 35 karakters bevatten</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="firstname">Voornaam</label>
             </div>
 
@@ -51,6 +56,11 @@ if(isset($_POST['submit'])){
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="lastname" id="lastname" required pattern="[A-z]+">
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Mag maximaal 35 karakters bevatten</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="lastname">Achternaam</label>
             </div>
           </div>
@@ -60,6 +70,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="username" id="username" required >
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Mag maximaal 25 karakters bevatten</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="username">Gebruikersnaam</label>
             </div>
           </div>
@@ -78,6 +93,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="password" class="form-control white-text" name="password" id="password" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Mag uit maximaal 50 tekens bestaan</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="password">Wachtwoord</label>
             </div>
 
@@ -85,6 +105,11 @@ if(isset($_POST['submit'])){
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="password" class="form-control white-text" name="password_check" id="password_check" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Wachtwoord dient overeen te komen</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="password_check">Herhaal wachtwoord</label>
             </div>
           </div>
@@ -101,6 +126,11 @@ if(isset($_POST['submit'])){
             <div class="md-form mr-5 ml-3">
                 <i class="fa fa-exclamation-triangle prefix niagara"></i>
                 <input type="email" class="form-control white-text" name="email_check" id="email_check" onchange="confirmation('email', 'email_check')" onkeyup="confirmation('email', 'email_check')" required>
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>E-Mail dient overeen te komen</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="email_check">Bevestig emailadres</label>
             </div>
           </div>
@@ -110,6 +140,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-home prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="address1" id="address1" required>
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Verplicht veld</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="address1">Adres</label>
             </div>
           </div>
@@ -118,6 +153,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-home prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="address2" id="address2">
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Optioneel veld</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="address2">Adres (optioneel)</label>
             </div>
           </div>
@@ -127,6 +167,12 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-3">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="zipcode" id="zipcode" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Moet bestaan uit 4 cijfers</li>
+                    <li>Moet eindigen met 2 letters</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="zipcode">Postcode</label>
             </div>
 
@@ -142,8 +188,8 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
-                <select name="country" id="country" class="register-select-form" required>
-                  <option value="" class="font-weight-light black-text disabled selected">Kies een land...</option>
+                <select name="country" id="country" class="register-select-form black-text" required>
+                  <option value="" class="font-weight-light disabled selected">Kies een land...</option>
                   <option value='Nederland'>Nederland</option>
                   <option value='Duitsland'>Duitsland</option>
                   <option value='Frankrijk'>Frankrijk</option>
@@ -156,8 +202,8 @@ if(isset($_POST['submit'])){
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
-                <select name="secretQuestion" id="secretQuestion" class="register-select-form" required>
-                  <option value="" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
+                <select name="secretQuestion" id="secretQuestion" class="register-select-form black-text" required>
+                  <option value="" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 
@@ -174,6 +220,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer" required>
+                <div class="form-requirements white-text">
+                  <ul>
+                    <li>Maximaal 25 karakters</li>
+                  </ul>
+                </div>
                 <label class="font-weight-light white-text" for="secretAnswer">Antwoord op de geheime vraag</label>
             </div>
           </div>

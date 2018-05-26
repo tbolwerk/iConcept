@@ -57,28 +57,53 @@ displayAuction();
 
 
     <!-- "Hoe werkt het?" section -->
- <div class="container-fluid mt-3 mb-3" style="background-color: #4584A4;">
-   <div class="pt-3 white-text">
-     <h1 style="text-align: center; font-weight: bold;">Hoe werkt het?</h1>
+ <div class="container-fluid mt-3 mb-5 how-does-it-work">
+   <div class="pt-3 mb-3 white-text text-center">
+     <h1>Hoe werkt het?</h1>
+   </div>
+   <div class="row ml-3 mr-3 pb-3 text-center">
+     <div class="col-md-12 col-lg-4">
+       <img src="img/register.png" alt="test">
+       <div class="mt-2">
+       <h4 class="white-text">Registreer jezelf via de website</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <img src="img/activate.png" alt="test">
+       <div class="mt-2">
+       <h4 class="white-text">Activeer je account</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <img src="img/bid.png" alt="test">
+       <div class="mt-2">
+       <h4 class="white-text">Bieden maar!</h4>
+     </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- Question opportunities -->
+ <div class="container-fluid mt-3 mb-3 contact">
+   <div class="pt-3 black-text text-center mb-5">
+     <h1 class="mb-3">Heeft u vragen?</h1>
+     <p>Neem dan contact met ons op via een van de onderstaande kanalen, dan hopen wij u zo snel mogelijk van dienst te kunnen zijn.</p>
    </div>
    <div class="row ml-3 mr-3 pb-3">
-     <div class="col-md-4">
-       <img src="https://picsum.photos/500/350?image=532" class="img-fluid" alt="test" style="border-radius: 5px">
-       <div class="mt-2">
-       <h4 class="white-text" style="text-align: center;">Registreer jezelf via de website</h4>
+     <div class="col-md-12 col-lg-4" style=" text-align: center;">
+       <a href="#">
+         <i class="fab fa-10x fa-facebook-square"></i>
+       </a>
      </div>
+     <div class="col-md-12 col-lg-4" style=" text-align: center;">
+       <a href="#">
+         <i class="fab fa-10x fa-google-plus-square"></i>
+       </a>
      </div>
-     <div class="col-md-4">
-       <img src="https://picsum.photos/500/350?image=120" class="img-fluid" alt="test" style="border-radius: 5px">
-       <div class="mt-2">
-       <h4 class="white-text" style="text-align: center;">Activeer je account</h4>
-     </div>
-     </div>
-     <div class="col-md-4">
-       <img src="https://picsum.photos/500/350?image=421" class="img-fluid" alt="test" style="border-radius: 5px">
-       <div class="mt-2">
-       <h4 class="white-text" style="text-align: center;">Bieden maar!</h4>
-     </div>
+     <div class="col-md-12 col-lg-4" style=" text-align: center;">
+       <a href="#">
+         <i class="fab fa-10x fa-twitter-square"></i>
+       </a>
      </div>
    </div>
  </div>

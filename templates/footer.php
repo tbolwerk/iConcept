@@ -34,14 +34,14 @@
     <script type="text/javascript" src="js/paging.js"></script>
     <script type="text/javascript" src="js/timer.js"></script>
     <script>
-      $(document).ready(function(){
-        $('.flypanels-container').flyPanels({
-          treeMenu: {
-            init: true
-          },
-        });
-        FastClick.attach(document.body);
+    $(document).ready(function(){
+      $('.flypanels-container').flyPanels({
+        treeMenu: {
+          init: true
+        },
       });
+      FastClick.attach(document.body);
+    });
     </script>
 
     <script type="text/javascript">
@@ -68,20 +68,31 @@
     <script type="text/javascript">
       $(document).ready(function() {
       appendMobileNav();
+      appendMobileFooter();
       });
 
       $(window).resize(function() {
       appendMobileNav();
+      appendMobileFooter();
       });
 
       const appendMobileNav = () => {
-      if ($(window).width() < 768) {
+      if ($(window).width() < 991) {
         $('#navbar-brand').addClass('ml-auto');
         $('#navbar-brand').addClass('mr-auto');
       }
       else {
         $('#navbar-brand').removeClass('ml-auto');
         $('#navbar-brand').removeClass('mr-auto');
+      }
+      };
+
+      const appendMobileFooter = () => {
+      if ($(window).width() < 991) {
+        $('#mobileFooter').addClass('mr-auto');
+      }
+      else {
+        $('#mobileFooter').removeClass('mr-auto');
       }
       };
       </script>

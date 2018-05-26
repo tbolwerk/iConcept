@@ -401,31 +401,20 @@ function login($username_input, $password)
     }
     if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
     	$error['password'] = "Wachtwoord klopt niet";
-    } else {
-      //Has the user activated his account yet?
-      $activation_check = $dbh->prepare("SELECT geactiveerd FROM Gebruiker WHERE gebruikersnaam=?");
-      $activation_check->execute(array($password_result['gebruikersnaam']));
+    } else if ($password_result['geactiveerd']) {      //Has the user activated his account yet?
+            $error['verification'] = "Account is nog niet geactiveerd";
+          }else{
+            $_SESSION['seller'] = $password_result['verkoper'];
+            $_SESSION['username'] = $password_result['gebruikersnaam'];
+            $_SESSION['email'] = $password_result['email'];
 
-      if (!($activation_result = $activation_check->fetch(PDO::FETCH_NUM)[0])) {
-        $error['verification'] = "Account is nog niet geactiveerd";
-      } else {
-        try {//checks if user needs verification
-        	$statement = $dbh->prepare("select verkoper from Gebruiker where gebruikersnaam = ?");
-        	$statement->execute(array($password_result['gebruikersnaam']));
-        	$results = $statement->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-      		$error=$e;
-      		echo $error;
-        }
-        $_SESSION['seller'] = $results['gebruikersnaam'];
-        $_SESSION['username'] = $password_result['gebruikersnaam'];
-        $_SESSION['email'] = $password_result['email'];
+            header('Location: index.php');
+          }
 
-        header('Location: index.php');
       }
     }
-  }
-}
+
+
 
 function random_password( $length = 8 ) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

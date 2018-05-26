@@ -1,7 +1,7 @@
 <?php require_once("functions.php");
 global $dbh;
-$statement = $dbh->query("SELECT TOP 4 * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
-$carousel="";
+$statement = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+$carousel= array();
 $i=0;
 while($row = $statement->fetch()){
 	$i--;
@@ -12,7 +12,9 @@ while($row = $statement->fetch()){
 	$countdown_date = date("Y-m-d",$looptijdbegindag);
 	$countdown_time = date("h:i:s",$looptijdbegintijdstip);
 	$countdown = $countdown_date . " " . $countdown_time;
-$carousel.=	'			<div class="col-md-3">
+	$out = '';
+
+$carousel[]=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
 							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$row["titel"].'" />
@@ -34,9 +36,29 @@ $carousel.=	'			<div class="col-md-3">
 							</ul>
 						</div>
 					</div>
-				</div>     <script>
-				     countdown("'.$timer.'","'.$countdown.'");
-				     </script>';
+				</div><script>
+						 countdown("'.$timer.'","'.$countdown.'");
+						 </script>';
+}
+for($i = 0; $i<count($carousel);$i++){
+
+	if($i==0){
+$out.='<div class="carousel-item active">';
+
+}else
+	if($i==4){
+$out.='</div>';
+$out.='<div class="carousel-item">';
+
+}else
+	if($i==8){
+		$out.='</div>';
+$out.='<div class="carousel-item">';
+
+	}
+	$out.=$carousel[$i];
+
+
 }
 
 
@@ -46,17 +68,7 @@ $carousel.=	'			<div class="col-md-3">
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
-			<div class="carousel-item active">
-<?=$carousel?>
-</div>
-			<!-- Second slide -->
-			<div class="carousel-item">
-<?=$carousel?>
-			</div>
-				<!-- Third slide -->
-				<div class="carousel-item">
-<?=$carousel?>
-				</div>
+<?=$out?>
 
   <!--/.Third slide-->
 

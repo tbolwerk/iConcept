@@ -401,7 +401,7 @@ function login($username_input, $password)
     }
     if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
     	$error['password'] = "Wachtwoord klopt niet";
-    } else if ($password_result['geactiveerd']) {      //Has the user activated his account yet?
+    } else if ($password_result['geactiveerd'] == 0) {      //Has the user activated his account yet?
             $error['verification'] = "Account is nog niet geactiveerd";
           }else{
             $_SESSION['seller'] = $password_result['verkoper'];

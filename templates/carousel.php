@@ -1,6 +1,8 @@
 <?php require_once("functions.php");
 global $dbh;
+try{
 $statement = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+
 $carousel= array();
 $i=0;
 while($row = $statement->fetch()){
@@ -41,7 +43,9 @@ $carousel[]=	'			<div class="col-md-3">
 						 </script>';
 }
 for($i = 0; $i<count($carousel);$i++){
-
+if($i>11){
+	break;
+}
 	if($i==0){
 $out.='<div class="carousel-item active">';
 
@@ -58,6 +62,10 @@ $out.='<div class="carousel-item">';
 	}
 	$out.=$carousel[$i];
 
+
+}
+}catch(PDOException $e){
+	$out = '';
 
 }
 

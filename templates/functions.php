@@ -110,7 +110,7 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
       $i++;
@@ -176,7 +176,7 @@ function displayAuction()
 
 
    try{
-     $data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+     $data = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
     $i=0;
      while ($row = $data->fetch()) {
        $i++;

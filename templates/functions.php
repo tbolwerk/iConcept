@@ -408,7 +408,7 @@ function login($username_input, $password)
             $_SESSION['username'] = $password_result['gebruikersnaam'];
             $_SESSION['email'] = $password_result['email'];
 
-            header('Location: index.php');
+            // header('Location: index.php');
           }
 
       }

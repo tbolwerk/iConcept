@@ -106,14 +106,14 @@
 
 
 <!-- SideNav slide-out button -->
-<a href="#" data-activates="slide-out" class="btn btn-primary p-3 button-collapse"><i class="fa fa-bars"></i></a>
+<!-- <a href="#" data-activates="slide-out" class="btn btn-primary p-3 button-collapse"><i class="fa fa-bars"></i></a> -->
 
 <!-- Sidebar navigation -->
-<div id="slide-out" class="side-nav fixed">
-<ul class="custom-scrollbar">
+<!-- <div id="slide-out" class="side-nav fixed">
+<ul class="custom-scrollbar"> -->
 
     <!-- Side navigation links -->
-    <li>
+    <!-- <li>
         <ul class="collapsible collapsible-accordion">
             <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-chevron-right"></i> Submit blog<i class="fa fa-angle-down rotate-icon"></i></a>
                 <div class="collapsible-body">
@@ -168,10 +168,10 @@
                 </div>
             </li>
         </ul>
-    </li>
+    </li> -->
     <!--/. Side navigation links -->
-</ul>
-</div>
+<!-- </ul>
+</div> -->
 <!--/. Sidebar navigation -->
 
 
@@ -195,7 +195,12 @@ while($row = $statement->fetch()){
               // echo '<pre>',print_r($menu),'</pre>';
 
               // display menu
-              echo themeMenu($menu,1);
+              echo '          <div class="offcanvas flypanels-left">
+                              <div class="panelcontent" data-panel="treemenu">
+                                <nav class="flypanels-treemenu" role="navigation">'.themeMenu($menu,1).
+                                '    </nav>
+                                  </div>
+                                </div>';
 
               /*
               * ------------------------------------------------------------------------------------
@@ -213,7 +218,7 @@ while($row = $statement->fetch()){
               * @param str name of index that children will reside ie. children, etc
               * @return array tree
               */
-              
+
 
 
               function convertAdjacencyListToTree($intParentId,&$arrRows,$strIdField,$strParentsIdField,$strNameResolution) {
@@ -244,6 +249,7 @@ while($row = $statement->fetch()){
               * @param runner (depth)
               * @return str themed menu
               */
+
               function themeMenu($menu,$runner) {
 
                   $out = '';
@@ -257,7 +263,7 @@ while($row = $statement->fetch()){
                       $out.= sprintf(
                           '<li class="depth-%u">%s%s</li>'
                           ,$runner
-                          ,$link['name']
+                          ,'<li class="haschildren"><div class="link"><a class="link" style="text-align: center;">'.$link["name"].'</a><a class="expand">1239<i class="fa icon"></i></a></div>'
                           ,themeMenu($link['links'],($runner+1))
                       );
                   }

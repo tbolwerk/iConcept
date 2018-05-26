@@ -1,2 +1,8 @@
+<<<<<<< current
 templates/connect.php
 connect.php
+=======
+templates/connect.php
+connect.php
+templates/footer.php
+>>>>>>> before discard

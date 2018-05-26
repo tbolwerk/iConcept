@@ -36,6 +36,12 @@ if(isset($_POST['submit'])){//if submit pressed
           <div class="md-form">
             <i class="fa fa-user prefix niagara"></i>
             <input type="text" id="username" class="form-control white-text" name="username" autofocus required>
+            <div class="form-requirements white-text">
+              <ul>
+                <li>Inloggen met E-Mail</li>
+                <li>Inloggen met Gebruikersnaam</li>
+              </ul>
+            </div>
             <label for="username" class="font-weight-light">Gebruikersnaam</label>
           </div>
           <!-- Material input username -->

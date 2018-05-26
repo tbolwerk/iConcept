@@ -52,7 +52,7 @@ WHERE kind.rubrieknaam LIKE ?");
   //zoekt in veilingen
   try{
     $statement = $dbh->prepare("SELECT vw.voorwerpnummer,vw.titel,vr.rubrieknummer,r.rubrieknaam
-FROM Rubriek r,Voorwerp vw INNER JOIN Voorwerp_in_Rubriek vr ON
+FROM Rubriek r,Voorwerp vw LEFT JOIN Voorwerp_in_Rubriek vr ON
 vw.voorwerpnummer = vr.voorwerpnummer
 WHERE  r.rubrieknummer = vr.rubrieknummer
 AND titel LIKE ?");

@@ -213,6 +213,9 @@ while($row = $statement->fetch()){
               * @param str name of index that children will reside ie. children, etc
               * @return array tree
               */
+              
+
+
               function convertAdjacencyListToTree($intParentId,&$arrRows,$strIdField,$strParentsIdField,$strNameResolution) {
 
                   $arrChildren = array();

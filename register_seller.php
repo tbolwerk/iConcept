@@ -54,27 +54,28 @@ function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber
 
     if(count($errors) == 0){//checks if there are errors
       if($checkoption == "creditcard"){
+				$bank = null;
+				$banknumber = null;
+			}else{
+				$creditcard = null;
+			}
 				try {
 					$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
-					$data->execute(array($username, $checkoption, $creditcard,  null, null));
+					$data->execute(array($username, $checkoption, $creditcard,  $bank, $banknumber));
 					$userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
 	        $userdata->execute(array($username));
-					$_SESSION['seller'] = $results[0];
+					$_SESSION['seller'] = 1;
+					$code = random_password(6);
+					createVerificationCodeSeller($username, $code);
 				}
 				catch (PDOException $e) {
 					$error=$e;
 					echo $error;
 				}
       }
-      else {
-				$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
-				$data->execute(array($username, $checkoption, null,  $bank, $banknumber));
-        $code = random_password(6);
-  			createVerificationCodeSeller($username, $code);
-      }
     }
   }
-}
+
 
 if(isset($_POST['registerseller'])){
   registerSeller($username, $_POST['checkoption'],$_POST['creditcard'],$_POST['bank'],$_POST['banknumber']);

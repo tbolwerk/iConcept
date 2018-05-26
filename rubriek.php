@@ -31,18 +31,7 @@
 
 
     </div>
-    <div class="row">
 
-      <?=$auctionpage?>
-
-
-    </div>
-    <div class="row">
-
-      <?=$auctionpage?>
-
-
-    </div>
 
   </div>
 </div>

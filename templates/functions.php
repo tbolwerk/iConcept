@@ -111,7 +111,7 @@ function displayAuction()
 
 	try{
 		$data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
-
+    $i=0;
 		while ($row = $data->fetch()) {
       $i++;
       $timer="timer".$i;
@@ -172,13 +172,12 @@ function displayAuction()
 
    global $dbh;
    global $auctionpage;
-   $auction = "<script>
-         var countDownDate = [];
-         </script>";
+   $auction = "";
+
 
    try{
      $data = $dbh->query("SELECT * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
-
+    $i=0;
      while ($row = $data->fetch()) {
        $i++;
        $timer="timer".$i;

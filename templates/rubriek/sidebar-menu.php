@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!-- <div class="offcanvas flypanels-left">
   <div class="panelcontent" data-panel="treemenu">
     <nav class="flypanels-treemenu" role="navigation">
@@ -178,14 +178,14 @@
 <!-- <div class="category-title">
   <h3>Rubrieken</h3>
 </div> -->
-=======
+
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/functions.php';
 
 $statement = $dbh->query("SELECT * FROM Rubriek");
 while($row = $statement->fetch()){
   $rows[] = (array('id' => $row['rubrieknummer'],'parent_id' => $row['rubrieknummerOuder'],'name' => $row['rubrieknaam']));
-}    
+}
 
 
 
@@ -269,4 +269,3 @@ while($row = $statement->fetch()){
 
 
 ?>
->>>>>>> a750a378b2ca490e235b9ba543d9a51182ee0fef

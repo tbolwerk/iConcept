@@ -2,8 +2,9 @@
 global $dbh;
 $statement = $dbh->query("SELECT TOP 4 * FROM Voorwerp vw INNER JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
 $carousel="";
+$i=0;
 while($row = $statement->fetch()){
-	$i++;
+	$i--;
 	$timer="timer".$i;
 	$looptijd = $row['looptijd'];
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);

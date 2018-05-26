@@ -25,29 +25,25 @@
 
 <div class="container-fluid category-page col-lg-9">
   <div class="col-md-12 col-lg-9 category-content">
-    <div class="row page" id="page1">
+    <div class="row">
 
       <?=$auctionpage?>
 
 
     </div>
-    <div class="row page" id="page2">
+    <div class="row">
 
       <?=$auctionpage?>
 
 
     </div>
-    <div class="row page" id="page3">
+    <div class="row">
 
       <?=$auctionpage?>
 
 
     </div>
-    <nav aria-label="pagination">
-        <ul id="pagination" class="pagination justify-content-center pagination-lg">
 
-        </ul>
-    </nav>
   </div>
 </div>
 </div>

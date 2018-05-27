@@ -52,10 +52,9 @@ WHERE kind.rubrieknaam LIKE ?");
   //zoekt in veilingen
   try{
     $statement = $dbh->prepare("SELECT vw.voorwerpnummer,vw.titel,vr.rubrieknummer,r.rubrieknaam
-FROM Rubriek r,Voorwerp vw LEFT JOIN Voorwerp_in_Rubriek vr ON
-vw.voorwerpnummer = vr.voorwerpnummer
-WHERE  r.rubrieknummer = vr.rubrieknummer
-AND titel LIKE ?");
+FROM Voorwerp vw LEFT JOIN Voorwerp_in_Rubriek vr ON
+vw.voorwerpnummer = vr.voorwerpnummer LEFT JOIN Rubriek r ON vr.rubrieknummer=r.rubrieknummer
+WHERE titel LIKE ?");
     $statement->execute(array("%".$name."%"));
   }catch(PDOException $e){
     $error = $e;

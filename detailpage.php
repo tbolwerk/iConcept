@@ -3,9 +3,16 @@ $current_page='detailpage';
 require_once('templates/header.php');
 
 if (isset($_GET['id'])) {
+  $error = "";
   if (isset($_POST['bid'])) {
-    $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
-    $statement->execute(array($_GET['id'], $_POST['bid'], $_SESSION['username']));
+    try {
+      $bid = str_replace("\"", "", strip_tags($_POST['bid']));
+
+      $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
+      $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
+    } catch(PDOException $e){
+      $error = "Placeholder " . $e;
+    }
   }
 
   $statement = $dbh->prepare("select *, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
@@ -80,10 +87,10 @@ These values are for debugging purposes and are visible by inspecting the page s
   </div>
 </div>
 
-<p>Home
+<p><a href="index.php">Home</a>
 <?php
 foreach ($lijst as $rubriek) {
-  echo " > {$rubriek['rubrieknaam']}";
+  echo " > <a href=\"rubriek.php?rubrieknummer={$rubriek['rubrieknummer']}\">{$rubriek['rubrieknaam']}</a>";
 }
 ?>
 </p>
@@ -95,6 +102,8 @@ foreach ($lijst as $rubriek) {
 <p id="maxbid">Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
 
 <p id="timer">Dit moet nog opgelost worden</p>
+
+<p><?=$error?></p>
 
 <form method="post" class="col-md-6">
     <input type="number" name="bid" id="bid" class="form-control">

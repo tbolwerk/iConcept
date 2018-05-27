@@ -19,7 +19,9 @@ while($row = $statement->fetch()){
 $carousel[]=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
+						<a href="auction.php?voorwerpnummer='.$row["voorwerpnummer"].'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
 							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$row["titel"].'" />
+						</a>
 						</div>
 						<div class="card-body">
 							<span class="small-font">'.$row["voorwerpnummer"].'</span>
@@ -85,3 +87,4 @@ $out.='<div class="carousel-item">';
 
 </div>
 <!--/.Carousel Wrapper-->
+</div>

@@ -110,7 +110,7 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP (8) * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
       $i++;
@@ -127,7 +127,7 @@ function displayAuction()
 			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
+              <img class='card-img-top' style='max-height: 250px;' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
               <span class='small-font'>".$row['voorwerpnummer']."</span>
@@ -190,7 +190,9 @@ function displayAuction()
 
 
 
-       $auctionpage.='  <div class="card auction-card mb-4 col-md-4">
+       $auctionpage.='
+       <div class="col-md-4">
+       <div class="card auction-card mb-4">
        <div class="view overlay">
          <img class="card-img-top" src="'.$row["filenaam"].'" />
        </div>
@@ -211,9 +213,11 @@ function displayAuction()
          </ul>
        </div>
      </div>
+
      <script>
      countdown("'.$timer.'","'.$countdown.'");
      </script>
+     </div>
            ';
      }
    }catch(PDOException $e){

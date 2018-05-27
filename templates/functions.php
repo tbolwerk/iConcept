@@ -166,7 +166,7 @@ function displayAuction()
 }
 
  /*display auctionpage*/
- function displayAuctionpage()
+ function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
  {
 
 
@@ -176,7 +176,15 @@ function displayAuction()
 
 
    try{
+     if(($voorwerpnummer !=0)){
+     $data = $dbh->prepare("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
+     $data->execute(array($voorwerpnummer));
+   }else if(($rubrieknummer !=0)){
+     $data = $dbh->prepare("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
+     $data->execute(array($rubrieknummer));
+   }else{
      $data = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+   }
     $i=0;
      while ($row = $data->fetch()) {
        $i++;
@@ -191,6 +199,7 @@ function displayAuction()
 
 
        $auctionpage.='
+
        <div class="col-md-4">
        <div class="card auction-card mb-4">
        <div class="view overlay">
@@ -218,6 +227,7 @@ function displayAuction()
      countdown("'.$timer.'","'.$countdown.'");
      </script>
      </div>
+
            ';
      }
    }catch(PDOException $e){

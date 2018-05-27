@@ -22,6 +22,10 @@ if (isset($_GET['id'])) {
   $statement->execute(array($_GET['id'], $_GET['id']));
   $maxbid = $statement->fetch();
 
+  $statement = $dbh->prepare("select * from Bestand where voorwerpnummer = ?");
+  $statement->execute(array($_GET['id']));
+  $bestanden = $statement->fetchAll();
+
   $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
@@ -57,10 +61,6 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 <p>ontvangen database gegevens: </p>
 <?php print_r($results); ?><br>
-<br>
-
-<p>ontvangen tijdelijke gegevens: </p>
-<?php print_r($tijdelijk); ?><br>
 <br>
 
 <p>ontvangen rubriek gegevens: </p>
@@ -100,6 +100,12 @@ foreach ($lijst as $rubriek) {
     <input type="number" name="bid" id="bid" class="form-control">
     <button type="submit" name="submit" class="btn btn-primary">Bied</button>
 </form>
+
+<?php
+foreach ($bestanden as $bestand) {
+  echo "<img src=\"{$bestand['filenaam']}\"></img>";
+}
+?>
 
 <script>
 countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);

@@ -23,16 +23,15 @@
     <h1 class="white-text banner-text"><?=$rubrieknaam?></h1>
   </div>
 </div>
-<div class="container-fluid">
-  <div class="row">
-  <div class="category-sidebar col-md-12 col-lg-3">
+<div class="flex-parent">
+  <div class="category-sidebar col-sm-12 col-md-3 flex-1">
     <div class="flypanels-container">
   		<?php include ('templates/rubriek/sidebar-menu.php'); ?>
   	</div>
   </div>
 
 
-<div class="container-fluid category-page col-lg-9">
+<div class="container-fluid category-page flex-1" id="wrapper">
   <div class="col-md-12 col-lg-9 category-content">
     <div class="row">
 

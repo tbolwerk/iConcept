@@ -5,6 +5,8 @@ require_once('templates/header.php');
 $errors;
 $errors = array();
 $seller = $_SESSION['username'];
+
+
 try {
   $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
   $statement->execute(array($seller));
@@ -29,33 +31,35 @@ try {
 }
 
 
-
+//Checks if file is the right type and checks if the file is not too large
 function checkPicture($picture, $id, $i){
   global $errors;
 
   $pictures = array();
-  $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+  $allowedExts = array("jpg", "jpeg", "png", "bmp");//Allowed filetypes
   $tmp_extension = explode(".", $picture["name"]);
   $extension = end($tmp_extension);
   $filename = $id . "_" . $i . "." . $extension;
-  if (
+  if (//checks file type and size
       !(
-         ($picture["type"] == "image/gif")
-      || ($picture["type"] == "image/jpeg")
+      ($picture["type"] == "image/jpeg")
       || ($picture["type"] == "image/png")
       || ($picture["type"] == "image/pjpeg")
+      || ($picture["type"] == "image/bmp")
       )
-      || ($picture["size"] > 3000000)
+      || ($picture["size"] > 3000000) //File must be smaller than 3MB
       || !in_array($extension, $allowedExts)
       || $picture["error"] > 0)
       {
         $errors['upload'] = 'Afbeeldingen moeten een jpg of png van maximaal 3MB zijn.';
+        $errors['upload'] = $picture["error"];
       }
       else {
-        return $filename;
+        return $filename;//returns filename
       }
 }
 
+//generates and returns options for the main categoryselector
 function generateCategoryOptions($results){
   $options = "<option value=''>Kies rubriek...</option>";
   for ($i = 0; $i < count($results); $i++) {
@@ -66,6 +70,7 @@ function generateCategoryOptions($results){
   return $options;
 }
 
+//Stores all information in the database
 function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method,$picture,$category){
   global $dbh;
   global $errors;
@@ -77,11 +82,11 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   $current_time = date('G:i:s');
   $end_date = date('Y-m-d', strtotime($current_date. ' + ' . $duration . 'days'));
 
-  try {
+  try { //selects last inserted auctionid
     $objectdata = $dbh->prepare("select top 1 voorwerpnummer from Voorwerp order by voorwerpnummer desc");
     $objectdata->execute();
     $lastid = $objectdata->fetch();
-    $id = $lastid[0] + 1;
+    $id = $lastid[0] + 1;//id of the auction where all information should be stored in
   } catch (PDOException $e) {
     $errors['db']=$e;
     echo $errors['db'];
@@ -89,20 +94,20 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
 
   $pictures = array();
   $picture_keys = array_keys($picture);
-  for ($i = 0; $i < 4; $i++) {
+  for ($i = 0; $i < 4; $i++) { //rearranges the picture array so it's more usable
   	foreach ($picture_keys as $key) {
   		$pictures[$i][$key] = $picture[$key][$i];
     }
   }
 
   $num_pictures = 0;
-  for ($i = 0; $i < 4; $i++){
+  for ($i = 0; $i < 4; $i++){//counts number of selected pictures
     if(!empty($pictures[$i]['name'])){
       $num_pictures++;
     }
   }
 
-  for($i = 0; $i < $num_pictures; $i++){
+  for($i = 0; $i < $num_pictures; $i++){//makes the indexes of the pictures right for if user deselected a picture
     if(empty($pictures[$i]['name'])){
       $pictures[$i] = $pictures[$i+1];
       $pictures[$i+1] = null;
@@ -112,8 +117,8 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
       $filenames[$i] = checkPicture($pictures[$i],$id,$i);
     }
   }
-  if(count($errors) == 0){
-    try {
+  if(count($errors) == 0){//Inserts all data in database if no erros occured
+    try {//inserts all data in table 'Voorwerp'
       $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
       values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
@@ -121,10 +126,10 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
       $error=$e;
       echo $error;
     }
-    for($i = 0; $i < $num_pictures; $i++){
-      move_uploaded_file($pictures[$i]["tmp_name"],
+    for($i = 0; $i < $num_pictures; $i++){//Inserts data for every selected picture
+      move_uploaded_file($pictures[$i]["tmp_name"], //uploads picture to server
       "upload/" . $filenames[$i]);
-      try {
+      try {//inserts picturedata in database
         $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
         $data->execute(array($id, $filenames[$i]));
       } catch (PDOException $e) {
@@ -132,7 +137,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
           echo $error;
       }
     }
-    try {
+    try {//inserts categorydata in database
       $data = $dbh->prepare("insert into Voorwerp_in_Rubriek(voorwerpnummer, rubrieknummer) Values(?, ?)");
       $data->execute(array($id, $category));
     } catch (PDOException $e) {
@@ -144,17 +149,15 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
 
 
 
-if(isset($_POST['submit'])){
+if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
   $j = 1;
   $category;
-  while(isset($_POST['subCategories' . $j])){
+  while(isset($_POST['subCategories' . $j])){//Selects last selected subcategory
     $category = $_POST['subCategories' . $j];
     $j++;
   }
+  //Creates new auction
   newAuction($_POST['title'],$_POST['description'],$_POST['startprice'],$_POST['duration'],$_POST['pay_method'],$_POST['pay_instructions'],$_POST['place'],$_POST['country'],$_POST['shipping_costs'],$_POST['shipping_method'],$_FILES['picture'],$category);
-  if(isset($errors['upload'])){
-    echo $errors['upload'];
-  }
 }
 
 ?>
@@ -191,6 +194,26 @@ if(isset($_POST['submit'])){
   max-width:200px;
 }
 
+.remove-btn, .edit-btn {
+  position: absolute;
+  z-index: 100;
+  background-color: #555;
+  color: #fff;
+  padding: 5px;
+  font-size: 20px;
+
+}
+
+.edit-btn {
+  right: 0px;
+}
+
+.remove-btn {
+  padding-right: 10px;
+  top: 0px;
+  display: none;
+}
+
 .newauction-form {
   background-color: #ffffff;
   padding: 40px;
@@ -203,6 +226,26 @@ if(isset($_POST['submit'])){
   font-weight: bold;
   font-size: 32px;
   text-align: center;
+}
+
+.hoi {
+  position: relative;
+}
+
+.blockFileSelectButton {
+  opacity: 0;
+  z-index: 50;
+  height: 202px;
+  width: 202px;
+  position: absolute;
+  display: none;
+}
+.hiddenInput {
+  position: absolute;
+  top: 180px;
+  opacity: 0;
+  width: 0.1;
+  height: 0.1;
 }
 
 body {
@@ -221,7 +264,8 @@ body {
 
 <div class="container col-md-9 col-lg-8">
 <!-- <div class="row justify-content-center col-sm-12"> -->
-<form class="newauction-form" action="" method="post" enctype="multipart/form-data">
+<form class="newauction-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validateFileExtension(this.fileField)">
+  <?php if(isset($errors['upload'])){echo $errors['upload'];} ?>
   <div class="newauction-form-header">
     <h1>Titel en beschrijving</h1>
   </div>
@@ -230,8 +274,8 @@ body {
         <input type="text" class="form-control" name="title" id="title"  required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
         <div class="form-requirements">
           <ul>
-            <li>Minimaal 2 tekens</li>
-            <li>Maximaal 35 tekens</li>
+            <li>Verplicht veld</li>
+            <li>Maximaal 50 tekens</li>
             <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
           </ul>
         </div>
@@ -241,7 +285,14 @@ body {
 
   <div class="form-row">
       <div class="md-form form-group col-md-12">
-        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" required></textarea>
+        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+"></textarea>
+        <div class="form-requirements">
+          <ul>
+            <li>Verplicht veld</li>
+            <li>Maximaal 255 tekens</li>
+            <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+          </ul>
+        </div>
         <label class="black-text" for="description">&nbsp;Beschrijving</label>
       </div>
   </div>
@@ -263,21 +314,39 @@ body {
   </div>
   <div class="form-row">
     <div class="hoi">
+      <div id="blockPicture1" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture1" type="file" class="inputfile">
       <label id="labelpicture1" for="picture1"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
+      <div id="remove-btn1" onclick="removePicture(1)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
+      <input type="text" id="hidden1" class="hiddenInput"></input>
     </div>
     <div class="hoi">
+      <div id="blockPicture2" class="blockFileSelectButton"></div>
       <input name="picture[]"  id="picture2" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture2" for="picture2" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
+      <div id="remove-btn2" onclick="removePicture(2)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
+      <input type="text" id="hidden2" class="hiddenInput"></input>
     </div>
     <div class="hoi">
+      <div id="blockPicture3" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture3" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture3" for="picture3" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
+      <div id="remove-btn3" onclick="removePicture(3)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
+      <input type="text" id="hidden3" class="hiddenInput"></input>
     </div>
     <div class="hoi">
+      <div id="blockPicture4" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture4" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture4" for="picture4" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
+      <div id="remove-btn4" onclick="removePicture(4)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
+      <input type="text" id="hidden4" class="hiddenInput"></input>
     </div>
+  </div>
+  <div>
+    <ul>
+      <li>Afbeeldingen moeten van het type jpg, png of bmp zijn</li>
+      <li>Afbeeldingen mogen maximaal 3MB zijn</li>
+    </ul>
   </div>
 
   <div class="newauction-form-header">
@@ -285,12 +354,11 @@ body {
   </div>
   <div class="form-row">
       <div class="md-form form-group col-md-6">
-        <input type="number" step="0.01" class="form-control" name="startprice" id="startprice"  required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+        <input type="number" step="0.01" class="form-control" name="startprice" id="startprice"  required>
         <div class="form-requirements">
           <ul>
-            <li>Minimaal 2 tekens</li>
-            <li>Maximaal 35 tekens</li>
-            <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            <li>Verplicht veld</li>
+            <li>Maximaal 2 cijfers achter de komma</li>
           </ul>
         </div>
         <label class="black-text" for="startprice">&nbsp;Startprijs</label>
@@ -303,13 +371,6 @@ body {
           <option value="7" selected>7 dagen</option>
           <option value="10">10 dagen</option>
         </select>
-        <div class="form-requirements">
-          <ul>
-            <li>Minimaal 2 tekens</li>
-            <li>Maximaal 35 tekens</li>
-            <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
-          </ul>
-        </div>
       </div>
     </div>
 
@@ -323,7 +384,14 @@ body {
           </select>
         </div>
         <div class="md-form form-group col-md-6">
-          <input type="text" class="form-control" name="pay_instructions" id="pay_instructions"  required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <input type="text" class="form-control" name="pay_instructions" id="pay_instructions" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <div class="form-requirements">
+            <ul>
+              <li>Optioneel</li>
+              <li>Maximaal 255 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="pay_instructions">&nbsp;Betalingsinstructies</label>
         </div>
     </div>
@@ -331,10 +399,24 @@ body {
     <div class="form-row">
         <div class="md-form form-group col-md-6">
           <input type="text" class="form-control" name="place" id="place"  value="<?=$userdata['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <div class="form-requirements">
+            <ul>
+              <li>Verplicht veld</li>
+              <li>Maximaal 85 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="place">&nbsp;Plaats</label>
         </div>
         <div class="md-form form-group col-md-6">
           <input type="text" class="form-control" name="country" id="country"  value="<?=$userdata['land']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <div class="form-requirements">
+            <ul>
+              <li>Verplicht veld</li>
+              <li>Maximaal 48 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="country">&nbsp;Land</label>
         </div>
     </div>
@@ -342,10 +424,23 @@ body {
     <div class="form-row">
         <div class="md-form form-group col-md-6">
           <input type="number" step="0.01" class="form-control" name="shipping_costs" id="shipping_costs">
+          <div class="form-requirements">
+            <ul>
+              <li>Optioneel</li>
+              <li>Maximaal 2 cijfers achter de komma</li>
+            </ul>
+          </div>
           <label class="black-text" for="shipping_costs">&nbsp;Verzendkosten</label>
         </div>
         <div class="md-form form-group col-md-6">
           <input type="text" class="form-control" name="shipping_method" id="shipping_method"  pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <div class="form-requirements">
+            <ul>
+              <li>Optioneel</li>
+              <li>Maximaal 255 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
           <label class="black-text" for="shipping_method">&nbsp;Verzendinstructies</label>
         </div>
     </div>
@@ -459,28 +554,57 @@ document.getElementById("picture3").onchange = adduploadbox3;
 
 
     document.getElementById('picture1').addEventListener('change', handleFileSelect, false);
-    document.getElementById('picture1').labelpicture = "labelpicture1";
+    document.getElementById('picture1').pictureId = 1;
     document.getElementById('picture2').addEventListener('change', handleFileSelect, false);
-    document.getElementById('picture2').labelpicture = "labelpicture2";
+    document.getElementById('picture2').pictureId = 2;
     document.getElementById('picture3').addEventListener('change', handleFileSelect, false);
-    document.getElementById('picture3').labelpicture = "labelpicture3";
+    document.getElementById('picture3').pictureId = 3;
     document.getElementById('picture4').addEventListener('change', handleFileSelect, false);
-    document.getElementById('picture4').labelpicture = "labelpicture4";
+    document.getElementById('picture4').pictureId = 4;
 
     function handleFileSelect(evt) {
           var files = evt.target.files;
-          var labelpicture = evt.target.labelpicture;
+          var pictureId = evt.target.pictureId;
           var f = files[0];
           var reader = new FileReader();
 
             reader.onload = (function(theFile) {
                   return function(e) {
-                    document.getElementById(labelpicture).innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '"  />'].join('');
+                    var extension = theFile.name.split('.').pop().toLowerCase();
+                    console.log("hidden" + pictureId);
+                    if((extension != "jpg" && extension != "bmp" && extension != "png") || theFile.size > 3000000){
+                      document.getElementById("hidden" + pictureId).setCustomValidity("Dit bestand is niet geldig");
+                      console.log("hidden" + pictureId);
+                    }
+                    else {
+                      document.getElementById("hidden" + pictureId).setCustomValidity("");
+                    }
+                    document.getElementById("labelpicture" + pictureId).innerHTML = ['<div class="edit-btn"><i class="fa fa-upload" aria-hidden="true"></i></div><img src="', e.target.result,'" title="', theFile.name, '"  />'].join('');
+                    document.getElementById("remove-btn" + pictureId).style.display = "block";
+                    document.getElementById("blockPicture" + pictureId).style.display = "block";
                   };
             })(f);
+            if(typeof f == 'object'){
+              reader.readAsDataURL(f);
+            }
+            else {
+              removePicture(pictureId);
+            }
 
-            reader.readAsDataURL(f);
+
+
   }
+
+  function removePicture(pictureId) {
+    var labelpicture = 'labelpicture' + pictureId;
+    var file = document.getElementById('picture' + pictureId);
+    file.value = file.defaultValue;
+    document.getElementById('labelpicture' + pictureId).innerHTML = ['<img style="height: 80px;" src="img/picture-upload-button.png"></img>'].join('');
+    document.getElementById("remove-btn" + pictureId).style.display = "none";
+    document.getElementById("blockPicture" + pictureId).style.display = "none";
+    document.getElementById("hidden" + pictureId).setCustomValidity("");
+}
+
 
 
 </script>

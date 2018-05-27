@@ -10,7 +10,7 @@ try {
     $error = $e;
 }
 while($question = $data->fetch()){
-  $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+  $secret_question_options .= "<option class='black-text' value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
 }
 
 
@@ -189,11 +189,11 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5">
                 <i class="fa fa-user prefix niagara"></i>
                 <select name="country" id="country" class="register-select-form black-text" required>
-                  <option value="" class="font-weight-light disabled selected">Kies een land...</option>
-                  <option value='Nederland'>Nederland</option>
-                  <option value='Duitsland'>Duitsland</option>
-                  <option value='Frankrijk'>Frankrijk</option>
-                  <option value='België'>België</option>
+                  <option class="black-text" value="" class="font-weight-light disabled selected">Kies een land...</option>
+                  <option class="black-text" value='Nederland'>Nederland</option>
+                  <option class="black-text" value='Duitsland'>Duitsland</option>
+                  <option class="black-text" value='Frankrijk'>Frankrijk</option>
+                  <option class="black-text" value='België'>België</option>
                 </select>
             </div>
           </div>
@@ -203,7 +203,7 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5 register-select">
                 <i class="fa fa-user prefix niagara"></i>
                 <select name="secretQuestion" id="secretQuestion" class="register-select-form black-text" required>
-                  <option value="" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
+                  <option class="black-text" value="" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
                 </select>
 

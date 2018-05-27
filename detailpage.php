@@ -3,18 +3,21 @@ $current_page='detailpage';
 require_once('templates/header.php');
 
 if (isset($_GET['id'])) {
+  $error = "";
   if (isset($_POST['bid'])) {
-    $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
-    $statement->execute(array($_GET['id'], $_POST['bid'], $_SESSION['username']));
+    try {
+      $bid = str_replace("\"", "", strip_tags($_POST['bid']));
+
+      $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
+      $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
+    } catch(PDOException $e){
+      $error = "Placeholder " . $e;
+    }
   }
 
-  $statement = $dbh->prepare("select * from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
+  $statement = $dbh->prepare("select *, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
   $results = $statement->fetch();
-
-  $statement = $dbh->prepare("select looptijdbegindag, looptijdtijdstip, looptijd, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag from Voorwerp where voorwerpnummer = ?");
-  $statement->execute(array($_GET['id']));
-  $tijdelijk = $statement->fetch();
 
   $statement = $dbh->prepare("select * from Bod where voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
@@ -26,7 +29,11 @@ if (isset($_GET['id'])) {
   $statement->execute(array($_GET['id'], $_GET['id']));
   $maxbid = $statement->fetch();
 
-  $time = date_create($tijdelijk['looptijdeindedag'] . $tijdelijk['looptijdtijdstip']);
+  $statement = $dbh->prepare("select * from Bestand where voorwerpnummer = ?");
+  $statement->execute(array($_GET['id']));
+  $bestanden = $statement->fetchAll();
+
+  $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
   //select looptijdbegindag, looptijd, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag from Voorwerp
@@ -63,10 +70,6 @@ These values are for debugging purposes and are visible by inspecting the page s
 <?php print_r($results); ?><br>
 <br>
 
-<p>ontvangen tijdelijke gegevens: </p>
-<?php print_r($tijdelijk); ?><br>
-<br>
-
 <p>ontvangen rubriek gegevens: </p>
 <?php print_r($rubriek); ?><br>
 <br>
@@ -84,10 +87,10 @@ These values are for debugging purposes and are visible by inspecting the page s
   </div>
 </div>
 
-<p>Home
+<p><a href="index.php">Home</a>
 <?php
 foreach ($lijst as $rubriek) {
-  echo " > {$rubriek['rubrieknaam']}";
+  echo " > <a href=\"rubriek.php?rubrieknummer={$rubriek['rubrieknummer']}\">{$rubriek['rubrieknaam']}</a>";
 }
 ?>
 </p>
@@ -96,17 +99,37 @@ foreach ($lijst as $rubriek) {
 
 <p>Veilingnummer <?=$results['voorwerpnummer']?></p>
 
-<p>Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
+<p id="maxbid">Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
 
-<p id="timer"></p>
+<p id="timer">Dit moet nog opgelost worden</p>
+
+<p><?=$error?></p>
 
 <form method="post" class="col-md-6">
     <input type="number" name="bid" id="bid" class="form-control">
     <button type="submit" name="submit" class="btn btn-primary">Bied</button>
 </form>
 
+<?php
+foreach ($bestanden as $bestand) {
+  echo "<img src=\"{$bestand['filenaam']}\"></img>";
+}
+?>
+
 <script>
-countdown('timer', <?php echo "'{$tijdelijk['looptijdeindedag']} {$tijdelijk['looptijdtijdstip']}'"; ?>);
+countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);
+
+  var x = setInterval(function() {
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("maxbid").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
+    xhttp.send();
+}, 1000);
 </script>
 
 <?php include('templates/footer.php'); ?>

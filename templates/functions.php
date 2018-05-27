@@ -233,6 +233,46 @@ function displayAuction()
 
  }
 
+ /*
+ * ------------------------------------------------------------------------------------
+ * Utility functions
+ * ------------------------------------------------------------------------------------
+ */
+
+ /*
+ * Convert adjacency list to hierarchical tree
+ *
+ * @param value of root level parent most likely null or 0
+ * @param array result
+ * @param str name of primary key column
+ * @param str name of parent_id column - most likely parent_id
+ * @param str name of index that children will reside ie. children, etc
+ * @return array tree
+ */
+
+
+
+ function convertAdjacencyListToTree($intParentId,&$arrRows,$strIdField,$strParentsIdField,$strNameResolution) {
+
+     $arrChildren = array();
+
+     for($i=0;$i<count($arrRows);$i++) {
+         if($intParentId === $arrRows[$i][$strParentsIdField]) {
+             $arrChildren = array_merge($arrChildren,array_splice($arrRows,$i--,1));
+         }
+     }
+
+     $intChildren = count($arrChildren);
+     if($intChildren != 0) {
+         for($i=0;$i<$intChildren;$i++) {
+             $arrChildren[$i][$strNameResolution] = convertAdjacencyListToTree($arrChildren[$i][$strIdField],$arrRows,$strIdField,$strParentsIdField,$strNameResolution);
+         }
+     }
+
+     return $arrChildren;
+
+ }
+
 /*verification function*/
 function verification($getUsername,$getCode)
 {
@@ -284,6 +324,19 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 	global $errors;
 	$errors = array();
 
+  $username = str_replace("\"", "", strip_tags($username));
+  $firstname = str_replace("\"", "", strip_tags($firstname));
+  $lastname = str_replace("\"", "", strip_tags($lastname));
+  $address1 = str_replace("\"", "", strip_tags($address1));
+  $address2 = str_replace("\"", "", strip_tags($address2));
+  $zipcode = str_replace("\"", "", strip_tags($zipcode));
+  $city = str_replace("\"", "", strip_tags($city));
+  $country = str_replace("\"", "", strip_tags($country));
+  $birthdate = str_replace("\"", "", strip_tags($birthdate));
+  $email = str_replace("\"", "", strip_tags($email));
+  $password = str_replace("\"", "", strip_tags($password));
+  $secretAnswer = str_replace("\"", "", strip_tags($secretAnswer));
+  $secretQuestion = str_replace("\"", "", strip_tags($secretQuestion));
 
 if(empty($username))//checks if username is not empty
 {
@@ -537,8 +590,9 @@ function mailUser($username, $soort){
 
 	switch($soort){
 	case 'registratie':
+    //TODO: de verificatiecode moet nog meegestuurd worden
 		$subject = 'Registratie gelukt!';
-		$message = 'Uw registratie is gelukt'. $username .' !';
+		$message = 'Uw registratie is gelukt '. $username .'!';
 	break;
 
 	case 'veilingaanmaken':

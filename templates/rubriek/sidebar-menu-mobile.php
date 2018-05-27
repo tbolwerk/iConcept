@@ -35,10 +35,9 @@ function themeMenuMobile($menu,$runner) {
           ,'<button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
           '.$link['name'].' <i class="fa fa-caret-down"></i>
           </button>'
-          ,themeMenuMobile($link['links'],($runner+1))
+          ,'<a href="rubriek.php?rubrieknummer='.$link["id"].'" class="w3-bar-item w3-button">'.themeMenuMobile($link['links'],($runner+1)).'</a>'
       );
     }
-
 
     return $out;
 

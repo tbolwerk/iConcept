@@ -14,7 +14,7 @@
             <!--Second column-->
             <div class="col-md-6">
               <div class="row">
-                <ul class="list-unstyled row d-flex ml-auto mr-4 mt-3 mb-2" style="">
+                <ul id="mobileFooter" class="list-unstyled row d-flex ml-auto mr-4 mt-3 mb-2" style="">
                     <li class="pr-3">
                         <a href="#!">Over ons</a>
                     </li>

@@ -68,3 +68,23 @@
   margin-right: auto;
   padding: 0 0 10px 0;
 }
+
+.how-does-it-work {
+  background-color: #4584a4;
+}
+.how-does-it-work h1 {
+  font-weight: bold;
+}
+.how-does-it-work img {
+  border-radius: 5px;
+}
+
+.contact h1 {
+  font-weight: bold;
+}
+.contact i {
+  color: #2e2e2e;
+}
+.contact i:hover {
+  color: #4584a4;
+}

@@ -20,12 +20,13 @@
     max-height: 700px !important;
   }
 }
-
-@media only screen and (max-width: 650px) {
+*/
+@media only screen and (max-width: 768px) {
   .category-sidebar {
-    max-height: 500px !important;
+    display: none !important;
   }
-} */
+  
+}
 
 
 .category-page {

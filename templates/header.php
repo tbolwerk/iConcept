@@ -48,7 +48,9 @@ switch($current_page){
       <link rel='stylesheet' href='css/userpage.css'>";
       break;
     case 'rubriek':
-      echo "<link rel='stylesheet' href='css/flyPanels.css'>";
+      echo "<link rel='stylesheet' href='css/flyPanels.css'>
+      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
+      // ../sidemenu/demo/
       break;
     case 'new_auction':
     if(!$_SESSION['seller']){

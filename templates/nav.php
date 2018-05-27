@@ -28,9 +28,13 @@ while($row = $statement->fetch()){
 ?>
 <!--Navbar-->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark">
+<?php if($current_page == 'rubriek') {
+  echo '  <a class="flypanels-button-mobile icon-menu mobileNav" onclick="w3_open()" href="#"><i class="fas fa-tags"></i></a>';
+} ?>
+
 
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="index.php">
+    <a id="navbar-brand" class="navbar-brand" href="index.php">
       <img src="img/logo/logo.png" height="50" alt="EenmaalAndermaal" />
     </a>
 
@@ -116,3 +120,30 @@ while($row = $statement->fetch()){
 </div>
   </div>
 </div>
+
+<!-- Category Sidebar -->
+<div class="w3-sidebar w3-bar-block w3-animate-left " style="display:none;z-index:1031" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+  Accordion <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="w3-hide w3-white w3-card">
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+  </div>
+  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+  Accordion <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="w3-hide w3-white w3-card">
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+  </div>
+  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+  Accordion <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="w3-hide w3-white w3-card">
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+  </div>
+</div>
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>

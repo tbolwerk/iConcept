@@ -6,14 +6,8 @@ displayAuction();
 
 
 <!--Main Navigation-->
-<!-- <div class="index-header"> -->
 
-  <!-- <div class="index-banner mask pattern-5">
-    <h1>EenmaalAndermaal</h1>
-    <h6>...verkocht! Zo simpel is het.</h6>
-  </div> -->
-
-<!-- </div> -->
+<!-- Banner with title -->
 <div class="view index-header">
     <img src="img/bgs/home-bg.png" class="" height="350">
     <div class="mask index-banner rgba-niagara-strong">
@@ -43,7 +37,7 @@ displayAuction();
   <h1><i class="fa fa-clock fa-lg"></i> Sluitende veilingen</h1><hr />
   <div class="row">
 
-
+    <!-- Displays the auction variable that's defined in _auctionFunction.php -->
     <?php
     for ($i=1; $i < 2; $i++) {
       echo $auction;
@@ -111,4 +105,5 @@ displayAuction();
 
 </main>
 <!--Main Layout-->
+<!-- Include the footer to the page -->
 <?php include 'templates/footer.php'; ?>

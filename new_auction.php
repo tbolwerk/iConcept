@@ -219,7 +219,7 @@ body {
 </div>
 
 
-<div class="container col-md-9 col-lg-7">
+<div class="container col-md-9 col-lg-8">
 <!-- <div class="row justify-content-center col-sm-12"> -->
 <form class="newauction-form" action="" method="post" enctype="multipart/form-data">
   <div class="newauction-form-header">

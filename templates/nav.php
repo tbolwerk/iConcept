@@ -122,7 +122,7 @@ while($row = $statement->fetch()){
 </div>
 
 <!-- Category Sidebar -->
-<div class="w3-sidebar w3-bar-block w3-animate-left " style="display:none;z-index:1031" id="mySidebar">
+<!-- <div class="w3-sidebar w3-bar-block w3-animate-left " style="display:none;z-index:1031" id="mySidebar">
   <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
   <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
   Accordion <i class="fa fa-caret-down"></i>
@@ -146,4 +146,5 @@ while($row = $statement->fetch()){
     <a href="#" class="w3-bar-item w3-button">Link</a>
   </div>
 </div>
-<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div> -->
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/rubriek/sidebar-menu-mobile.php';?>

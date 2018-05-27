@@ -28,7 +28,7 @@ function countdown(element, countdown) {
         // If the count down is finished, write some text
         if (distance < 0) {
           clearInterval(x);
-          el.innerHTML = "EXPIRED";
+          el.innerHTML = "Veiling gesloten";
         }
 }, 1000);
 }

@@ -8,13 +8,9 @@ if (isset($_GET['id'])) {
     $statement->execute(array($_GET['id'], $_POST['bid'], $_SESSION['username']));
   }
 
-  $statement = $dbh->prepare("select * from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
+  $statement = $dbh->prepare("select *, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
   $results = $statement->fetch();
-
-  $statement = $dbh->prepare("select looptijdbegindag, looptijdtijdstip, looptijd, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag from Voorwerp where voorwerpnummer = ?");
-  $statement->execute(array($_GET['id']));
-  $tijdelijk = $statement->fetch();
 
   $statement = $dbh->prepare("select * from Bod where voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
@@ -26,7 +22,7 @@ if (isset($_GET['id'])) {
   $statement->execute(array($_GET['id'], $_GET['id']));
   $maxbid = $statement->fetch();
 
-  $time = date_create($tijdelijk['looptijdeindedag'] . $tijdelijk['looptijdtijdstip']);
+  $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
   //select looptijdbegindag, looptijd, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag from Voorwerp
@@ -106,7 +102,7 @@ foreach ($lijst as $rubriek) {
 </form>
 
 <script>
-countdown('timer', <?php echo "'{$tijdelijk['looptijdeindedag']} {$tijdelijk['looptijdtijdstip']}'"; ?>);
+countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);
 </script>
 
 <?php include('templates/footer.php'); ?>

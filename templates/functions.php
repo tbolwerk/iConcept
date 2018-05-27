@@ -284,6 +284,19 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 	global $errors;
 	$errors = array();
 
+  $username = str_replace("\"", "", strip_tags($username));
+  $firstname = str_replace("\"", "", strip_tags($firstname));
+  $lastname = str_replace("\"", "", strip_tags($lastname));
+  $address1 = str_replace("\"", "", strip_tags($address1));
+  $address2 = str_replace("\"", "", strip_tags($address2));
+  $zipcode = str_replace("\"", "", strip_tags($zipcode));
+  $city = str_replace("\"", "", strip_tags($city));
+  $country = str_replace("\"", "", strip_tags($country));
+  $birthdate = str_replace("\"", "", strip_tags($birthdate));
+  $email = str_replace("\"", "", strip_tags($email));
+  $password = str_replace("\"", "", strip_tags($password));
+  $secretAnswer = str_replace("\"", "", strip_tags($secretAnswer));
+  $secretQuestion = str_replace("\"", "", strip_tags($secretQuestion));
 
 if(empty($username))//checks if username is not empty
 {
@@ -537,8 +550,9 @@ function mailUser($username, $soort){
 
 	switch($soort){
 	case 'registratie':
+    //TODO: de verificatiecode moet nog meegestuurd worden
 		$subject = 'Registratie gelukt!';
-		$message = 'Uw registratie is gelukt'. $username .' !';
+		$message = 'Uw registratie is gelukt '. $username .'!';
 	break;
 
 	case 'veilingaanmaken':

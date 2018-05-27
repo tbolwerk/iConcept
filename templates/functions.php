@@ -22,7 +22,7 @@ $name = $post_livesearch;
     $rubrieknaam = $row['rubrieknaam'];
     $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
-    $rubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
+    $rubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='rubriek.php?rubrieknummer=".$rubrieknummer."'><h3>".$rubrieknaam."</h3></li></a>";
   }
   //Sub-rubrieken
   $subrubrieken="";
@@ -43,7 +43,7 @@ WHERE kind.rubrieknaam LIKE ?");
     $rubrieknummer = $row['rubrieknummer'];
     $function = "fill('".$rubrieknaam."')";
       if($row['rubrieknummerOuder'] !=-1){
-    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='?rubrieknummer=".$rubrieknummer."'><h6>".$rubrieknaamOuder."</h6><h3>".$rubrieknaam."</h3></li></a>";
+    $subrubrieken.="<li onclick='".$function."'><a class='dummy-media-object' href='rubriek.php?rubrieknummer=".$rubrieknummer."'><h6>".$rubrieknaamOuder."</h6><h3>".$rubrieknaam."</h3></li></a>";
 }
   }
 
@@ -71,7 +71,7 @@ AND titel LIKE ?");
 
     $function = "fill('".$rubrieknaam."')";
 
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='?voorwerpnummer=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='rubriek.php?voorwerpnummer=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
 
   }
 
@@ -110,7 +110,7 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT TOP (8) * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP (9) * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
       $i++;

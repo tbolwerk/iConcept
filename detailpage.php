@@ -92,9 +92,9 @@ foreach ($lijst as $rubriek) {
 
 <p>Veilingnummer <?=$results['voorwerpnummer']?></p>
 
-<p>Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
+<p id="maxbid">Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
 
-<p id="timer"></p>
+<p id="timer">Dit moet nog opgelost worden</p>
 
 <form method="post" class="col-md-6">
     <input type="number" name="bid" id="bid" class="form-control">
@@ -109,6 +109,18 @@ foreach ($bestanden as $bestand) {
 
 <script>
 countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);
+
+  var x = setInterval(function() {
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("maxbid").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
+    xhttp.send();
+}, 1000);
 </script>
 
 <?php include('templates/footer.php'); ?>

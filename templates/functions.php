@@ -221,12 +221,10 @@ function displayAuction()
          </ul>
        </div>
      </div>
-
+     </div>
      <script>
      countdown("'.$timer.'","'.$countdown.'");
      </script>
-     </div>
-
            ';
      }
    }catch(PDOException $e){

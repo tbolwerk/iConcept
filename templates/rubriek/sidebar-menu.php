@@ -10,7 +10,7 @@ while($row = $statement->fetch()){
 
 
               // covert raw result set to tree
-              $menu = convertAdjacencyListToTree(null,$rows,'id','parent_id','links');
+              $menu = convertAdjacencyListToTree('-1',$rows,'id','parent_id','links');
               // echo '<pre>',print_r($menu),'</pre>';
 
               // display menu
@@ -82,6 +82,7 @@ while($row = $statement->fetch()){
 
                   $out.='<ul>';
                   foreach($menu as $link) {
+
                       $out.= sprintf(
                           '<li class="depth-%u">%s%s</li>'
                           ,$runner

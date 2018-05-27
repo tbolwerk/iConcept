@@ -193,7 +193,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 <div class="container-fluid usersettings-page" id="wrapper">
 
-<div class="col-md-6 ml-auto mr-5 usersettings-content">
+<div class="col-md-8 ml-auto mr-5 usersettings-content">
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
@@ -397,7 +397,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 </div>
         <!-- Settings to change current password -->
         <div class="tab-pane fade" id="tab2" role="tabpanel">
-          <form method="post" action=""> 
+          <form method="post" action="">
 
           <div class="userpage-form-header">
             <h1>Wachtwoord wijzigen</h1>

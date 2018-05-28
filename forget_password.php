@@ -20,7 +20,9 @@ try {
 
 if(isset($_POST['forget_password'])){
 // print_r($secret_question_options);
-
+if($_POST['forget_password'] || $_POST['secretAnswer'] || $_POST['secretQuestion']){
+  $errortxt = "Niet alle velden zijn ingevuld";
+}else{
 
   $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
   $user_check->execute(array($_POST['forget_password'],$_POST['secretAnswer'],$_POST['secretQuestion']));
@@ -47,10 +49,10 @@ $headers = "From: Admin@EenmaalAndermaal.com";
   echo "Het nieuwe wachtwoord is verzonden naar ".$to;
 
 }else{
-  echo "Email of vraag en antwoord incorrect";
+  $errortxt = "Email of vraag en antwoord incorrect";
 }
 }
-
+}
 ?>
 
 <!--Main Layout-->
@@ -68,6 +70,11 @@ $headers = "From: Admin@EenmaalAndermaal.com";
       </div>
       <div class="green-text" style="text-align: center; font-weight: bold;">
         <?=$txt?>
+      </div>
+      <div class="red-text" style="text-align: center; font-weight: bold;">
+        <?php if (isset($errortxt)) {
+          echo $errortxt;
+        }?>
       </div>
 
 

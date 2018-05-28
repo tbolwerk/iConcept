@@ -17,7 +17,7 @@ while($row = $statement->fetch()){
 
               echo '          <div class="offcanvas flypanels-left">
                               <div class="panelcontent" data-panel="treemenu">
-                              <a href="rubriek.php"><h1>Rubrieken</h1></a>
+                              <a href="rubriek.php"><h1 class="text-center black-text">Rubrieken</h1></a>
                                 <nav class="flypanels-treemenu" role="navigation">'.themeMenu($menu,1).
                                 '    </nav>
                                   </div>

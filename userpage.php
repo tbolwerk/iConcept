@@ -59,7 +59,8 @@ function insertNumber($number, $phones, &$numbersToKeep) {
 }
 
 //If user submits updated account data
-if(isset($_POST['tab1submit'])){
+if(isset($_POST['tab1submit'])) {
+  //Remove any doublequotes and html tags
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
   $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
@@ -70,24 +71,25 @@ if(isset($_POST['tab1submit'])){
   $email = str_replace("\"", "", strip_tags($_POST['email']));
   $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
   $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
-  try{
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
-  updatePhones();
-}catch(PDOException $e){
-  $error = $e;
-  echo $error;
-}
+
+  try { //Update the record for this user with the submitted data
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    updatePhones(); //Phones are updated seperately
+  } catch(PDOException $e) {
+    $error = $e;
+    echo $error;
+  }
 }
 
-//If user tries to change password...
+//If user tries to change password
 if (isset($_POST['tab2submit'])) {
+    //Receive the password for this user from the database
     $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
     $statement->execute(array($_SESSION['username']));
     $password = $statement->fetch();
 
-    //...and provides his current password
-    if ($password[0] == $_POST['currentPassword']) {
+    if ($password[0] == $_POST['currentPassword']) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
     }
@@ -122,19 +124,19 @@ $results = $statement->fetchAll();
 $secret_question_options = null;
 //Receive all secret questions from database
 try {
-    $data = $dbh->prepare("select * from Vraag");
-    $data->execute();
+  $data = $dbh->prepare("select * from Vraag");
+  $data->execute();
 } catch (PDOException $e) {
-    $error = $e;
+  $error = $e;
 }
 //Construct the list by iterating over each received secret questions
 while ($question = $data->fetch()) {
-    //The current secret question is put at the top of the list, all others are appended
-    if ($question['vraagnummer'] == $results[0]['vraagnummer']) {
-        $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
-    } else {
-        $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
-    }
+  //The current secret question is put at the top of the list, all others are appended
+  if ($question['vraagnummer'] == $results[0]['vraagnummer']) {
+    $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
+  } else {
+    $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+  }
 }
 ?>
   <!-- Banner -->
@@ -216,7 +218,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results[0]['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results[0]['voornaam']?>" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]{2,35}" placeholder="Vul hier uw voornaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -229,7 +231,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results[0]['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results[0]['achternaam']?>" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]{2,35}" placeholder="Vul hier uw achternaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -249,13 +251,13 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <select name="country" id="country" class="register-select-form" required>
-  <option value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected">Kies een land...</option>
-  <option value='Nederland'>Nederland</option>
-  <option value='Duitsland'>Duitsland</option>
-  <option value='Frankrijk'>Frankrijk</option>
-  <option value='België'>België</option>
-</select>
+          <select class="black-text" name="country" id="country" class="register-select-form form-control" required>
+            <option class="black-text" value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected"><?=$results[0]['land']?></option>
+            <option class="black-text" value='Nederland'>Nederland</option>
+            <option class="black-text" value='Duitsland'>Duitsland</option>
+            <option class="black-text" value='Frankrijk'>Frankrijk</option>
+            <option class="black-text" value='België'>België</option>
+          </select>
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -274,7 +276,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results[0]['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results[0]['postcode']?>" onkeydown="upperCaseF(this)" required maxlength="6" pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
           <div class="form-requirements">
             <ul>
               <li>Vier cijfers gevolgd door twee hoofdletters</li>
@@ -285,7 +287,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="city" id="city" value="<?=$results[0]['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
+          <input type="text" class="form-control" name="city" id="city" value="<?=$results[0]['plaatsnaam']?>" required maxlength="85" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]{2,85}" placeholder="Vul uw plaatsnaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -300,7 +302,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="row">
       <div class="col-md-12" >
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
             <ul>
               <li>Straatnaam gevolgd door huisnummer</li>
@@ -316,7 +318,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
+          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlenghth="100" placeholder="Vul uw emailadres in">
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>
@@ -330,7 +332,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
+          <input type="email" class="form-control" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlength="100" placeholder="Herhaal uw emailadres">
           <div class="form-requirements">
             <ul>
               <li>Moet gelijk zijn aan het andere email veld</li>

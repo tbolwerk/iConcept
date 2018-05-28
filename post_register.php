@@ -13,15 +13,12 @@ if(isset($_GET['username'])){
 			echo $error;
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
+
+		$code = random_password(6);
+		createVerificationCode($username, $code);
+
 		$email = $result['email'];
-		mailUser($email,'registratie');
-
-			$code = random_password(6);
-			$url = "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);
-			createVerificationCode($username, $code);
-
-			$message = "http://http://iconcept.tpnb.nl/".$url;
-		 	$message = wordwrap($message, 70, "\r\n");
+		mailUser($email, $username, 'registratie', $code);
 
 ?>
 <br>

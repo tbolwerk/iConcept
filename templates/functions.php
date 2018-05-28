@@ -572,22 +572,21 @@ function addAvatar($file, $username){
 	}
 }
 
-function mailUser($username, $soort){
+function mailUser($email, $username, $soort, $parameter = null){
 	//
-	// global $dbh;
+  //global $dbh;
 	//
 	// $email_address = $dbh->prepare("select * from Gebruiker where gebruikersnaam=?");
 	// $fetch_email = $email_addres->execute(array($username));
 	// $fetch_email->fetch();
 
 
-	$to = 'twanbolwerk@gmail.com';
+	$to = $email;
 
 	switch($soort){
 	case 'registratie':
-    //TODO: de verificatiecode moet nog meegestuurd worden
-		$subject = 'Registratie gelukt!';
-		$message = 'Uw registratie is gelukt '. $username .'!';
+		$subject = 'Verificatie account EenmaalAndermaal';
+		$message = 'Beste ' . $username . ', http://iconcept.tpnb.nl/' . 'verification.php?username=' . urlencode($username) . "&code=" . urlencode($parameter);
 	break;
 
 	case 'veilingaanmaken':

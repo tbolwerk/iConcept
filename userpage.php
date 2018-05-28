@@ -59,7 +59,8 @@ function insertNumber($number, $phones, &$numbersToKeep) {
 }
 
 //If user submits updated account data
-if(isset($_POST['tab1submit'])){
+if(isset($_POST['tab1submit'])) {
+  //Remove any doublequotes and html tags
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
   $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
@@ -70,24 +71,25 @@ if(isset($_POST['tab1submit'])){
   $email = str_replace("\"", "", strip_tags($_POST['email']));
   $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
   $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
-  try{
-  $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-	$statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
-  updatePhones();
-}catch(PDOException $e){
-  $error = $e;
-  echo $error;
-}
+
+  try { //Update the record for this user with the submitted data
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    updatePhones(); //Phones are updated seperately
+  } catch(PDOException $e) {
+    $error = $e;
+    echo $error;
+  }
 }
 
-//If user tries to change password...
+//If user tries to change password
 if (isset($_POST['tab2submit'])) {
+    //Receive the password for this user from the database
     $statement = $dbh->prepare("select wachtwoord from Gebruiker where gebruikersnaam = ?");
     $statement->execute(array($_SESSION['username']));
     $password = $statement->fetch();
 
-    //...and provides his current password
-    if ($password[0] == $_POST['currentPassword']) {
+    if ($password[0] == $_POST['currentPassword']) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
     }
@@ -122,19 +124,19 @@ $results = $statement->fetchAll();
 $secret_question_options = null;
 //Receive all secret questions from database
 try {
-    $data = $dbh->prepare("select * from Vraag");
-    $data->execute();
+  $data = $dbh->prepare("select * from Vraag");
+  $data->execute();
 } catch (PDOException $e) {
-    $error = $e;
+  $error = $e;
 }
 //Construct the list by iterating over each received secret questions
 while ($question = $data->fetch()) {
-    //The current secret question is put at the top of the list, all others are appended
-    if ($question['vraagnummer'] == $results[0]['vraagnummer']) {
-        $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
-    } else {
-        $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
-    }
+  //The current secret question is put at the top of the list, all others are appended
+  if ($question['vraagnummer'] == $results[0]['vraagnummer']) {
+    $secret_question_options = "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>" . $secret_question_options;
+  } else {
+    $secret_question_options .= "<option value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
+  }
 }
 ?>
   <!-- Banner -->
@@ -250,12 +252,12 @@ These values are for debugging purposes and are visible by inspecting the page s
       <div class="col-md-6">
         <div class="md-form form-group">
           <select name="country" id="country" class="register-select-form" required>
-  <option value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected">Kies een land...</option>
-  <option value='Nederland'>Nederland</option>
-  <option value='Duitsland'>Duitsland</option>
-  <option value='Frankrijk'>Frankrijk</option>
-  <option value='België'>België</option>
-</select>
+            <option value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected">Kies een land...</option>
+            <option value='Nederland'>Nederland</option>
+            <option value='Duitsland'>Duitsland</option>
+            <option value='Frankrijk'>Frankrijk</option>
+            <option value='België'>België</option>
+          </select>
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>

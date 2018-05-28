@@ -274,9 +274,7 @@ function displayAuction()
  }
 
 /*verification function*/
-function verification($getUsername,$getCode)
-{
-
+function verification($getUsername, $getCode) {
 	global $dbh;
   global $codeValid;
   global $submittedCode;
@@ -288,12 +286,12 @@ function verification($getUsername,$getCode)
 	$username = $getUsername;
 
 	try {//checks if code exists in database
-	$statement = $dbh->prepare("SELECT * FROM Verificatiecode WHERE gebruikersnaam = ? AND code = ?");
-	$statement->execute(array($username,$submittedCode));
-	$results = $statement->fetch();
+  	$statement = $dbh->prepare("SELECT * FROM Verificatiecode WHERE gebruikersnaam = ? AND code = ?");
+  	$statement->execute(array($username, $submittedCode));
+  	$results = $statement->fetch();
 	} catch (PDOException $e) {
-	$error= "Code invalid";
-	$codeValid = false;
+  	$error = "Code invalid";
+  	$codeValid = false;
 	}
 
 	$storedUsername = $results[0];
@@ -303,15 +301,15 @@ function verification($getUsername,$getCode)
 	$deltaTime = time() - $storedTime;
 
 	if ($deltaTime > 14400) {//14400 seconds = 4 hours
-	$codeValid = false;
-  $error = "Time has expired";
+  	$codeValid = false;
+    $error = "Time has expired";
 	}
 
 	if ($codeValid) {
-	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");//set activatie bit to 1
-	$statement->execute(array($storedUsername));
-	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
-	$statement->execute(array($storedUsername));
+  	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");//set activatie bit to 1
+  	$statement->execute(array($storedUsername));
+  	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
+  	$statement->execute(array($storedUsername));
 	}
 }
 
@@ -324,6 +322,7 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 	global $errors;
 	$errors = array();
 
+  //Remove any doublequotes and html tags
   $username = str_replace("\"", "", strip_tags($username));
   $firstname = str_replace("\"", "", strip_tags($firstname));
   $lastname = str_replace("\"", "", strip_tags($lastname));
@@ -445,103 +444,99 @@ function login($username_input, $password)
 
   $error = array();
 
-  if (strlen($username) >= 25){
+  if (strlen($username) >= 25) {
     $error['username'] = "Username has more than 25 characters";
   } else
-  if (strlen($password) >= 50){
+  if (strlen($password) >= 50) {
     $error['password'] = "Password has more than 50 characters";
   } else
-  if (empty($username)){
+  if (empty($username)) {
     $error['username'] = "Username is empty";
   } else
-  if (empty($password)){
+  if (empty($password)) {
     $error['password'] = "Password is empty";
   } else {
-    try {
+    try { //Attempt to receive data about the user with the submitted credentials
     	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
     	$password_check->execute(array($username, $password, $email, $password));
     } catch(PDOException $e){
     	$error = $e;
     }
-    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) {
+    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) { //If the result is empty then there are no users with the submitted username+password
     	$error['password'] = "Wachtwoord klopt niet";
-    } else if ($password_result['geactiveerd'] == 0) {      //Has the user activated his account yet?
-            $error['verification'] = "Account is nog niet geactiveerd";
-          }else{
-            $_SESSION['seller'] = $password_result['verkoper'];
-            $_SESSION['username'] = $password_result['gebruikersnaam'];
-            $_SESSION['email'] = $password_result['email'];
+    } else if ($password_result['geactiveerd'] == 0) { //If the user does exist, check whether the account has been activated
+      $error['verification'] = "Account is nog niet geactiveerd";
+    } else {
+      $_SESSION['seller'] = $password_result['verkoper'];
+      $_SESSION['username'] = $password_result['gebruikersnaam'];
+      $_SESSION['email'] = $password_result['email'];
 
-            // header('Location: index.php');
-          }
-
-      }
+      header('Location: index.php');
     }
+  }
+}
 
-
-
+//Returns a random string of a given length
 function random_password( $length = 8 ) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
 }
 
+//Inserts a verification code into the database
 function createVerificationCode($username, $random_password) {
 	global $dbh;
 	global $error;
 
     try {
-		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, begintijd, code) Values(?, ?, ?)");
-		$userdata->execute(array($username, time(), $random_password));
+  		$userdata = $dbh->prepare("insert into Verificatiecode(gebruikersnaam, begintijd, code) Values(?, ?, ?)");
+  		$userdata->execute(array($username, time(), $random_password));
     } catch (PDOException $e) {
-		$error=$e;
+  		$error=$e;
     }
 }
 
-
-
-function  auctionTimer($voorwerpnummer){
-global $dbh;
-global $error;
-$timer = "3 uur";
+function  auctionTimer($voorwerpnummer) {
+  global $dbh;
+  global $error;
+  $timer = "3 uur";
 	try {
 	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
 	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
 	  $voorwerpdata->fetch();
 	  $looptijd = $voorwerpdata['looptijd'];
-	    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
-	      $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
-	      $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
-	      $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
-				$remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-				$days_remaining = floor($remaining/86400);
-				$hours_remaining = floor(($remaining/86400)/ 3600);
-				if($days_remaining>1){
-					$timer = $days_remaining;
-				}else{
-					$timer = $days_remaining + $hours_remaining;
-				}
-	}catch (PDOException $e) {
+    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
+    $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
+    $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
+    $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
+    $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
+    $days_remaining = floor($remaining/86400);
+    $hours_remaining = floor(($remaining/86400)/ 3600);
+    if ($days_remaining > 1) {
+    	$timer = $days_remaining;
+    } else {
+    	$timer = $days_remaining + $hours_remaining;
+    }
+	} catch (PDOException $e) {
 	  $error=$e;
 	}
 
 	return $timer;
 }
 
+//Updates the record for this user with the new password
+function changePassword($new_password) {
+  global $error;
+  global $dbh;
 
-function changePassword($new_password)
-{
-global $error;
-global $dbh;
-$username=$_SESSION['username'];
-try {
-	// $dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
-	$statement=$dbh->prepare("update Gebruiker set wachtwoord = ? where gebruikersnaam=?");
-	$statement->execute(array($new_password,$username));
-
-} catch (PDOException $e) {
- 	$error =  $e;
-}
+  $username = $_SESSION['username'];
+  try {
+    // $dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
+    $statement=$dbh->prepare("update Gebruiker set wachtwoord = ? where gebruikersnaam=?");
+    $statement->execute(array($new_password,$username));
+  } catch (PDOException $e) {
+  	$error =  $e;
+  }
 }
 
 //Takes an image and stores it as {username}.png in /img/avatar

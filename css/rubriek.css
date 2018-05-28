@@ -21,16 +21,16 @@
   }
 }
 */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 991px) {
   .category-sidebar {
     display: none !important;
   }
-  
+
 }
 
 
 .category-page {
-
+  overflow: auto;
 }
 .category-content {
   height: 100%;

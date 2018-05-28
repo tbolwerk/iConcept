@@ -30,7 +30,7 @@ if(isset($_POST['submit'])){
 <!-- Card -->
 <div class="container col-md-6">
 <!-- Card -->
-<div class="card login-register-card">
+<div class="card login-register-card registerMobile">
     <!-- Card body -->
     <div class="card-body">
       <!-- Register header -->
@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
+                <i id="registerIcon" class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="firstname" id=firstname maxlength="35"  required pattern="[A-z]+">
                 <div class="form-requirements white-text">
                   <ul>
@@ -54,7 +54,7 @@ if(isset($_POST['submit'])){
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
-                <i class="fa fa-user prefix niagara"></i>
+                <!-- <i class="fa fa-user prefix niagara"></i> -->
                 <input type="text" class="form-control white-text" name="lastname" id="lastname" required pattern="[A-z]+">
                 <div class="form-requirements white-text">
                   <ul>
@@ -68,7 +68,7 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
-                <i class="fa fa-user prefix niagara"></i>
+                <i id="registerIcon" class="fas fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="username" id="username" required >
                 <div class="form-requirements white-text">
                   <ul>
@@ -79,9 +79,9 @@ if(isset($_POST['submit'])){
             </div>
           </div>
 
-          <div class="d-flex flex-row">
+          <div class="d-flex flex-row mb-5">
             <div class="md-form ml-5 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
+                <i id="registerIcon" class="fas fa-birthday-cake prefix niagara"></i>
                 <input type="date"  class="form-control white-text" name="birthday" id="birthday" required>
                 <label class="font-weight-light white-text" for="birthday"></label>
             </div>
@@ -91,7 +91,7 @@ if(isset($_POST['submit'])){
           <div class="d-flex flex-row">
             <!-- Material input text -->
             <div class="md-form ml-5 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
+                <i id="registerIcon" class="fas fa-lock prefix niagara"></i>
                 <input type="password" class="form-control white-text" name="password" id="password" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
                 <div class="form-requirements white-text">
                   <ul>
@@ -103,7 +103,6 @@ if(isset($_POST['submit'])){
 
             <!-- Material input text -->
             <div class="md-form mr-5 ml-3">
-                <i class="fa fa-user prefix niagara"></i>
                 <input type="password" class="form-control white-text" name="password_check" id="password_check" onchange="confirmation('password', 'password_check')" onkeyup="confirmation('password', 'password_check')" required>
                 <div class="form-requirements white-text">
                   <ul>
@@ -114,17 +113,16 @@ if(isset($_POST['submit'])){
             </div>
           </div>
 
-          <div class="d-flex flex-row">
+          <div class="d-flex flex-row mb-5">
             <!-- Material input email -->
             <div class="md-form ml-5 mr-3">
-                <i class="fa fa-envelope prefix niagara"></i>
+                <i id="registerIcon" class="fa fa-at prefix niagara"></i>
                 <input type="email" class="form-control white-text" name="email" id="email" onchange="confirmation('email', 'email_check')" onkeyup="confirmation('email', 'email_check')" required>
                 <label class="font-weight-light white-text" for="email">Emailadres</label>
             </div>
 
             <!-- Material input email -->
             <div class="md-form mr-5 ml-3">
-                <i class="fa fa-exclamation-triangle prefix niagara"></i>
                 <input type="email" class="form-control white-text" name="email_check" id="email_check" onchange="confirmation('email', 'email_check')" onkeyup="confirmation('email', 'email_check')" required>
                 <div class="form-requirements white-text">
                   <ul>
@@ -138,7 +136,7 @@ if(isset($_POST['submit'])){
           <div class="d-flex flex-row">
             <!-- Material input password -->
             <div class="md-form ml-5 mr-5">
-                <i class="fa fa-home prefix niagara"></i>
+                <i id="registerIcon" class="far fa-building prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="address1" id="address1" required>
                 <div class="form-requirements white-text">
                   <ul>
@@ -151,7 +149,7 @@ if(isset($_POST['submit'])){
 
           <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
-                <i class="fa fa-home prefix niagara"></i>
+                <i id="registerIcon" class="far fa-building prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="address2" id="address2">
                 <div class="form-requirements white-text">
                   <ul>
@@ -163,9 +161,15 @@ if(isset($_POST['submit'])){
           </div>
 
           <div class="d-flex flex-row">
+
             <!-- Material input text -->
-            <div class="md-form ml-5 mr-3">
-                <i class="fa fa-user prefix niagara"></i>
+            <div class="md-form ml-5 mr-3 mb-5">
+              <i id="registerIcon" class="far fa-building prefix niagara"></i>
+                <input type="text" class="form-control white-text" name="city" id="city" required pattern="[A-z]+">
+                <label class="font-weight-light white-text" for="city">Stad</label>
+            </div>
+            <!-- Material input text -->
+            <div class="md-form mr-5 ml-3">
                 <input type="text" class="form-control white-text" name="zipcode" id="zipcode" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}">
                 <div class="form-requirements white-text">
                   <ul>
@@ -176,18 +180,12 @@ if(isset($_POST['submit'])){
                 <label class="font-weight-light white-text" for="zipcode">Postcode</label>
             </div>
 
-            <!-- Material input text -->
-            <div class="md-form mr-5 ml-3">
-                <i class="fa fa-user prefix niagara"></i>
-                <input type="text" class="form-control white-text" name="city" id="city" required pattern="[A-z]+">
-                <label class="font-weight-light white-text" for="city">Stad</label>
-            </div>
+
           </div>
 
           <div class="d-flex flex-row">
             <!-- Material input text -->
-            <div class="md-form ml-5 mr-5">
-                <i class="fa fa-user prefix niagara"></i>
+            <div class="md-form ml-5 mr-5 mb-3 register-select">
                 <select name="country" id="country" class="register-select-form black-text" required>
                   <option class="black-text" value="" class="font-weight-light disabled selected">Kies een land...</option>
                   <option class="black-text" value='Nederland'>Nederland</option>
@@ -200,8 +198,7 @@ if(isset($_POST['submit'])){
 
             <!-- Material input text -->
             <div class="d-flex flex-row">
-            <div class="md-form ml-5 mr-5 register-select">
-                <i class="fa fa-user prefix niagara"></i>
+            <div class="md-form ml-5 mr-5 mb-3 register-select">
                 <select name="secretQuestion" id="secretQuestion" class="register-select-form black-text" required>
                   <option class="black-text" value="" class="font-weight-light disabled selected">Kies een geheime vraag...</option>
                   <?=$secret_question_options?>
@@ -218,7 +215,6 @@ if(isset($_POST['submit'])){
             <!-- Material input text -->
             <div class="d-flex flex-row">
             <div class="md-form ml-5 mr-5">
-                <i class="fa fa-user prefix niagara"></i>
                 <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer" required>
                 <div class="form-requirements white-text">
                   <ul>

@@ -77,3 +77,13 @@ input:focus:not([readonly]) {
 .bg-login {
   background-image: url("../img/bgs/login-bg.png");
 }
+
+@media only screen and (max-width: 768px) {
+  .registerMobile {
+    margin-top: 25%;
+  }
+  .registerMobile i {
+    width: 0 !important;
+    height: 0 !important;
+  }
+}

@@ -20,7 +20,9 @@ try {
 
 if(isset($_POST['forget_password'])){
 // print_r($secret_question_options);
-
+if($_POST['forget_password'] || $_POST['secretAnswer'] || $_POST['secretQuestion']){
+  $errortxt = "Niet alle velden zijn ingevuld";
+}
 
   $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
   $user_check->execute(array($_POST['forget_password'],$_POST['secretAnswer'],$_POST['secretQuestion']));

@@ -22,7 +22,7 @@ if(isset($_POST['forget_password'])){
 // print_r($secret_question_options);
 if($_POST['forget_password'] || $_POST['secretAnswer'] || $_POST['secretQuestion']){
   $errortxt = "Niet alle velden zijn ingevuld";
-}
+}else{
 
   $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
   $user_check->execute(array($_POST['forget_password'],$_POST['secretAnswer'],$_POST['secretQuestion']));
@@ -52,7 +52,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
   $errortxt = "Email of vraag en antwoord incorrect";
 }
 }
-
+}
 ?>
 
 <!--Main Layout-->

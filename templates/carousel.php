@@ -1,7 +1,7 @@
 <?php require_once("functions.php");
 global $dbh;
 try{
-$statement = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+$statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
 
 $carousel= array();
 $i=0;
@@ -11,7 +11,7 @@ while($row = $statement->fetch()){
 	$looptijd = $row['looptijd'];
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);
 	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-	$data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Rubriek");
+	$data = $dbh->query("SELECT * FROM Rubriek");
 
 
 		 $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);

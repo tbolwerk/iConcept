@@ -149,7 +149,7 @@ function displayAuction()
             </div>
 
             <div class='view overlay mdb-blue'>
-              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+              <a href='detailpage.php?id=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>
                 </div>
               </a>
@@ -211,7 +211,9 @@ function displayAuction()
        <div class="col-md-4">
        <div class="card auction-card mb-4">
        <div class="view overlay">
+       <a href="detailpage.php?id='.$row["voorwerpnummer"].'">
          <img class="card-img-top" src="'.$row["filenaam1"].'" />
+       </a>
        </div>
        <div class="card-body">
          <span class="small-font">'.$row['voorwerpnummer'].'</span>

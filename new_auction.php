@@ -47,7 +47,7 @@ function checkPicture($picture, $id, $i){
       || ($picture["type"] == "image/pjpeg")
       || ($picture["type"] == "image/bmp")
       )
-      || ($picture["size"] > 3000000) //File must be smaller than 3MB
+      || ($picture["size"] > 2000000) //File must be smaller than 2MB
       || !in_array($extension, $allowedExts)
       || $picture["error"] > 0)
       {
@@ -129,10 +129,10 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
     }
     for($i = 0; $i < $num_pictures; $i++){//Inserts data for every selected picture
       move_uploaded_file($pictures[$i]["tmp_name"], //uploads picture to server
-      "upload/" . $filenames[$i]);
+      "img/producten/" . $filenames[$i]);
       try {//inserts picturedata in database
         $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
-        $data->execute(array($id, $filenames[$i]));
+        $data->execute(array($id, "img/producten/" . $filenames[$i]));
       } catch (PDOException $e) {
           $error = $e;
           echo $error;
@@ -147,7 +147,9 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
         echo $error;
         $errors['upload'] = "Er is iets misgegaan";
     }
-    $errors['upload'] = "Veiling is succesvol geplaatst!";
+    if(count($errors) == 0){
+      $errors['upload'] = "Veiling is succesvol geplaatst!";
+    }
   }
 }
 
@@ -576,7 +578,7 @@ document.getElementById("picture3").onchange = adduploadbox3;
                   return function(e) {
                     var extension = theFile.name.split('.').pop().toLowerCase();
                     console.log("hidden" + pictureId);
-                    if((extension != "jpg" && extension != "bmp" && extension != "png") || theFile.size > 3000000){
+                    if((extension != "jpg" && extension != "bmp" && extension != "png") || theFile.size > 2000000){
                       document.getElementById("hidden" + pictureId).setCustomValidity("Dit bestand is niet geldig");
                       console.log("hidden" + pictureId);
                     }

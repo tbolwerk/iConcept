@@ -11,9 +11,14 @@ while($row = $statement->fetch()){
 	$looptijd = $row['looptijd'];
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);
 	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-	$countdown_date = date("Y-m-d",$looptijdbegindag);
-	$countdown_time = date("h:i:s",$looptijdbegintijdstip);
-	$countdown = $countdown_date . " " . $countdown_time;
+	$data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Rubriek");
+
+
+		 $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+
+
+		 $countdown = $closingtime;
 	$out = '';
 
 $carousel[]=	'			<div class="col-md-3">

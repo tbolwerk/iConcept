@@ -47,7 +47,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
   echo "Het nieuwe wachtwoord is verzonden naar ".$to;
 
 }else{
-  echo "Email of vraag en antwoord incorrect";
+  $errortxt = "Email of vraag en antwoord incorrect";
 }
 }
 
@@ -68,6 +68,11 @@ $headers = "From: Admin@EenmaalAndermaal.com";
       </div>
       <div class="green-text" style="text-align: center; font-weight: bold;">
         <?=$txt?>
+      </div>
+      <div class="red-text" style="text-align: center; font-weight: bold;">
+        <?php if (isset($errortxt)) {
+          echo $errortxt;
+        }?>
       </div>
 
 

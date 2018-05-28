@@ -44,12 +44,15 @@ if(isset($_POST['submit'])){//if submit pressed
             <i class="fa fa-lock prefix niagara"></i>
             <input type="password" id="password" class="form-control white-text" name="password" aria-describedby="passwordHelp" required>
             <label for="password" class="font-weight-light">Wachtwoord</label>
-            <small id="passwordHelp" class="form-text text-muted red-text" href="forget_password.php"><a href="forget_password.php">Wachtwoord vergeten?</a></small>
-          </div>
 
+            <div class="form-row ml-auto mr-auto">
+          <div class="text-center py-1 mt-3">
+            <a href="forget_password.php" class="btn elegant">Wachtwoord vergeten</a>
+          </div>
           <div class="text-center py-1 mt-3">
             <button class="btn elegant" type="submit" name="submit">Inloggen</button>
           </div>
+        </div>
         </form>
         <!-- Material form login -->
 

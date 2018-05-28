@@ -88,14 +88,13 @@ $headers = "From: Admin@EenmaalAndermaal.com";
   </div>
 
     <div class="md-form">
-        <i class="fa fa-user prefix niagara"></i>
         <select name="secretQuestion" class="form-control black-text">
           <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
           <?=$secret_question_options?>
         </select>
     </div>
       <div class="md-form">
-        <i class="fa fa-lock prefix niagara"></i>
+        <i class="fas fa-question prefix niagara"></i>
         <input type="text" class="form-control" name="secretAnswer" id="secretAnswer">
         <label for="secretAnswer" class"font-weight-light">Antwoord</label>
       </div>

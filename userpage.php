@@ -251,7 +251,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <select class="black-text" name="country" id="country" class="register-select-form form-control" required>
+          <select class="black-text form-control" name="country" id="country" class="register-select-form form-control" required>
             <option class="black-text" value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected"><?=$results[0]['land']?></option>
             <option class="black-text" value='Nederland'>Nederland</option>
             <option class="black-text" value='Duitsland'>Duitsland</option>
@@ -266,7 +266,7 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          <label style="black-text" for="country"><?=$results[0]['land']?></label>
+          
         </div>
       </div>
     </div>

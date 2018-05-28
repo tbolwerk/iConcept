@@ -36,7 +36,7 @@ $carousel[]=	'			<div class="col-md-3">
 							<ul class="list-unstyled list-inline d-flex" style="text-align:center">
 								<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
 								<div class="card-line"></div>
-								<li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i><div id='.$timer.'></div></li>
+								<li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
 							</ul>
 						</div>
 					</div>

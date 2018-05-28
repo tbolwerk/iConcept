@@ -28,7 +28,7 @@ function countdown(element, countdown) {
         // If the count down is finished, write some text
         if (distance < 0) {
           clearInterval(x);
-          el.innerHTML = "Veiling gesloten";
+          el.innerHTML = "<p class='red-text'>Veiling gesloten</p>";
         }
 }, 1000);
 }

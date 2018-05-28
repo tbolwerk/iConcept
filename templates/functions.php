@@ -126,7 +126,7 @@ function displayAuction()
 			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' style='max-height: 250px;' src='".$row['filenaam']."' alt='".$row['titel']."' />
+              <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
               <span class='small-font'>".$row['voorwerpnummer']."</span>
@@ -141,7 +141,7 @@ function displayAuction()
               <ul class='list-unstyled list-inline d-flex'>
                 <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
 								<div class='card-line'></div>
-                <li class='list-inline-item flex-1 mr-5'><i class='fa fa-lg fa-clock pr-2'></i><div id=".$timer."></div></li>
+                <li class='list-inline-item flex-1 mr-5'><i class=''></i><div id=".$timer."></div></li>
               </ul>
             </div>
 
@@ -217,7 +217,7 @@ function displayAuction()
          <ul class="list-unstyled list-inline d-flex" style="text-align:center">
            <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
            <div class="card-line"></div>
-           <li class="list-inline-item pr-2 flex-1 mr-5"><i class="fa fa-lg fa-clock pr-2"></i><div id='.$timer.'></div></li>
+           <li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
          </ul>
        </div>
      </div>

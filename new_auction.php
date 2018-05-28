@@ -125,6 +125,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
     } catch (PDOException $e) {
       $error=$e;
       echo $error;
+      $errors['upload'] = "Er is iets misgegaan";
     }
     for($i = 0; $i < $num_pictures; $i++){//Inserts data for every selected picture
       move_uploaded_file($pictures[$i]["tmp_name"], //uploads picture to server
@@ -135,6 +136,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
       } catch (PDOException $e) {
           $error = $e;
           echo $error;
+          $errors['upload'] = "Er is iets misgegaan";
       }
     }
     try {//inserts categorydata in database
@@ -143,7 +145,9 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
     } catch (PDOException $e) {
         $error = $e;
         echo $error;
+        $errors['upload'] = "Er is iets misgegaan";
     }
+    $errors['upload'] = "Veiling is succesvol geplaatst!";
   }
 }
 
@@ -271,7 +275,7 @@ body {
   </div>
   <div class="form-row">
       <div class="md-form form-group col-md-12">
-        <input type="text" class="form-control" name="title" id="title"  required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+        <input type="text" class="form-control" name="title" id="title" maxlength="50" required pattern="[A-z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+" >
         <div class="form-requirements">
           <ul>
             <li>Verplicht veld</li>
@@ -285,7 +289,7 @@ body {
 
   <div class="form-row">
       <div class="md-form form-group col-md-12">
-        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+"></textarea>
+        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" maxlength="255" required pattern="[A-z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+"></textarea>
         <div class="form-requirements">
           <ul>
             <li>Verplicht veld</li>
@@ -384,7 +388,7 @@ body {
           </select>
         </div>
         <div class="md-form form-group col-md-6">
-          <input type="text" class="form-control" name="pay_instructions" id="pay_instructions" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <input type="text" class="form-control" name="pay_instructions" id="pay_instructions" maxlength="255" pattern="[A-z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+" >
           <div class="form-requirements">
             <ul>
               <li>Optioneel</li>
@@ -398,18 +402,18 @@ body {
 
     <div class="form-row">
         <div class="md-form form-group col-md-6">
-          <input type="text" class="form-control" name="place" id="place"  value="<?=$userdata['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <input type="text" class="form-control" name="place" id="place"  value="<?=$userdata['plaatsnaam']?>" maxlength="50" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]+" >
           <div class="form-requirements">
             <ul>
               <li>Verplicht veld</li>
-              <li>Maximaal 85 tekens</li>
+              <li>Maximaal 50 tekens</li>
               <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
             </ul>
           </div>
           <label class="black-text" for="place">&nbsp;Plaats</label>
         </div>
         <div class="md-form form-group col-md-6">
-          <input type="text" class="form-control" name="country" id="country"  value="<?=$userdata['land']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <input type="text" class="form-control" name="country" id="country"  value="<?=$userdata['land']?>" maxlength="48" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]+" >
           <div class="form-requirements">
             <ul>
               <li>Verplicht veld</li>
@@ -433,7 +437,7 @@ body {
           <label class="black-text" for="shipping_costs">&nbsp;Verzendkosten</label>
         </div>
         <div class="md-form form-group col-md-6">
-          <input type="text" class="form-control" name="shipping_method" id="shipping_method"  pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" >
+          <input type="text" class="form-control" name="shipping_method" id="shipping_method"  pattern="[A-z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+" >
           <div class="form-requirements">
             <ul>
               <li>Optioneel</li>

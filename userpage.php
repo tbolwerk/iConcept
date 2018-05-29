@@ -151,7 +151,9 @@ while ($question = $data->fetch()) {
     <div class="left col-lg-4">
       <div class="profile-picture-settings">
         <label for="profile-picture">
-      <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png"/>
+      <div id="profile-picture-thumbnail">
+        <img class="photo" src="img/avatar/<?=$_SESSION['username']?>.png"/>
+      </div>
       <div class="profile-picture-overlay">
         <div class="pf-icon">
           <i class="fa fa-lg fa-plus"></i>
@@ -266,7 +268,7 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -442,6 +444,22 @@ if(!empty($results[0]['code'])){//checks for verification code
       </div>
     </div>
 
+    <script>
+    function handleFileSelectProfilePicture(evt) {
+      console.log("hoi");
+        var files = evt.target.files;
+        var f = files[0];
+        var reader = new FileReader();
+
+          reader.onload = (function(theFile) {
+                return function(e) {
+                  document.getElementById('profile-picture-thumbnail').innerHTML = ['<img class="photo" src="', e.target.result,'" title="', theFile.name, '" />'].join('');
+                };
+          })(f);
+
+          reader.readAsDataURL(f);
+        }
+    document.getElementById('profile-picture').addEventListener('change', handleFileSelectProfilePicture, false);</script>
     <script src="js/functions.js"></script>
 
   </div>

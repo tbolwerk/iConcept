@@ -2,6 +2,11 @@
 $current_page='detailpage';
 require_once('templates/header.php');
 
+// function random_color() {
+//   $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+//   echo "style='background-color: {$color};'";
+// }
+
 if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   $error = "";
   if (isset($_POST['bid'])) {
@@ -14,10 +19,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
         $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
       } catch(PDOException $e){
-        $error = $e->getCode();
-        if ($error == 23000) {
-          $error = "Primary key conflict";
-        }
+        $error = $e->getMessage();
       }
     }
   }
@@ -37,28 +39,32 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
   $statement = $dbh->prepare("select * from Bestand where voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
-  $bestanden = $statement->fetchAll();
+  $images = $statement->fetchAll();
 
   $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
   $statement = $dbh->prepare("select * from Rubriek where rubrieknummer = ?");
   $statement->execute(array($results['rubrieknummer']));
-  $rubriek = $statement->fetch();
-  $lijst = array($rubriek);
+  $category = $statement->fetch();
+  $categorychain = array($category);
 
-  while ($rubriek['rubrieknummerOuder'] != -1) {
-    $statement->execute(array($rubriek['rubrieknummerOuder']));
-    $rubriek = $statement->fetch();
-    array_push($lijst, $rubriek);
+  while ($category['rubrieknummerOuder'] != -1) {
+    $statement->execute(array($category['rubrieknummerOuder']));
+    $category = $statement->fetch();
+    array_push($categorychain, $category);
   }
 
-  $lijst = array_reverse($lijst);
+  $categorychain = array_reverse($categorychain);
 
-  $hoofdrubriek = $lijst[0];
+  $maincategory = $categorychain[0];
 
-  $minIncrease = 1;
-  $minBidAmount = $maxbid[0] + $minIncrease;
+  // $minIncrease = 1;
+  // $minBidAmount = $maxbid[0] + $minIncrease;
+
+  if ($_SESSION['username'] == $results['verkoper']) {
+    $input = "disabled";
+  }
 }
 ?>
 
@@ -66,70 +72,78 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 <div class="view index-header">
   <img src="img/bgs/account-bg.png" class="" height="350">
   <div class="mask index-banner rgba-niagara-strong">
-    <h1 class="white-text banner-text"><?=$hoofdrubriek['rubrieknaam']?></h1>
+    <h1 class="white-text banner-text"><?=$maincategory['rubrieknaam']?></h1>
   </div>
 </div>
 
-<p>Sluit op <?=$closingtime?></p>
-
-<p id="maxbid">Hoogste bod <?=$maxbid[0]?> door <?=$maxbid[1]?></p>
-
-<div class="container-fluid">
-  <h5><strong>
-    <a class="black-text" href="index.php">Home</a>
-    <?php
-    foreach ($lijst as $rubriek) {
-      echo " > <a class='black-text' href=\"rubriek.php?rubrieknummer={$rubriek['rubrieknummer']}\">{$rubriek['rubrieknaam']}</a>";
-    }
-    ?>
-  </strong></h5>
+<div class="container">
+  <div class="container p-3" style="">
+    <h5 class="font-weight-bold">
+      <a class="black-text" href="index.php">Home</a>
+      <?php
+      foreach ($categorychain as $category) {
+        echo " > <a class='black-text' href=\"rubriek.php?rubrieknummer={$category['rubrieknummer']}\">{$category['rubrieknaam']}</a>";
+      }
+      ?>
+    </h5>
+  </div>
 
   <div class="row">
     <div class="col-md-7">
 
       <?php //Display images
-      foreach ($bestanden as $bestand) {
-        echo "<img src=\"{$bestand['filenaam']}\"></img>";
+      foreach ($images as $image) {
+        echo "<img src=\"{$image['filenaam']}\"></img>";
       }
       ?>
-
-      <p><?=$results['betalingswijze']?></p>
 
     </div>
 
     <div class="col-md-5">
 
-      <h2><strong><?=$results['titel']?></strong></h2>
+      <h2 class="font-weight-bold"><?=$results['titel']?></h2>
 
       <hr>
 
       <div class="row text-center">
         <div class="col">
-          <p><?=$maxbid[0]?> door <?=$maxbid[1]?></p>
+          <p class="grey-text small">Hoogste bod</p>
+          <p class="lead">€<?=$maxbid[0]?> door <?=$maxbid[1]?></p>
         </div>
         <div class="col">
-          <p id="timer">Dit moet nog opgelost worden</p>
+          <p class="grey-text small">Resterende tijd</p>
+          <p class="lead" id="timer">Dit moet nog opgelost worden</p>
         </div>
       </div>
 
       <hr>
 
-      <form method="post" class="row">
+      <form method="post">
+        <div class="row">
           <div class="col"></div>
-          <input type="number" name="bid" class="form-control col-md-5" required min="<?=$minBidAmount?>">
-          <button type="submit" name="submit" class="btn btn-primary col-md-3">Bied</button>
+            <div class="col-md-5">
+              <input type="number" name="bid" class="form-control" step="0.01" <?=$input?>>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" name="submit" class="btn btn-primary" <?=$input?>>Bied</button>
+            </div>
           <div class="col"></div>
+        </div>
       </form>
 
-      <p class="red-text text-center"><strong><?=$error?></strong></p>
+      <p class="red-text text-center font-weight-bold"><?=$error?></p>
 
       <hr>
 
-      <p>Startprijs: <?=$results['startprijs']?></p>
+      <p>Startprijs: €<?=$results['startprijs']?></p>
       <p><?=$results['plaatsnaam']?>, <?=$results['land']?></p>
       <p>Sluit op: <?=$closingtime?></p>
-      <p><?=$results['betalingsinstructie']?></p>
+      <p>Betaalmethode: <?=$results['betalingswijze']?></p>
+      <p>Betalingsinstructies: <?=$results['betalingsinstructie']?></p>
       <p>Veilingnummer: <?=$results['voorwerpnummer']?></p>
+      <p>Verzendkosten: €<?=$results['verzendkosten']?></p>
+      <p>Verzendinstructies: <?=$results['verzendinstructies']?></p>
+      <p>Verkoper: <?=$results['verkoper']?></p>
 
     </div>
   </div>
@@ -137,8 +151,8 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   <h4>Productomschrijving</h4>
 
   <hr>
-  <!-- <p><?=$results['beschrijving']?></p> -->
-  <p>
+  <p><?=$results['beschrijving']?></p>
+  <!-- <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quam justo, ultricies eget enim a, viverra rutrum massa.
     Praesent semper faucibus luctus. Donec condimentum interdum augue, eget scelerisque justo tempor a. Suspendisse orci dolor, lobortis quis lacus quis,
     aliquam mollis enim. Integer finibus venenatis arcu id viverra. Cras nec enim sed dolor laoreet efficitur quis sed arcu. Fusce ligula sapien, tincidunt
@@ -155,22 +169,22 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   </p>
   <p>
     Pellentesque congue vehicula neque ut vestibulum. Aenean leo urna, tempor in venenatis et, aliquam elementum felis. Aliquam condimentum felis facilisis tempus commodo. Duis semper mi vel nulla tincidunt, nec viverra libero pharetra. Sed at feugiat sem. Donec euismod sem non ligula scelerisque vestibulum. Duis eget iaculis tortor, sed viverra lacus. Mauris ultricies sed nulla a eleifend. Cras consectetur porta risus, sit amet vestibulum arcu molestie sit amet. Sed dapibus dolor id lectus semper, vitae euismod leo sodales. Quisque vel vehicula dui. Integer aliquet odio arcu, vitae efficitur odio consequat vitae. Pellentesque augue erat, ornare id laoreet ut, rutrum ac arcu. Maecenas consectetur est risus, et lobortis quam interdum vitae. Quisque lorem lectus, suscipit a est nec, iaculis bibendum neque.
-  </p>
+  </p> -->
 </div>
 
 <script>
 countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);
 
-  var x = setInterval(function() {
-    var xhttp;
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("maxbid").innerHTML = this.responseText;
-      }
-    };
-    xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
-    xhttp.send();
+var x = setInterval(function() {
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("maxbid").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
+  xhttp.send();
 }, 1000);
 </script>
 

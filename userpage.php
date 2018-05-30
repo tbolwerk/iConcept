@@ -266,7 +266,6 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          
         </div>
       </div>
     </div>
@@ -318,7 +317,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlenghth="100" placeholder="Vul uw emailadres in">
+          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlength="100" placeholder="Vul uw emailadres in">
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>

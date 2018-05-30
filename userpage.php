@@ -218,7 +218,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results[0]['voornaam']?>" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]{2,35}" placeholder="Vul hier uw voornaam in">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<?=$results[0]['voornaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw voornaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -231,7 +231,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results[0]['achternaam']?>" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘]{2,35}" placeholder="Vul hier uw achternaam in">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<?=$results[0]['achternaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘]+" placeholder="Vul hier uw achternaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -251,12 +251,12 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <select class="black-text form-control" name="country" id="country" class="register-select-form form-control" required>
-            <option class="black-text" value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected"><?=$results[0]['land']?></option>
-            <option class="black-text" value='Nederland'>Nederland</option>
-            <option class="black-text" value='Duitsland'>Duitsland</option>
-            <option class="black-text" value='Frankrijk'>Frankrijk</option>
-            <option class="black-text" value='België'>België</option>
+          <select name="country" id="country" class="register-select-form" required>
+            <option value="<?=$results[0]['land']?>" class="font-weight-light black-text disabled selected">Kies een land...</option>
+            <option value='Nederland'>Nederland</option>
+            <option value='Duitsland'>Duitsland</option>
+            <option value='Frankrijk'>Frankrijk</option>
+            <option value='België'>België</option>
           </select>
           <div class="form-requirements">
             <ul>
@@ -266,7 +266,7 @@ These values are for debugging purposes and are visible by inspecting the page s
               <li>Wordt nog vervangen met dropdown list</li>
             </ul>
           </div>
-          
+          <label style="black-text" for="country"><?=$results[0]['land']?></label>
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results[0]['postcode']?>" onkeydown="upperCaseF(this)" required maxlength="6" pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
+          <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?=$results[0]['postcode']?>" onkeydown="upperCaseF(this)" required pattern="[0-9]{4,4}[A-Z]{2,2}" placeholder="Vul uw postcode in">
           <div class="form-requirements">
             <ul>
               <li>Vier cijfers gevolgd door twee hoofdletters</li>
@@ -287,7 +287,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="city" id="city" value="<?=$results[0]['plaatsnaam']?>" required maxlength="85" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]{2,85}" placeholder="Vul uw plaatsnaam in">
+          <input type="text" class="form-control" name="city" id="city" value="<?=$results[0]['plaatsnaam']?>" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+" placeholder="Vul uw plaatsnaam in">
           <div class="form-requirements">
             <ul>
               <li>Minimaal 2 tekens</li>
@@ -302,7 +302,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="row">
       <div class="col-md-12" >
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-\'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
             <ul>
               <li>Straatnaam gevolgd door huisnummer</li>
@@ -318,7 +318,7 @@ These values are for debugging purposes and are visible by inspecting the page s
     <div class="form-row">
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlenghth="100" placeholder="Vul uw emailadres in">
+          <input type="email" class="form-control" name="email" id="email" value="<?=$results[0]['email']?>" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Vul uw emailadres in">
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>
@@ -332,7 +332,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
       <div class="col-md-6">
         <div class="md-form form-group">
-          <input type="email" class="form-control" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required maxlength="100" placeholder="Herhaal uw emailadres">
+          <input type="email" class="form-control" id="emailcheck" onchange="confirmation('email', 'emailcheck')" onkeyup="confirmation('email', 'emailcheck')" required placeholder="Herhaal uw emailadres">
           <div class="form-requirements">
             <ul>
               <li>Moet gelijk zijn aan het andere email veld</li>

@@ -22,13 +22,13 @@ function countdown(element, countdown) {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="timer"
-        el.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        el.innerHTML = days + "d " + hours + "u " + minutes + "m " + seconds + "s ";
 
 
         // If the count down is finished, write some text
         if (distance < 0) {
           clearInterval(x);
-          el.innerHTML = "<p class='red-text'>Veiling gesloten</p>";
+          el.innerHTML = "Veiling gesloten";
         }
 }, 1000);
 }

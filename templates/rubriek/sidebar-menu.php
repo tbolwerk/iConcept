@@ -1,45 +1,35 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/functions.php';
 
-function countChild(){
-  global $dbh;
 
-  try{
-  $statement = $dbh->query("SELECT rubrieknummerOuder,COUNT(rubrieknummerOuder) as 'countChild' FROM Rubriek GROUP BY rubrieknummerOuder");
-}catch(PDOException $e){
-
-}
-  while($row = $statement->fetch()){
-    $rows[] = (array('id' => $row['rubrieknummerOuder'],'countChild' =>$row['countChild']));
-  }
-  return $rows;
-}
 
 
 
 
 function getRows(){
   global $dbh;
-  $countChilds = countChild();
+
 
 
 
 
 try{
-$statement = $dbh->query("SELECT * FROM Rubriek");
+$statement = $dbh->query("SELECT *,
+       OrderCount = (SELECT COUNT(r2.rubrieknummerOuder) FROM Rubriek r2 WHERE r2.rubrieknummerOuder = r1.rubrieknummer group by rubrieknummerOuder)
+  FROM Rubriek r1 ");
 }catch(PDOException $e){
 
 }
 while($row = $statement->fetch()){
-  foreach ($countChilds as $countChild) {
-  if($row["rubrieknummer"] == $countChild["id"]){
-        $rows[] = (array('id' => $row['rubrieknummer'],'parent_id' => $row['rubrieknummerOuder'],'name' => $row['rubrieknaam'], 'countChild' => $countChild["countChild"]));
-  }
+
+$rows[] = (array('id' => $row['rubrieknummer'],'parent_id' => $row['rubrieknummerOuder'],'name' => $row['rubrieknaam'],'countChild' => $row['OrderCount']));
+
 }
-}
+
 return $rows;
 }
 $rows = getRows();
+
 
 
 

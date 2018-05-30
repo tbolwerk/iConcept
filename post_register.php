@@ -12,32 +12,20 @@ if(isset($_GET['username'])){
 			echo $error;
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-<<<<<<< HEAD
-		$email = $result['email'];
-		mailUser($email,'registratie');
-=======
 		$firstname = $result['voornaam'];
->>>>>>> 941a07fcd65ac43d4a06675c024a75d9872e0a18
 
-			$code = random_password(6);
-			$url = "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);
-			createVerificationCode($username, $code);
+		$code = random_password(6);
+		createVerificationCode($username, $code);
 
-<<<<<<< HEAD
-			$message = "http://http://iconcept.tpnb.nl/".$url;
-		 	$message = wordwrap($message, 70, "\r\n");
-
-=======
 		$email = $result['email'];
-		mailUser($email, $username, 'registratie', $code);
+		mailUser($email, $username, 'registratie');
 	}
 } else { //Dit blok is om de pagina te kunnen testen zonder daadwerkelijk een gebruiker te hoeven registreren
 	$email = "janbeenham@hotmail.com";
-	$code = "2k48d2cp";
+	$code = "2k48d2";
 	$username = "janbeenham";
 	$firstname = "Jan";
 }
->>>>>>> 941a07fcd65ac43d4a06675c024a75d9872e0a18
 ?>
 
 <main class="py-5 mask rgba-black-light flex-center">

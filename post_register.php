@@ -18,7 +18,7 @@ if(isset($_GET['username'])){
 		createVerificationCode($username, $code);
 
 		$email = $result['email'];
-		mailUser($email, $username, 'registratie', $code);
+		mailUser($email, $username, 'registratie');
 	}
 } else { //Dit blok is om de pagina te kunnen testen zonder daadwerkelijk een gebruiker te hoeven registreren
 	$email = "janbeenham@hotmail.com";

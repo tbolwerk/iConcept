@@ -126,7 +126,7 @@ function displayAuction()
 
 
 
-			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
+			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
               <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
@@ -599,21 +599,19 @@ function addAvatar($file, $username){
 	}
 }
 
-function mailUser($email, $username, $soort, $parameter = null){
-	//
-  //global $dbh;
-	//
-	// $email_address = $dbh->prepare("select * from Gebruiker where gebruikersnaam=?");
-	// $fetch_email = $email_addres->execute(array($username));
-	// $fetch_email->fetch();
-
+function mailUser($email, $username, $type) {
+  
+  global $dbh;
 
 	$to = $email;
 
-	switch($soort){
+	switch($type) {
 	case 'registratie':
+    $statement = $dbh->prepare("select voornaam, achternaam, code from Gebruiker G join Verificatiecode V on G.gebruikersnaam = V.gebruikersnaam where G.gebruikersnaam = ?");
+    $statement->execute(array($username));
+    $results = $statement->fetch();
 		$subject = 'Verificatie account EenmaalAndermaal';
-		$message = 'Beste ' . $username . ', http://iconcept.tpnb.nl/' . 'verification.php?username=' . urlencode($username) . "&code=" . urlencode($parameter);
+		$message = 'Beste '.$results['voornaam'].' '.$results['achternaam'].', http://iconcept.tpnb.nl/iconcept/'.'verification.php?username='.urlencode($username)."&code=".urlencode($results['code']);
 	break;
 
 	case 'veilingaanmaken':
@@ -639,7 +637,6 @@ function mailUser($email, $username, $soort, $parameter = null){
 
 	break;
 
-
 }
 
 	$headers = 'From: webmaster@iproject40.icasites.nl' . "\r\n" .
@@ -647,11 +644,6 @@ function mailUser($email, $username, $soort, $parameter = null){
 	    'X-Mailer: PHP/' . phpversion();
 
 	mail($to, $subject, $message, $headers);
-
-
-
 }
-
-
 
 ?>

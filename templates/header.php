@@ -39,10 +39,10 @@ switch($current_page){
 
   }
 
-  case 'auction':
-
-  break;
-
+    case 'detailpage':
+      echo " <!-- Detailpage styling -->
+      <link rel='stylesheet' href='css/detail.css'>";
+      break;
     case 'userpage':
       echo "<!-- userpage styling -->
       <link rel='stylesheet' href='css/userpage.css'>";

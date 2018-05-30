@@ -126,7 +126,7 @@ function displayAuction()
 
 
 
-			$auction.="  <div class='col-sm-12 col-md-6 col-lg-4'>
+			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
               <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />

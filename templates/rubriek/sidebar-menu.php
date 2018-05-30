@@ -1,10 +1,46 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/functions.php';
 
-$statement = $dbh->query("SELECT * FROM Rubriek");
-while($row = $statement->fetch()){
-  $rows[] = (array('id' => $row['rubrieknummer'],'parent_id' => $row['rubrieknummerOuder'],'name' => $row['rubrieknaam']));
+function countChild(){
+  global $dbh;
+
+  try{
+  $statement = $dbh->query("SELECT rubrieknummerOuder,COUNT(rubrieknummerOuder) as 'countChild' FROM Rubriek GROUP BY rubrieknummerOuder");
+}catch(PDOException $e){
+
 }
+  while($row = $statement->fetch()){
+    $rows[] = (array('id' => $row['rubrieknummerOuder'],'countChild' =>$row['countChild']));
+  }
+  return $rows;
+}
+
+
+
+
+function getRows(){
+  global $dbh;
+  $countChilds = countChild();
+
+
+
+
+try{
+$statement = $dbh->query("SELECT * FROM Rubriek");
+}catch(PDOException $e){
+
+}
+while($row = $statement->fetch()){
+  foreach ($countChilds as $countChild) {
+  if($row["rubrieknummer"] == $countChild["id"]){
+        $rows[] = (array('id' => $row['rubrieknummer'],'parent_id' => $row['rubrieknummerOuder'],'name' => $row['rubrieknaam'], 'countChild' => $countChild["countChild"]));
+  }
+}
+}
+return $rows;
+}
+$rows = getRows();
+
 
 
 
@@ -50,7 +86,7 @@ while($row = $statement->fetch()){
                       $out.= sprintf(
                           '<li class="depth-%u">%s%s</li>'
                           ,$runner
-                          ,'<li class="haschildren"><div class="link"><a href="?rubrieknummer='.$link["id"].'" class="link" style="text-align: center;">'.$link["name"].'</a><a class="expand">'.count($menu).'<i class="fa icon"></i></a></div>'
+                          ,'<li class="haschildren"><div class="link"><a href="?rubrieknummer='.$link["id"].'" class="link" style="text-align: center;">'.$link["name"].'</a><a class="expand">'.$link["countChild"].'<i class="fa icon"></i></a></div>'
                           ,themeMenu($link['links'],($runner+1))
                       );
                   }

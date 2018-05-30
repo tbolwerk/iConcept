@@ -167,6 +167,20 @@ function displayAuction()
 
 }
 
+
+function getChild($rubrieknummer){
+  global $dbh;
+$out;
+  try{
+    $data = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknummerOuder=?");
+    $data->execute(array($rubrieknummer));
+    $out = $data->fetch();
+
+  }catch(PDOException $e){
+    $error = $e;
+  }
+  return $out;
+}
 /*display auctionpage*/
  function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
  {
@@ -182,8 +196,8 @@ function displayAuction()
      $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
      $data->execute(array($voorwerpnummer));
    }else if(($rubrieknummer !=0)){
-     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
-     $data->execute(array($rubrieknummer));
+     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer LEFT JOIN Rubriek r ON r.rubrieknummer=vr.rubrieknummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
+     $data->execute(array($rubrieknummer,getChild($rubrieknummer)["rubrieknummerOuder"]));
    }else{
      $data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
    }

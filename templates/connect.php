@@ -1,9 +1,9 @@
 <?php
 
- $hostname = "mssql2.iproject.icasites.nl";
- $dbname = "iproject40";
- $uid = "iproject40";
- $pw ="y7wYe9q6JP";
+ $hostname = "77.174.95.152";
+ $dbname = "iConcept";
+ $uid = "iConcept";
+ $pw ="Welkom01!";
 
 $dbh = new PDO("sqlsrv:Server=$hostname;Database=$dbname;
 			ConnectionPooling=0", "$uid", "$pw");

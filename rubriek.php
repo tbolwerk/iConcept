@@ -10,9 +10,9 @@
   }
 }
   if(isset($_GET['voorwerpnummer'])){
-  displayAuctionpage($_GET['voorwerpnummer']);
+  displayAuctionpage($_GET['voorwerpnummer'],0);
 }else if(isset($_GET['rubrieknummer'])){
-  displayAuctionpage($_GET['rubrieknummer']);
+  displayAuctionpage(0,$_GET['rubrieknummer']);
 }else{
   displayAuctionpage();
 }
@@ -44,7 +44,7 @@
   </div>
 </div>
 </div>
-</div>
+
 
 
 

@@ -481,6 +481,8 @@ function login($username_input, $password)
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
       $_SESSION['email'] = $password_result['email'];
+      $_SESSION['firstname'] = $password_result['voornaam'];
+      $_SESSION['lastname'] = $password_result['achternaam'];
 
       header('Location: index.php');
     }

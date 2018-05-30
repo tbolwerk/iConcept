@@ -124,7 +124,7 @@ function displayAuction()
 
              $countdown = $closingtime;
 
-if($row['startprijs']<$row['bodbedrag']){
+if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
   $huidige_bod=$row['bodbedrag'];
 }else{
   $huidige_bod=$row['startprijs'];
@@ -215,7 +215,7 @@ $out;
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
        // $countdown_date = date("Y-m-d",$looptijdbegindag);
        // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
-       if($row['startprijs']<$row['bodbedrag']){
+       if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
          $huidige_bod=$row['bodbedrag'];
        }else{
          $huidige_bod=$row['startprijs'];

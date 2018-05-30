@@ -6,6 +6,7 @@ $statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as loo
 $carousel= array();
 $i=0;
 while($row = $statement->fetch()){
+	$voorwerpnummer = $row[1];
 	$i--;
 	$timer="timer".$i;
 	$looptijd = $row['looptijd'];
@@ -28,12 +29,12 @@ if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
 $carousel[]=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
-						<a href="detailpage.php?id='.$row["voorwerpnummer"].'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
+						<a href="detailpage.php?id='.$voorwerpnummer.'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
 							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$row["titel"].'" />
 						</a>
 						</div>
 						<div class="card-body">
-							<span class="small-font">'.$row["voorwerpnummer"].'</span>
+							<span class="small-font">'.$voorwerpnummer.'</span>
 							<h4 class="card-title">'.$row["titel"].'</h4>
 							<hr>
 							<div class="card-text">

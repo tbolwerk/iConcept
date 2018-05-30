@@ -77,10 +77,8 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   global $seller;
 
 
-
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');
-  $end_date = date('Y-m-d', strtotime($current_date. ' + ' . $duration . 'days'));
 
   try { //selects last inserted auctionid
     $objectdata = $dbh->prepare("select top 1 voorwerpnummer from Voorwerp order by voorwerpnummer desc");
@@ -119,9 +117,9 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   }
   if(count($errors) == 0){//Inserts all data in database if no erros occured
     try {//inserts all data in table 'Voorwerp'
-      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, looptijdeindedag, veilinggesloten)
-      values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, $end_date, 0));
+      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, veilinggesloten)
+      values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, 0));
     } catch (PDOException $e) {
       $error=$e;
       echo $error;

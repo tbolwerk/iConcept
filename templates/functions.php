@@ -70,7 +70,7 @@ WHERE titel LIKE ?");
 
     $function = "fill('".$rubrieknaam."')";
 
-    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='rubriek.php?voorwerpnummer=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
+    $veilingen.="<li onclick='".$function."'><a class='dummy-media-object' href='detailpage.php?id=".$voorwerpnummer."'><h6>".$rubrieknaam."</h6><h3>".$voorwerptitel."</h3></li></a>";
 
   }
 
@@ -600,7 +600,7 @@ function addAvatar($file, $username){
 }
 
 function mailUser($email, $username, $type) {
-  
+
   global $dbh;
 
 	$to = $email;

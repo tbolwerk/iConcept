@@ -1,7 +1,7 @@
 <?php require_once("functions.php");
 global $dbh;
 try{
-$statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
+$statement = $dbh->query("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
 
 $carousel= array();
 $i=0;

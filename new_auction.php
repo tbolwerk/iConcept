@@ -76,6 +76,16 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   global $errors;
   global $seller;
 
+  $title = str_replace("\"", "", strip_tags($title));
+  $description = str_replace("\"", "", str_replace("\n", "<br>", strip_tags($description)));
+  $startprice = str_replace("\"", "", strip_tags($startprice));
+  $duration = str_replace("\"", "", strip_tags($duration));
+  $pay_method = str_replace("\"", "", strip_tags($pay_method));
+  $pay_instructions = str_replace("\"", "", strip_tags($pay_instructions));
+  $place = str_replace("\"", "", strip_tags($place));
+  $country = str_replace("\"", "", strip_tags($country));
+  $shipping_costs = str_replace("\"", "", strip_tags($shipping_costs));
+  $shipping_method = str_replace("\"", "", strip_tags($shipping_method));
 
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');

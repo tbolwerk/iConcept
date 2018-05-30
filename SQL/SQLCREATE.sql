@@ -8,7 +8,8 @@ http://webarchive.nationalarchives.gov.uk/+/http://www.cabinetoffice.gov.uk/medi
 
 */
 
-use iConcept 
+use testDB 
+
 
 DROP TABLE [Bod] 
 
@@ -106,7 +107,7 @@ create table dbo.Voorwerp
 (  
 voorwerpnummer bigint identity(1,1) not null,  /* toelichting: zodat we veel voorwerpnummers kunnen opslaan */
 titel nvarchar(50) not null,  /* titel is altijd variabel */
-beschrijving nvarchar(255) not null,  /* Beschrijving is variabel en kan van alles bevatten zoals specificatie, historie */
+beschrijving nvarchar(max) not null,  /* Beschrijving is variabel en kan van alles bevatten zoals specificatie, historie, max is gekozen omdat de batchscript veel bevat.*/
 startprijs numeric(9,2) not null,  
 betalingswijze varchar(25) not null,  
 betalingsinstructie char(255),  /* instructie om het geld te verzenden */
@@ -119,7 +120,6 @@ verzendkosten numeric(5,2),
 verzendinstructies varchar(255),  
 verkoper varchar(25) not null,  /* afgestemd op gebruikersnaam */
 koper varchar(25),   /* afgestemd op gebruikersnaam */
-looptijdeindedag date not null, 
 veilinggesloten bit not null,  /* Bit als true/false = wel/niet */
 verkoopprijs numeric(9,2),  
 CONSTRAINT pk_voorwerpnummer PRIMARY KEY (voorwerpnummer),  
@@ -150,7 +150,7 @@ voorwerpnummer bigint not null,  /* zie hierboven */
 bodbedrag numeric(9,2) not null,  /* numeric voor komma's en meer grotere bedragen */
 gebruikersnaam varchar(25) not null,  
 boddag date not null,  /* date is beter om dag op te slaan dan een char, werkt ook beter met applicaties dan een int/char*/
-bodtijdstip DATETIME not null,  /* normaal date slaat de tijd niet op, daarvoor gebruiken we datetime */
+bodtijdstip TIME not null,  /* normaal date slaat de tijd niet op, daarvoor gebruiken we time */
 CONSTRAINT pk_voorwerp_bodbedrag PRIMARY KEY (voorwerpnummer, bodbedrag),  
 CONSTRAINT fk_BodVoorwerp_voorwerpnr FOREIGN KEY (voorwerpnummer)  
 REFERENCES Voorwerp (voorwerpnummer),  

@@ -142,7 +142,7 @@ BEGIN
 	DECLARE @hoogstebod NUMERIC(9, 2);
 	DECLARE @startprijs NUMERIC(9, 2);
 
-	SET @startprijs = (	SELECT Startprijs
+	SET @startprijs = (SELECT startprijs
 	FROM Voorwerp
 	WHERE Voorwerpnummer = @voorwerpnummer)
 
@@ -155,7 +155,7 @@ BEGIN
 			ORDER BY bodbedrag DESC
 			)
 
-	IF (@hoogstebod < @startprijs)
+	IF (@hoogstebod > @startprijs)
 	BEGIN
 		RETURN 1
 	END
@@ -171,6 +171,42 @@ CHECK (dbo.CheckHoogsteBod(voorwerpnummer, bodbedrag) = 1)
 GO
 
 
+IF OBJECT_ID('CHK_CheckHogerBod') IS NOT NULL BEGIN ALTER TABLE Bod 
+DROP CONSTRAINT CHK_CheckHogerBod END
+GO
+
+
+IF OBJECT_ID('dbo.checkStartprijs') IS NOT NULL BEGIN DROP FUNCTION dbo.checkStartprijs END
+GO
+
+CREATE FUNCTION dbo.checkStartprijs(@voorwerpnummer INT, @bodbedrag NUMERIC(9, 2))
+RETURNS BIT
+AS
+BEGIN
+	  DECLARE @startprijs NUMERIC(9, 2);
+
+
+	  SET @startprijs = (SELECT startprijs
+	  FROM Voorwerp
+	  WHERE Voorwerpnummer = @voorwerpnummer)
+
+IF (@bodbedrag > @startprijs)
+	BEGIN
+		RETURN 1
+	END
+
+	RETURN 0
+END;
+GO
+
+ALTER TABLE Bod
+ADD CONSTRAINT CHK_CheckHogerBod
+CHECK (dbo.checkStartprijs(voorwerpnummer, bodbedrag) = 1)
+GO
+
+
+
+
 /* B 6	Tabellen Bod en Voorwerp:
 Een gebruiker mag geen bod op één van zijn/haar eigen voorwerpen uitbrengen. */
 CREATE FUNCTION dbo.GeenEigenBod(@voorwerpnummer INT ,@gebruikersnaam VARCHAR(25))
@@ -180,14 +216,16 @@ BEGIN
 	DECLARE @OfferNietVanverkoper BIT = 1
 	DECLARE @verkoper VARCHAR(25)
 
-	SET @verkoper = (SELECT Verkoper
+	SET @verkoper = (SELECT verkoper
 	FROM Voorwerp
-	WHERE Voorwerpnummer = @voorwerpnummer)
+	WHERE voorwerpnummer = @voorwerpnummer)
 
 	IF (@verkoper = @gebruikersnaam)
-		SET @OfferNietVanverkoper = 0;
+	BEGIN
+		RETURN 0
+	END
 
-	RETURN @OfferNietVanverkoper
+	RETURN 1
 END;
 GO
 
@@ -197,7 +235,6 @@ ALTER TABLE Bod
 ADD CONSTRAINT CHK_IsGeenEigenBod
 CHECK (dbo.GeenEigenBod(voorwerpnummer, gebruikersnaam) = 1)
 GO
-
 
 
 /* AF 1	Tabel Voorwerp, kolom LooptijdeindeDag:

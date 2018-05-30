@@ -1,7 +1,7 @@
 <?php require_once("functions.php");
 global $dbh;
 try{
-$statement = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+$statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
 
 $carousel= array();
 $i=0;
@@ -11,15 +11,20 @@ while($row = $statement->fetch()){
 	$looptijd = $row['looptijd'];
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);
 	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-	$countdown_date = date("Y-m-d",$looptijdbegindag);
-	$countdown_time = date("h:i:s",$looptijdbegintijdstip);
-	$countdown = $countdown_date . " " . $countdown_time;
+	$data = $dbh->query("SELECT * FROM Rubriek");
+
+
+		 $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+
+
+		 $countdown = $closingtime;
 	$out = '';
 
 $carousel[]=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
-						<a href="auction.php?voorwerpnummer='.$row["voorwerpnummer"].'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
+						<a href="detailpage.php?id='.$row["voorwerpnummer"].'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
 							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$row["titel"].'" />
 						</a>
 						</div>

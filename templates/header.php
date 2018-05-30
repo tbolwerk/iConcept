@@ -101,7 +101,10 @@ switch($current_page){
 
 </head>
 <?php
-if ($current_page == 'login' || $current_page == 'register') {
+if ($current_page == 'admin_panel'){
+  include 'templates/admin_nav.php';
+}
+else if ($current_page == 'login' || $current_page == 'register') {
   include 'templates/logo_nav.php';
 } else {
   include 'templates/nav.php';

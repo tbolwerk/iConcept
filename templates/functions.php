@@ -109,7 +109,7 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT TOP (9) * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
       $i++;
@@ -117,9 +117,12 @@ function displayAuction()
       $looptijd = $row['looptijd'];
       $looptijdbegindag =strtotime($row['looptijdbegindag']);
       $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-      $countdown_date = date("Y-m-d",$looptijdbegindag);
-      $countdown_time = date("h:i:s",$looptijdbegintijdstip);
-      $countdown = $countdown_date . " " . $countdown_time;
+
+             $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+             $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+
+
+             $countdown = $closingtime;
 
 
 
@@ -146,7 +149,7 @@ function displayAuction()
             </div>
 
             <div class='view overlay mdb-blue'>
-              <a href='auction.php?voorwerpnummer=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+              <a href='detailpage.php?id=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>
                 </div>
               </a>
@@ -164,7 +167,7 @@ function displayAuction()
 
 }
 
- /*display auctionpage*/
+/*display auctionpage*/
  function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
  {
 
@@ -176,13 +179,13 @@ function displayAuction()
 
    try{
      if(($voorwerpnummer !=0)){
-     $data = $dbh->prepare("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
+     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
      $data->execute(array($voorwerpnummer));
    }else if(($rubrieknummer !=0)){
-     $data = $dbh->prepare("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
+     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer WHERE vr.rubrieknummer = ?");
      $data->execute(array($rubrieknummer));
    }else{
-     $data = $dbh->query("SELECT * FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+     $data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
    }
     $i=0;
      while ($row = $data->fetch()) {
@@ -190,10 +193,16 @@ function displayAuction()
        $timer="timer".$i;
        $looptijd = $row['looptijd'];
        $looptijdbegindag =strtotime($row['looptijdbegindag']);
+
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-       $countdown_date = date("Y-m-d",$looptijdbegindag);
-       $countdown_time = date("h:i:s",$looptijdbegintijdstip);
-       $countdown = $countdown_date . " " . $countdown_time;
+       // $countdown_date = date("Y-m-d",$looptijdbegindag);
+       // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
+
+       $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+       $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+
+
+       $countdown = $closingtime;
 
 
 
@@ -202,7 +211,9 @@ function displayAuction()
        <div class="col-md-4">
        <div class="card auction-card mb-4">
        <div class="view overlay">
-         <img class="card-img-top" src="'.$row["filenaam"].'" />
+       <a href="detailpage.php?id='.$row["voorwerpnummer"].'">
+         <img class="card-img-top" src="'.$row["filenaam1"].'" />
+       </a>
        </div>
        <div class="card-body">
          <span class="small-font">'.$row['voorwerpnummer'].'</span>
@@ -470,6 +481,8 @@ function login($username_input, $password)
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
       $_SESSION['email'] = $password_result['email'];
+      $_SESSION['firstname'] = $password_result['voornaam'];
+      $_SESSION['lastname'] = $password_result['achternaam'];
 
       header('Location: index.php');
     }
@@ -572,22 +585,21 @@ function addAvatar($file, $username){
 	}
 }
 
-function mailUser($username, $soort){
+function mailUser($email, $username, $soort, $parameter = null){
 	//
-	// global $dbh;
+  //global $dbh;
 	//
 	// $email_address = $dbh->prepare("select * from Gebruiker where gebruikersnaam=?");
 	// $fetch_email = $email_addres->execute(array($username));
 	// $fetch_email->fetch();
 
 
-	$to = 'twanbolwerk@gmail.com';
+	$to = $email;
 
 	switch($soort){
 	case 'registratie':
-    //TODO: de verificatiecode moet nog meegestuurd worden
-		$subject = 'Registratie gelukt!';
-		$message = 'Uw registratie is gelukt '. $username .'!';
+		$subject = 'Verificatie account EenmaalAndermaal';
+		$message = 'Beste ' . $username . ', http://iconcept.tpnb.nl/' . 'verification.php?username=' . urlencode($username) . "&code=" . urlencode($parameter);
 	break;
 
 	case 'veilingaanmaken':

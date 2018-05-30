@@ -109,7 +109,7 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
       $i++;
@@ -124,7 +124,11 @@ function displayAuction()
 
              $countdown = $closingtime;
 
-
+if($row['startprijs']<$row['bodbedrag']){
+  $huidige_bod=$row['bodbedrag'];
+}else{
+  $huidige_bod=$row['startprijs'];
+}
 
 			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
@@ -142,7 +146,7 @@ function displayAuction()
               </div>
               <hr />
               <ul class='list-unstyled list-inline d-flex'>
-                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$huidige_bod."</li>
 								<div class='card-line'></div>
                 <li class='list-inline-item flex-1 mr-5'><i class=''></i><div id=".$timer."></div></li>
               </ul>
@@ -193,13 +197,13 @@ $out;
 
    try{
      if(($voorwerpnummer !=0)){
-     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
+     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.voorwerpnummer = ?");
      $data->execute(array($voorwerpnummer));
    }else if(($rubrieknummer !=0)){
-     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer LEFT JOIN Rubriek r ON r.rubrieknummer=vr.rubrieknummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
+     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer LEFT JOIN Rubriek r ON r.rubrieknummer=vr.rubrieknummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
      $data->execute(array($rubrieknummer,getChild($rubrieknummer)["rubrieknummerOuder"]));
    }else{
-     $data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+     $data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
    }
     $i=0;
      while ($row = $data->fetch()) {
@@ -211,6 +215,11 @@ $out;
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
        // $countdown_date = date("Y-m-d",$looptijdbegindag);
        // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
+       if($row['startprijs']<$row['bodbedrag']){
+         $huidige_bod=$row['bodbedrag'];
+       }else{
+         $huidige_bod=$row['startprijs'];
+       }
 
        $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
        $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
@@ -240,7 +249,7 @@ $out;
          </div>
          <hr />
          <ul class="list-unstyled list-inline d-flex" style="text-align:center">
-           <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
+           <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$huidige_bod.'</li>
            <div class="card-line"></div>
            <li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
          </ul>

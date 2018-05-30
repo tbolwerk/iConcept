@@ -1,7 +1,7 @@
 <?php require_once("functions.php");
 global $dbh;
 try{
-$statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+$statement = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
 
 $carousel= array();
 $i=0;
@@ -12,7 +12,11 @@ while($row = $statement->fetch()){
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);
 	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
 	$data = $dbh->query("SELECT * FROM Rubriek");
-
+	if($row['startprijs']<$row['bodbedrag']){
+	  $huidige_bod=$row['bodbedrag'];
+	}else{
+	  $huidige_bod=$row['startprijs'];
+	}
 
 		 $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
 		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
@@ -39,7 +43,7 @@ $carousel[]=	'			<div class="col-md-3">
 							</div>
 							<hr />
 							<ul class="list-unstyled list-inline d-flex" style="text-align:center">
-								<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
+								<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$huidige_bod.'</li>
 								<div class="card-line"></div>
 								<li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
 							</ul>

@@ -112,6 +112,7 @@ function displayAuction()
 		$data = $dbh->query("SELECT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
+      $voorwerpnummer = $row[1];
       $i++;
       $timer="timer".$i;
       $looptijd = $row['looptijd'];
@@ -136,8 +137,8 @@ if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
               <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
-              <span class='small-font'>".$row['voorwerpnummer']."</span>
-              <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
+              <span class='small-font'>".$voorwerpnummer."</span>
+              <h4 class='card-title'>".$row['titel']." #".$voorwerpnummer."</h4>
               <hr>
               <div class='card-text'>
                 <p>
@@ -207,6 +208,7 @@ $out;
    }
     $i=0;
      while ($row = $data->fetch()) {
+       $voorwerpnummer = $row[1];
        $i++;
        $timer="timer".$i;
        $looptijd = $row['looptijd'];
@@ -234,12 +236,12 @@ $out;
        <div class="col-md-4">
        <div class="card auction-card mb-4">
        <div class="view overlay">
-       <a href="detailpage.php?id='.$row["voorwerpnummer"].'">
+       <a href="detailpage.php?id='.$voorwerpnummer.'">
          <img class="card-img-top" src="'.$row["filenaam1"].'" />
        </a>
        </div>
        <div class="card-body">
-         <span class="small-font">'.$row['voorwerpnummer'].'</span>
+         <span class="small-font">'.$voorwerpnummer.'</span>
          <h4 class="card-title">'.$row["titel"].'</h4>
          <hr>
          <div class="card-text">

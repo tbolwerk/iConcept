@@ -1,7 +1,7 @@
 <?php
 $current_page='userpage';
 require_once('templates/header.php');
-
+$message = "";
 function updatePhones() {
   global $dbh;
 
@@ -78,9 +78,11 @@ if(isset($_POST['tab1submit'])) {
     updatePhones(); //Phones are updated seperately
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
+    $message = "Account instellingen succesvol gewijzigd";
   } catch (PDOException $e) {
     $error = $e;
-    echo $error;
+
+    $message = "Er ging iets mis";
   }
 }
 
@@ -91,9 +93,13 @@ if (isset($_POST['tab2submit'])) {
     $statement->execute(array($_SESSION['username']));
     $password = $statement->fetch();
 
-    if ($password[0] == $_POST['currentPassword']) { //Has the user submitted his current password?
+
+    if (password_verify($_POST['currentPassword'],$password[0])) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
+        $message = "wachtwoord succesvol veranderd";
+    }else{
+       $message = "Wachtwoord niet correct";
     }
 }
 
@@ -200,10 +206,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
 
 <p class="green-text lead">
-<?php if (count($_POST)) {
-  //looks bad but does the job for now
-  echo "Uw gegevens zijn succesvol aangepast";
-} ?>
+<?= $message ?>
 </p>
 
 <ul class="nav nav-tabs">

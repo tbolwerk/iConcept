@@ -586,33 +586,6 @@ function createVerificationCode($username, $random_password) {
     }
 }
 
-function  auctionTimer($voorwerpnummer) {
-  global $dbh;
-  global $error;
-  $timer = "3 uur";
-	try {
-	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
-	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
-	  $voorwerpdata->fetch();
-	  $looptijd = $voorwerpdata['looptijd'];
-    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
-    $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
-    $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
-    $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
-    $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-    $days_remaining = floor($remaining/86400);
-    $hours_remaining = floor(($remaining/86400)/ 3600);
-    if ($days_remaining > 1) {
-    	$timer = $days_remaining;
-    } else {
-    	$timer = $days_remaining + $hours_remaining;
-    }
-	} catch (PDOException $e) {
-	  $error=$e;
-	}
-
-	return $timer;
-}
 
 //Updates the record for this user with the new password
 function changePassword($new_password) {
@@ -699,6 +672,13 @@ function mailUser($email, $username, $type) {
 
 	case 'wachtwoordvergeten':
 
+	break;
+	case 'wachtwoordwijzigen':
+	    $statement = $dbh->prepare("select voornaam, achternaam, code from Gebruiker G join Verificatiecode V on G.gebruikersnaam = V.gebruikersnaam where G.gebruikersnaam = ?");
+    $statement->execute(array($username));
+    $results = $statement->fetch();
+		$subject = 'E-Mail wijziging';
+		$message = 'Beste '. $results["voornaam"] .' ' .$results["achternaam"]. ' , Klik op de onderstaande link om Uw E-Mail te wijzigen: http://iconcept.tpnb.nl/iconcept/verification.php?username='.urlencode($username).'&code='.urlencode($results["code"]);
 	break;
 
 }

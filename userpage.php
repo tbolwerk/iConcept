@@ -59,32 +59,7 @@ function insertNumber($number, $phones, &$numbersToKeep) {
 }
 
 //If user submits updated account data
-if(isset($_POST['tab1submit'])) {
-  //Remove any doublequotes and html tags
-  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
-  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
-  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
-  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
-  $city = str_replace("\"", "", strip_tags($_POST['city']));
-  $country = str_replace("\"", "", strip_tags($_POST['country']));
-  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
-  $email = str_replace("\"", "", strip_tags($_POST['email']));
-  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
-  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
 
-  try { //Update the record for this user with the submitted data
-    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
-    updatePhones(); //Phones are updated seperately
-    $_SESSION['firstname'] = $firstname;
-    $_SESSION['lastname'] = $lastname;
-    $message = "Account instellingen succesvol gewijzigd";
-  } catch (PDOException $e) {
-    $error = $e;
-
-    $message = "Er ging iets mis";
-  }
-}
 
 //If user tries to change password
 if (isset($_POST['tab2submit'])) {
@@ -117,6 +92,45 @@ $username = $_SESSION['username'];
 $statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
 $statement->execute(array($username));
 $results = $statement->fetchAll();
+
+
+if(isset($_POST['tab1submit'])) {
+  //Remove any doublequotes and html tags
+  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
+  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
+  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
+  $city = str_replace("\"", "", strip_tags($_POST['city']));
+  $country = str_replace("\"", "", strip_tags($_POST['country']));
+  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
+  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
+  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+  $activation = 1;
+  $email = str_replace("\"", "", strip_tags($_POST['email']));
+if($results['email'] != $email){
+  $message.="Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren";
+  $code = random_password(6);
+  $username = $_SESSION['username'];
+  $activation = 0;
+  createVerificationCode($_SESSION['username'],$code);
+  mailUser($email, $username, 'wachtwoordwijzigen');
+}
+
+
+
+  try { //Update the record for this user with the submitted data
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    updatePhones(); //Phones are updated seperately
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    $message = "Account instellingen succesvol gewijzigd";
+  } catch (PDOException $e) {
+    $error = $e;
+
+    $message = "Er ging iets mis";
+  }
+}
 
 // //Receive phone numbers for this user from database
 // $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
@@ -333,7 +347,7 @@ These values are for debugging purposes and are visible by inspecting the page s
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>
-              <li>Bijvoorbeeld: hermanreinhart@hotmail.com</li>
+              <li>Bijvoorbeeld: janbeenham@hotmail.com</li>
               <li>Maximaal 100 tekens</li>
               <li>De meeste speciale tekens worden niet toegestaan</li>
             </ul>

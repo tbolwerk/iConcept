@@ -20,8 +20,10 @@ while($row = $statement->fetch()){
 	$looptijdbegindag =strtotime($row['looptijdbegindag']);
 	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
 	$data = $dbh->query("SELECT * FROM Rubriek");
-if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
-	  $huidige_bod=$row['bodbedrag'];
+if(isset($row['hoogsteBod'])){
+
+
+		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
 	}else{
 	  $huidige_bod=$row['startprijs'];
 	}

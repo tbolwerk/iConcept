@@ -552,7 +552,7 @@ try{
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
-      $_SESSION['admin'] = 1; //temp moet nog in de db worden aagemaakt
+
       header('Location: index.php');
     }
   }catch(PDOException $e){
@@ -614,7 +614,7 @@ function  auctionTimer($voorwerpnummer) {
 function changePassword($new_password) {
   global $error;
   global $dbh;
-
+  
 $hash=password_hash($new_password, PASSWORD_DEFAULT);
   $username = $_SESSION['username'];
   try {

@@ -516,16 +516,16 @@ function login($username_input, $password)
   $error = array();
 
   if (strlen($username) >= 25) {
-    $error['username'] = "Username has more than 25 characters";
+    $error['username'] = "Gebruikersnaam heeft meer dan 25 karakters";
   } else
   if (strlen($password) >= 50) {
-    $error['password'] = "Password has more than 50 characters";
+    $error['password'] = "Wachtwoord heeft meer dan 50 karakters";
   } else
   if (empty($username)) {
-    $error['username'] = "Username is empty";
+    $error['username'] = "Gebruikersnaam is leeg";
   } else
   if (empty($password)) {
-    $error['password'] = "Password is empty";
+    $error['password'] = "Wachtwoord is leeg";
   } else {
     try { //Attempt to receive data about the user with the submitted credentials
     	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? OR email=?");
@@ -546,13 +546,16 @@ try{
     	$error['password'] = "Wachtwoord klopt niet";
     } else if ($password_result['geactiveerd'] == 0) { //If the user does exist, check whether the account has been activated
       $error['verification'] = "Account is nog niet geactiveerd";
-    } else {
+    } else if($password_result['geblokkeerd'] == 1){
+      $error['geblokkeerd'] = "Account is geblokkeerd";
+    }else{
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
       $_SESSION['admin'] = 1;
+
 
       header('Location: index.php');
     }

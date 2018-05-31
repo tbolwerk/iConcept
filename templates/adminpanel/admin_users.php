@@ -1,11 +1,21 @@
+<style>
+.success-text {
+  color: #00C851; }
+
+  .danger-text {
+  color: #ff3547; }
+</style>
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/functions.php';
+$message = "";
 if(isset($_GET['ban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 1 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['ban']));
+  $message = "<p class='danger-text'>Account van <b>".$_GET['ban']."</b> is Succesvol geblokkeerd</p>";
 }
 if(isset($_GET['unban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 0 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['unban']));
+  $message = "<p class='success-text'>Account van <b>".$_GET['unban']."</b> is Succesvol gedeblokkeerd</p>";
 }
 $out = "";
 $status = "";
@@ -34,6 +44,7 @@ while($row = $statement->fetch()){
   <div class="panel-information">
     <h1>Gebruikerslijst</h1>
     <p>In deze lijst staan alle gebruikers die geregistreert zijn op de website. Hier kan je de gebruikers blokkeren of deblokkeren</p>
+    <?=$message?>
   </div>
 
     <!-- Table-->

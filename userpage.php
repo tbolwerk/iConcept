@@ -201,8 +201,11 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 <p class="green-text lead">
 <?php if (count($_POST)) {
-  //looks bad but does the job for now
-  echo "Uw gegevens zijn succesvol aangepast";
+  if (isset($_POST['change_avatar'])) {
+    echo "Uw profielfoto is succesvol aangepast";
+  } else {
+    echo "Uw gegevens zijn succesvol aangepast";
+  }
 } ?>
 </p>
 

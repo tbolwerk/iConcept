@@ -1,3 +1,25 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/functions.php';
+$out = "";
+$status = "";
+$statement = $dbh->prepare("SELECT * FROM Gebruiker");
+$statement->execute();
+while($row = $statement->fetch()){
+  if($row['geblokkeerd'] == 0){
+    $status = '<span class="user-active"></span>Actief';
+  }else{
+    $status = '<span class="user-blocked"></span>Geblokkeerd';
+  }
+  $out.='<tr>
+    <td>'.$row["gebruikersnaam"].'</td>
+    <td>'.$row["email"].'</td>
+    <td>'.$status.'</td>
+    <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+  </tr>';
+}
+
+
+?>
+
 <div class="col-11 verifcation-list">
   <div class="panel-information">
     <h1>Gebruikerslijst</h1>
@@ -21,54 +43,7 @@
       <!--Table body-->
       <div class="verification-table-content">
       <tbody>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-active"></span>Actief</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-blocked"></span>Geblokkeerd</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-active"></span>Actief</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-blocked"></span>Geblokkeerd</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-active"></span>Actief</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-blocked"></span>Geblokkeerd</td>
-            <td class="text-center"><a href="#" disabled><i class="fas fa-check" aria-hidden="true"></i></a><a href="#"><i class="ml-2 fas fa-ban" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-active"></span>Actief</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Mark@zucc.erberg</td>
-            <td><span class="user-active"></span>Actief</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
+        <?=$out?>
 
       </tbody>
     </div>

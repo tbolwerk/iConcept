@@ -132,11 +132,11 @@ LEFT JOIN (
 
              $countdown = $closingtime;
 
-if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
-  $huidige_bod=$row['bodbedrag'];
-}else{
-  $huidige_bod=$row['startprijs'];
-}
+             if(isset($row['hoogsteBod'])){
+             		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
+             	}else{
+             	  $huidige_bod=$row['startprijs'];
+             	}
 
 			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
@@ -245,11 +245,11 @@ LEFT JOIN (
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
        // $countdown_date = date("Y-m-d",$looptijdbegindag);
        // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
-       if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
-         $huidige_bod=$row['bodbedrag'];
-       }else{
-         $huidige_bod=$row['startprijs'];
-       }
+       if(isset($row['hoogsteBod'])){
+       		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
+       	}else{
+       	  $huidige_bod=$row['startprijs'];
+       	}
 
        $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
        $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35

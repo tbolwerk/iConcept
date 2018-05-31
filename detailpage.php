@@ -121,7 +121,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
         </div>
         <div class="col">
           <p class="grey-text small">Resterende tijd</p>
-          <p class="auction-timer" id="timer">Dit moet nog opgelost worden</p>
+          <p class="auction-timer" id="timer"></p>
         </div>
       </div>
 
@@ -130,10 +130,10 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
       <form method="post">
         <div class="row">
             <div class="ml-5 col-12 col-md-7 mt-2">
-              <input type="number" name="bid" class="form-control" step="0.01" <?=$input?>>
+              <input type="number" name="bid" class="form-control" step="0.01" <?php if(isset($input)){echo $input;}?>>
             </div>
             <div class="">
-              <button type="submit" name="submit" class="btn elegant" <?=$input?>>Bied</button>
+              <button type="submit" name="submit" class="btn elegant" <?php if(isset($input)){echo $input;}?>>Bied</button>
             </div>
         </div>
       </form>

@@ -53,6 +53,9 @@ switch($current_page){
       // ../sidemenu/demo/
       break;
     case 'adminpanel':
+    if($_SESSION['admin'] == 0){
+      header("Location: index.php");
+    }
       echo "<!-- Adminpanel styling -->
       <link rel='stylesheet' href='css/adminpanel.css'>";
       break;
@@ -106,7 +109,7 @@ switch($current_page){
 </head>
 <?php
 if ($current_page == 'adminpanel'){
-  
+
 }
 else if ($current_page == 'login' || $current_page == 'register') {
   include 'templates/logo_nav.php';

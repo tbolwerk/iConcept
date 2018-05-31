@@ -263,7 +263,7 @@ LEFT JOIN (
        <div class="card auction-card mb-4">
        <div class="view overlay">
        <a href="detailpage.php?id='.$voorwerpnummer.'">
-         <img class="card-img-top" src="'.$row["filenaam1"].'" />
+         <img class="card-img-top" src="'.$row["filenaam"].'" />
        </a>
        </div>
        <div class="card-body">

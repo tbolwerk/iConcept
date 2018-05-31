@@ -219,7 +219,9 @@ ON vw.voorwerpnummer=b2.voorwerpnummer
 LEFT JOIN (
  SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
  ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
- ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
+ ON vw.voorwerpnummer=bd.voorwerpnummer
+LEFT JOIN Voorwerp_in_Rubriek vr ON vr.voorwerpnummer=vw.voorwerpnummer
+LEFT JOIN Rubriek r ON vr.rubrieknummer = r.rubrieknummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
      $data->execute(array($rubrieknummer,getChild($rubrieknummer)["rubrieknummerOuder"]));
 
    }else{

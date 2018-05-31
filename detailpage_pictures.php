@@ -21,9 +21,7 @@ function generatePictureSelector($pictures){
         <div class='pictureFrame' onclick='updatePicture({$pictureId})'>
           <img src=\"{$picture['filenaam']}\"></img>
         </div>
-        <div class='pictureFrame' onclick='updatePicture({$pictureId})'>
-          <img src=\"{$picture['filenaam']}\"></img>
-        </div>
+
 
 
 

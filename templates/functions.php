@@ -109,17 +109,24 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT DISTINCT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP(9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
-      $voorwerpnummer = $row[1];
+      $voorwerpnummer = $row[0];
       $i++;
       $timer="timer".$i;
       $looptijd = $row['looptijd'];
       $looptijdbegindag =strtotime($row['looptijdbegindag']);
       $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
 
-             $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+             $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
              $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
 
@@ -205,15 +212,29 @@ $out;
      $data = $dbh->prepare("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.voorwerpnummer = ?");
      $data->execute(array($voorwerpnummer));
    }else if(($rubrieknummer !=0)){
-     $data = $dbh->prepare("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer LEFT JOIN Rubriek r ON r.rubrieknummer=vr.rubrieknummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
+     $data = $dbh->prepare("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
      $data->execute(array($rubrieknummer,getChild($rubrieknummer)["rubrieknummerOuder"]));
 
    }else{
-     $data = $dbh->query("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
+     $data = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer");
    }
     $i=0;
      while ($row = $data->fetch()) {
-       $voorwerpnummer = $row[1];
+       $voorwerpnummer = $row[0];
        $i++;
        $timer="timer".$i;
        $looptijd = $row['looptijd'];
@@ -228,7 +249,7 @@ $out;
          $huidige_bod=$row['startprijs'];
        }
 
-       $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+       $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
        $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
 

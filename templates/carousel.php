@@ -1,12 +1,19 @@
 <?php require_once("functions.php");
 global $dbh;
 try{
-$statement = $dbh->query("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,* FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer");
+$statement = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer");
 
 $carousel= array();
 $i=0;
 while($row = $statement->fetch()){
-	$voorwerpnummer = $row[1];
+	$voorwerpnummer = $row[0];
 	$i--;
 	$timer="timer".$i;
 	$looptijd = $row['looptijd'];
@@ -19,7 +26,7 @@ if(isset($row['bodbedrag']) && $row['startprijs']<$row['bodbedrag']){
 	  $huidige_bod=$row['startprijs'];
 	}
 
-		 $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+		 $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
 		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
 

@@ -1,0 +1,85 @@
+.row {margin: 0 !important;}
+.sidenav {
+  position: fixed;
+  height: 100%;
+  background-color: #3b3b3b;
+  padding: 0 !important;
+}
+.admin-logo {
+  height: 20%;
+  text-align: center;
+}
+.admin-list {
+  width: 100%;
+}
+.admin-list .admin-list-item {
+  padding: 25px 15px;
+  font-weight: bold;
+  color: white;
+  font-size: 1.1rem;
+}
+.admin-list .admin-list-item:hover {
+  border-left: 5px solid #4584A4 !important;
+  background-color: #333333 !important;
+}
+.admin-list .active {
+  border-left: 5px solid #4584A4 !important;
+  background-color: #333333 !important;
+}
+
+
+.admin-panel-container {
+  background-color: #F5F5F5;
+}
+
+.verifcation-list {
+  padding-left: 5rem !important;
+  padding-top: 1rem;
+}
+.panel-information {
+  margin-bottom: 3rem;
+}
+.panel-information h1 {
+  font-weight: bold;
+  font-size: 4rem;
+  color: #2e2e2e;
+  margin-bottom: 1rem;
+}
+
+.verification-table-content {
+  display: block;
+   max-height: 600px;
+   overflow-y: auto;
+   -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.verification-table-list th {
+  font-weight: bold;
+  color: #c2c2c2;
+}
+.verification-table-list td {
+  font-weight: 400;
+}
+.verification-table-list td i {
+  color: #2e2e2e;
+}
+.table thead th {
+  border-bottom: none !important;
+}
+
+
+.user-active {
+    height: 15px;
+    width: 15px;
+    background-color: #00C851;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-block;
+}
+.user-blocked {
+    height: 15px;
+    width: 15px;
+    background-color: #ff4444;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-block;
+}

@@ -1,69 +1,3 @@
-<?php
-session_start();
-require_once("functions.php");
-displayColumn();
-
-// require_once('functions.php');
-switch($current_page){
-//Configure header for each page
-//Identify page with $current_page variable in php file
-  case 'index':
-    if(isset($_SESSION['username'])){
-
-    }else{
-
-    }
-    break;
-
-  case 'login':
-    if(isset($_SESSION['username'])){//when logged in go to home
-      header('Location: index.php');
-    }
-    break;
-
-  case 'register':
-    if(isset($_SESSION['username'])){//when logged in go to home
-      header('Location: index.php');
-    }
-    break;
-
-  case 'account':
-    if(!isset($_SESSION['username'])){//when not logged in go to login page
-      header('Location: login.php');
-    }
-
-  case 'overons':
-  if(isset($_SESSION['username'])){
-
-  }else{
-
-  }
-
-    case 'detailpage':
-      echo " <!-- Detailpage styling -->
-      <link rel='stylesheet' href='css/detail.css'>";
-      break;
-    case 'userpage':
-      echo "<!-- userpage styling -->
-      <link rel='stylesheet' href='css/userpage.css'>";
-      break;
-    case 'rubriek':
-      echo "<link rel='stylesheet' href='css/flyPanels.css'>
-      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
-      // ../sidemenu/demo/
-      break;
-    case 'adminpanel':
-      echo "<!-- Adminpanel styling -->
-      <link rel='stylesheet' href='css/adminpanel.css'>";
-      break;
-    case 'new_auction':
-    if(!$_SESSION['seller']){
-      header("Location: index.php");
-    }
-    break;
-
-}
-?>
 <!DOCTYPE html>
 <html lang="en" class="full-height">
 
@@ -98,22 +32,84 @@ switch($current_page){
     <!-- Rubrieken overlay styling -->
     <link rel="stylesheet" href="css/rubrieken_overlay.css">
     <script type="text/javascript" src="js/timer.js"></script>
-
-
-
-
-
 </head>
-<?php
-if ($current_page == 'adminpanel'){
-  
-}
-else if ($current_page == 'login' || $current_page == 'register') {
-  include 'templates/logo_nav.php';
-} else {
-  include 'templates/nav.php';
-}
 
-
-?>
 <body>
+<?php
+session_start();
+require_once("functions.php");
+displayColumn();
+
+// require_once('functions.php');
+switch($current_page){
+//Configure header for each page
+//Identify page with $current_page variable in php file
+  case 'index':
+  include 'templates/nav.php';
+    if(isset($_SESSION['username'])){
+
+    }else{
+
+    }
+    break;
+
+  case 'login':
+    if(isset($_SESSION['username'])){//when logged in go to home
+      header('Location: index.php');
+      include 'templates/logo_nav.php';
+    }
+    break;
+
+  case 'register':
+    if(isset($_SESSION['username'])){//when logged in go to home
+      header('Location: index.php');
+      include 'templates/logo_nav.php';
+    }
+    break;
+
+  case 'account':
+  include 'templates/nav.php';
+    if(!isset($_SESSION['username'])){//when not logged in go to login page
+      header('Location: login.php');
+    }
+
+  case 'overons':
+  include 'templates/nav.php';
+  if(isset($_SESSION['username'])){
+
+  }else{
+
+  }
+
+    case 'detailpage':
+    include 'templates/nav.php';
+      echo " <!-- Detailpage styling -->
+      <link rel='stylesheet' href='css/detail.css'>";
+      break;
+    case 'userpage':
+    include 'templates/nav.php';
+      echo "<!-- userpage styling -->
+      <link rel='stylesheet' href='css/userpage.css'>";
+      break;
+    case 'rubriek':
+    include 'templates/nav.php';
+      echo "<link rel='stylesheet' href='css/flyPanels.css'>
+      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
+      // ../sidemenu/demo/
+      break;
+    case 'adminpanel':
+    if($_SESSION['admin'] == 0){
+      header("Location: index.php");
+    }
+      echo "<!-- Adminpanel styling -->
+      <link rel='stylesheet' href='css/adminpanel.css'>";
+      break;
+    case 'new_auction':
+    include 'templates/nav.php';
+    if(!$_SESSION['seller']){
+      header("Location: index.php");
+    }
+    break;
+
+}
+?>

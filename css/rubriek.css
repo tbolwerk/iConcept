@@ -38,8 +38,10 @@
   padding: 20px;
 }
 
-.category-page .card {
-
+.category-page .card img{
+  min-height: 15REM !important;
+  max-height: 15REM !important;
+  
 }
 
 .category-page .page {

@@ -20,6 +20,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
       } catch(PDOException $e){
         $error = $e->getMessage();
+        $error = "";
       }
     }
   }

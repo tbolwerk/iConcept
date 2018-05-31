@@ -52,6 +52,10 @@ switch($current_page){
       <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
       // ../sidemenu/demo/
       break;
+    case 'adminpanel':
+      echo "<!-- Adminpanel styling -->
+      <link rel='stylesheet' href='css/adminpanel.css'>";
+      break;
     case 'new_auction':
     if(!$_SESSION['seller']){
       header("Location: index.php");
@@ -101,8 +105,8 @@ switch($current_page){
 
 </head>
 <?php
-if ($current_page == 'admin_panel'){
-  include 'templates/admin_nav.php';
+if ($current_page == 'adminpanel'){
+  
 }
 else if ($current_page == 'login' || $current_page == 'register') {
   include 'templates/logo_nav.php';

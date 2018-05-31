@@ -1,6 +1,6 @@
 
 
-<?php if ($current_page == 'login' || $current_page == 'register') {
+<?php if ($current_page == 'login' || $current_page == 'register' || $current_page == 'adminpanel') {
   // include 'templates/logo_nav.php';
 } else {
   include 'templates/footer_links.php';

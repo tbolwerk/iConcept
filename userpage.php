@@ -76,7 +76,9 @@ if(isset($_POST['tab1submit'])) {
     $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
     $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
     updatePhones(); //Phones are updated seperately
-  } catch(PDOException $e) {
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+  } catch (PDOException $e) {
     $error = $e;
     echo $error;
   }
@@ -196,6 +198,13 @@ These values are for debugging purposes and are visible by inspecting the page s
 <div class="container-fluid usersettings-page" id="wrapper">
 
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
+
+<p class="green-text lead">
+<?php if (count($_POST)) {
+  //looks bad but does the job for now
+  echo "Uw gegevens zijn succesvol aangepast";
+} ?>
+</p>
 
 <ul class="nav nav-tabs">
   <li class="nav-item">

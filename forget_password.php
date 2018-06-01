@@ -18,10 +18,11 @@ try {
 
 
 
-if(isset($_POST['forget_password'])){
+if(isset($_POST['submit'])){
 // print_r($secret_question_options);
-if($_POST['forget_password'] || $_POST['secretAnswer'] || $_POST['secretQuestion']){
+if(empty($_POST['forget_password']) || empty($_POST['secretAnswer']) || empty($_POST['secretQuestion'])){
   $errortxt = "Niet alle velden zijn ingevuld";
+  $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
 }else{
 
   $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
@@ -36,7 +37,8 @@ $new_password=random_password(8);
     $to = $_POST['forget_password'];
 try{
 $update_password= $dbh->prepare("UPDATE Gebruiker SET wachtwoord=? WHERE email=?");
-$update_password->execute(array($new_password,$to));
+$hash=password_hash($new_password, PASSWORD_DEFAULT);
+$update_password->execute(array($hash,$to));
 }catch(PDOException $e){
   $error = $e;
 }
@@ -50,6 +52,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
 
 }else{
   $errortxt = "Email of vraag en antwoord incorrect";
+  $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
 }
 }
 }
@@ -96,7 +99,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
     </div>
       <div class="md-form">
         <i class="fa fa-lock prefix niagara"></i>
-        <input type="text" class="form-control" name="secretAnswer" id="secretAnswer">
+        <input type="text" class="form-control white-text" name="secretAnswer" id="secretAnswer">
         <label for="secretAnswer" class"font-weight-light">Antwoord</label>
       </div>
 

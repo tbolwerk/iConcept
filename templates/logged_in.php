@@ -1,8 +1,15 @@
 <li class='nav-item'>
         <a class='nav-link waves-effect waves-light' href='logout.php'>
           <i class='fa fa-sign-out-alt'></i>
-        </a>
+          </a>
+        </li>
+        <?php if($_SESSION['admin'] ==1){?>
+        <li class='nav-item'>
+          <a class='nav-link waves-effect waves-light' href="admin_panel.php">
+            <i class="fa fa-users" aria-hidden="true"></i>
+          </a>
       </li>
+    <?php } ?>
       <?php if($_SESSION['seller'] == 1){?>
       <li class='nav-item'>
         <a class='nav-link waves-effect waves-light' href='new_auction.php'>

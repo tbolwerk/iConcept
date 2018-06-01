@@ -397,7 +397,13 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
   $country = str_replace("\"", "", strip_tags($country));
   $birthdate = str_replace("\"", "", strip_tags($birthdate));
   $email = str_replace("\"", "", strip_tags($email));
+
+
   $password = str_replace("\"", "", strip_tags($password));
+
+
+
+echo $hash;
   $secretAnswer = str_replace("\"", "", strip_tags($secretAnswer));
   $secretQuestion = str_replace("\"", "", strip_tags($secretQuestion));
 
@@ -482,9 +488,10 @@ if(empty($birthdate))//checks if username is not empty
 
 if(count($errors) == 0){//checks if there are errors
     try {
+      $hash=password_hash($password, PASSWORD_DEFAULT);
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
-      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
+      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $hash, $secretQuestion, $secretAnswer,0,0));
 			copy("img/avatar/avatar.png","img/avatar/".$username.".png");
 			header("Location: post_register.php?username={$username}");
 
@@ -509,37 +516,54 @@ function login($username_input, $password)
   $error = array();
 
   if (strlen($username) >= 25) {
-    $error['username'] = "Username has more than 25 characters";
+    $error['username'] = "Gebruikersnaam heeft meer dan 25 karakters";
   } else
   if (strlen($password) >= 50) {
-    $error['password'] = "Password has more than 50 characters";
+    $error['password'] = "Wachtwoord heeft meer dan 50 karakters";
   } else
   if (empty($username)) {
-    $error['username'] = "Username is empty";
+    $error['username'] = "Gebruikersnaam is leeg";
   } else
   if (empty($password)) {
-    $error['password'] = "Password is empty";
+    $error['password'] = "Wachtwoord is leeg";
   } else {
     try { //Attempt to receive data about the user with the submitted credentials
-    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-    	$password_check->execute(array($username, $password, $email, $password));
+    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? OR email=?");
+
+    	$password_check->execute(array($username, $email));
+      $password_result =$password_check->fetch(PDO::FETCH_ASSOC);
+      $password_from_db = $password_result["wachtwoord"];
+
+
     } catch(PDOException $e){
     	$error = $e;
     }
-    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) { //If the result is empty then there are no users with the submitted username+password
+try{
+    if(!isset($password_from_db)){
+      $error['username'] = "Gebruiker bestaat niet";
+    }else
+    if(!password_verify($password,$password_from_db)){ //If the result is empty then there are no users with the submitted username+password
     	$error['password'] = "Wachtwoord klopt niet";
     } else if ($password_result['geactiveerd'] == 0) { //If the user does exist, check whether the account has been activated
       $error['verification'] = "Account is nog niet geactiveerd";
-    } else {
+    } else if($password_result['geblokkeerd'] == 1){
+      $error['geblokkeerd'] = "Account is geblokkeerd";
+    }else{
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
+      $_SESSION['admin'] = 1;
+
 
       header('Location: index.php');
     }
-  }
+  }catch(PDOException $e){
+    $error['username']=$e;
+}
+
+}
 }
 
 //Returns a random string of a given length
@@ -562,44 +586,18 @@ function createVerificationCode($username, $random_password) {
     }
 }
 
-function  auctionTimer($voorwerpnummer) {
-  global $dbh;
-  global $error;
-  $timer = "3 uur";
-	try {
-	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
-	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
-	  $voorwerpdata->fetch();
-	  $looptijd = $voorwerpdata['looptijd'];
-    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
-    $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
-    $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
-    $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
-    $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-    $days_remaining = floor($remaining/86400);
-    $hours_remaining = floor(($remaining/86400)/ 3600);
-    if ($days_remaining > 1) {
-    	$timer = $days_remaining;
-    } else {
-    	$timer = $days_remaining + $hours_remaining;
-    }
-	} catch (PDOException $e) {
-	  $error=$e;
-	}
-
-	return $timer;
-}
 
 //Updates the record for this user with the new password
 function changePassword($new_password) {
   global $error;
   global $dbh;
 
+$hash=password_hash($new_password, PASSWORD_DEFAULT);
   $username = $_SESSION['username'];
   try {
     // $dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
     $statement=$dbh->prepare("update Gebruiker set wachtwoord = ? where gebruikersnaam=?");
-    $statement->execute(array($new_password,$username));
+    $statement->execute(array($hash,$username));
   } catch (PDOException $e) {
   	$error =  $e;
   }
@@ -674,6 +672,13 @@ function mailUser($email, $username, $type) {
 
 	case 'wachtwoordvergeten':
 
+	break;
+	case 'wachtwoordwijzigen':
+	    $statement = $dbh->prepare("select voornaam, achternaam, code from Gebruiker G join Verificatiecode V on G.gebruikersnaam = V.gebruikersnaam where G.gebruikersnaam = ?");
+    $statement->execute(array($username));
+    $results = $statement->fetch();
+		$subject = 'E-Mail wijziging';
+		$message = 'Beste '. $results["voornaam"] .' ' .$results["achternaam"]. ' , Klik op de onderstaande link om Uw E-Mail te wijzigen: http://iconcept.tpnb.nl/iconcept/verification.php?username='.urlencode($username).'&code='.urlencode($results["code"]);
 	break;
 
 }

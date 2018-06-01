@@ -1,6 +1,8 @@
 <div class="sidenav col-3">
   <div class="admin-logo">
+    <a class='nav-link waves-effect waves-light' href='index.php'>
     <img src="img/logo/logo.png" class="mt-5" height="70">
+  </a>
   </div>
   <div class="admin-list row">
 

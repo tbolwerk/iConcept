@@ -1,3 +1,47 @@
+<?php
+$current_page='admin_panel';
+require_once('templates/header.php');
+
+if(isset($_POST['submit'])){
+  sendVerificationCode($_POST['username']);
+}
+
+$statement = $dbh->prepare("SELECT G.gebruikersnaam, G.adresregel1, VV.code FROM Gebruiker G, Verkoper V, VerificatieVerkoper VV WHERE G.gebruikersnaam = V.gebruikersnaam AND G.gebruikersnaam = VV.gebruikersnaam AND VV.verzonden = 0");
+$statement->execute();
+$results = $statement->fetchAll();
+
+function printVerificationList($results){
+  foreach ($results as $result) {
+    echo '
+    <tr>
+      <td>' . $result['gebruikersnaam'] . '</td>
+      <td>' . $result['adresregel1'] . '</td>
+      <td>' . $result['code'] . '</td>
+      <td class="text-center">
+        <form method="post" action="">
+          <input type="hidden" name="username" value="' . $result['gebruikersnaam'] . '"></input>
+          <button type="submit" name="submit"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </form>
+      </td>
+    </tr>
+    ';
+  }
+}
+
+
+
+function sendVerificationCode($username){
+  global $dbh;
+  try { //Set 'verzonden' in table 'VerificatieVerkoper' to true
+    $statement = $dbh->prepare("UPDATE VerificatieVerkoper SET verzonden = 1 WHERE gebruikersnaam = ?");
+    $statement->execute(array($username));
+  } catch(PDOException $e) {
+    $error = $e;
+    echo $error;
+  }
+}
+?>
+
 <div class="col-11 verifcation-list">
   <div class="panel-information">
     <h1>Verificatielijst</h1>
@@ -21,114 +65,7 @@
       <!--Table body-->
       <div class="verification-table-content">
       <tbody>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
-          <tr>
-            <td>Gangsterboymark</td>
-            <td>Grote beer straat 5 of iets anders langs</td>
-            <td>457862</td>
-            <td class="text-center"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-          </tr>
+          <?=printVerificationList($results)?>
       </tbody>
     </div>
       <!--Table body-->

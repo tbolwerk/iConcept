@@ -1,6 +1,4 @@
 <?php
-$current_page='admin_panel';
-
 if(isset($_POST['unblockAuction'])){
   unblockAuction($_POST['auctionId']);
 }

@@ -61,7 +61,7 @@ while($row = $statement->fetch()){
       <!--Table body-->
       <div class="verification-table-content">
       <tbody>
-          <?php echo $out; ?>
+          <?=$out?>
       </tbody>
     </div>
       <!--Table body-->

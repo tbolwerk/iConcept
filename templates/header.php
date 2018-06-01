@@ -22,7 +22,7 @@ switch($current_page){
     break;
 
   case 'register':
-    if(isset($_SESSION['username']) || $_SESSION['geactiveerd'] == 0){//when logged in go to home
+    if(isset($_SESSION['username'])){//when logged in go to home
       header('Location: index.php');
     }
     break;

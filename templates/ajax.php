@@ -3,6 +3,8 @@
 //Including Database configuration file.
 require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/functions.php');
 
+require_once($_SERVER['DOCUMENT_ROOT'] . "/iconcept/templates/livesearch/f_livesearch.php");
+
 $return = "";
   echo "<ul>";
   $rubrieken="";

@@ -1,4 +1,4 @@
-<?php require_once("functions.php");
+<?php
 global $dbh;
 try{
 $statement = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(

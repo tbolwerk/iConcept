@@ -1,6 +1,10 @@
 <?php
 $current_page='userpage';
 require_once('templates/header.php');
+require_once("templates/userpage/f_addAvatar.php");
+require_once("templates/userpage/f_changePassword.php");
+require_once("templates/register/f_createVerificationCode.php");
+require_once("templates/mail/f_mailUser.php");
 $message = "";
 function updatePhones() {
   global $dbh;
@@ -107,7 +111,7 @@ if(isset($_POST['tab1submit'])) {
   $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
   $activation = 1;
   $email = str_replace("\"", "", strip_tags($_POST['email']));
-if($results['email'] != $email){
+if($results[0]['email'] != $email){
   $message.="Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren";
   $code = random_password(6);
   $username = $_SESSION['username'];

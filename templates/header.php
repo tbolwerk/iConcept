@@ -1,6 +1,9 @@
 <?php
 session_start();
-require_once("functions.php");
+//require_once("functions.php");
+require_once("connect.php");
+require_once("rubriek/f_displayColumn.php");
+require_once("general/f_random_password.php");
 displayColumn();
 
 // require_once('functions.php');

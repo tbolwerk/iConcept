@@ -76,6 +76,10 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
     <h1 class="white-text banner-text"><?=$maincategory['rubrieknaam']?></h1>
   </div>
 </div>
+<?php if($results['geblokkeerd'] == 1){
+  echo "De veiling is gesloten";
+}else{
+  ?>
 
 <div class="container">
   <!-- breadcrumb to see the path the user took to get to this page. Clicking one of the categories will bring you back to that category -->
@@ -110,7 +114,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
     <div class="col-md-5 product-info">
 
-      <h2 class="product-title"><?=$results['titel']?></h2>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><button class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button></h2></form>
 
       <hr>
 
@@ -217,5 +221,5 @@ var x = setInterval(function() {
   xhttp.send();
 }, 1000);
 </script>
-
+<?php } ?>
 <?php include('templates/footer.php'); ?>

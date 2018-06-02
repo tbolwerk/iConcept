@@ -53,7 +53,7 @@ WHERE kind.rubrieknaam LIKE ?");
     $statement = $dbh->prepare("SELECT vw.voorwerpnummer,vw.titel,vr.rubrieknummer,r.rubrieknaam
 FROM Voorwerp vw LEFT JOIN Voorwerp_in_Rubriek vr ON
 vw.voorwerpnummer = vr.voorwerpnummer LEFT JOIN Rubriek r ON vr.rubrieknummer=r.rubrieknummer
-WHERE titel LIKE ?");
+WHERE titel LIKE ? AND vw.geblokkeerd = 0");
     $statement->execute(array("%".$name."%"));
   }catch(PDOException $e){
     $error = $e;

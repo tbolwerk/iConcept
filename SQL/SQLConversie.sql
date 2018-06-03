@@ -145,14 +145,20 @@ select DISTINCT TOP 20 d.ID as voorwerpnummer,
 				d.Prijs as startprijs,
 */
 
+use testDB;
+delete from Bestand;
+delete from Voorwerp_in_Rubriek;
+delete from Voorwerp;
+
+
 SET IDENTITY_INSERT Voorwerp ON
-insert into testDB.dbo.Voorwerp
-SELECT ID as voorwerpnummer,
+insert into testDB.dbo.Voorwerp(titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
+SELECT TOP 20
 	SUBSTRING(Titel,0,50) AS titel,
 	dbo.udf_StripHTML(Beschrijving) as beschrijving,
 	Prijs AS startprijs,
 	'Bank/Giro' AS betalingswijze,
-	'unset' AS plaatsnaam,
+	'unset' AS plaatsnaam,	
 	Locatie AS land,
 	10 AS looptijd,
 	convert(date,getdate()) AS looptijdbegindag,
@@ -163,11 +169,19 @@ from GrootDBBedrijf.dbo.Items
 SET IDENTITY_INSERT Voorwerp OFF
 
 
+Select * from testDB.dbo.Voorwerp
+select * from GrootDBBedrijf.dbo.Items
 
 
 
 
+select voorwerpnummer, COUNT(filenaam)
+FROM Bestand
+GROUP BY voorwerpnummer
 
+select voorwerpnummer, filenaam
+FROM Bestand
+ORDER BY voorwerpnummer
 
 
 

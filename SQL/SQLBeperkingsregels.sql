@@ -135,6 +135,7 @@ GO
 /* B 5	Tabel Bod:
 Een nieuw bod moet hoger zijn dan al bestaande bedragen die geboden zijn voor hetzelfde voorwerp, 
 en tenminste zoveel hoger als de minimumverhoging voorschrijft (zie appendix B, proces 3.1). */
+
 CREATE FUNCTION dbo.CheckHoogsteBod (@voorwerpnummer INT ,@bodbedrag NUMERIC(9, 2))
 RETURNS BIT
 AS
@@ -147,18 +148,12 @@ BEGIN
 	WHERE Voorwerpnummer = @voorwerpnummer)
 
 
-	SET @hoogstebod = (
-			SELECT TOP (1) bodbedrag
-			FROM Bod
-			WHERE voorwerpnummer = @voorwerpnummer
-				AND NOT  bodbedrag = @startprijs
-			ORDER BY bodbedrag DESC
-			)
+	SET @hoogstebod = (SELECT TOP (1) bodbedrag FROM Bod WHERE voorwerpnummer = 1 AND NOT  bodbedrag = @startprijs ORDER BY bodbedrag DESC)
 
-	IF (@hoogstebod > @startprijs)
+	IF @hoogstebod > @startprijs OR @hoogstebod = NULL
 	BEGIN
 		RETURN 1
-	END
+	END;
 
 	RETURN 0
 END;
@@ -170,6 +165,8 @@ ADD CONSTRAINT CHK_CheckIsHogerBod
 CHECK (dbo.CheckHoogsteBod(voorwerpnummer, bodbedrag) = 1)
 GO
 
+
+select * from Bod
 
 IF OBJECT_ID('CHK_CheckHogerBod') IS NOT NULL BEGIN ALTER TABLE Bod 
 DROP CONSTRAINT CHK_CheckHogerBod END
@@ -235,7 +232,6 @@ ALTER TABLE Bod
 ADD CONSTRAINT CHK_IsGeenEigenBod
 CHECK (dbo.GeenEigenBod(voorwerpnummer, gebruikersnaam) = 1)
 GO
-
 
 /* AF 1	Tabel Voorwerp, kolom LooptijdeindeDag:
 Kolom LooptijdeindeDag heeft de datum van LooptijdbeginDag + het aantal dagen dat Looptijd aangeeft. 

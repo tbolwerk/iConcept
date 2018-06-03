@@ -3,7 +3,7 @@ Veilingsite Eenmaal Andermaal
 Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Janno Onink 602808, Suzanne Bogaard 603439, Auke Onvlee 604640
 Datum: 07-05-2018
 */
-use testDB
+use iConcept;
 
 delete from Rubriek;
 delete from Landen;
@@ -104,11 +104,11 @@ select DISTINCT d.GBA_CODE as landcode,
 Insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, koper, veilinggesloten, verkoopprijs)
 VALUES
 		('Product nr 1', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 0, NULL),
-		('Product nr 2', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 0, NULL),
-		('Product nr 3', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,  0, NULL),
-		('Product nr 4', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 425, '2017-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,  0, NULL),
-		('Product nr 5', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,  0, NULL),
-		('Product nr 6', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null ,  0, NULL)
+		('Product nr 2', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham' , 0, NULL),
+		('Product nr 3', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham' ,  0, NULL),
+		('Product nr 4', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 425, '2017-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',  0, NULL),
+		('Product nr 5', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',  0, NULL),
+		('Product nr 6', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', 0, NULL)
 		;
 
 GO

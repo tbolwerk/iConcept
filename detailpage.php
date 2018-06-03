@@ -6,6 +6,10 @@ require_once('templates/header.php');
 //   $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 //   echo "style='background-color: {$color};'";
 // }
+if(isset($_POST['block'])){
+  $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
+  $statement->execute(array($_GET['id']));
+}
 
 if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   $error = "";
@@ -114,7 +118,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
     <div class="col-md-5 product-info">
 
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><button class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button></h2></form>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button></h2></form>
 
       <hr>
 

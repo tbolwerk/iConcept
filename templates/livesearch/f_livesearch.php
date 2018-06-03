@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/connect.php');
 function livesearch($post_livesearch){//livesearch function met parameter $_POST['search']
   global $dbh;
   global $rubrieken;

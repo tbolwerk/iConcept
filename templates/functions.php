@@ -1,5 +1,7 @@
 <?php
-require('connect.php');
+//require('connect.php');
+
+/*
 function livesearch($post_livesearch){//livesearch function met parameter $_POST['search']
   global $dbh;
   global $rubrieken;
@@ -75,8 +77,9 @@ WHERE titel LIKE ?");
   }
 
 
-}
+}*/
 
+/*
 function displayColumn(){
 
 	global $dbh;
@@ -96,10 +99,11 @@ function displayColumn(){
     }catch(PDOException $e){
       $column = $e;
   }
-}
+}*/
 
 
 /*display auction*/
+/*
 function displayAuction()
 {
 
@@ -177,9 +181,9 @@ LEFT JOIN (
 		$error = $e;
 	}
 
-}
+}*/
 
-
+/*
 function getChild($rubrieknummer){
   global $dbh;
 $out;
@@ -192,11 +196,12 @@ $out;
     $error = $e;
   }
   return $out;
-}
+}*/
 
 
 
 /*display auctionpage*/
+/*
  function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
  {
 
@@ -295,7 +300,7 @@ LEFT JOIN (
      $error = $e;
    }
 
- }
+ }*/
 
  /*
  * ------------------------------------------------------------------------------------
@@ -315,7 +320,7 @@ LEFT JOIN (
  */
 
 
-
+/*
  function convertAdjacencyListToTree($intParentId,&$arrRows,$strIdField,$strParentsIdField,$strNameResolution) {
 
      $arrChildren = array();
@@ -335,9 +340,10 @@ LEFT JOIN (
 
      return $arrChildren;
 
- }
+ }*/
 
 /*verification function*/
+/*
 function verification($getUsername, $getCode) {
 	global $dbh;
   global $codeValid;
@@ -376,9 +382,11 @@ function verification($getUsername, $getCode) {
   	$statement->execute(array($storedUsername));
 	}
 }
+*/
 
 
 /*Register function*/
+/*
 function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$email_check,$password,$password_check,$secretAnswer,$secretQuestion)
 {
   global $dbh;
@@ -499,9 +507,10 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $error=$e;
     }
   }
-}
+}*/
 
 /*login function */
+/*
 function login($username_input, $password)
 {
   global $dbh;
@@ -564,16 +573,18 @@ try{
 }
 
 }
-}
+}*/
 
 //Returns a random string of a given length
+/*
 function random_password( $length = 8 ) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
-}
+}*/
 
 //Inserts a verification code into the database
+/*
 function createVerificationCode($username, $random_password) {
 	global $dbh;
 	global $error;
@@ -584,10 +595,11 @@ function createVerificationCode($username, $random_password) {
     } catch (PDOException $e) {
   		$error=$e;
     }
-}
+}*/
 
 
 //Updates the record for this user with the new password
+/*
 function changePassword($new_password) {
   global $error;
   global $dbh;
@@ -601,9 +613,10 @@ $hash=password_hash($new_password, PASSWORD_DEFAULT);
   } catch (PDOException $e) {
   	$error =  $e;
   }
-}
+}*/
 
 //Takes an image and stores it as {username}.png in /img/avatar
+/*
 function addAvatar($file, $username){
 	global $error;
 	global $dbh; //database object
@@ -634,8 +647,9 @@ function addAvatar($file, $username){
 		$error.= $file["type"]."<br />";
 		$error.= "Verkeerd bestand, selecteer een nieuwe";
 	}
-}
+}*/
 
+/*
 function mailUser($email, $username, $type) {
 
   global $dbh;
@@ -688,6 +702,6 @@ function mailUser($email, $username, $type) {
 	    'X-Mailer: PHP/' . phpversion();
 
 	mail($to, $subject, $message, $headers);
-}
+}*/
 
 ?>

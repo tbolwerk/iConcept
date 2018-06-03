@@ -1,6 +1,8 @@
 <?php
 $current_page='register';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/header.php';
+require_once("templates/register/f_createVerificationCode.php");
+require_once("templates/mail/mailUser.php");
 
 
 if(isset($_GET['username'])){

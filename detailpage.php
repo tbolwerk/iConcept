@@ -6,6 +6,10 @@ require_once('templates/header.php');
 //   $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 //   echo "style='background-color: {$color};'";
 // }
+if(isset($_POST['block'])){
+  $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
+  $statement->execute(array($_GET['id']));
+}
 
 if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   $error = "";
@@ -76,6 +80,10 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
     <h1 class="white-text banner-text"><?=$maincategory['rubrieknaam']?></h1>
   </div>
 </div>
+<?php if($results['geblokkeerd'] == 1){
+  echo "De veiling is gesloten";
+}else{
+  ?>
 
 <div class="container">
   <!-- breadcrumb to see the path the user took to get to this page. Clicking one of the categories will bring you back to that category -->
@@ -110,7 +118,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
     <div class="col-md-5 product-info">
 
-      <h2 class="product-title"><?=$results['titel']?></h2>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
 
       <hr>
 
@@ -217,5 +225,5 @@ var x = setInterval(function() {
   xhttp.send();
 }, 1000);
 </script>
-
+<?php } ?>
 <?php include('templates/footer.php'); ?>

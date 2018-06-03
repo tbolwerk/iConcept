@@ -1,6 +1,9 @@
 <?php
   $current_page='rubriek';
   require_once ('templates/header.php');
+  require_once("templates/rubriek/f_displayAuctionpage.php");
+  require_once("templates/rubriek/f_getChild.php");
+
   $rubrieknaam = "Rubrieken";
   if(isset($_GET['rubrieknummer'])){
   $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknummer=?");

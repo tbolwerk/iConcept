@@ -1,6 +1,7 @@
 <?php
 $current_page='register';
 require('templates/header.php');
+require_once("templates/register/f_verification.php");
 
 verification($_GET['username'],$_GET['code']);
 ?>
@@ -22,7 +23,7 @@ verification($_GET['username'],$_GET['code']);
 	       	<h3>Account geactiveerd</h3>
 	      </div>
 				<div class="white-text">
-					<p>UW activatie is succesvol afgerond. U kunt nu inloggen.</p>
+					<p>Uw activatie is succesvol afgerond. U kunt nu inloggen.</p>
           <p><a href="index.php">Terug naar hoofdpagina</a></p>
 				</div>
 			</div>

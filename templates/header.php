@@ -1,6 +1,9 @@
 <?php
 session_start();
-require_once("functions.php");
+//require_once("functions.php");
+require_once("connect.php");
+require_once("rubriek/f_displayColumn.php");
+require_once("general/f_random_password.php");
 displayColumn();
 
 // require_once('functions.php');
@@ -53,14 +56,14 @@ switch($current_page){
       // ../sidemenu/demo/
       break;
     case 'adminpanel':
-    if($_SESSION['admin'] == 0){
+    if(isset($_SESSION['admin']) == 0){
       header("Location: index.php");
     }
       echo "<!-- Adminpanel styling -->
       <link rel='stylesheet' href='css/adminpanel.css'>";
       break;
     case 'new_auction':
-    if(!$_SESSION['seller']){
+    if(!isset($_SESSION['seller']) || $_SESSION['seller'] == 0){
       header("Location: index.php");
     }
     break;

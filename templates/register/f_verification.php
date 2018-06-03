@@ -31,11 +31,16 @@ function verification($getUsername, $getCode) {
     $error = "Time has expired";
 	}
 
-	if ($codeValid) {
+	if ($codeValid && $results['email'] == 0) {
   	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");//set activatie bit to 1
   	$statement->execute(array($storedUsername));
   	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
   	$statement->execute(array($storedUsername));
+	}else if($codeValid && $results['email'] != 0){
+		$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 AND email=? where gebruikersnaam = ?");//set activatie bit to 1
+		$statement->execute(array($results['email'],$storedUsername));
+		$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
+		$statement->execute(array($storedUsername));
 	}
 }
 ?>

@@ -76,9 +76,9 @@ if (isset($_POST['tab2submit'])) {
     if (password_verify($_POST['currentPassword'],$password[0])) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
-        $message = "wachtwoord succesvol veranderd";
+        $message = "<p class='green-text lead'>wachtwoord succesvol veranderd</p>";
     }else{
-       $message = "Wachtwoord niet correct";
+       $message = "<p class='red-text lead'>Wachtwoord niet correct</p>";
     }
 }
 
@@ -98,6 +98,7 @@ $statement->execute(array($username));
 $results = $statement->fetchAll();
 
 
+
 if(isset($_POST['tab1submit'])) {
   //Remove any doublequotes and html tags
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
@@ -111,8 +112,17 @@ if(isset($_POST['tab1submit'])) {
   $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
   $activation = 1;
   $email = str_replace("\"", "", strip_tags($_POST['email']));
-if($results[0]['email'] != $email){
-  $message.="Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren";
+  $statement = $dbh->query("SELECT email FROM Gebruiker");
+$email_exists = false;
+  while($row = $statement->fetch()){
+  if($email == $row['email']){
+    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
+    $email_exists = true;
+    break;
+  }
+}
+if($results[0]['email'] != $email && $email_exists == false){
+  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren</p>";
   $code = random_password(6);
   $username = $_SESSION['username'];
   $activation = 0;
@@ -128,11 +138,11 @@ if($results[0]['email'] != $email){
     updatePhones(); //Phones are updated seperately
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
-    $message = "Account instellingen succesvol gewijzigd";
+    // $message.="<br><p class='green-text lead'> Persoonlijke informatie succesvol aangepast!</p>";
   } catch (PDOException $e) {
     $error = $e;
 
-    $message = "Er ging iets mis";
+    $message = "<p class='red-text lead'>Er ging iets mis</p>";
   }
 }
 
@@ -223,9 +233,9 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
 
-<p class="green-text lead">
+
 <?= $message ?>
-</p>
+
 
 <ul class="nav nav-tabs">
   <li class="nav-item">

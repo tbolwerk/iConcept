@@ -49,7 +49,7 @@ switch($current_page){
       break;
     case 'rubriek':
       echo "<link rel='stylesheet' href='css/flyPanels.css'>
-      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
+      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>";
       // ../sidemenu/demo/
       break;
     case 'adminpanel':
@@ -57,7 +57,7 @@ switch($current_page){
       header("Location: index.php");
     }
       echo "<!-- Adminpanel styling -->
-      <link rel='stylesheet' href='css/adminpanel.css'>";
+      <link rel='stylesheet' href='css/adminpanel.css'>"
       break;
     case 'new_auction':
     if(!$_SESSION['seller']){
@@ -96,6 +96,8 @@ switch($current_page){
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
+    <!-- Toastr alert css -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css'>"
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
     <!-- Rubrieken overlay styling -->

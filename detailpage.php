@@ -118,7 +118,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
     <div class="col-md-5 product-info">
 
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button></h2></form>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><?php if($_SESSION['admin'] == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
 
       <hr>
 

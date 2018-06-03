@@ -6,6 +6,10 @@ require_once('templates/header.php');
 //   $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 //   echo "style='background-color: {$color};'";
 // }
+if(isset($_POST['block'])){
+  $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
+  $statement->execute(array($_GET['id']));
+}
 
 if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   $error = "";
@@ -20,6 +24,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
       } catch(PDOException $e){
         $error = $e->getMessage();
+        $error = "";
       }
     }
   }
@@ -75,44 +80,57 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
     <h1 class="white-text banner-text"><?=$maincategory['rubrieknaam']?></h1>
   </div>
 </div>
+<?php if($results['geblokkeerd'] == 1){
+  echo "De veiling is gesloten";
+}else{
+  ?>
 
 <div class="container">
-  <div class="container p-3" style="">
-    <h5 class="font-weight-bold">
-      <a class="black-text" href="index.php">Home</a>
+  <!-- breadcrumb to see the path the user took to get to this page. Clicking one of the categories will bring you back to that category -->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a class="grey-text" href="index.php">Home</a></li>
       <?php
       foreach ($categorychain as $category) {
-        echo " > <a class='black-text' href=\"rubriek.php?rubrieknummer={$category['rubrieknummer']}\">{$category['rubrieknaam']}</a>";
+        echo "<li class='breadcrumb-item'><i class='grey-text fa fa-angle-right mx-2' aria-hidden='true'></i><a class='niagara' href=\"rubriek.php?rubrieknummer={$category['rubrieknummer']}\">{$category['rubrieknaam']}</a></li>";
       }
       ?>
-    </h5>
-  </div>
+    </ol>
 
-  <div class="row">
-    <div class="col-md-7">
+  <div class="row p-3">
+    <div class="col-md-7 vertical-line">
+      <!-- This includes the necessary code to display the pictures correctly -->
+      <?php include('detailpage_pictures.php'); ?>
+      <div>
+      <div id="active-picture" style="width: 80%; float: left;">
+        <div class='pictureFrame'>
+          <img height="100%" src="<?=$pictures[0]['filenaam']?>"></img>
+        </div>
+      </div>
+      <div style="width: 20%; float: right;">
+        <?=generatePictureSelector($pictures)?>
+      </div>
+      </div>
+      <div style="clear: both;"></div>
 
-      <?php //Display images
-      foreach ($images as $image) {
-        echo "<img src=\"{$image['filenaam']}\"></img>";
-      }
-      ?>
+
 
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-5 product-info">
 
-      <h2 class="font-weight-bold"><?=$results['titel']?></h2>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
 
       <hr>
 
       <div class="row text-center">
+        <!-- Displays the highest bid on the current auction -->
         <div class="col">
           <p class="grey-text small">Hoogste bod</p>
-          <p class="lead">€<?=$maxbid[0]?> door <?=$maxbid[1]?></p>
+          <p class="highest-bid">€<?=$maxbid[0]?></p>
         </div>
         <div class="col">
           <p class="grey-text small">Resterende tijd</p>
-          <p class="lead" id="timer">Dit moet nog opgelost worden</p>
+          <p class="auction-timer" id="timer"></p>
         </div>
       </div>
 
@@ -120,38 +138,58 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 
       <form method="post">
         <div class="row">
-          <div class="col"></div>
-            <div class="col-md-5">
-              <input type="number" name="bid" class="form-control" step="0.01" <?=$input?>>
+            <div class="ml-5 col-12 col-md-7 mt-2">
+              <input type="number" name="bid" class="form-control" step="0.01" <?php if(isset($input)){echo $input;}?>>
             </div>
-            <div class="col-md-3">
-              <button type="submit" name="submit" class="btn btn-primary" <?=$input?>>Bied</button>
+            <div class="">
+              <button type="submit" name="submit" class="btn elegant" <?php if(isset($input)){echo $input;}?>>Bied</button>
             </div>
-          <div class="col"></div>
         </div>
       </form>
 
       <p class="red-text text-center font-weight-bold"><?=$error?></p>
 
       <hr>
-
-      <p>Startprijs: €<?=$results['startprijs']?></p>
-      <p><?=$results['plaatsnaam']?>, <?=$results['land']?></p>
-      <p>Sluit op: <?=$closingtime?></p>
-      <p>Betaalmethode: <?=$results['betalingswijze']?></p>
-      <p>Betalingsinstructies: <?=$results['betalingsinstructie']?></p>
-      <p>Veilingnummer: <?=$results['voorwerpnummer']?></p>
-      <p>Verzendkosten: €<?=$results['verzendkosten']?></p>
-      <p>Verzendinstructies: <?=$results['verzendinstructies']?></p>
-      <p>Verkoper: <?=$results['verkoper']?></p>
+      <ul class="product-info-data">
+        <li><i class="fas fa-lg fa-tags" aria-hidden="true"></i> Startprijs: €<?=$results['startprijs']?></li>
+        <li><i class="far fa-lg fa-compass" aria-hidden="true"></i> <?=$results['plaatsnaam']?>, <?=$results['land']?></li>
+        <li><i class="far fa-lg fa-calendar-times" aria-hidden="true"></i> Sluit op: <?=$closingtime?></li>
+        <li><i class="fas fa-lg fa-barcode" aria-hidden="true"></i> Veilingnummer: <?=$results['voorwerpnummer']?></li>
+        <li><i class="far fa-lg fa-user" aria-hidden="true"></i> Verkoper: <?=$results['verkoper']?></li>
+      </div>
 
     </div>
+
+  <ul class="nav nav-tabs product-description">
+    <li class="nav-item active">
+      <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Productomschrijving</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link panel-name" data-toggle="tab" href="#tab2" role="tab">Betaalinformatie</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link panel-name" data-toggle="tab" href="#tab3" role="tab">Verzendinformatie</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
+      <p><?=$results['beschrijving']?></p>
+    </div>
+    <div class="tab-pane fade" id="tab2" role="tabpanel">
+      <p class="font-weight-bold niagara">Betaalwijze</p>
+      <p><?=$results['betalingswijze']?></p>
+      <br>
+      <p class="font-weight-bold niagara">Betaalinstructie</p>
+      <p><?=$results['betalingsinstructie']?></p>
+    </div>
+    <div class="tab-pane fade" id="tab3" role="tabpanel">
+      <p class="font-weight-bold niagara">Verzendkosten</p>
+      <p>€<?=$results['verzendkosten']?></p>
+      <br>
+      <p class="font-weight-bold niagara">Verzendinstructies</p>
+      <p><?=$results['verzendinstructies']?></p>
+    </div>
   </div>
-
-  <h4>Productomschrijving</h4>
-
-  <hr>
-  <p><?=$results['beschrijving']?></p>
   <!-- <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quam justo, ultricies eget enim a, viverra rutrum massa.
     Praesent semper faucibus luctus. Donec condimentum interdum augue, eget scelerisque justo tempor a. Suspendisse orci dolor, lobortis quis lacus quis,
@@ -187,5 +225,5 @@ var x = setInterval(function() {
   xhttp.send();
 }, 1000);
 </script>
-
+<?php } ?>
 <?php include('templates/footer.php'); ?>

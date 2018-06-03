@@ -100,16 +100,32 @@ if(isset($_POST['registerseller'])){
 	<div class="md-form" id="creditcardDiv" style="display: none;">
 		<label for="creditcard">Creditcardnummer</label>
 		<input type="text" class="form-control" name="creditcard" id="creditcard" value="">
+		<div class="form-requirements black-text">
+			<ul>
+				<li>Enkel getallen</li>
+				<li>Maximaal 19 getallen</li>
+			</ul>
+		</div>
 	</div>
 
 	<div class="md-form" id="bankDiv" style="display: none;">
 		<label for="bank">Banknaam</label>
 		<input type="text" class="form-control" name="bank" id="bank" value="">
+		<div class="form-requirements black-text">
+			<ul>
+				<li>Banknaam maximaal 75 karakters</li>
+			</ul>
+		</div>
 	</div>
 
 	<div class="md-form" id="banknumberDiv" style="display: none;">
 		<label for="banknumber">Rekeningnummer</label>
 		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
+		<div class="form-requirements black-text">
+			<ul>
+				<li>Mag maximaal 34 karakters bevatten</li>
+			</ul>
+		</div>
 	</div>
 
 	<div class="py-1 mt-3 text-center">

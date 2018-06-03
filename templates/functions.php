@@ -1,5 +1,7 @@
 <?php
-require('connect.php');
+//require('connect.php');
+
+/*
 function livesearch($post_livesearch){//livesearch function met parameter $_POST['search']
   global $dbh;
   global $rubrieken;
@@ -75,8 +77,9 @@ WHERE titel LIKE ?");
   }
 
 
-}
+}*/
 
+/*
 function displayColumn(){
 
 	global $dbh;
@@ -96,10 +99,11 @@ function displayColumn(){
     }catch(PDOException $e){
       $column = $e;
   }
-}
+}*/
 
 
 /*display auction*/
+/*
 function displayAuction()
 {
 
@@ -109,22 +113,34 @@ function displayAuction()
 	$auction = "";
 
 	try{
-		$data = $dbh->query("SELECT TOP (9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+		$data = $dbh->query("SELECT TOP(9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer");
     $i=0;
 		while ($row = $data->fetch()) {
+      $voorwerpnummer = $row[0];
       $i++;
       $timer="timer".$i;
       $looptijd = $row['looptijd'];
       $looptijdbegindag =strtotime($row['looptijdbegindag']);
       $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
 
-             $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+             $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
              $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
 
              $countdown = $closingtime;
 
-
+             if(isset($row['hoogsteBod'])){
+             		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
+             	}else{
+             	  $huidige_bod=$row['startprijs'];
+             	}
 
 			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
@@ -132,8 +148,8 @@ function displayAuction()
               <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
             </div>
             <div class='card-body'>
-              <span class='small-font'>".$row['voorwerpnummer']."</span>
-              <h4 class='card-title'>".$row['titel']." #".$row['voorwerpnummer']."</h4>
+              <span class='small-font'>".$voorwerpnummer."</span>
+              <h4 class='card-title'>".$row['titel']." #".$voorwerpnummer."</h4>
               <hr>
               <div class='card-text'>
                 <p>
@@ -142,7 +158,7 @@ function displayAuction()
               </div>
               <hr />
               <ul class='list-unstyled list-inline d-flex'>
-                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$row['startprijs']."</li>
+                <li class='list-inline-item flex-1 ml-5'><i class='fa fa-lg fa-gavel pr-2'></i>&euro;".$huidige_bod."</li>
 								<div class='card-line'></div>
                 <li class='list-inline-item flex-1 mr-5'><i class=''></i><div id=".$timer."></div></li>
               </ul>
@@ -165,9 +181,9 @@ function displayAuction()
 		$error = $e;
 	}
 
-}
+}*/
 
-
+/*
 function getChild($rubrieknummer){
   global $dbh;
 $out;
@@ -180,29 +196,52 @@ $out;
     $error = $e;
   }
   return $out;
-}
+}*/
+
+
+
 /*display auctionpage*/
+/*
  function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
  {
 
 
    global $dbh;
    global $auctionpage;
+
    $auction = "";
 
 
    try{
      if(($voorwerpnummer !=0)){
-     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer WHERE vw.voorwerpnummer = ?");
+     $data = $dbh->prepare("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.voorwerpnummer = ?");
      $data->execute(array($voorwerpnummer));
    }else if(($rubrieknummer !=0)){
-     $data = $dbh->prepare("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Voorwerp_in_Rubriek vr ON vw.voorwerpnummer=vr.voorwerpnummer LEFT JOIN Rubriek r ON r.rubrieknummer=vr.rubrieknummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
+     $data = $dbh->prepare("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer
+LEFT JOIN Voorwerp_in_Rubriek vr ON vr.voorwerpnummer=vw.voorwerpnummer
+LEFT JOIN Rubriek r ON vr.rubrieknummer = r.rubrieknummer WHERE vr.rubrieknummer = ? OR r.rubrieknummerOuder = ?");
      $data->execute(array($rubrieknummer,getChild($rubrieknummer)["rubrieknummerOuder"]));
+
    }else{
-     $data = $dbh->query("SELECT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2,vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer");
+     $data = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
+ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
+ON vw.voorwerpnummer=b2.voorwerpnummer
+LEFT JOIN (
+ SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
+ ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
+ ON vw.voorwerpnummer=bd.voorwerpnummer");
    }
     $i=0;
      while ($row = $data->fetch()) {
+       $voorwerpnummer = $row[0];
        $i++;
        $timer="timer".$i;
        $looptijd = $row['looptijd'];
@@ -211,8 +250,13 @@ $out;
        $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
        // $countdown_date = date("Y-m-d",$looptijdbegindag);
        // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
+       if(isset($row['hoogsteBod'])){
+       		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
+       	}else{
+       	  $huidige_bod=$row['startprijs'];
+       	}
 
-       $time = date_create($row['looptijdeindedag2'] . $row['looptijdtijdstip']);
+       $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
        $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
 
@@ -225,12 +269,12 @@ $out;
        <div class="col-md-4">
        <div class="card auction-card mb-4">
        <div class="view overlay">
-       <a href="detailpage.php?id='.$row["voorwerpnummer"].'">
-         <img class="card-img-top" src="'.$row["filenaam1"].'" />
+       <a href="detailpage.php?id='.$voorwerpnummer.'">
+         <img class="card-img-top" src="'.$row["filenaam"].'" />
        </a>
        </div>
        <div class="card-body">
-         <span class="small-font">'.$row['voorwerpnummer'].'</span>
+         <span class="small-font">'.$voorwerpnummer.'</span>
          <h4 class="card-title">'.$row["titel"].'</h4>
          <hr>
          <div class="card-text">
@@ -240,7 +284,7 @@ $out;
          </div>
          <hr />
          <ul class="list-unstyled list-inline d-flex" style="text-align:center">
-           <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$row["startprijs"].'</li>
+           <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$huidige_bod.'</li>
            <div class="card-line"></div>
            <li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
          </ul>
@@ -256,7 +300,7 @@ $out;
      $error = $e;
    }
 
- }
+ }*/
 
  /*
  * ------------------------------------------------------------------------------------
@@ -276,7 +320,7 @@ $out;
  */
 
 
-
+/*
  function convertAdjacencyListToTree($intParentId,&$arrRows,$strIdField,$strParentsIdField,$strNameResolution) {
 
      $arrChildren = array();
@@ -296,9 +340,10 @@ $out;
 
      return $arrChildren;
 
- }
+ }*/
 
 /*verification function*/
+/*
 function verification($getUsername, $getCode) {
 	global $dbh;
   global $codeValid;
@@ -337,9 +382,11 @@ function verification($getUsername, $getCode) {
   	$statement->execute(array($storedUsername));
 	}
 }
+*/
 
 
 /*Register function*/
+/*
 function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$city,$country,$birthdate,$email,$email_check,$password,$password_check,$secretAnswer,$secretQuestion)
 {
   global $dbh;
@@ -358,7 +405,13 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
   $country = str_replace("\"", "", strip_tags($country));
   $birthdate = str_replace("\"", "", strip_tags($birthdate));
   $email = str_replace("\"", "", strip_tags($email));
+
+
   $password = str_replace("\"", "", strip_tags($password));
+
+
+
+echo $hash;
   $secretAnswer = str_replace("\"", "", strip_tags($secretAnswer));
   $secretQuestion = str_replace("\"", "", strip_tags($secretQuestion));
 
@@ -443,9 +496,10 @@ if(empty($birthdate))//checks if username is not empty
 
 if(count($errors) == 0){//checks if there are errors
     try {
+      $hash=password_hash($password, PASSWORD_DEFAULT);
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)
 Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
-      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $password, $secretQuestion, $secretAnswer,0,0));
+      $userdata->execute(array($username, $firstname, $lastname, $address1,$address2, $zipcode, $city, $country, $birthdate, $email, $hash, $secretQuestion, $secretAnswer,0,0));
 			copy("img/avatar/avatar.png","img/avatar/".$username.".png");
 			header("Location: post_register.php?username={$username}");
 
@@ -453,9 +507,10 @@ Values(?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?)");
       $error=$e;
     }
   }
-}
+}*/
 
 /*login function */
+/*
 function login($username_input, $password)
 {
   global $dbh;
@@ -470,47 +525,66 @@ function login($username_input, $password)
   $error = array();
 
   if (strlen($username) >= 25) {
-    $error['username'] = "Username has more than 25 characters";
+    $error['username'] = "Gebruikersnaam heeft meer dan 25 karakters";
   } else
   if (strlen($password) >= 50) {
-    $error['password'] = "Password has more than 50 characters";
+    $error['password'] = "Wachtwoord heeft meer dan 50 karakters";
   } else
   if (empty($username)) {
-    $error['username'] = "Username is empty";
+    $error['username'] = "Gebruikersnaam is leeg";
   } else
   if (empty($password)) {
-    $error['password'] = "Password is empty";
+    $error['password'] = "Wachtwoord is leeg";
   } else {
     try { //Attempt to receive data about the user with the submitted credentials
-    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? AND wachtwoord=? OR email=? AND wachtwoord=?");
-    	$password_check->execute(array($username, $password, $email, $password));
+    	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? OR email=?");
+
+    	$password_check->execute(array($username, $email));
+      $password_result =$password_check->fetch(PDO::FETCH_ASSOC);
+      $password_from_db = $password_result["wachtwoord"];
+
+
     } catch(PDOException $e){
     	$error = $e;
     }
-    if (!($password_result = $password_check->fetch(PDO::FETCH_ASSOC))) { //If the result is empty then there are no users with the submitted username+password
+try{
+    if(!isset($password_from_db)){
+      $error['username'] = "Gebruiker bestaat niet";
+    }else
+    if(!password_verify($password,$password_from_db)){ //If the result is empty then there are no users with the submitted username+password
     	$error['password'] = "Wachtwoord klopt niet";
     } else if ($password_result['geactiveerd'] == 0) { //If the user does exist, check whether the account has been activated
       $error['verification'] = "Account is nog niet geactiveerd";
-    } else {
+    } else if($password_result['geblokkeerd'] == 1){
+      $error['geblokkeerd'] = "Account is geblokkeerd";
+    }else{
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
+      $_SESSION['admin'] = 1;
+
 
       header('Location: index.php');
     }
-  }
+  }catch(PDOException $e){
+    $error['username']=$e;
 }
 
+}
+}*/
+
 //Returns a random string of a given length
+/*
 function random_password( $length = 8 ) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
-}
+}*/
 
 //Inserts a verification code into the database
+/*
 function createVerificationCode($username, $random_password) {
 	global $dbh;
 	global $error;
@@ -521,52 +595,28 @@ function createVerificationCode($username, $random_password) {
     } catch (PDOException $e) {
   		$error=$e;
     }
-}
+}*/
 
-function  auctionTimer($voorwerpnummer) {
-  global $dbh;
-  global $error;
-  $timer = "3 uur";
-	try {
-	  $userdata = $dbh->prepare("select * from Voorwerp where ?");
-	  $voorwerpdata = $userdata->execute(array($voorwerpnummer));
-	  $voorwerpdata->fetch();
-	  $looptijd = $voorwerpdata['looptijd'];
-    $looptijdbegindag = $voorwerpdata['looptijdbegindag'];
-    $looptijdbegintijdstip = $voorwerpdata['looptijdbegintijdstip'];
-    $looptijdeindedag = $voorwerpdata['looptijdeindedag'];
-    $looptijdeindetijdstip = $voorwerpdata['looptijdeindetijdstip'];
-    $remaining = ($looptijdeindedag+$looptijdeindetijdstip) - time();
-    $days_remaining = floor($remaining/86400);
-    $hours_remaining = floor(($remaining/86400)/ 3600);
-    if ($days_remaining > 1) {
-    	$timer = $days_remaining;
-    } else {
-    	$timer = $days_remaining + $hours_remaining;
-    }
-	} catch (PDOException $e) {
-	  $error=$e;
-	}
-
-	return $timer;
-}
 
 //Updates the record for this user with the new password
+/*
 function changePassword($new_password) {
   global $error;
   global $dbh;
 
+$hash=password_hash($new_password, PASSWORD_DEFAULT);
   $username = $_SESSION['username'];
   try {
     // $dbh->query("update Gebruiker set wachtwoord='$new_password' where gebruikersnaam='$username'");
     $statement=$dbh->prepare("update Gebruiker set wachtwoord = ? where gebruikersnaam=?");
-    $statement->execute(array($new_password,$username));
+    $statement->execute(array($hash,$username));
   } catch (PDOException $e) {
   	$error =  $e;
   }
-}
+}*/
 
 //Takes an image and stores it as {username}.png in /img/avatar
+/*
 function addAvatar($file, $username){
 	global $error;
 	global $dbh; //database object
@@ -597,8 +647,9 @@ function addAvatar($file, $username){
 		$error.= $file["type"]."<br />";
 		$error.= "Verkeerd bestand, selecteer een nieuwe";
 	}
-}
+}*/
 
+/*
 function mailUser($email, $username, $type) {
 
   global $dbh;
@@ -636,6 +687,13 @@ function mailUser($email, $username, $type) {
 	case 'wachtwoordvergeten':
 
 	break;
+	case 'wachtwoordwijzigen':
+	    $statement = $dbh->prepare("select voornaam, achternaam, code from Gebruiker G join Verificatiecode V on G.gebruikersnaam = V.gebruikersnaam where G.gebruikersnaam = ?");
+    $statement->execute(array($username));
+    $results = $statement->fetch();
+		$subject = 'E-Mail wijziging';
+		$message = 'Beste '. $results["voornaam"] .' ' .$results["achternaam"]. ' , Klik op de onderstaande link om Uw E-Mail te wijzigen: http://iconcept.tpnb.nl/iconcept/verification.php?username='.urlencode($username).'&code='.urlencode($results["code"]);
+	break;
 
 }
 
@@ -644,6 +702,6 @@ function mailUser($email, $username, $type) {
 	    'X-Mailer: PHP/' . phpversion();
 
 	mail($to, $subject, $message, $headers);
-}
+}*/
 
 ?>

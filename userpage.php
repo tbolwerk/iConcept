@@ -1,7 +1,11 @@
 <?php
 $current_page='userpage';
 require_once('templates/header.php');
-
+require_once("templates/userpage/f_addAvatar.php");
+require_once("templates/userpage/f_changePassword.php");
+require_once("templates/register/f_createVerificationCode.php");
+require_once("templates/mail/f_mailUser.php");
+$message = "";
 function updatePhones() {
   global $dbh;
 
@@ -59,28 +63,7 @@ function insertNumber($number, $phones, &$numbersToKeep) {
 }
 
 //If user submits updated account data
-if(isset($_POST['tab1submit'])) {
-  //Remove any doublequotes and html tags
-  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
-  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
-  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
-  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
-  $city = str_replace("\"", "", strip_tags($_POST['city']));
-  $country = str_replace("\"", "", strip_tags($_POST['country']));
-  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
-  $email = str_replace("\"", "", strip_tags($_POST['email']));
-  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
-  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
 
-  try { //Update the record for this user with the submitted data
-    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?, email = ?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate, $email, $secretQuestion, $secretAnswer, $_SESSION['username']));
-    updatePhones(); //Phones are updated seperately
-  } catch(PDOException $e) {
-    $error = $e;
-    echo $error;
-  }
-}
 
 //If user tries to change password
 if (isset($_POST['tab2submit'])) {
@@ -89,9 +72,13 @@ if (isset($_POST['tab2submit'])) {
     $statement->execute(array($_SESSION['username']));
     $password = $statement->fetch();
 
-    if ($password[0] == $_POST['currentPassword']) { //Has the user submitted his current password?
+
+    if (password_verify($_POST['currentPassword'],$password[0])) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
+        $message = "<p class='green-text lead'>wachtwoord succesvol veranderd</p>";
+    }else{
+       $message = "<p class='red-text lead'>Wachtwoord niet correct</p>";
     }
 }
 
@@ -109,6 +96,55 @@ $username = $_SESSION['username'];
 $statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
 $statement->execute(array($username));
 $results = $statement->fetchAll();
+
+
+
+if(isset($_POST['tab1submit'])) {
+  //Remove any doublequotes and html tags
+  $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
+  $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
+  $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
+  $city = str_replace("\"", "", strip_tags($_POST['city']));
+  $country = str_replace("\"", "", strip_tags($_POST['country']));
+  $birthdate = str_replace("\"", "", strip_tags($_POST['birthdate']));
+  $secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
+  $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+  $activation = 1;
+  $email = str_replace("\"", "", strip_tags($_POST['email']));
+  $statement = $dbh->query("SELECT email FROM Gebruiker");
+$email_exists = false;
+  while($row = $statement->fetch()){
+  if($email == $row['email']){
+    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
+    $email_exists = true;
+    break;
+  }
+}
+if($results[0]['email'] != $email && $email_exists == false){
+  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren</p>";
+  $code = random_password(6);
+  $username = $_SESSION['username'];
+  $activation = 0;
+  createVerificationCode($_SESSION['username'],$code);
+  mailUser($email, $username, 'wachtwoordwijzigen');
+}
+
+
+
+  try { //Update the record for this user with the submitted data
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    updatePhones(); //Phones are updated seperately
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    // $message.="<br><p class='green-text lead'> Persoonlijke informatie succesvol aangepast!</p>";
+  } catch (PDOException $e) {
+    $error = $e;
+
+    $message = "<p class='red-text lead'>Er ging iets mis</p>";
+  }
+}
 
 // //Receive phone numbers for this user from database
 // $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
@@ -196,6 +232,10 @@ These values are for debugging purposes and are visible by inspecting the page s
 <div class="container-fluid usersettings-page" id="wrapper">
 
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
+
+
+<?= $message ?>
+
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
@@ -321,7 +361,7 @@ These values are for debugging purposes and are visible by inspecting the page s
           <div class="form-requirements">
             <ul>
               <li>Placeholder</li>
-              <li>Bijvoorbeeld: hermanreinhart@hotmail.com</li>
+              <li>Bijvoorbeeld: janbeenham@hotmail.com</li>
               <li>Maximaal 100 tekens</li>
               <li>De meeste speciale tekens worden niet toegestaan</li>
             </ul>

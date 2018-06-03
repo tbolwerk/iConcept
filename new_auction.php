@@ -90,15 +90,15 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');
 
-  try { //selects last inserted auctionid
-    $objectdata = $dbh->prepare("select top 1 voorwerpnummer from Voorwerp order by voorwerpnummer desc");
-    $objectdata->execute();
-    $lastid = $objectdata->fetch();
-    $id = $lastid[0] + 1;//id of the auction where all information should be stored in
-  } catch (PDOException $e) {
-    $errors['db']=$e;
-    echo $errors['db'];
-  }
+  // try { //selects last inserted auctionid
+  //   $objectdata = $dbh->prepare("select top 1 voorwerpnummer from Voorwerp order by voorwerpnummer desc");
+  //   $objectdata->execute();
+  //   $lastid = $objectdata->fetch();
+  //   $id = $lastid[0] + 1;//id of the auction where all information should be stored in
+  // } catch (PDOException $e) {
+  //   $errors['db']=$e;
+  //   echo $errors['db'];
+  // }
 
   $pictures = array();
   $picture_keys = array_keys($picture);
@@ -115,26 +115,37 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
     }
   }
 
-  for($i = 0; $i < $num_pictures; $i++){//makes the indexes of the pictures right for if user deselected a picture
-    if(empty($pictures[$i]['name'])){
-      $pictures[$i] = $pictures[$i+1];
-      $pictures[$i+1] = null;
-      $i--;
+  if(count($errors) == 0){//Inserts all data in database if no errors occured
+    do {
+      $id = rand(0, 999999999); //generate random id to be used as voorwerpnummer
+      $retry = false;
+
+      try {//inserts all data in table 'Voorwerp'
+        $data = $dbh->prepare("insert into Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, veilinggesloten)
+        values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $data->execute(array($id, $title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, 0));
+      } catch (PDOException $e) {
+        if ($e->getCode() == 23000) { //sqlstate 23000 means that there was a constraint violation
+          $retry = true;
+        } else {
+          $error=$e;
+          echo $error;
+          $errors['upload'] = "Er is iets misgegaan";
+        }
+      }
+    } while ($retry == true); //if there was an error, try again
+
+    for($i = 0; $i < $num_pictures; $i++){//makes the indexes of the pictures right for if user deselected a picture
+      if(empty($pictures[$i]['name'])){
+        $pictures[$i] = $pictures[$i+1];
+        $pictures[$i+1] = null;
+        $i--;
+      }
+      else {
+        $filenames[$i] = checkPicture($pictures[$i],$id,$i);
+      }
     }
-    else {
-      $filenames[$i] = checkPicture($pictures[$i],$id,$i);
-    }
-  }
-  if(count($errors) == 0){//Inserts all data in database if no erros occured
-    try {//inserts all data in table 'Voorwerp'
-      $data = $dbh->prepare("insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, veilinggesloten)
-      values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $data->execute(array($title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, 0));
-    } catch (PDOException $e) {
-      $error=$e;
-      echo $error;
-      $errors['upload'] = "Er is iets misgegaan";
-    }
+
     for($i = 0; $i < $num_pictures; $i++){//Inserts data for every selected picture
       move_uploaded_file($pictures[$i]["tmp_name"], //uploads picture to server
       "img/producten/" . $filenames[$i]);
@@ -299,7 +310,7 @@ body {
 
   <div class="form-row">
       <div class="md-form form-group col-md-12">
-        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" maxlength="255" required pattern="[A-z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+"></textarea>
+        <textarea type="text" name="description" id="description" class="form-control md-textarea" rows="5" maxlength="255" required></textarea>
         <div class="form-requirements">
           <ul>
             <li>Verplicht veld</li>

@@ -97,7 +97,9 @@ $out.='<div class="carousel-item">';
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
-<?=$out?>
+<?php if(isset($out)){
+  echo $out;
+}?>
 
   <!--/.Third slide-->
 

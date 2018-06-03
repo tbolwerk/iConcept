@@ -44,7 +44,7 @@ function unblockAuction($auctionId){
 <div class="col-11 verifcation-list">
   <div class="panel-information">
     <h1>Veilingenlijst</h1>
-    <p>In deze lijst staan alle veilingen die op de geblokkeert zijn via de website Hier kan je de veilingen deblokkeren</p>
+    <p>In deze lijst staan alle veilingen die geblokkeerd zijn via de website. Hier kan je de veilingen deblokkeren</p>
   </div>
 
     <!-- Table-->

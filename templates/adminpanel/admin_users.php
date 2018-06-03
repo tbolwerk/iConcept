@@ -3,12 +3,14 @@ $message = "";
 if(isset($_GET['ban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 1 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['ban']));
-  $message = "<p class='danger-text'>Account van <b>".$_GET['ban']."</b> is succesvol geblokkeerd</p>";
+  $message = "Account van ".$_GET['ban']." is succesvol geblokkeerd";
+  // $message = $_GET['ban'];
 }
 if(isset($_GET['unban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 0 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['unban']));
-  $message = "<p class='success-text'>Account van <b>".$_GET['unban']."</b> is succesvol gedeblokkeerd</p>";
+  $message = "Account van ".$_GET['unban']." is succesvol gedeblokkeerd";
+  // $message = $_GET['unban'];
 }
 $out = "";
 $status = "";
@@ -17,10 +19,10 @@ $statement->execute();
 while($row = $statement->fetch()){
   if($row['geblokkeerd'] == 0){
     $status = '<span class="user-active"></span>Actief';
-    $statusBtn= '<a href="?ban='.$row["gebruikersnaam"].'"><i class="fas fa-ban" aria-hidden="true"></i></a>';
+    $statusBtn= '<a id="status" href="?ban='.$row["gebruikersnaam"].'"><i class="fas fa-ban" aria-hidden="true"></i></a>';
   }else{
     $status = '<span class="user-blocked"></span>Geblokkeerd';
-    $statusBtn= '<a href="?unban='.$row["gebruikersnaam"].'"><i class="fas fa-check aria-hidden="true"></i></a>';
+    $statusBtn= '<a id="status" href="?unban='.$row["gebruikersnaam"].'"><i class="fas fa-check aria-hidden="true"></i></a>';
   }
   $out.='<tr>
     <td>'.$row["gebruikersnaam"].'</td>
@@ -37,11 +39,6 @@ while($row = $statement->fetch()){
   <div class="panel-information">
     <h1>Gebruikerslijst</h1>
     <p>In deze lijst staan alle gebruikers die geregistreert zijn op de website. Hier kan je de gebruikers blokkeren of deblokkeren</p>
-  </div>
-  <!-- Display notification box -->
-  <div class="mb-5 ml-auto mr-auto text-center">
-    <div id="adminAlertBox" class="alert alert-success" data-alert="alert">Dit werkt!</div>
-    <!-- <?=$message?> -->
   </div>
 
     <!-- Table-->

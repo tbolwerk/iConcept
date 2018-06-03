@@ -1,4 +1,7 @@
 .row {margin: 0 !important;}
+
+/* Side navigation styling */
+
 .sidenav {
   position: fixed;
   height: 100%;
@@ -15,7 +18,7 @@
 .admin-list .admin-list-item {
   padding: 25px 15px;
   font-weight: bold;
-  color: white;
+  color: #FFFFFF;
   font-size: 1.1rem;
 }
 .admin-list .admin-list-item:hover {
@@ -26,7 +29,17 @@
   border-left: 5px solid #4584A4 !important;
   background-color: #333333 !important;
 }
+.admin-info {
+  position: absolute;
+  bottom: 5%;
+  color: #FFFFFF;
+  width: 100%;
+}
+.admin-user, .admin-time, .admin-logout {
+  padding: 5px 40px;
+}
 
+/* Admin panel content styling */
 
 .admin-panel-container {
   background-color: #F5F5F5;
@@ -46,6 +59,8 @@
   margin-bottom: 1rem;
 }
 
+/* Table styling */
+
 .verification-table-content {
   display: block;
    max-height: 600px;
@@ -62,15 +77,11 @@
 .verification-table-list td i {
   color: #2e2e2e;
 }
-
-
-
 .fixed_headers {
   width: inherit;
   table-layout: fixed;
   border-collapse: collapse;
 }
-
 .fixed_headers td:nth-child(1),
 .fixed_headers th:nth-child(1) {
   min-width: 250px;
@@ -97,13 +108,11 @@
   width: 100%;
   height: 500px;
 }
-
-
-
 .table thead th {
   border-bottom: none !important;
 }
 
+/* User status styling */
 
 .user-active {
     height: 15px;
@@ -131,18 +140,15 @@
 
 /* Notification boxes styling */
 
-#adminAlertBox {
-  position: absolute;
-  z-index: 1400000;
-  top: 2%;
-  right: 4%;
-  margin: 0px auto;
-  text-align: center;
-  display: none;
+#toast-container>div {
+  width: 400px !important;
 }
-.alert-success {
-  background-color: #00C851;
-  color: #FFF;
-  border: none;
-  border-radius: 2px;
+.toast-info {
+  background-color: #4584a4 !important;
+}
+.toast-success {
+  background-color: #007E33 !important;
+}
+.toast-error {
+  background-color: #CC0000 !important;
 }

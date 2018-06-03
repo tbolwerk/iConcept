@@ -1,8 +1,6 @@
 <?php
 $current_page='register';
 require('templates/header.php');
-require_once("templates/register/f_createVerificationCode.php");
-require_once("templates/mail/f_mailUser.php");
 
 if(isset($_GET['username'])){
 	$username = $_GET['username'];

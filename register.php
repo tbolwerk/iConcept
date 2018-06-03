@@ -1,7 +1,6 @@
 <?php
 $current_page='register';
 require_once('templates/header.php');
-require_once("templates/register/f_register.php");
 
 $secret_question_options = null;
 try {

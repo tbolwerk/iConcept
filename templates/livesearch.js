@@ -4,11 +4,11 @@ function fill(Value) {
 
    //Assigning value to "search" div in "search.php" file.
 
-   $('#livesearch').val(Value);
+   $('#search').val(Value);
 
    //Hiding "display" div in "search.php" file.
 
-   $('#displaySearch').hide();
+   $('#display').hide();
 
 }
 
@@ -16,11 +16,11 @@ $(document).ready(function() {
 
    //On pressing a key on "Search box" in "search.php" file. This function will be called.
 
-   $("#livesearch").keyup(function() {
+   $("#search").keyup(function() {
 
        //Assigning search box value to javascript variable named as "name".
 
-       var name = $('#livesearch').val();
+       var name = $('#search').val();
 
        //Validating, if "name" is empty.
 
@@ -28,7 +28,7 @@ $(document).ready(function() {
 
            //Assigning empty value to "display" div in "search.php" file.
 
-           $("#displaySearch").html("");
+           $("#display").html("");
 
        }
 
@@ -46,7 +46,7 @@ $(document).ready(function() {
 
                //Data will be sent to "ajax.php".
 
-               url: "ajax.php",
+               url: "templates/ajax.php",
 
                //Data, that will be sent to "ajax.php".
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
 
                    //Assigning result to "display" div in "search.php" file.
 
-                   $("#displaySearch").html(html).show();
+                   $("#display").html(html).show();
 
                }
 

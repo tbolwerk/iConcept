@@ -1,7 +1,6 @@
 <?php
 $current_page='index';
 require_once('templates/header.php');
-require_once("templates/homepage/f_displayAuction.php");
 displayAuction();
 ?>
 
@@ -19,7 +18,7 @@ displayAuction();
 </div>
 
  <!-- Include file for the carousel on the index page -->
-<?php include 'templates/homepage/carousel.php'; ?>
+<?php include 'templates/carousel.php'; ?>
 
 
 

@@ -11,7 +11,7 @@
     <!-- Including jQuery is required. -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- Including our scripting file. -->
-    <script type="text/javascript" src="templates/livesearch/livesearch.js"></script>
+    <script type="text/javascript" src="templates/livesearch.js"></script>
     <!-- JQuery -->
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap tooltips -->

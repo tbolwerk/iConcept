@@ -1,6 +1,5 @@
-
+<?php require_once("functions.php"); ?>
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree.php");
 
 $statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
 $rubrieken="";

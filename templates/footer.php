@@ -1,7 +1,7 @@
 
 
 <?php if ($current_page == 'login' || $current_page == 'register' || $current_page == 'adminpanel') {
-
+  // include 'templates/logo_nav.php';
 } else {
   include 'templates/footer_links.php';
 }?>
@@ -33,7 +33,6 @@
     <script type="text/javascript" src="js/twbs-pagination.js"></script>
     <script type="text/javascript" src="js/paging.js"></script>
     <script type="text/javascript" src="js/timer.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
     $(document).ready(function(){
       $('.flypanels-container').flyPanels({
@@ -107,39 +106,18 @@
             document.getElementById("mySidebar").style.display = "none";
             document.getElementById("myOverlay").style.display = "none";
         }
-    </script>
 
-    <script>
-    var message = '<?php echo $message; ?>';
-
-    toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "8000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-
-      $(document).ready(function() {
-        // show when page load
-        if (message.indexOf("gedeblokkeerd") >= 0) {
-          toastr["success"](message + ".")
-        } else if (message.indexOf("geblokkeerd") >= 0) {
-          toastr["error"](message + ".")
-        } else {
-          toastr["warning"]("Er is iets fout gegaan")
-        }
-      });
+          // function myAccFunc() {
+          //     var x = document.getElementById("demoAcc");
+          //     if (x.className.indexOf("w3-show") == -1) {
+          //         x.className += " w3-show";
+          //         x.previousElementSibling.className += " w3-green";
+          //     } else {
+          //         x.className = x.className.replace(" w3-show", "");
+          //         x.previousElementSibling.className =
+          //         x.previousElementSibling.className.replace(" w3-green", "");
+          //     }
+          // }
     </script>
 
 

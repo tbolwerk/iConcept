@@ -1,4 +1,4 @@
-<?php require_once("functions.php");
+<?php
 global $dbh;
 try{
 $statement = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
@@ -8,7 +8,7 @@ ON vw.voorwerpnummer=b2.voorwerpnummer
 LEFT JOIN (
  SELECT DISTINCT voorwerpnummer,(SELECT TOP 1 bodbedrag FROM Bod b1 where b1.voorwerpnummer=bd.voorwerpnummer
  ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
- ON vw.voorwerpnummer=bd.voorwerpnummer");
+ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
 
 $carousel= array();
 $i=0;
@@ -97,7 +97,9 @@ $out.='<div class="carousel-item">';
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
-<?=$out?>
+<?php if(isset($out)){
+  echo $out;
+}?>
 
   <!--/.Third slide-->
 

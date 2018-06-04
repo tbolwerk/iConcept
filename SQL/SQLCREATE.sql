@@ -8,7 +8,7 @@ http://webarchive.nationalarchives.gov.uk/+/http://www.cabinetoffice.gov.uk/medi
 
 */
 
-use testDB 
+use iConcept;
 
 
 DROP TABLE [Bod] 
@@ -59,11 +59,12 @@ plaatsnaam nvarchar(85) not null, /* https://www.alletop10lijstjes.nl/10-langste
 land varchar(48) not null,  /* http://www.funtrivia.com/askft/Question33835.html */
 geboortedatum date not null, 
 email varchar(100) not null,  /* Kan niet met dezelfde email registeren, MOET AANGEPAST NOG WORDEN 25-04-2018 */
-wachtwoord varchar(50) not null, /* Vergroot voor de SHA256 HASH */
+wachtwoord varchar(100) not null, /* Vergroot voor de SHA256 HASH */
 vraagnummer int not null, 
 antwoordtekst varchar(25) not null, /* de antwoord kan niet altijd 6 characters zijn, is variabel en soms langer, ligt aan de vraag */
 verkoper bit not null, /* kan beste bit zijn voor true(wel) en false(niet) */
 geactiveerd bit not null, /* toevoeging we kunnen zien of accounts geactiveerd zijn */
+geblokkeerd bit default 0,
 CONSTRAINT pk_gebruikersnaam_email PRIMARY KEY (gebruikersnaam),  
 CONSTRAINT fk_Gebruiker_vraagnummer FOREIGN KEY (vraagnummer) 
 REFERENCES Vraag (vraagnummer),  
@@ -76,10 +77,10 @@ create table dbo.Verificatiecode
 gebruikersnaam varchar(25) not null, 
 begintijd bigint not null, 
 code char(6) not null, 
+email varchar(100) not null,
 CONSTRAINT pk_verificatiecode PRIMARY KEY (gebruikersnaam, begintijd, code), 
 CONSTRAINT fk_verificatiecode_gebruikersnaam FOREIGN KEY (gebruikersnaam)  
-REFERENCES Gebruiker(gebruikersnaam) 
-
+REFERENCES Gebruiker(gebruikersnaam) ,
 )  
 
   
@@ -122,6 +123,7 @@ verkoper varchar(25) not null,  /* afgestemd op gebruikersnaam */
 koper varchar(25),   /* afgestemd op gebruikersnaam */
 veilinggesloten bit not null,  /* Bit als true/false = wel/niet */
 verkoopprijs numeric(9,2),  
+geblokkeerd bit DEFAULT 0,
 CONSTRAINT pk_voorwerpnummer PRIMARY KEY (voorwerpnummer),  
 CONSTRAINT fk_verkoper_gebruiker FOREIGN KEY (verkoper)  
 REFERENCES Verkoper (gebruikersnaam),  

@@ -7,6 +7,7 @@ use iConcept;
 
 delete from Rubriek;
 delete from Landen;
+delete from Voorwerp_In_Rubriek;
 
 delete from Bod;
 delete from Bestand;
@@ -18,7 +19,7 @@ delete from Gebruiker;
 delete from Vraag;
 
 
-DBCC CHECKIDENT(Voorwerp, RESEED, 1);
+DBCC CHECKIDENT(Voorwerp, RESEED, 0);
 DBCC CHECKIDENT(Gebruikerstelefoon, RESEED, 0);
 DBCC CHECKIDENT(Vraag, RESEED, 0);
 
@@ -83,6 +84,7 @@ VALUES
 		;
 GO
 
+
 --CONVERSIE
 insert into dbo.Rubriek
 select DISTINCT (d.ID) as rubrieknummer,
@@ -90,6 +92,7 @@ select DISTINCT (d.ID) as rubrieknummer,
 		(d.Parent) as rubrieknummerOuder
 		from GrootDBBedrijf.dbo.Categorieen d 
 
+GO
 
 insert into dbo.Landen
 select DISTINCT d.GBA_CODE as landcode,
@@ -98,20 +101,22 @@ select DISTINCT d.GBA_CODE as landcode,
 				d.EINDDATUM as einddatum,
 				d.EER_Lid as eer_lid
 				from GrootDBBedrijf.dbo.tblIMAOLand d
+GO
 --CONVERSIE
 
 
 Insert into Voorwerp(titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, koper, veilinggesloten, verkoopprijs)
 VALUES
 		('Product nr 1', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, 'Creditcard', 'Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, GETDATE(), CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', null , 0, NULL),
-		('Product nr 2', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham' , 0, NULL),
-		('Product nr 3', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham' ,  0, NULL),
-		('Product nr 4', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 425, '2017-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',  0, NULL),
-		('Product nr 5', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',  0, NULL),
-		('Product nr 6', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham', 0, NULL)
+		('Product nr 2', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 10, 'Creditcard', 'Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. ', 'Nijmegen', 'Nederland', 365, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',null , 0, NULL),
+		('Product nr 3', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 50, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 60, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',null ,  0, NULL),
+		('Product nr 4', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 30, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 425, '2017-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',null,  0, NULL),
+		('Product nr 5', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 10, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',null,  0, NULL),
+		('Product nr 6', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. ', 20, 'Bank', 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.', 'Nijmegen', 'Nederland', 30, '2018-05-05', CURRENT_TIMESTAMP, 5, 'Gaat via postnl', 'janbeenham',null, 0, NULL)
 		;
 
 GO
+
 
 
 Insert into Bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip)
@@ -123,6 +128,7 @@ VALUES
 
 GO
 
+
 Insert into Bestand(filenaam, voorwerpnummer)
 VALUES
 		('img/producten/template1.jpg',1),
@@ -130,10 +136,12 @@ VALUES
 		('img/producten/template3.jpg',3),
 		('img/producten/template4.jpg',4),
 		('img/producten/template5.jpg',5),
-		('img/producten/template6.jpg',0)
+		('img/producten/template6.jpg',6)
 		;
 
 GO
+
+
 		
 Insert into Voorwerp_in_Rubriek
 VALUES
@@ -142,7 +150,7 @@ VALUES
 		(3, 63), --stripboeken
 		(4, 80), --verzamelstrips
 		(5, 57), -- filmobjecten
-		(0, 120)
+		(6, 120)
 		;  --creatief speelgoed
 
 GO

@@ -121,13 +121,21 @@ $email_exists = false;
     break;
   }
 }
+//If the submitted mail is not equal to the mail in the database and noone else is using the submitted mail
 if($results[0]['email'] != $email && $email_exists == false){
-
-  $code = random_password(6);
   $username = $_SESSION['username'];
+
+  //Generate verification code
+  $code = random_password(6);
+  createVerificationCode($username, $code, $email);
+
+  //Deactivate the account until the user clicks the link
   $activation = 0;
-  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$_SESSION['username']."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
-  createVerificationCode($_SESSION['username'],$code,$email);
+
+  //Display message on webpage
+  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$username."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
+
+  //Send mail with verification code
   verificationMail($email, $username, $code, 'mail');
 }
 

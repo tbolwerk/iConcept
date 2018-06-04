@@ -57,7 +57,7 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
 
       $countdown = $closingtime;
 
-      $beschrijving = strip_tags($row['beschrijving'],<br>);
+      $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
       $auctionpage.='
 

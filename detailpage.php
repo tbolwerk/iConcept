@@ -32,11 +32,16 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
     }
   }
 }
-
+try{
   $statement = $dbh->prepare("select *, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
   $results = $statement->fetch();
-
+  $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
+  $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+}catch(PDOException $e){
+  
+}
+try{
   $statement = $dbh->prepare("select * from Bod where voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
   $biddings = $statement->fetch();
@@ -45,14 +50,19 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   	select max(bodbedrag) from Bod where voorwerpnummer = ?)");
   $statement->execute(array($_GET['id'], $_GET['id']));
   $maxbid = $statement->fetch();
+}catch(PDOException $e){
 
+}
+try{
   $statement = $dbh->prepare("select * from Bestand where voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
   $images = $statement->fetchAll();
+}catch(PDOException $e){
 
-  $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
-  $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+}
 
+
+try{
   $statement = $dbh->prepare("select * from Rubriek where rubrieknummer = ?");
   $statement->execute(array($results['rubrieknummer']));
   $category = $statement->fetch();
@@ -67,6 +77,9 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   $categorychain = array_reverse($categorychain);
 
   $maincategory = $categorychain[0];
+}catch(PDOException $e){
+
+}
 
   // $minIncrease = 1;
   // $minBidAmount = $maxbid[0] + $minIncrease;

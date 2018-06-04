@@ -143,7 +143,7 @@ try{
         <!-- Displays the highest bid on the current auction -->
         <div class="col">
           <p class="grey-text small">Hoogste bod</p>
-          <p class="highest-bid">€<?=$maxbid[0]?></p>
+          <p class="highest-bid" id="maxbid">€<?=$maxbid[0]?></p>
         </div>
         <div class="col">
           <p class="grey-text small">Resterende tijd</p>

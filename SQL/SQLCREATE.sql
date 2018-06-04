@@ -106,7 +106,7 @@ CONSTRAINT CHK_domain_CreditOfPost CHECK (controleoptienaam IN ('Creditcard','Po
 
 create table dbo.Voorwerp  
 (  
-voorwerpnummer bigint identity(1,1) not null,  /* toelichting: zodat we veel voorwerpnummers kunnen opslaan */
+voorwerpnummer bigint not null,  /* toelichting: zodat we veel voorwerpnummers kunnen opslaan */
 titel nvarchar(50) not null,  /* titel is altijd variabel */
 beschrijving nvarchar(max) not null,  /* Beschrijving is variabel en kan van alles bevatten zoals specificatie, historie, max is gekozen omdat de batchscript veel bevat.*/
 startprijs numeric(9,2) not null,  
@@ -136,9 +136,10 @@ REFERENCES Gebruiker (gebruikersnaam)
 
 create table dbo.Bestand  
 (
-filenaam varchar(50) not null,  /* een variabele filenaam want niet elke filenaam is even groot. Verlengd voor combinaties */
+id int identity(1,1),
+filenaam varchar(50) default 'img/producten/template.jpg' not null,  /* een variabele filenaam want niet elke filenaam is even groot. Verlengd voor combinaties */
 voorwerpnummer bigint not null,  /* bigint zodat er zoveel combinaties zijn */
-CONSTRAINT pk_filenaam PRIMARY KEY (filenaam),  
+CONSTRAINT pk_id PRIMARY KEY (id),  
 CONSTRAINT fk_Bestand_voorwerpnummer FOREIGN KEY (voorwerpnummer)  
 REFERENCES Voorwerp (voorwerpnummer)  
 )  

@@ -12,6 +12,9 @@ if(isset($_POST['block'])){
 }
 
 if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
+  if(!isset($_SESSION['username'])){
+    $error = "U moet ingelogt zijn om te bieden klik <br><a href='login.php'>hier om in te loggen</a>";
+  }else{
   $error = "";
   if (isset($_POST['bid'])) {
     $bid = str_replace("\"", "", strip_tags($_POST['bid']));
@@ -28,6 +31,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
       }
     }
   }
+}
 
   $statement = $dbh->prepare("select *, dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2 from Voorwerp join Voorwerp_in_Rubriek on Voorwerp.voorwerpnummer = Voorwerp_in_Rubriek.voorwerpnummer where Voorwerp.voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
@@ -67,7 +71,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
   // $minIncrease = 1;
   // $minBidAmount = $maxbid[0] + $minIncrease;
 
-  if ($_SESSION['username'] == $results['verkoper']) {
+  if (isset($_SESSION['username']) && $_SESSION['username'] == $results['verkoper']) {
     $input = "disabled";
   }
 }

@@ -1,6 +1,7 @@
 SET NOCOUNT ON 
 
 use iConcept;
+--use testDB;
 
 --delete from Rubriek;
 --DBCC CHECKIDENT(Rubriek, RESEED, 0);
@@ -115,7 +116,7 @@ END
 
 
 --Code om van oude database over te zetten na nieuwe.
-insert into iConcept.dbo.Rubriek
+insert into testDB.dbo.Rubriek
 select DISTINCT (d.ID) as rubrieknummer,
 		d.Name as rubrieknaam,
 		(d.Parent) as rubrieknummerOuder
@@ -132,7 +133,7 @@ select DISTINCT d.GBA_CODE as landcode,
 
 				
 insert into testDB.dbo.Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper, geactiveerd)
-select DISTINCT TOP 50 d.Username as gebruikersnaam,
+select DISTINCT d.Username as gebruikersnaam,
 				'Voornaam' as voornaam,
 				'Achternaam' as achternaam,
 				'Niet ingevoerd' as adresregel1,
@@ -140,7 +141,7 @@ select DISTINCT TOP 50 d.Username as gebruikersnaam,
 				'niet ingevoerd' as plaatsnaam,
 				d.Location as land,
 				'1990-01-01' as geboortedatum,
-				'twanbolwerk'+ '+' + D.Username + '@gmail.com' as email,
+				'twanbolwerk'+ '+' + SUBSTRING(D.Username,0,75) + '@gmail.com' as email,
 				cast((Abs(Checksum(NewId()))%10) as varchar(1)) + 
 				char(ascii('a')+(Abs(Checksum(NewId()))%25)) +
 				char(ascii('A')+(Abs(Checksum(NewId()))%25)) +
@@ -150,6 +151,16 @@ select DISTINCT TOP 50 d.Username as gebruikersnaam,
 				1 as verkoper,
 				1 as geactiveerd
 				from GrootDBBedrijf.dbo.Users d
+				order by d.Username
+GO
+
+
+insert into testDB.dbo.Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer)
+select DISTINCT d.Username as gebruikersnaam,
+				'Creditcard' as controleoptienaam,
+				'123432' as creditcardnummer
+				from GrootDBBedrijf.dbo.Users d
+				order by d.Username
 GO
 /*
 insert into testDB.dbo.Voorwerp
@@ -162,11 +173,11 @@ select DISTINCT TOP 20 d.ID as voorwerpnummer,
 
 
 
-insert into iConcept.dbo.Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
-SELECT TOP 50
+insert into testDB.dbo.Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
+SELECT
 	ID as voorwerpnummer,
 	SUBSTRING(Titel,0,50) AS titel,
-	dbo.udf_StripHTML(Beschrijving) as beschrijving,
+	Beschrijving as beschrijving,
 	Prijs AS startprijs,
 	'Bank' AS betalingswijze,
 	'unset' AS plaatsnaam,	
@@ -174,14 +185,14 @@ SELECT TOP 50
 	10 AS looptijd,
 	convert(date,getdate()) AS looptijdbegindag,
 	convert(time,getdate()) AS looptijdtijdstip,
-	'aukeonfleek' AS verkoper,
+	Verkoper AS verkoper,
 	0 AS veilinggesloten
 from GrootDBBedrijf.dbo.Items
 order by Titel
 go
 
-Insert into iConcept.dbo.Voorwerp_in_Rubriek(voorwerpnummer, rubrieknummer)
-SELECT TOP 50
+Insert into testDB.dbo.Voorwerp_in_Rubriek(voorwerpnummer, rubrieknummer)
+SELECT
 	ID as voorwerpnummer,
 	Categorie as rubrieknummer
 	FROM GrootDBBedrijf.dbo.Items
@@ -189,16 +200,25 @@ SELECT TOP 50
 GO
 
 
-Insert into iConcept.dbo.Bestand(voorwerpnummer)
-SELECT TOP 50
-		ID as voorwerpnummer
+Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
+SELECT
+		ID as voorwerpnummer,
+		'http://iproject39.icasites.nl/thumbnails/' + Thumbnail
 		FROM GrootDBBedrijf.dbo.Items
 		ORDER BY Titel
 GO
 
-	
+Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
+SELECT
+		ItemID as voorwerpnummer,
+		'http://iproject39.icasites.nl/pics/' + IllustratieFile as filenaam
+		FROM GrootDBBedrijf.dbo.Illustraties
+GO
+
+/*
 
 Select * from testDB.dbo.Gebruiker
+Select * from iConcept.dbo.Gebruiker
 
 Select * from iConcept.dbo.Voorwerp_in_Rubriek
 
@@ -207,8 +227,27 @@ select * from GrootDBBedrijf.dbo.Items
 
 select * from GrootDBBedrijf.dbo.Illustraties
 
-select * from GrootDBBedrijf.dbo.Users
+select * from GrootDBBedrijf.dbo.Users order by Username
 
+
+*/
+
+/* SQL QUERY OM TE KIJKEN VOOR DUPLICATE RECORDS 
+select *
+from (
+  select *, rn=row_number() over (partition by Username order by Username)
+  from GrootDBBedrijf.dbo.Users
+) x
+where rn > 1;
+*/
+
+/* SQL QUERY OM DUPLICATE RECORDS TE VERWIJDEREN 
+delete x from (
+  select *, rn=row_number() over (partition by Username order by Username)
+  from GrootDBBedrijf.dbo.Users
+) x
+where rn > 1;
+*/
 
 select voorwerpnummer, COUNT(filenaam)
 FROM Bestand

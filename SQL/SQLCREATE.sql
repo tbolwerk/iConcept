@@ -139,7 +139,7 @@ REFERENCES Gebruiker (gebruikersnaam)
 create table dbo.Bestand  
 (
 id int identity(1,1),
-filenaam varchar(50) default 'img/producten/template.jpg' not null,  /* een variabele filenaam want niet elke filenaam is even groot. Verlengd voor combinaties */
+filenaam varchar(255) default 'img/producten/template.jpg' not null,  /* een variabele filenaam want niet elke filenaam is even groot. Verlengd voor combinaties en data van de grote database. */
 voorwerpnummer bigint not null,  /* bigint zodat er zoveel combinaties zijn */
 CONSTRAINT pk_id PRIMARY KEY (id),  
 CONSTRAINT fk_Bestand_voorwerpnummer FOREIGN KEY (voorwerpnummer)  

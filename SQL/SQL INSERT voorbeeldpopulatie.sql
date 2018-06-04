@@ -3,7 +3,8 @@ Veilingsite Eenmaal Andermaal
 Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Janno Onink 602808, Suzanne Bogaard 603439, Auke Onvlee 604640
 Datum: 07-05-2018
 */
-use iConcept;
+use testDB;
+--use iConcept;
 
 delete from Rubriek;
 delete from Landen;

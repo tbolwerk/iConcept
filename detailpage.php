@@ -2,16 +2,12 @@
 $current_page='detailpage';
 require_once('templates/header.php');
 
-// function random_color() {
-//   $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
-//   echo "style='background-color: {$color};'";
-// }
 if(isset($_POST['block'])){
   $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
 }
 
-if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
+if (isset($_GET['id'])) {
   if(!isset($_SESSION['username'])){
     $error = "U moet ingelogt zijn om te bieden klik <br><a href='login.php'>hier om in te loggen</a>";
   }else{
@@ -27,7 +23,9 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
       } catch(PDOException $e){
         $error = $e->getMessage();
-        $error = "";
+        echo "<!--|-~----~-|Database error|-~----~-|-->";
+        echo "<!--{$error}-->";
+        $error = "Invalid bid";
       }
     }
   }
@@ -80,9 +78,6 @@ try{
 }catch(PDOException $e){
 
 }
-
-  // $minIncrease = 1;
-  // $minBidAmount = $maxbid[0] + $minIncrease;
 
   if (isset($_SESSION['username']) && $_SESSION['username'] == $results['verkoper']) {
     $input = "disabled";
@@ -207,24 +202,6 @@ try{
       <p><?=$results['verzendinstructies']?></p>
     </div>
   </div>
-  <!-- <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quam justo, ultricies eget enim a, viverra rutrum massa.
-    Praesent semper faucibus luctus. Donec condimentum interdum augue, eget scelerisque justo tempor a. Suspendisse orci dolor, lobortis quis lacus quis,
-    aliquam mollis enim. Integer finibus venenatis arcu id viverra. Cras nec enim sed dolor laoreet efficitur quis sed arcu. Fusce ligula sapien, tincidunt
-    eget quam ac, hendrerit tristique erat. Aliquam ullamcorper nibh ac ipsum volutpat tincidunt. Etiam et felis orci.
-  </p>
-  <p>
-    Ut tellus nisl, ultricies vehicula iaculis sed, scelerisque at orci. Aliquam id vulputate ex. Nunc dolor erat, mollis eget rutrum ut, laoreet ac sapien. Sed imperdiet diam at arcu hendrerit, non convallis risus aliquet. Fusce quis lobortis purus. Maecenas feugiat rhoncus lacus sagittis ornare. Mauris ac placerat orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-  </p>
-  <p>
-    Integer dapibus metus risus, tempor ultricies tortor tincidunt sed. Suspendisse vitae ligula nec dolor finibus efficitur at a metus. Aenean ullamcorper urna metus. Vestibulum mollis consequat placerat. Duis imperdiet tellus imperdiet scelerisque molestie. Vestibulum eget urna id purus mollis malesuada sit amet vitae mi. Quisque non porttitor augue. Nulla felis odio, malesuada finibus tincidunt id, porttitor elementum justo. Proin eu mi eu nisl malesuada ultricies. Integer sed ligula dignissim nulla sodales egestas. Aliquam vel ligula venenatis, vulputate augue quis, dignissim quam. Proin ex diam, sodales a aliquam vel, accumsan eu lacus. Etiam posuere efficitur urna. Maecenas molestie faucibus felis, in pellentesque nisi sagittis ut. Suspendisse eget est ut purus ultricies blandit. Maecenas vel pellentesque sem.
-  </p>
-  <p>
-    Nulla aliquam ipsum odio, et egestas dolor lacinia vitae. Duis non laoreet erat, sit amet volutpat elit. Sed efficitur arcu vitae neque auctor, a scelerisque ipsum commodo. Sed cursus velit in ex facilisis lobortis. Nam pretium odio nibh, et blandit nulla vehicula a. Quisque euismod, metus eget convallis facilisis, nibh odio ultrices tellus, vel ultricies metus nulla quis massa. Nunc vulputate neque quis mauris tempus, et congue velit rhoncus. Pellentesque dignissim mollis nisl sit amet efficitur. Quisque venenatis volutpat tellus, molestie ullamcorper sapien rhoncus sit amet.
-  </p>
-  <p>
-    Pellentesque congue vehicula neque ut vestibulum. Aenean leo urna, tempor in venenatis et, aliquam elementum felis. Aliquam condimentum felis facilisis tempus commodo. Duis semper mi vel nulla tincidunt, nec viverra libero pharetra. Sed at feugiat sem. Donec euismod sem non ligula scelerisque vestibulum. Duis eget iaculis tortor, sed viverra lacus. Mauris ultricies sed nulla a eleifend. Cras consectetur porta risus, sit amet vestibulum arcu molestie sit amet. Sed dapibus dolor id lectus semper, vitae euismod leo sodales. Quisque vel vehicula dui. Integer aliquet odio arcu, vitae efficitur odio consequat vitae. Pellentesque augue erat, ornare id laoreet ut, rutrum ac arcu. Maecenas consectetur est risus, et lobortis quam interdum vitae. Quisque lorem lectus, suscipit a est nec, iaculis bibendum neque.
-  </p> -->
 </div>
 
 <script>

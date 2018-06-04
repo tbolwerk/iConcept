@@ -136,37 +136,6 @@ GO
 Een nieuw bod moet hoger zijn dan al bestaande bedragen die geboden zijn voor hetzelfde voorwerp, 
 en tenminste zoveel hoger als de minimumverhoging voorschrijft (zie appendix B, proces 3.1). */
 
-CREATE FUNCTION dbo.CheckHoogsteBod (@voorwerpnummer INT ,@bodbedrag NUMERIC(9, 2))
-RETURNS BIT
-AS
-BEGIN
-	DECLARE @hoogstebod NUMERIC(9, 2);
-	DECLARE @startprijs NUMERIC(9, 2);
-
-	SET @startprijs = (SELECT startprijs
-	FROM Voorwerp
-	WHERE Voorwerpnummer = @voorwerpnummer)
-
-
-	SET @hoogstebod = (SELECT TOP (1) bodbedrag FROM Bod WHERE voorwerpnummer = 1 AND NOT  bodbedrag = @startprijs ORDER BY bodbedrag DESC)
-
-	IF @hoogstebod > @startprijs OR @hoogstebod = NULL
-	BEGIN
-		RETURN 1
-	END;
-
-	RETURN 0
-END;
-GO
-
-
-ALTER TABLE Bod 
-ADD CONSTRAINT CHK_CheckIsHogerBod
-CHECK (dbo.CheckHoogsteBod(voorwerpnummer, bodbedrag) = 1)
-GO
-
-
-select * from Bod
 
 IF OBJECT_ID('CHK_CheckHogerBod') IS NOT NULL BEGIN ALTER TABLE Bod 
 DROP CONSTRAINT CHK_CheckHogerBod END

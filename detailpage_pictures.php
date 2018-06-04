@@ -38,7 +38,7 @@ function generatePictureSelector($pictures){
 <script>
 var pictures = <?php echo json_encode($pictures); ?>;
 function updatePicture(pictureId){
-  console.log("hoi");
+  
   document.getElementById("active-picture").innerHTML = "<div class='pictureFrame'><img height='100%' src='" + pictures[pictureId].filenaam + "'></img></div>"
 }
 

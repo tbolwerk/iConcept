@@ -61,7 +61,7 @@ LEFT JOIN (
             </div>
 
             <div class='view overlay mdb-blue'>
-              <a href='detailpage.php?id=".$row['voorwerpnummer']."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
+              <a href='detailpage.php?id=".$voorwerpnummer."' class='veiling-bieden'><div class='mask flex-center rgba-white-slight waves-effect waves-light'></div>
                   <p style='text-align:center'>Bieden</p>
                 </div>
               </a>

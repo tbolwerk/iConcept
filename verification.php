@@ -3,7 +3,9 @@ $current_page='register';
 require('templates/header.php');
 require_once("templates/register/f_verification.php");
 
+
 verification($_GET['username'],$_GET['code']);
+
 ?>
 
 <!--

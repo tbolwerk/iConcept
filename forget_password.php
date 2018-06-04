@@ -40,7 +40,7 @@ $update_password= $dbh->prepare("UPDATE Gebruiker SET wachtwoord=? WHERE email=?
 $hash=password_hash($new_password, PASSWORD_DEFAULT);
 $update_password->execute(array($hash,$to));
 }catch(PDOException $e){
-  $error = $e;
+  echo $e;
 }
 
 $subject = "Reset Password EenmaalAndermaal";

@@ -36,7 +36,7 @@ function mailUser($email, $username, $type) {
 	case 'wachtwoordvergeten':
 
 	break;
-	case 'wachtwoordwijzigen':
+	case 'emailwijzigen':
 	    $statement = $dbh->prepare("select voornaam, achternaam, code from Gebruiker G join Verificatiecode V on G.gebruikersnaam = V.gebruikersnaam where G.gebruikersnaam = ?");
     $statement->execute(array($username));
     $results = $statement->fetch();

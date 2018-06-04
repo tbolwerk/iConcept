@@ -29,6 +29,8 @@ LEFT JOIN (
              $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
              $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
+						 $titel = strip_tags($row['beschrijving']);
+			       $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
              $countdown = $closingtime;
 
@@ -41,15 +43,15 @@ LEFT JOIN (
 			$auction.="  <div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' src='".$row['filenaam']."' alt='".$row['titel']."' />
+              <img class='card-img-top' src='".$row['filenaam']."' alt='".$titel."' />
             </div>
             <div class='card-body'>
               <span class='small-font'>".$voorwerpnummer."</span>
-              <h4 class='card-title'>".$row['titel']." #".$voorwerpnummer."</h4>
+              <h4 class='card-title'>".$titel." #".$voorwerpnummer."</h4>
               <hr>
               <div class='card-text'>
                 <p>
-                ".$row['beschrijving']."
+                ".$beschrijving."
                 </p>
               </div>
               <hr />

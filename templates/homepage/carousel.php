@@ -31,6 +31,8 @@ if(isset($row['hoogsteBod'])){
 		 $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
 		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
+     $titel = strip_tags($row['beschrijving']);
+     $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
 		 $countdown = $closingtime;
 	$out = '';
@@ -39,16 +41,16 @@ $carousel[]=	'			<div class="col-md-3">
 					<div class="card auction-card mb-4">
 						<div class="view overlay">
 						<a href="detailpage.php?id='.$voorwerpnummer.'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
-							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$row["titel"].'" />
+							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$titel.'" />
 						</a>
 						</div>
 						<div class="card-body">
 							<span class="small-font">'.$voorwerpnummer.'</span>
-							<h4 class="card-title">'.$row["titel"].'</h4>
+							<h4 class="card-title">'.$titel.'</h4>
 							<hr>
 							<div class="card-text">
 								<p>
-									'.$row["beschrijving"].'
+									'.$beschrijving.'
 								</p>
 							</div>
 							<hr />

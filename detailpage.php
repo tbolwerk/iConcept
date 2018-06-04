@@ -39,7 +39,7 @@ try{
   $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 }catch(PDOException $e){
-  
+
 }
 try{
   $statement = $dbh->prepare("select * from Bod where voorwerpnummer = ?");
@@ -228,7 +228,7 @@ try{
 </div>
 
 <script>
-countdown('timer', <?php echo "'{$results['looptijdeindedag2']}'"; ?>);
+countdown('timer', <?php echo "'{$closingtime}'"; ?>);
 
 var x = setInterval(function() {
   var xhttp;

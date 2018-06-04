@@ -2,11 +2,10 @@
 $current_page='register';
 require('templates/header.php');
 require_once("templates/register/f_verification.php");
-if(isset($_GET['email'])){
-  verification($_GET['username'],$_GET['code'],$_GET['email']);
-}else{
+
+
 verification($_GET['username'],$_GET['code']);
-}
+
 ?>
 
 <!--

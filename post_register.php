@@ -17,7 +17,7 @@ if(isset($_GET['username'])){
 		$firstname = $result['voornaam'];
 
 		$code = random_password(6);
-		createVerificationCode($username, $code);
+		createVerificationCode($username, $code,$result['email']);
 
 		$email = $result['email'];
 		mailUser($email, $username, 'registratie');

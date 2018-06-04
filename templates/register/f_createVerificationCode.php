@@ -1,6 +1,6 @@
 <?php
 //Inserts a verification code into the database
-function createVerificationCode($username, $random_password, $email = 0) {
+function createVerificationCode($username, $random_password, $email) {
 	global $dbh;
 	global $error;
 

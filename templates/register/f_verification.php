@@ -20,9 +20,10 @@ function verification($getUsername, $getCode) {
   	$codeValid = false;
 	}
 
-	$storedUsername = $results[0];
-	$storedTime = $results[1];
-	$storedCode = $results[2];
+	$storedUsername = $results['gebruikersnaam'];
+	$storedTime = $results['begintijd'];
+	$storedCode = $results['code'];
+	$storedEmail = $results['email'];
 
 	$deltaTime = time() - $storedTime;
 
@@ -31,16 +32,11 @@ function verification($getUsername, $getCode) {
     $error = "Time has expired";
 	}
 
-	if ($codeValid && $results['email'] == 0) {
-  	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 where gebruikersnaam = ?");//set activatie bit to 1
-  	$statement->execute(array($storedUsername));
+	if ($codeValid) {
+  	$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1, email=? where gebruikersnaam = ?");//set activatie bit to 1
+  	$statement->execute(array($storedEmail,$storedUsername));
   	$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
   	$statement->execute(array($storedUsername));
-	}else if($codeValid && $results['email'] != 0){
-		$statement = $dbh->prepare("update Gebruiker set geactiveerd = 1 AND email=? where gebruikersnaam = ?");//set activatie bit to 1
-		$statement->execute(array($results['email'],$storedUsername));
-		$statement = $dbh->prepare("delete Verificatiecode where gebruikersnaam = ?");//clean database
-		$statement->execute(array($storedUsername));
 	}
 }
 ?>

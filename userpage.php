@@ -122,11 +122,12 @@ $email_exists = false;
   }
 }
 if($results[0]['email'] != $email && $email_exists == false){
-  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie link om de wijziging door te voeren</p>";
+
   $code = random_password(6);
   $username = $_SESSION['username'];
   $activation = 0;
-  createVerificationCode($_SESSION['username'],$code);
+  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='?username=".$_SESSION['username']."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
+  createVerificationCode($_SESSION['username'],$code,$email);
   mailUser($email, $username, 'wachtwoordwijzigen');
 }
 

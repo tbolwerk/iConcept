@@ -1,5 +1,5 @@
 <?php
-$current_page='register';
+$current_page='userpage';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/header.php';
 require_once("templates/register/f_createVerificationCode.php");
 require_once("templates/mail/mailUser.php");
@@ -16,12 +16,12 @@ if(isset($_GET['username'])){
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
 		$firstname = $result['voornaam'];
-
+	$email = $result['email'];
 		$code = random_password(6);
-		createVerificationCode($username, $code);
+		createVerificationCode($username, $code, $email);
 
-		$email = $result['email'];
-		mailUser($email, $username, 'registratie');
+
+		mailUser($email, $username, 'emailwijzigen');
 	}
 } else { //Dit blok is om de pagina te kunnen testen zonder daadwerkelijk een gebruiker te hoeven registreren
 	$email = "janbeenham@hotmail.com";

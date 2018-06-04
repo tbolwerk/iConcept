@@ -57,7 +57,7 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
 
       $countdown = $closingtime;
 
-
+      $beschrijving = strip_tags($row['beschrijving'],<br>);
 
       $auctionpage.='
 
@@ -74,7 +74,7 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
         <hr>
         <div class="card-text">
           <p>
-            '.$row["beschrijving"].'
+            '.$beschrijving.'
           </p>
         </div>
         <hr />

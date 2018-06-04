@@ -145,14 +145,10 @@ select DISTINCT TOP 20 d.ID as voorwerpnummer,
 				d.Prijs as startprijs,
 */
 
-use testDB;
-delete from Bestand;
-delete from Voorwerp_in_Rubriek;
-delete from Voorwerp;
 
 
 SET IDENTITY_INSERT Voorwerp ON
-insert into testDB.dbo.Voorwerp(titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
+insert into iConcept.dbo.Voorwerp(titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
 SELECT TOP 20
 	SUBSTRING(Titel,0,50) AS titel,
 	dbo.udf_StripHTML(Beschrijving) as beschrijving,

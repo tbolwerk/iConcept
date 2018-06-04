@@ -1,7 +1,7 @@
 <?php
 
  $hostname = "77.174.95.152";
- $dbname = "testDB";
+ $dbname = "iConcept";
  $uid = "iConcept";
  $pw ="Welkom01!";
 

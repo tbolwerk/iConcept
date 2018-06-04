@@ -1,5 +1,6 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/connect.php');
+$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+require_once($server . '/iconcept/templates/connect.php');
 function livesearch($post_livesearch){//livesearch function met parameter $_POST['search']
   global $dbh;
   global $rubrieken;

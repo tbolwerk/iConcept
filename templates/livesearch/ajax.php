@@ -1,9 +1,9 @@
 <?php
-
+$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
 //Including Database configuration file.
-require_once($_SERVER['DOCUMENT_ROOT'] . '/iconcept/templates/connect.php');
+require_once($server . '/iconcept/templates/connect.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/iconcept/templates/livesearch/f_livesearch.php");
+require_once($server . "/iconcept/templates/livesearch/f_livesearch.php");
 
 $return = "";
   echo "<ul>";

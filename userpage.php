@@ -126,7 +126,7 @@ if($results[0]['email'] != $email && $email_exists == false){
   $code = random_password(6);
   $username = $_SESSION['username'];
   $activation = 0;
-  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='?username=".$_SESSION['username']."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
+  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$_SESSION['username']."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
   createVerificationCode($_SESSION['username'],$code,$email);
   mailUser($email, $username, 'wachtwoordwijzigen');
 }

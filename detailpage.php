@@ -215,7 +215,7 @@ if (isset($_GET['id'])) { //Dit hele ding is nog een WIP
 </div>
 
 <script>
-countdown('timer', <?php echo "'{$results['looptijdeindedag2']} {$results['looptijdtijdstip']}'"; ?>);
+countdown('timer', <?php echo "'{$results['looptijdeindedag2']}'"; ?>);
 
 var x = setInterval(function() {
   var xhttp;

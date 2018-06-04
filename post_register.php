@@ -2,7 +2,7 @@
 $current_page='register';
 require('templates/header.php');
 require_once("templates/register/f_createVerificationCode.php");
-require_once("templates/mail/f_registerVerificationMail.php");
+require_once("templates/mail/f_verificationMail.php");
 
 if(isset($_GET['username'])){
 	$username = $_GET['username'];
@@ -17,10 +17,10 @@ if(isset($_GET['username'])){
 		$firstname = $result['voornaam'];
 
 		$code = random_password(6);
-		createVerificationCode($username, $code,$result['email']);
+		createVerificationCode($username, $code, $result['email']);
 
 		$email = $result['email'];
-		registerVerificationMail($email, $username, $code);
+		verificationMail($email, $username, $code, 'register');
 	}
 } else { //Dit blok is om de pagina te kunnen testen zonder daadwerkelijk een gebruiker te hoeven registreren
 	$email = "janbeenham@hotmail.com";

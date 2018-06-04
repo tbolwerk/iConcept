@@ -4,7 +4,7 @@ Auteurs: Michael Kalil 590395, Twan Bolwerk 598576, Ivan Miladinovic 599294, Jan
 Datum: 24-04-2018
 */
 
-use iConcept;
+use testDB;
 
 /* B1 */
 /*
@@ -135,7 +135,6 @@ GO
 /* B 5	Tabel Bod:
 Een nieuw bod moet hoger zijn dan al bestaande bedragen die geboden zijn voor hetzelfde voorwerp, 
 en tenminste zoveel hoger als de minimumverhoging voorschrijft (zie appendix B, proces 3.1). */
-
 
 IF OBJECT_ID('CHK_CheckHogerBod') IS NOT NULL BEGIN ALTER TABLE Bod 
 DROP CONSTRAINT CHK_CheckHogerBod END

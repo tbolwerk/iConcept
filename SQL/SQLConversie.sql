@@ -199,7 +199,7 @@ SELECT
 	ORDER BY Titel
 GO
 
-
+/*
 Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
 SELECT
 		ID as voorwerpnummer,
@@ -207,6 +207,7 @@ SELECT
 		FROM GrootDBBedrijf.dbo.Items
 		ORDER BY Titel
 GO
+*/
 
 Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
 SELECT

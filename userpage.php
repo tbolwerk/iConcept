@@ -4,7 +4,7 @@ require_once('templates/header.php');
 require_once("templates/userpage/f_addAvatar.php");
 require_once("templates/userpage/f_changePassword.php");
 require_once("templates/register/f_createVerificationCode.php");
-require_once("templates/mail/f_mailUser.php");
+require_once("templates/mail/f_verificationMail.php");
 $message = "";
 function updatePhones() {
   global $dbh;
@@ -115,7 +115,7 @@ if(isset($_POST['tab1submit'])) {
   $statement = $dbh->query("SELECT email FROM Gebruiker");
 $email_exists = false;
   while($row = $statement->fetch()){
-  if($email == $row['email']){
+  if($email == $row['email'] && $results[0]['email'] != $email){
     $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
     $email_exists = true;
     break;
@@ -128,7 +128,7 @@ if($results[0]['email'] != $email && $email_exists == false){
   $activation = 0;
   $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$_SESSION['username']."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
   createVerificationCode($_SESSION['username'],$code,$email);
-  mailUser($email, $username, 'wachtwoordwijzigen');
+  verificationMail($email, $username, $code, 'mail');
 }
 
 

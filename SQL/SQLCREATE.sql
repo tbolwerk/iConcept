@@ -8,7 +8,9 @@ http://webarchive.nationalarchives.gov.uk/+/http://www.cabinetoffice.gov.uk/medi
 
 */
 
-use iConcept;
+--use iConcept;
+
+use testDB;
 
 
 DROP TABLE [Bod] 
@@ -49,7 +51,7 @@ constraint pk_vraagnummer primary key (vraagnummer)
 
 create table dbo.Gebruiker  
 (  
-gebruikersnaam varchar(25) not null,  /* https://stackoverflow.com/questions/7035974/what-is-the-preferred-length-of-a-username-and-password */
+gebruikersnaam varchar(35) not null,  /* https://stackoverflow.com/questions/7035974/what-is-the-preferred-length-of-a-username-and-password , uiteindelijk wordt het 35 zodat we de gegevens goed kunnen importeren*/
 voornaam varchar(35) not null,  /* volgens britse internationale standaard */
 achternaam varchar(35) not null,  /* zie hierboven */
 adresregel1 varchar(35) not null,  /* zie hierboven*/
@@ -74,7 +76,7 @@ constraint ck_email check(email like '%___@___%.__%')
 /* toevoeging tabel voor verificatie code */
 create table dbo.Verificatiecode  
 ( 
-gebruikersnaam varchar(25) not null, 
+gebruikersnaam varchar(35) not null, 
 begintijd bigint not null, 
 code char(6) not null, 
 email varchar(100) not null,
@@ -87,7 +89,7 @@ REFERENCES Gebruiker(gebruikersnaam) ,
 
 create table dbo.Verkoper  
 ( 
-gebruikersnaam varchar(25) not null,  /* https://stackoverflow.com/questions/7035974/what-is-the-preferred-length-of-a-username-and-password */
+gebruikersnaam varchar(35) not null,  /* https://stackoverflow.com/questions/7035974/what-is-the-preferred-length-of-a-username-and-password */
 banknaam varchar(75),   /* https://forums.collectors.com/discussion/960991/whats-the-longest-national-bank-name */
 rekeningnummer varchar(34),  /* https://en.wikipedia.org/wiki/International_Bank_Account_Number */
 controleoptienaam varchar(11) not null, /* is of creditcard of post */
@@ -119,8 +121,8 @@ looptijdbegindag date not null,
 looptijdtijdstip time not null,  /* looptijd einde tijdstip verwijdert omdat AF2 hetzelfde wil en naamgeving verandert naar tijdstip */
 verzendkosten numeric(5,2),  
 verzendinstructies varchar(255),  
-verkoper varchar(25) not null,  /* afgestemd op gebruikersnaam */
-koper varchar(25),   /* afgestemd op gebruikersnaam */
+verkoper varchar(35) not null,  /* afgestemd op gebruikersnaam */
+koper varchar(35),   /* afgestemd op gebruikersnaam */
 veilinggesloten bit not null,  /* Bit als true/false = wel/niet */
 verkoopprijs numeric(9,2),  
 geblokkeerd bit DEFAULT 0,
@@ -151,7 +153,7 @@ create table dbo.Bod
 (  
 voorwerpnummer bigint not null,  /* zie hierboven */
 bodbedrag numeric(9,2) not null,  /* numeric voor komma's en meer grotere bedragen */
-gebruikersnaam varchar(25) not null,  
+gebruikersnaam varchar(35) not null,  
 boddag date not null,  /* date is beter om dag op te slaan dan een char, werkt ook beter met applicaties dan een int/char*/
 bodtijdstip TIME not null,  /* normaal date slaat de tijd niet op, daarvoor gebruiken we time */
 CONSTRAINT pk_voorwerp_bodbedrag PRIMARY KEY (voorwerpnummer, bodbedrag),  
@@ -182,7 +184,7 @@ CONSTRAINT ck_KoperVerkoper CHECK (soortgebruiker IN ('koper', 'verkoper'))
 create table dbo.Gebruikerstelefoon  
 (  
 volgnummer int identity(1,1) not null,  
-gebruikersnaam varchar(25) not null,   
+gebruikersnaam varchar(35) not null,   
 telefoonnummer varchar(15) not null,  /* https://en.wikipedia.org/wiki/E.164 */
 CONSTRAINT pk_volgnr_gebruikersnaam PRIMARY KEY (volgnummer, gebruikersnaam),  
 CONSTRAINT fk_GebrTelefoon_GebrGebruikersnaam FOREIGN KEY (gebruikersnaam)  
@@ -234,7 +236,7 @@ CONSTRAINT CHK_DATUM CHECK (begindatum < einddatum)
 
 create table dbo.VerificatieVerkoper -- Nieuwe tabel voor de verificatie codes. Gemaakt door Janno.
 (
-gebruikersnaam varchar(25) not null,
+gebruikersnaam varchar(35) not null,
 code char(6) not null,
 CONSTRAINT pk_verificatieverkoper PRIMARY KEY (gebruikersnaam, code), 
 CONSTRAINT fk_verificatieverkoper_gebruikersnaam FOREIGN KEY (gebruikersnaam)  

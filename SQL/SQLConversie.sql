@@ -1,17 +1,21 @@
 SET NOCOUNT ON 
 
-use testDB
+use iConcept;
 
-delete from Rubriek;
-DBCC CHECKIDENT(Rubriek, RESEED, 0);
-delete from Bestand;
-delete from Voorwerp;
-delete from Verkoper;
-delete from Gebruikerstelefoon;
-delete from Verificatiecode;
-delete from Gebruiker;
-delete from Vraag;
-delete from Landen;
+--delete from Rubriek;
+--DBCC CHECKIDENT(Rubriek, RESEED, 0);
+--delete from Bestand;
+--delete from Bod;
+--delete from Voorwerp_In_Rubriek;
+--delete from Voorwerp;
+--delete from Verkoper;
+--delete from Gebruikerstelefoon;
+--delete from Verificatiecode;
+--delete from Gebruiker;
+--delete from Vraag;
+--delete from Landen;
+
+
 
 
 
@@ -127,16 +131,26 @@ select DISTINCT d.GBA_CODE as landcode,
 				from GrootDBBedrijf.dbo.tblIMAOLand d
 
 				
-insert into testDB.dbo.Gebruiker
-select DISTINCT d.Username as gebruikersnaam,
+insert into testDB.dbo.Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper, geactiveerd)
+select DISTINCT TOP 50 d.Username as gebruikersnaam,
+				'Voornaam' as voornaam,
+				'Achternaam' as achternaam,
+				'Niet ingevoerd' as adresregel1,
 				d.Postalcode as postcode,
+				'niet ingevoerd' as plaatsnaam,
 				d.Location as land,
+				'1990-01-01' as geboortedatum,
+				'twanbolwerk'+ '+' + D.Username + '@gmail.com' as email,
 				cast((Abs(Checksum(NewId()))%10) as varchar(1)) + 
 				char(ascii('a')+(Abs(Checksum(NewId()))%25)) +
 				char(ascii('A')+(Abs(Checksum(NewId()))%25)) +
 				left(newid(),5) as wachtwoord,
-				CAST(RAND(CHECKSUM(NEWID())) * 10 as INT) + 1 as vraagnummer
+				1 as vraagnummer,
+				'1990-01-01' as antwoordtekst,
+				1 as verkoper,
+				1 as geactiveerd
 				from GrootDBBedrijf.dbo.Users d
+GO
 /*
 insert into testDB.dbo.Voorwerp
 select DISTINCT TOP 20 d.ID as voorwerpnummer,
@@ -147,13 +161,14 @@ select DISTINCT TOP 20 d.ID as voorwerpnummer,
 
 
 
-SET IDENTITY_INSERT Voorwerp ON
-insert into iConcept.dbo.Voorwerp(titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
-SELECT TOP 20
+
+insert into iConcept.dbo.Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, plaatsnaam, land, looptijd, looptijdbegindag, looptijdtijdstip, verkoper, veilinggesloten)
+SELECT TOP 50
+	ID as voorwerpnummer,
 	SUBSTRING(Titel,0,50) AS titel,
 	dbo.udf_StripHTML(Beschrijving) as beschrijving,
 	Prijs AS startprijs,
-	'Bank/Giro' AS betalingswijze,
+	'Bank' AS betalingswijze,
 	'unset' AS plaatsnaam,	
 	Locatie AS land,
 	10 AS looptijd,
@@ -162,13 +177,37 @@ SELECT TOP 20
 	'aukeonfleek' AS verkoper,
 	0 AS veilinggesloten
 from GrootDBBedrijf.dbo.Items
-SET IDENTITY_INSERT Voorwerp OFF
+order by Titel
+go
 
+Insert into iConcept.dbo.Voorwerp_in_Rubriek(voorwerpnummer, rubrieknummer)
+SELECT TOP 50
+	ID as voorwerpnummer,
+	Categorie as rubrieknummer
+	FROM GrootDBBedrijf.dbo.Items
+	ORDER BY Titel
+GO
+
+
+Insert into iConcept.dbo.Bestand(voorwerpnummer)
+SELECT TOP 50
+		ID as voorwerpnummer
+		FROM GrootDBBedrijf.dbo.Items
+		ORDER BY Titel
+GO
+
+	
+
+Select * from testDB.dbo.Gebruiker
+
+Select * from iConcept.dbo.Voorwerp_in_Rubriek
 
 Select * from testDB.dbo.Voorwerp
 select * from GrootDBBedrijf.dbo.Items
 
+select * from GrootDBBedrijf.dbo.Illustraties
 
+select * from GrootDBBedrijf.dbo.Users
 
 
 select voorwerpnummer, COUNT(filenaam)

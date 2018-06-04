@@ -1,7 +1,7 @@
 <?php
 global $dbh;
 try{
-$statement = $dbh->query("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
+$statement = $dbh->query("SELECT TOP(9) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
 SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
 ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
 ON vw.voorwerpnummer=b2.voorwerpnummer

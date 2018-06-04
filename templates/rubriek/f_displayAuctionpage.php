@@ -11,10 +11,7 @@ function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
 
 
   try{
-    if(($voorwerpnummer !=0)){
-    $data = $dbh->prepare("SELECT DISTINCT dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag2, vw.voorwerpnummer,titel,looptijd,looptijdtijdstip,looptijdbegindag,startprijs,plaatsnaam,beschrijving,verkoper,b.filenaam AS 'filenaam1',b.filenaam AS 'filenaam2',b.filenaam AS 'filenaam3',b.filenaam AS 'filenaam4' FROM Voorwerp vw LEFT JOIN Bestand b ON vw.voorwerpnummer=b.voorwerpnummer LEFT JOIN Bod bd ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.voorwerpnummer = ?");
-    $data->execute(array($voorwerpnummer));
-  }else if(($rubrieknummer !=0)){
+if(($rubrieknummer !=0)){
     $data = $dbh->prepare("SELECT * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
 SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
 ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2

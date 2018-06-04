@@ -2,27 +2,27 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree.php");
 
-$statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
-$rubrieken="";
-while($row = $statement->fetch()){
-$rubrieken.='<a class="dummy-media-object" href="?rubrieknummer='.$row["rubrieknummer"].'"><img class="round" src="" alt=""/><h3>'.$row["rubrieknaam"].'</h3></a>';
-}
-if(isset($_GET['rubrieknummer'])){
-$subrubriek = $_GET['rubrieknummer'];
-$statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknummerOuder = ?");
-$statement->execute(array($subrubriek));
-}else{
-  $statement = $dbh->query("SELECT * FROM Rubriek r WHERE rubrieknummerOuder!=-1 AND rubrieknummerOuder!=1");
-}
-$subrubrieken="";
-while($row = $statement->fetch()){
-  $subrubrieken.='<a class="dummy-media-object" href=""><img src="" alt=""/><h3>'.$row["rubrieknaam"].'</h3></a>';
-}
-$veilingen="";
-$statement = $dbh->query("SELECT * FROM Voorwerp");
-while($row = $statement->fetch()){
-  $veilingen.='<a class="dummy-media-object" href=""><img src="" alt=""/><h3>#'.$row['voorwerpnummer'].' '.$row["titel"].'</h3></a>';
-}
+// $statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
+// $rubrieken="";
+// while($row = $statement->fetch()){
+// $rubrieken.='<a class="dummy-media-object" href="?rubrieknummer='.$row["rubrieknummer"].'"><img class="round" src="" alt=""/><h3>'.$row["rubrieknaam"].'</h3></a>';
+// }
+// if(isset($_GET['rubrieknummer'])){
+// $subrubriek = $_GET['rubrieknummer'];
+// $statement = $dbh->prepare("SELECT * FROM Rubriek WHERE rubrieknummerOuder = ?");
+// $statement->execute(array($subrubriek));
+// }else{
+//   $statement = $dbh->query("SELECT * FROM Rubriek r WHERE rubrieknummerOuder!=-1 AND rubrieknummerOuder!=1");
+// }
+// $subrubrieken="";
+// while($row = $statement->fetch()){
+//   $subrubrieken.='<a class="dummy-media-object" href=""><img src="" alt=""/><h3>'.$row["rubrieknaam"].'</h3></a>';
+// }
+// $veilingen="";
+// $statement = $dbh->query("SELECT * FROM Voorwerp");
+// while($row = $statement->fetch()){
+//   $veilingen.='<a class="dummy-media-object" href=""><img src="" alt=""/><h3>#'.$row['voorwerpnummer'].' '.$row["titel"].'</h3></a>';
+// }
 
 
 

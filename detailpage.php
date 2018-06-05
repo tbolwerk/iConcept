@@ -130,7 +130,7 @@ try{
 
     <div class="col-md-5 product-info">
 
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
+      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?></h2></form>
 
       <hr>
 
@@ -155,6 +155,7 @@ try{
             </div>
             <div class="">
               <button type="submit" name="submit" class="btn elegant" <?php if(isset($input)){echo $input;}?>>Bied</button>
+              <?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-ban"></i></button><?php } ?>
             </div>
         </div>
       </form>

@@ -36,6 +36,12 @@ try{
   $results = $statement->fetch();
   $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+  $titel = strip_tags($results["titel"]);
+  $beschrijving = strip_tags($results["beschrijving"],'<br>');
+  $betalingswijze = strip_tags($results['betalingswijze']);
+  $betalingsinstructie = strip_tags($results['betalingsinstructie']);
+  $verzendkosten = strip_tags($results['verzendkosten']);
+  $verzendinstructies = strip_tags($results['verzendinstructies']);
 }catch(PDOException $e){
 
 }
@@ -130,7 +136,7 @@ try{
 
     <div class="col-md-5 product-info">
 
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
+      <form method="post" action=""><h2 class="product-title"><?=$titel?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
 
       <hr>
 
@@ -185,21 +191,21 @@ try{
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
-      <p><?=$results['beschrijving']?></p>
+      <p><?=$beschrijving?></p>
     </div>
     <div class="tab-pane fade" id="tab2" role="tabpanel">
       <p class="font-weight-bold niagara">Betaalwijze</p>
-      <p><?=$results['betalingswijze']?></p>
+      <p><?=$betalingswijze?></p>
       <br>
       <p class="font-weight-bold niagara">Betaalinstructie</p>
-      <p><?=$results['betalingsinstructie']?></p>
+      <p><?=$betalingsinstructie?></p>
     </div>
     <div class="tab-pane fade" id="tab3" role="tabpanel">
       <p class="font-weight-bold niagara">Verzendkosten</p>
-      <p>€<?=$results['verzendkosten']?></p>
+      <p>€<?=$verzendkosten?></p>
       <br>
       <p class="font-weight-bold niagara">Verzendinstructies</p>
-      <p><?=$results['verzendinstructies']?></p>
+      <p><?=$verzendinstructies?></p>
     </div>
   </div>
 </div>

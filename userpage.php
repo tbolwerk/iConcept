@@ -3,9 +3,44 @@ $current_page='userpage';
 require_once('templates/header.php');
 require_once("templates/userpage/f_addAvatar.php");
 require_once("templates/userpage/f_changePassword.php");
+require_once("templates/userpage/f_createVerificationCodeSeller.php");
+require_once("templates/userpage/f_registerSeller.php");
 require_once("templates/register/f_createVerificationCode.php");
 require_once("templates/mail/f_verificationMail.php");
 $message = "";
+
+function verificationSeller($username,$code)
+{
+	global $dbh;
+  global $message;
+
+	try {//checks if code exists in database
+		$statement = $dbh->prepare("SELECT code FROM VerificatieVerkoper WHERE gebruikersnaam = ?");
+		$statement->execute(array($username));
+		$results = $statement->fetch();
+	} catch (PDOException $e) {
+		$error = $e;
+		echo $error;
+	}
+
+	if($results[0] == $code){
+		try {
+			$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
+			$statement->execute(array($username));
+			$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
+			$statement->execute(array($username));
+			$_SESSION['seller'] = 1;
+      $message = "<p class='green-text lead'>U bent succesvol registreerd als verkoper.</p>";
+		} catch (PDOException $e) {
+			$error = $e;
+			echo $error;
+		}
+	}
+  else {
+    $message = "<p class='red-text lead'>De opgegeven verificatiecode is onjuist.</p>";
+  }
+}
+
 function updatePhones() {
   global $dbh;
 
@@ -64,6 +99,15 @@ function insertNumber($number, $phones, &$numbersToKeep) {
 
 //If user submits updated account data
 
+//If user tries to register as seller
+if(isset($_POST['registerseller'])){
+  registerSeller($_SESSION['username'], $_POST['checkoption'],$_POST['creditcard'],$_POST['bank'],$_POST['banknumber']);
+}
+
+//If users sumbit verificationcode to become seller
+if(isset($_POST['verify'])){
+  verificationSeller($_SESSION['username'], $_POST['code']);
+}
 
 //If user tries to change password
 if (isset($_POST['tab2submit'])) {
@@ -477,11 +521,77 @@ These values are for debugging purposes and are visible by inspecting the page s
         <div class="tab-pane fade" id="tab3" role="tabpanel">
           <?php
 if(!empty($results[0]['code'])){//checks for verification code
-    include('verification_seller.php');
+    ?>
+    <form method="post" action="">
+
+    	<div class="md-form">
+    		<label for="code">Verificatiecode</label>
+    		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="[A-z]{6}">
+        <div class="form-requirements">
+          <ul>
+            <li>Een code bestaat uit 6 tekens</li>
+            <li>Alleen hoofdletters en kleine letters zijn toegestaan</li>
+          </ul>
+        </div>
+    	</div>
+
+    	<button type="submit" name="verify">Word verkoper</button>
+    </form>
+    <?php
 }else if($results[0]['verkoper'] == 1 && empty($results[0]['code'])){//checks if user is seller and no verification code *double check
   echo "U bent al verkoper.";
 }else{//else option to register as seller
-      include('register_seller.php');
+      ?>
+      <!-- Form to register as seller -->
+      <form method="post" action="">
+      	<div class="userpage-form-header">
+      		<h1>Verkoper worden</h1>
+      	</div>
+
+      	<div class="md-form">
+      		<select name="checkoption" id="checkoption" class="form-control" required>
+      			<option value="">Kies controleoptie...</option>
+      			<option value="post">Code via post</option>
+      			<option value="creditcard">Creditcard</option>
+      		</select>
+      	</div>
+
+      	<div class="md-form" id="creditcardDiv" style="display: none;">
+      		<label for="creditcard">Creditcardnummer</label>
+      		<input type="text" class="form-control" name="creditcard" id="creditcard" value="">
+      		<div class="form-requirements black-text">
+      			<ul>
+      				<li>Enkel getallen</li>
+      				<li>Maximaal 19 getallen</li>
+      			</ul>
+      		</div>
+      	</div>
+
+      	<div class="md-form" id="bankDiv" style="display: none;">
+      		<label for="bank">Banknaam</label>
+      		<input type="text" class="form-control" name="bank" id="bank" value="">
+      		<div class="form-requirements black-text">
+      			<ul>
+      				<li>Banknaam maximaal 75 karakters</li>
+      			</ul>
+      		</div>
+      	</div>
+
+      	<div class="md-form" id="banknumberDiv" style="display: none;">
+      		<label for="banknumber">Rekeningnummer</label>
+      		<input type="text" class="form-control" name="banknumber" id="banknumber" value="">
+      		<div class="form-requirements black-text">
+      			<ul>
+      				<li>Mag maximaal 34 karakters bevatten</li>
+      			</ul>
+      		</div>
+      	</div>
+
+      	<div class="py-1 mt-3 text-center">
+        <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+      </div>
+      </form>
+      <?php
 }
 
   ?>
@@ -491,6 +601,30 @@ if(!empty($results[0]['code'])){//checks for verification code
     </div>
 
     <script src="js/functions.js"></script>
+    <script>
+    function updateForm() {
+      if (document.getElementById("checkoption").value == "post") {
+        document.getElementById("bankDiv").style.display = "block";
+    		document.getElementById("banknumberDiv").style.display = "block";
+    		document.getElementById("bank").required = true;
+    		document.getElementById("banknumber").required = true;
+      } else {
+    		document.getElementById("bankDiv").style.display = "none";
+    		document.getElementById("banknumberDiv").style.display = "none";
+    		document.getElementById("bank").required = false;
+    		document.getElementById("banknumber").required = false;
+    	}
+    	if (document.getElementById("checkoption").value == "creditcard") {
+        document.getElementById("creditcardDiv").style.display = "block";
+    		document.getElementById("creditcard").required = true;
+      } else {
+    		document.getElementById("creditcardDiv").style.display = "none";
+    		document.getElementById("creditcard").required = false;
+    	}
+    }
+
+    document.getElementById("checkoption").onchange = updateForm;
+    </script>
 
   </div>
   <?php include('templates/footer.php'); ?>

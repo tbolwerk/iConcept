@@ -5,99 +5,12 @@ require_once("templates/userpage/f_addAvatar.php");
 require_once("templates/userpage/f_changePassword.php");
 require_once("templates/userpage/f_createVerificationCodeSeller.php");
 require_once("templates/userpage/f_registerSeller.php");
+require_once("templates/userpage/f_verificationSeller.php");
+require_once("templates/userpage/f_insertPhoneNumber.php");
+require_once("templates/userpage/f_updatePhones.php");
 require_once("templates/register/f_createVerificationCode.php");
 require_once("templates/mail/f_verificationMail.php");
 $message = "";
-
-function verificationSeller($username,$code)
-{
-	global $dbh;
-  global $message;
-
-	try {//checks if code exists in database
-		$statement = $dbh->prepare("SELECT code FROM VerificatieVerkoper WHERE gebruikersnaam = ?");
-		$statement->execute(array($username));
-		$results = $statement->fetch();
-	} catch (PDOException $e) {
-		$error = $e;
-		echo $error;
-	}
-
-	if($results[0] == $code){
-		try {
-			$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
-			$statement->execute(array($username));
-			$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
-			$statement->execute(array($username));
-			$_SESSION['seller'] = 1;
-      $message = "<p class='green-text lead'>U bent succesvol registreerd als verkoper.</p>";
-		} catch (PDOException $e) {
-			$error = $e;
-			echo $error;
-		}
-	}
-  else {
-    $message = "<p class='red-text lead'>De opgegeven verificatiecode is onjuist.</p>";
-  }
-}
-
-function updatePhones() {
-  global $dbh;
-
-  //Receive all phone numbers associated with this account
-  $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
-  $statement->execute(array($_SESSION['username']));
-  $phones = $statement->fetchAll();
-
-  $numbersToKeep = array();
-
-  //Put all submitted numbers in an array and strip all duplicate numbers
-  $submittedPhones = array_unique(array($_POST['phone1'], $_POST['phone2'], $_POST['phone3']));
-
-  //Make sure all numbers are present in the database
-  foreach ($submittedPhones as $submittedPhone) {
-    if ($submittedPhone != "") {
-      insertNumber($submittedPhone, $phones, $numbersToKeep);
-    }
-  }
-  //Delete all phones associated with this account that shouldn't be kept
-  foreach ($phones as $phone) {
-    $hit = 0;
-
-    foreach ($numbersToKeep as $number) {
-      if ($phone['telefoonnummer'] == $number) {
-        $hit = 1;
-      }
-    }
-    if ($hit == 0) {
-      $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
-      $statement->execute(array($phone['volgnummer']));
-    }
-  }
-}
-
-//Insert a number into the database if the number can't be found in the $phones array, which should contain
-// all numbers in the database associated with this account
-function insertNumber($number, $phones, &$numbersToKeep) {
-  global $dbh;
-
-  $hit = 0;
-  foreach ($phones as $phone) {
-    if ($number == $phone['telefoonnummer']) {
-      $hit = 1;
-    }
-  }
-  //If the phone can't be found in the database
-  if ($hit == 0) {
-    //Insert it
-    $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
-    $statement->execute(array($_SESSION['username'], $number));
-  }
-  //This number should not be deleted
-  array_push($numbersToKeep, $number);
-}
-
-//If user submits updated account data
 
 //If user tries to register as seller
 if(isset($_POST['registerseller'])){
@@ -128,22 +41,19 @@ if (isset($_POST['tab2submit'])) {
 
 //If user submits a profile picture, upload it to the server
 if (isset($_POST['change_avatar'])) {
-    $username = $_SESSION['username'];
-    $picture = $_FILES['file'];
-    //addAvatar() can be found in functions.php
-    addAvatar($picture, $username);
+  $username = $_SESSION['username'];
+  $picture = $_FILES['file'];
+  addAvatar($picture, $username);
 }
 
 $username = $_SESSION['username'];
 
-//Receive account data from database
-$statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
-$statement->execute(array($username));
-$results = $statement->fetchAll();
-
-
-
+//If user submits updated account data
 if(isset($_POST['tab1submit'])) {
+	$statement = $dbh->prepare("SELECT email FROM Gebruiker WHERE gebruikersnaam = ?");
+	$statement->execute(array($username));
+	$currentmail = $statement->fetch()[0];
+
   //Remove any doublequotes and html tags
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
@@ -157,33 +67,31 @@ if(isset($_POST['tab1submit'])) {
   $activation = 1;
   $email = str_replace("\"", "", strip_tags($_POST['email']));
   $statement = $dbh->query("SELECT email FROM Gebruiker");
-$email_exists = false;
+	$email_exists = false;
   while($row = $statement->fetch()){
-  if($email == $row['email'] && $results[0]['email'] != $email){
-    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
-    $email_exists = true;
-    break;
-  }
-}
-//If the submitted mail is not equal to the mail in the database and noone else is using the submitted mail
-if($results[0]['email'] != $email && $email_exists == false){
-  $username = $_SESSION['username'];
+	  if($email == $row['email'] && $currentmail != $email){
+	    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
+	    $email_exists = true;
+	    break;
+	  }
+	}
+	//If the submitted mail is not equal to the mail in the database and noone else is using the submitted mail
+	if($currentmail != $email && $email_exists == false){
+	  $username = $_SESSION['username'];
 
-  //Generate verification code
-  $code = random_password(6);
-  createVerificationCode($username, $code, $email);
+	  //Generate verification code
+	  $code = random_password(6);
+	  createVerificationCode($username, $code, $email);
 
-  //Deactivate the account until the user clicks the link
-  $activation = 0;
+	  //Deactivate the account until the user clicks the link
+	  $activation = 0;
 
-  //Display message on webpage
-  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$username."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
+	  //Display message on webpage
+	  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$username."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
 
-  //Send mail with verification code
-  verificationMail($email, $username, $code, 'mail');
-}
-
-
+	  //Send mail with verification code
+	  verificationMail($email, $username, $code, 'mail');
+	}
 
   try { //Update the record for this user with the submitted data
     $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
@@ -198,6 +106,11 @@ if($results[0]['email'] != $email && $email_exists == false){
     $message = "<p class='red-text lead'>Er ging iets mis</p>";
   }
 }
+
+//Receive account data from database
+$statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
+$statement->execute(array($username));
+$results = $statement->fetchAll();
 
 // //Receive phone numbers for this user from database
 // $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");

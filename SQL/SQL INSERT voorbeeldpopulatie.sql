@@ -42,24 +42,24 @@ GO
 
 
 Insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper, geactiveerd)
-Values 
-		('janbeenham', 'Ján', 'van Dooren', 'De goudenstraat 93', '3712HT', 'Zeist', 'Nederland', '1970-03-03', 'janbeenham@hotmail.com', 'janbeenham00', 1, '03-03-1970',  1, 1),
-		('michkz', 'micháel', 'Kalil', 'De grote beer 5', '6501KL', 'Nijmegen', 'Nederland', '1997-11-08', 'MZ.Kalil@student.han.nl', '590395', 1, 'De grote beer', 1, 1),
-		('twankoekepan', 'twan', 'bolwerk', 'Heyéndaalseweg 98', '1010TH', 'Amsterdam', 'Nederland', '1994-11-02', 'TPN.Bolwerk@student.han.nl', '598576', 2, 'meisjenaam', 0, 1),
-		('ggwp', 'ivan', 'miladinoviç', 'De achterbergsestraatweg 139', '3913KL', 'Rhenen', 'Nederland', '1995-07-25', 'I.Miladinovic@student.han.nl', '599294', 3, 'pizza', 1, 1),
-		('aukeonfleek', 'Auké', 'Onvlee', 'De cuneraweg 17', '5262HP','Rotterdam', 'Nederland', '1998-02-03', 'AM.Onvlee@student.han.nl', '604640', 5, 'suus', 1, 1),
-		('klikokotsjongen', 'Youri', 'Maarnen', 'grebbeweg 23',  '3922XJ', 'Wageningen', 'Nederland', '1981-03-09', 'klikokotsjongen@gmail.com', 'klikokotsjongen00', 1, 'grebbeweg', 1, 0),
+Values
+		('janbeenham', 'Jï¿½n', 'van Dooren', 'De goudenstraat 93', '3712HT', 'Zeist', 'Nederland', '1970-03-03', 'janbeenham@hotmail.com', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 1, '03-03-1970',  1, 1),
+		('michkz', 'michï¿½el', 'Kalil', 'De grote beer 5', '6501KL', 'Nijmegen', 'Nederland', '1997-11-08', 'MZ.Kalil@student.han.nl', '590395', 1, 'De grote beer', 1, 1),
+		('twankoekepan', 'twan', 'bolwerk', 'Heyï¿½ndaalseweg 98', '1010TH', 'Amsterdam', 'Nederland', '1994-11-02', 'TPN.Bolwerk@student.han.nl', '598576', 2, 'meisjenaam', 0, 1),
+		('ggwp', 'ivan', 'miladinoviï¿½', 'De achterbergsestraatweg 139', '3913KL', 'Rhenen', 'Nederland', '1995-07-25', 'I.Miladinovic@student.han.nl', '599294', 3, 'pizza', 1, 1),
+		('aukeonfleek', 'Aukï¿½', 'Onvlee', 'De cuneraweg 17', '5262HP','Rotterdam', 'Nederland', '1998-02-03', 'AM.Onvlee@student.han.nl', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 5, 'suus', 1, 1),
+		('klikokotsjongen', 'Youri', 'Maarnen', 'grebbeweg 23',  '3922XJ', 'Wageningen', 'Nederland', '1981-03-09', 'klikokotsjongen@gmail.com', 'klikokotsjongen00', 1, 'grebbeweg', 0, 0),
 		('bigben10', 'Ben', 'Hammington', 'londonroad 201', 'E130AA', 'London', 'United Kingdom', '1988-12-30', 'benhammington@gmail.com', 'bigben00', 2, 'benlia', 0, 1),
-		('deutschesalade', 'Herman', 'Reinhart', 'neuestrasse 23','10119', 'Berlin', 'Duitsland', '1995-01-03', 'hermanreinhart@hotmail.com', 'herman00', 3, 'kartoffel', 1, 1),
+		('deutschesalade', 'Herman', 'Reinhart', 'neuestrasse 23','10119', 'Berlin', 'Duitsland', '1995-01-03', 'hermanreinhart@hotmail.com', 'herman00', 3, 'kartoffel', 0, 1),
 		('letourleeiffel', 'jean', 'Claude', 'la rue rouge 2',  '75011', 'Paris',  'Frankrijk', '1992-02-01', 'jeanclaude@gmail.com', 'jeanclaude00', 4, 'jeanette', 0, 1),
-		('jeromeke', 'Jeroen', 'Janssen', 'Cálvijnstraat 23', '2020', 'Antwerpen', 'België', '1964-10-26', 'jeroenjanssen@hotmail.com', 'jeromeke00', 1, '26-10-1964', 0, 1),
-		('BeenmaalAndermaal', 'mknc', 'yuino', 'awda', '7812AK', 'thuis', 'hier', '0815-01-01', 'beenmaal@andermaal.com', 'cdxsza', 3, 'dfjkvn', 0, 1) 
+		('jeromeke', 'Jeroen', 'Janssen', 'Cï¿½lvijnstraat 23', '2020', 'Antwerpen', 'Belgiï¿½', '1964-10-26', 'jeroenjanssen@hotmail.com', 'jeromeke00', 1, '26-10-1964', 0, 1),
+		('BeenmaalAndermaal', 'mknc', 'yuino', 'awda', '7812AK', 'thuis', 'hier', '0815-01-01', 'beenmaal@andermaal.com', '$2y$10$92Zj38fzTkn24C61T6oSUOFzco6Kkehufhgn28cS/5EaCmNrVoOMa', 3, 'dfjkvn', 0, 1)
 		;
 
 
 
 INSERT into Gebruikerstelefoon(gebruikersnaam, telefoonnummer)
-VALUES 
+VALUES
 	('janbeenham', '06-90876543'),
 	('michkz', '06-29934411'),
 	('twankoekepan', '06-11293822'),
@@ -68,9 +68,9 @@ VALUES
 	('ggwp', '06-59731441'),
 	('aukeonfleek', '06-36298475'),
 	('letourleeiffel', '06-24645617'),
-	('BeenmaalAndermaal', '06-18602640'), 
-    ('BeenmaalAndermaal', '06-98372942'), 
-    ('BeenmaalAndermaal', '06-12312640') 
+	('BeenmaalAndermaal', '06-18602640'),
+    ('BeenmaalAndermaal', '06-98372942'),
+    ('BeenmaalAndermaal', '06-12312640')
 	;
 
 GO
@@ -91,7 +91,7 @@ insert into dbo.Rubriek
 select DISTINCT (d.ID) as rubrieknummer,
 		d.Name as rubrieknaam,
 		(d.Parent) as rubrieknummerOuder
-		from GrootDBBedrijf.dbo.Categorieen d 
+		from GrootDBBedrijf.dbo.Categorieen d
 
 GO
 
@@ -143,7 +143,7 @@ VALUES
 GO
 
 
-		
+
 Insert into Voorwerp_in_Rubriek
 VALUES
 		(1, 1), --verzamelen
@@ -152,6 +152,6 @@ VALUES
 		(4, 80), --verzamelstrips
 		(5, 57), -- filmobjecten
 		(6, 120) --creatief speelgoed
-		;  
+		;
 
 GO

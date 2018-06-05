@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
         $error = $e->getMessage();
         echo "<!--|-~----~-|Database error|-~----~-|-->";
         echo "<!--{$error}-->";
-        $error = "Invalid bid";
+        $error = "Ongeldig bod";
       }
     }
   }

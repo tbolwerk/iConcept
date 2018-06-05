@@ -11,7 +11,7 @@ GO
 IF OBJECT_ID('dbo.tr_IsHoogsteBod') IS NOT NULL BEGIN DROP TRIGGER dbo.tr_IsHoogsteBod END
 GO
 
-CREATE FUNCTION dbo.CheckIsHogerStart (@voorwerpnummer INT ,@bodbedrag NUMERIC(9, 2))
+CREATE FUNCTION dbo.CheckIsHogerStart (@voorwerpnummer BIGINT ,@bodbedrag NUMERIC(9, 2))
 RETURNS BIT
 AS
 BEGIN
@@ -30,7 +30,7 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION dbo.IsHoogsteBod (@voorwerpnummer INT ,@bodbedrag NUMERIC(9, 2))
+CREATE FUNCTION dbo.IsHoogsteBod (@voorwerpnummer BIGINT ,@bodbedrag NUMERIC(9, 2))
 RETURNS BIT
 AS
 BEGIN
@@ -64,7 +64,7 @@ INSTEAD OF INSERT
 AS
 BEGIN
 
-DECLARE @voorwerpnummer INT,
+DECLARE @voorwerpnummer BIGINT,
         @bodbedrag NUMERIC(9,2)
 
 SELECT  @voorwerpnummer = voorwerpnummer,

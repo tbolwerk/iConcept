@@ -13,57 +13,59 @@ LEFT JOIN (
 $carousel= array();
 $i=0;
 while($row = $statement->fetch()){
-	$voorwerpnummer = $row[0];
+	$id = $row[0];
 	$i--;
-	$timer="timer".$i;
-	$looptijd = $row['looptijd'];
-	$looptijdbegindag =strtotime($row['looptijdbegindag']);
-	$looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
-	$data = $dbh->query("SELECT * FROM Rubriek");
-if(isset($row['hoogsteBod'])){
+  $timer = "timer{$i}";
+  $maxbid = "maxbid{$i}";
 
+  $countdown = "{$row['looptijdeindedag']} {$row['looptijdtijdstip']}";
 
-		$huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
-	}else{
-	  $huidige_bod=$row['startprijs'];
-	}
+  $title = strip_tags($row['titel']);
+  $description = strip_tags($row['beschrijving'],'<br>');
 
-		 $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
-		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+	$out = "";
 
-     $titel = strip_tags($row['titel']);
-     $beschrijving = strip_tags($row['beschrijving'],'<br>');
+  $carousel[] = <<<HTML
+    <div class="col-md-3">
+  		<div class="card auction-card mb-4">
+  			<div class="view overlay">
+  			<a href="detailpage.php?id={$id}"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
+  				<img class="card-img-top" src="{$row['filenaam']}" alt="{$title}" />
+  			</a>
+  			</div>
+  			<div class="card-body">
+  				<span class="small-font">{$id}</span>
+  				<h4 class="card-title">{$title}</h4>
+  				<hr>
+  				<div class="card-text">
+  					<p>{$description}</p>
+  				</div>
+  				<hr />
+  				<ul class="list-unstyled list-inline d-flex" style="text-align:center">
+  					<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i><div style="display:inline;" id="{$maxbid}"></div></li>
+  					<div class="card-line"></div>
+  					<li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id="{$timer}"></div></li>
+  				</ul>
+  			</div>
+  		</div>
+  	</div>
+    <script>
+    countdown("{$timer}", "{$countdown}");
 
-		 $countdown = $closingtime;
-	$out = '';
+    var x = setInterval(function() {
+     var xhttp;
+     xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+       if (this.readyState == 4 && this.status == 200) {
+       document.getElementById("{$maxbid}").innerHTML = this.responseText;
+       }
+     };
+     xhttp.open("GET", "refreshbid.php?id={$id}", true);
+     xhttp.send();
+   }, 2000);
 
-$carousel[]=	'			<div class="col-md-3">
-					<div class="card auction-card mb-4">
-						<div class="view overlay">
-						<a href="detailpage.php?id='.$voorwerpnummer.'"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
-							<img class="card-img-top" src="'.$row["filenaam"].'" alt="'.$titel.'" />
-						</a>
-						</div>
-						<div class="card-body">
-							<span class="small-font">'.$voorwerpnummer.'</span>
-							<h4 class="card-title">'.$titel.'</h4>
-							<hr>
-							<div class="card-text">
-								<p>
-									'.$beschrijving.'
-								</p>
-							</div>
-							<hr />
-							<ul class="list-unstyled list-inline d-flex" style="text-align:center">
-								<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$huidige_bod.'</li>
-								<div class="card-line"></div>
-								<li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
-							</ul>
-						</div>
-					</div>
-				</div><script>
-						 countdown("'.$timer.'","'.$countdown.'");
-						 </script>';
+    </script>
+HTML;
 }
 for($i = 0; $i<count($carousel);$i++){
 if($i>11){

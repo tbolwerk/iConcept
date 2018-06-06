@@ -99,6 +99,16 @@ $out.='<div class="carousel-item">';
 
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
+
+
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+        <li data-target="#multi-item-example" data-slide-to="1"></li>
+        <li data-target="#multi-item-example" data-slide-to="2"></li>
+    </ol>
+    <!--/.Indicators-->
+
 <?php if(isset($out)){
   echo $out;
 }?>
@@ -107,7 +117,13 @@ $out.='<div class="carousel-item">';
 
 </div>
 <!--/.Slides-->
+<!--Controls-->
 
+<!--/.Controls-->
+</div>
+<div class="controls-top">
+  <a class="btn btn-primary" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+  <a class="btn btn-primary" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
 </div>
 <!--/.Carousel Wrapper-->
 </div>

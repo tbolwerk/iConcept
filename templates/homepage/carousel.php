@@ -1,6 +1,6 @@
 <?php
 global $dbh;
-try{
+try { //Select 12 non-blocked items with their highest bid and thumbnail from the database
 $statement = $dbh->query("SELECT TOP(12) * ,dateadd(day, looptijd, looptijdbegindag) as looptijdeindedag FROM Voorwerp vw LEFT JOIN(
 SELECT DISTINCT b2.voorwerpnummer,(SELECT TOP 1 filenaam FROM Bestand b1 WHERE b1.voorwerpnummer=b2.voorwerpnummer
 ORDER BY voorwerpnummer DESC) as 'filenaam' FROM Bestand b2) as b2
@@ -10,8 +10,9 @@ LEFT JOIN (
  ORDER BY bodbedrag DESC ) as 'hoogsteBod' from Bod bd ) as bd
  ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
 
-$carousel= array();
-$i=0;
+$carousel = array();
+$i = 0;
+//Iterates of all 12 received items and puts them in cards
 while($row = $statement->fetch()){
 	$id = $row[0];
 	$i--;
@@ -20,6 +21,7 @@ while($row = $statement->fetch()){
 
   $countdown = "{$row['looptijdeindedag']} {$row['looptijdtijdstip']}";
 
+  //The database doesn't strip all html tags yet
   $title = strip_tags($row['titel']);
   $description = strip_tags($row['beschrijving'],'<br>');
 
@@ -44,29 +46,34 @@ while($row = $statement->fetch()){
   				<ul class="list-unstyled list-inline d-flex" style="text-align:center">
   					<li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i><div style="display:inline;" id="{$maxbid}"></div></li>
   					<div class="card-line"></div>
-  					<li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id="{$timer}"></div></li>
+  					<li class="list-inline-item pr-2 flex-1 mr-5"><div id="{$timer}"></div></li>
   				</ul>
   			</div>
   		</div>
   	</div>
     <script>
+    //Timer function
     countdown("{$timer}", "{$countdown}");
 
+    //Every two seconds the script requests the highest bid in case someone has placed a new bid since this page was processed
     var x = setInterval(function() {
      var xhttp;
      xhttp = new XMLHttpRequest();
      xhttp.onreadystatechange = function() {
        if (this.readyState == 4 && this.status == 200) {
-       document.getElementById("{$maxbid}").innerHTML = this.responseText;
+         //Write the value to the right place on the page
+         document.getElementById("{$maxbid}").innerHTML = this.responseText;
        }
      };
+     //Request the highest bid from the server
      xhttp.open("GET", "refreshbid.php?id={$id}", true);
      xhttp.send();
-   }, 2000);
+   }, 2000); //Interval of 2000ms
 
     </script>
 HTML;
 }
+//Iterates over all cards and puts them in the carousel
 for($i = 0; $i<count($carousel);$i++){
 if($i>11){
 	break;

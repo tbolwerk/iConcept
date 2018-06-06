@@ -5,11 +5,10 @@ require_once("templates/auction/f_checkPicture.php");
 require_once("templates/auction/f_generateCategoryOptions.php");
 require_once("templates/auction/f_newAuction.php");
 
-$errors;
 $errors = array();
 $seller = $_SESSION['username'];
 
-try {
+try { //Select userdata from the database
   $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
   $statement->execute(array($seller));
   $userdata = $statement->fetch();
@@ -17,7 +16,7 @@ try {
   echo $e;
 }
 
-try {
+try { //Select all categories from the database
   $data = $dbh->prepare("select * from Rubriek order by volgnummer");
   $data->execute();
   $i = 0;

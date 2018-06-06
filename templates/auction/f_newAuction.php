@@ -5,6 +5,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   global $errors;
   global $seller;
 
+  //Strip all html tags and remove any double quotes
   $title = str_replace("\"", "", strip_tags($title));
   $description = str_replace("\"", "", str_replace("\n", "<br>", strip_tags($description)));
   $startprice = str_replace("\"", "", strip_tags($startprice));
@@ -16,6 +17,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
   $shipping_costs = str_replace("\"", "", strip_tags($shipping_costs));
   $shipping_method = str_replace("\"", "", strip_tags($shipping_method));
 
+  //Construct time objects with the current time and date
   $current_date = date('Y-m-d');
   $current_time = date('G:i:s');
 
@@ -61,6 +63,7 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
         $i--;
       }
       else {
+        //Check whether we allow these pictures and generate the filename
         $filenames[$i] = checkPicture($pictures[$i],$id,$i);
       }
     }

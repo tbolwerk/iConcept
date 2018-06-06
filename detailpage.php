@@ -214,17 +214,20 @@ try{
 <script>
 countdown('timer', <?php echo "'{$closingtime}'"; ?>);
 
+//Every second the script requests the highest bid in case someone has placed a new bid since this page was processed
 var x = setInterval(function() {
-  var xhttp;
-  xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("maxbid").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
-  xhttp.send();
-}, 1000);
+ var xhttp;
+ xhttp = new XMLHttpRequest();
+ xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+     //Write the value to the right place on the page
+     document.getElementById("{$maxbid}").innerHTML = this.responseText;
+   }
+ };
+ //Request the highest bid from the server
+ xhttp.open("GET", "refreshbid.php?id={$id}", true);
+ xhttp.send();
+}, 1000); //Interval of 1000ms
 </script>
 <?php } ?>
 <?php include('templates/footer.php'); ?>

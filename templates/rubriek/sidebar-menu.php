@@ -75,13 +75,15 @@ $rows = getRows();
                   foreach($menu as $link) {
                       if(isset($link["countChild"])){
                       $dropdownBtn = '<a class="expand">'.$link["countChild"].'<i class="fa icon"></i></a>';
+                      $url = '<a href="#" class="link" style="text-align: center;">'.$link["name"].'</a>';
                     }else{
                       $dropdownBtn="";
+                      $url = '<a href="?rubrieknummer='.$link["id"].'" class="link" style="text-align: center;">'.$link["name"].'</a>';
                     }
                       $out.= sprintf(
                           '<li class="depth-%u">%s%s</li>'
                           ,$runner
-                          ,'<li class="haschildren"><div class="link"><a href="?rubrieknummer='.$link["id"].'" class="link" style="text-align: center;">'.$link["name"].'</a>'.$dropdownBtn.'</div>'
+                          ,'<li class="haschildren"><div class="link">'.$url.$dropdownBtn.'</div>'
                           ,themeMenu($link['links'],($runner+1))
                       );
                   }

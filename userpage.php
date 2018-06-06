@@ -165,7 +165,7 @@ while ($question = $data->fetch()) {
       <form method="post" action="" enctype="multipart/form-data">
         <input type="file" name="file" id="profile-picture" accept="image/png, image/jpeg">
         <div class="profile-picture-upload">
-          <button type="submit" name="change_avatar">Upload</button>
+          <button class="btn btn-primary" type="submit" name="change_avatar" data-toggle="tooltip" data-placement="top" title="Upload afbeelding"><i class="fas fa-upload"></i></button>
         </div>
       </form>
     </div>
@@ -446,9 +446,10 @@ if(!empty($results[0]['code'])){//checks for verification code
             <li>Alleen hoofdletters en kleine letters zijn toegestaan</li>
           </ul>
         </div>
+            	<button class="btn-elegant" type="submit" name="verify" data-toggle="tooltip" data-placement="top" title="Verifieër code"><i class="fas fa-check"></i></button>
     	</div>
 
-    	<button type="submit" name="verify">Word verkoper</button>
+
     </form>
     <?php
 }else if($results[0]['verkoper'] == 1 && empty($results[0]['code'])){//checks if user is seller and no verification code *double check

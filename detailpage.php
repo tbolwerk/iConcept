@@ -135,9 +135,11 @@ try{
     </div>
 
     <div class="col-md-5 product-info">
-      <form method="post" action=""><h2 class="product-title"><?=$titel?></h2></form>
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?></h2></form>
+
+    <h2 class="product-title"><?=$titel?></h2>
+
       <hr>
+
       <div class="row text-center">
         <!-- Displays the highest bid on the current auction -->
         <div class="col">

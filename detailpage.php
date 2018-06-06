@@ -1,6 +1,7 @@
 <?php
 $current_page='detailpage';
 require_once('templates/header.php');
+require_once("templates/mail/f_bidMail.php");
 
 if(isset($_POST['block'])){
   $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
@@ -10,7 +11,7 @@ if(isset($_POST['block'])){
 if (isset($_GET['id'])) {
   if(!isset($_SESSION['username'])){
     $error = "U moet ingelogt zijn om te bieden klik <br><a href='login.php'>hier om in te loggen</a>";
-  }else{
+  } else {
   $error = "";
   if (isset($_POST['bid'])) {
     $bid = str_replace("\"", "", strip_tags($_POST['bid']));
@@ -19,9 +20,20 @@ if (isset($_GET['id'])) {
     }
     if ($error == "") {
       try {
+        //Take the highest bid before attempting to insert a new one
+        $statement = $dbh->prepare("select Gebruiker.gebruikersnaam, Gebruiker.email from Bod join Gebruiker on Bod.gebruikersnaam = Gebruiker.gebruikersnaam where voorwerpnummer = ? and bodbedrag = (
+        select max(bodbedrag) from Bod where voorwerpnummer = ?)");
+        $statement->execute(array($_GET['id'], $_GET['id']));
+        $userdata = $statement->fetch();
+
         $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
-      } catch(PDOException $e){
+
+        //If this was not the first bid, send a mail to the person that placed the last highest bid
+        if ($userdata[0] != "") {
+          bidMail($userdata);
+        }
+      } catch (PDOException $e){
         $error = $e->getMessage();
         echo "<!--|-~----~-|Database error|-~----~-|-->";
         echo "<!--{$error}-->";

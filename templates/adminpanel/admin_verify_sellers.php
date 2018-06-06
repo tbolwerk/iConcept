@@ -46,7 +46,7 @@ function sendVerificationCode($username){
   </div>
 
     <!-- Table-->
-  <table class="table verification-table-list">
+  <table class="table verification-table-list fixed_headers">
 
       <!--Table head-->
       <thead>

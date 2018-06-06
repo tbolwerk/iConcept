@@ -16,7 +16,7 @@ require_once('templates/header.php');
       </div>
       <!--Panel 3-->
       <div class="tab-pane fade" id="panel3" role="tabpanel">
-        <?php //include('templates/adminpanel/admin_verify_sellers.php'); ?>
+        <?php include('templates/adminpanel/admin_verify_sellers.php'); ?>
       </div>
     </div>
   </div>

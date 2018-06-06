@@ -1,6 +1,7 @@
 <?php
 function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber){
   global $dbh;
+  global $message;
   global $errors;
   $errors = array();
 
@@ -35,23 +36,35 @@ function registerSeller($username, $checkoption, $creditcard, $bank, $banknumber
 
     if(count($errors) == 0){//checks if there are errors
       if($checkoption == "creditcard"){
-				$bank = null;
-				$banknumber = null;
-			}else{
-				$creditcard = null;
+        $bank = null;
+        $banknumber = null;
+        try {
+          $data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
+          $data->execute(array($username, $checkoption, $creditcard,  $bank, $banknumber));
+          $userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
+          $userdata->execute(array($username));
+          $_SESSION['seller'] = 1;
+          $message = "<p class='green-text lead'>U bent succesvol registreerd als verkoper.</p>";
+        }
+        catch (PDOException $e) {
+          $error=$e;
+          echo $error;
+        }
 			}
-				try {
-					$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
-					$data->execute(array($username, $checkoption, $creditcard,  $bank, $banknumber));
-					$userdata = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?;");
-	        $userdata->execute(array($username));
-					$code = random_password(6);
-					createVerificationCodeSeller($username, $code);
-				}
-				catch (PDOException $e) {
-					$error=$e;
-					echo $error;
-				}
+      else{
+        $creditcard = null;
+          try {
+  					$data = $dbh->prepare("insert into Verkoper(gebruikersnaam, controleoptienaam, creditcardnummer, banknaam, rekeningnummer) values(?, ?, ?, ?, ?)");
+  					$data->execute(array($username, $checkoption, $creditcard,  $bank, $banknumber));
+  					$code = random_password(6);
+  					createVerificationCodeSeller($username, $code);
+            $message = "<p class='green-text lead'>U krijgt per post een code toegestuurd waarmee U het proces om verkoper te worden kunt afronden.</p>";
+  				}
+  				catch (PDOException $e) {
+  					$error=$e;
+  					echo $error;
+  				}
+			  }
       }
     }
   }

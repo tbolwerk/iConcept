@@ -31,7 +31,7 @@ if(isset($row['hoogsteBod'])){
 		 $time = date_create($row['looptijdeindedag'] . $row['looptijdtijdstip']);
 		 $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
 
-     $titel = strip_tags($row['beschrijving']);
+     $titel = strip_tags($row['titel']);
      $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
 		 $countdown = $closingtime;

@@ -49,7 +49,7 @@ if(isset($_POST['verify'])){
 
 	<div class="md-form">
 		<label for="code">Verificatiecode</label>
-		<input type="text" class="form-control" name="code" id="code" value="" required>
+		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="A-z{6}">
 	</div>
 
 	<button type="submit" name="verify">Word verkoper</button>

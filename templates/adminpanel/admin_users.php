@@ -4,13 +4,11 @@ if(isset($_GET['ban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 1 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['ban']));
   $message = "Account van ".$_GET['ban']." is succesvol geblokkeerd";
-  // $message = $_GET['ban'];
 }
 if(isset($_GET['unban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 0 WHERE gebruikersnaam = ?");
   $statement->execute(array($_GET['unban']));
   $message = "Account van ".$_GET['unban']." is succesvol gedeblokkeerd";
-  // $message = $_GET['unban'];
 }
 $out = "";
 $status = "";
@@ -42,11 +40,9 @@ while( $row = $statement->fetch()){
     <h1>Gebruikerslijst</h1>
     <p>In deze lijst staan alle gebruikers die geregistreert zijn op de website. Hier kan je de gebruikers blokkeren of deblokkeren</p>
   </div>
-
     <!-- Table-->
   <table id="status" class="table verification-table-list fixed_headers">
-
-      <!--Table head-->
+      <!--Table head that show's what information about the users is displayed -->
       <thead>
           <tr>
               <th class="text-uppercase">Gebruikersnaam</th>
@@ -55,16 +51,12 @@ while( $row = $statement->fetch()){
               <th class="text-uppercase text-center">Acties</th>
           </tr>
       </thead>
-    <!--Table head-->
-
       <!--Table body-->
       <div class="verification-table-content">
       <tbody>
+        <!-- Displays all the users through PHP code -->
           <?=$out?>
       </tbody>
     </div>
-      <!--Table body-->
-
   </table>
-  <!--Table -->
 </div>

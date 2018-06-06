@@ -33,6 +33,10 @@
     <script type="text/javascript" src="js/twbs-pagination.js"></script>
     <script type="text/javascript" src="js/paging.js"></script>
     <script type="text/javascript" src="js/timer.js"></script>
+    <!-- JS Toastr for alerts CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- script for the sidenav on category page -->
     <script>
     $(document).ready(function(){
       $('.flypanels-container').flyPanels({
@@ -43,7 +47,7 @@
       FastClick.attach(document.body);
     });
     </script>
-
+    <!-- Script for the carousel on the mainpage -->
     <script type="text/javascript">
 
     $('.carousel').carousel({
@@ -64,6 +68,50 @@
     }
     });
     </script>
+
+    <script>
+    var message = '<?php echo $message; ?>';
+
+    $(document).ready(function() {
+        // Show's message based on a user being blocked or unblocked
+        if (message.indexOf("Account") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
+          toastr["success"](message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"](message)
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("geen bestand") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("profielfoto") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        }
+
+      });
+
+    $(document).on('click', '#unblockAuctionBtn',function() {
+      });
+
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "8000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
+    </script>
+
+
 
     <script type="text/javascript">
       $(document).ready(function() {
@@ -106,18 +154,26 @@
             document.getElementById("mySidebar").style.display = "none";
             document.getElementById("myOverlay").style.display = "none";
         }
+    </script>
 
-          // function myAccFunc() {
-          //     var x = document.getElementById("demoAcc");
-          //     if (x.className.indexOf("w3-show") == -1) {
-          //         x.className += " w3-show";
-          //         x.previousElementSibling.className += " w3-green";
-          //     } else {
-          //         x.className = x.className.replace(" w3-show", "");
-          //         x.previousElementSibling.className =
-          //         x.previousElementSibling.className.replace(" w3-green", "");
-          //     }
-          // }
+
+    <script type="text/javascript">
+    //https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
+    // This script prevents the tabs to return to 1 after a page refresh
+    $('#adminTabs a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+        });
+
+        // store the currently selected tab in the hash value
+        $("ul.admin-list > li > a").on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+        });
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
 
 

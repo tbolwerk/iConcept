@@ -24,13 +24,13 @@ function addAvatar($file, $username){
 			//Move and rename uploaded image
 			$filename = "img/avatar/" . $username . ".png";
 			move_uploaded_file($file["tmp_name"], $filename);
-			$message = "<p class='green-text lead'>De profielfoto is succesvol gewijzigd. Het kan even duren totdat de wijziging zichtbaar is.</p>";
+			$message = "De profielfoto is succesvol gewijzigd. Het kan even duren totdat de wijziging zichtbaar is.";
 			$error.= "Stored in: " . $filename;
 		}
 	} else {
 		$error.= $file["type"]."<br />";
 		$error.= "Verkeerd bestand, selecteer een nieuwe";
-		$message = "<p class='red-text lead'>U heeft geen bestand of een ongeldig bestand geselecteerd.</p>";
+		$message = "U heeft geen bestand of een ongeldig bestand geselecteerd.";
 	}
 }
 

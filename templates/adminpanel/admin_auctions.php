@@ -3,8 +3,6 @@ if(isset($_POST['unblockAuction'])){
   unblockAuction($_POST['auctionId']);
 }
 
-
-
 function printAuctionList(){
   global $dbh;
   $statement = $dbh->prepare("SELECT * FROM Voorwerp WHERE geblokkeerd = 1");
@@ -19,7 +17,7 @@ function printAuctionList(){
       <td class="text-center">
         <form method="post" action="">
           <input type="hidden" name="auctionId" value="' . $result['voorwerpnummer'] . '"></input>
-          <button type="submit" name="unblockAuction"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button type="submit" name="unblockAuction" id="unblockAuctionBtn"><i class="fa fa-times" aria-hidden="true"></i></button>
         </form>
       </td>
     </tr>
@@ -48,7 +46,7 @@ function unblockAuction($auctionId){
   </div>
 
     <!-- Table-->
-  <table class="table verification-table-list">
+  <table class="table verification-table-list fixed_headers">
 
       <!--Table head-->
       <thead>

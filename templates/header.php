@@ -52,8 +52,7 @@ switch($current_page){
       break;
     case 'rubriek':
       echo "<link rel='stylesheet' href='css/flyPanels.css'>
-      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
-      // ../sidemenu/demo/
+      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>";
       break;
     case 'adminpanel':
     if(isset($_SESSION['admin']) == 0){
@@ -72,6 +71,7 @@ switch($current_page){
 ?>
 <!DOCTYPE html>
 <html lang="en" class="full-height">
+<link rel="shortcut icon" type="image/png" href="img/logo/favicon.png">
 
 <head>
     <meta charset="utf-8">
@@ -99,6 +99,8 @@ switch($current_page){
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
+    <!-- Toastr alert css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
     <!-- Rubrieken overlay styling -->
@@ -119,7 +121,6 @@ else if ($current_page == 'login' || $current_page == 'register') {
 } else {
   include 'templates/nav.php';
 }
-
 
 ?>
 <body>

@@ -200,7 +200,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
 
 
-<?= $message ?>
+
 
 
 <ul class="nav nav-tabs">

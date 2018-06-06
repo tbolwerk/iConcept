@@ -135,15 +135,9 @@ try{
     </div>
 
     <div class="col-md-5 product-info">
-
-<<<<<<< HEAD
-      <form method="post" action=""><h2 class="product-title"><?=$titel?><?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-trash-alt"></i></button><?php } ?></h2></form>
-=======
+      <form method="post" action=""><h2 class="product-title"><?=$titel?></h2></form>
       <form method="post" action=""><h2 class="product-title"><?=$results['titel']?></h2></form>
->>>>>>> 434c0c0262727518ae3e37f2942ce013fd7301be
-
       <hr>
-
       <div class="row text-center">
         <!-- Displays the highest bid on the current auction -->
         <div class="col">

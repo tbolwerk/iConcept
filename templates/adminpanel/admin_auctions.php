@@ -4,11 +4,14 @@ if(isset($_POST['unblockAuction'])){
 }
 
 function printAuctionList(){
+  $message = "";
   global $dbh;
   $statement = $dbh->prepare("SELECT * FROM Voorwerp WHERE geblokkeerd = 1");
   $statement->execute();
   $results = $statement->fetchAll();
+
   foreach ($results as $result) {
+
     echo '
     <tr>
       <td>' . $result['voorwerpnummer'] . '</td>
@@ -32,9 +35,9 @@ function unblockAuction($auctionId){
   try { //Set 'geblokkeerd' in table 'Voorwerp' to false
     $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 0 WHERE voorwerpnummer = ?");
     $statement->execute(array($auctionId));
+    $message = "Veiling is succesvol gedeblokkeerd";
   } catch(PDOException $e) {
     $error = $e;
-    echo $error;
   }
 }
 ?>

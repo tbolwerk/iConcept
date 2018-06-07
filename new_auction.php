@@ -45,95 +45,9 @@ if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
 ?>
 
 <style>
-.inputfile {
-  display: block;
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	/* position: absolute; */
-	z-index: -1;
-}
-
-.inputfile + label {
-  position: relative;
-  height: 202px;
-  width: 202px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #bebebe;
-  margin-right: 10px;
-}
-
-.inputfile + label img {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-height: 200px;
-  max-width:200px;
-}
-
-.remove-btn, .edit-btn {
-  position: absolute;
-  z-index: 100;
-  background-color: #555;
-  color: #fff;
-  padding: 5px;
-  font-size: 20px;
-
-}
-
-.edit-btn {
-  right: 0px;
-}
-
-.remove-btn {
-  padding-right: 10px;
-  top: 0px;
-  display: none;
-}
-
-.newauction-form {
-  background-color: #ffffff;
-  padding: 40px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
-.newauction-form-header h1 {
-  color: #000000;
-  font-weight: bold;
-  font-size: 32px;
-  text-align: center;
-}
-
-.hoi {
-  position: relative;
-}
-
-.blockFileSelectButton {
-  opacity: 0;
-  z-index: 50;
-  height: 202px;
-  width: 202px;
-  position: absolute;
-  display: none;
-}
-.hiddenInput {
-  position: absolute;
-  top: 180px;
-  opacity: 0;
-  width: 0.1;
-  height: 0.1;
-}
-
 body {
   background-color: #ebebeb;
 }
-
 </style>
 
 <div class="view index-header">
@@ -145,9 +59,10 @@ body {
 
 
 <div class="container col-md-9 col-lg-8">
-<!-- <div class="row justify-content-center col-sm-12"> -->
+  <!-- Form for creating new auction -->
 <form class="newauction-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validateFileExtension(this.fileField)">
-  <?php if(isset($errors['upload'])){echo $errors['upload'];} ?>
+  <?php if(isset($errors['upload'])){echo $errors['upload'];} //shows errors if they exist
+  ?>
   <div class="newauction-form-header">
     <h1>Titel en beschrijving</h1>
   </div>
@@ -185,9 +100,9 @@ body {
   <div class="form-row">
       <div class="md-form form-group col-md-12">
         <select name="mainCategory" id="mainCategories" class="form-control" onchange="createSubCategorySelect(this.value, 0)" required>
-          <?=generateCategoryOptions($results)?>
+          <?=generateCategoryOptions($results) //echos all main categories ?>
         </select>
-        <div id="subCategoriesDiv0"></div>
+        <div id="subCategoriesDiv0"></div> <!--empty div which is filled when main category is selected -->
       </div>
   </div>
 
@@ -195,28 +110,28 @@ body {
     <h1>Afbeeldingen</h1>
   </div>
   <div class="form-row">
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture1" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture1" type="file" class="inputfile">
       <label id="labelpicture1" for="picture1"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn1" onclick="removePicture(1)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden1" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture2" class="blockFileSelectButton"></div>
       <input name="picture[]"  id="picture2" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture2" for="picture2" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn2" onclick="removePicture(2)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden2" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture3" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture3" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture3" for="picture3" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn3" onclick="removePicture(3)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden3" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture4" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture4" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture4" for="picture4" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
@@ -333,53 +248,14 @@ body {
       <button class="btn elegant" type="submit" name="submit">Plaats veiling</button>
     </div>
 
-
-  <!-- <br>
-  <label>Titel</label>
-  <input type="text" name="title" required><br>
-  <label>Beschrijving</label>
-  <textarea name="description" required></textarea><br>
-  <label>Startprijs</label>
-  <input type="number" name="startprice" required><br>
-  <label>Looptijd</label>
-  <select name="duration">
-    <option value="1">1 dagen</option>
-    <option value="3">3 dagen</option>
-    <option value="5">5 dagen</option>
-    <option value="7" selected>7 dagen</option>
-    <option value="10">10 dagen</option>
-  </select><br>
-  <label>Betalingswijze</label>
-  <input type="radio" name="pay_method" value="contant" checked> Contant
-  <input type="radio" name="pay_method" value="bank/giro"> Bank/Giro
-  <input type="radio" name="pay_method" value="anders"> Anders<br>
-  <label>Betalingsinstructies</label>
-  <input type="text" name="pay_instructions"><br>
-  <label>Plaats</label>
-  <input type="text" name="place" value="<?=$userdata['plaatsnaam']?>" required><br>
-  <label>Land</label>
-  <input type="text" name="country" value="<?=$userdata['land']?>" required><br>
-  <label>Verzendkosten</label>
-  <input type="number" name="shipping_costs"><br>
-  <label>Verzendinstructies</label>
-  <input type="text" name="shipping_instructions"><br>
-  <label>Afbeeldingen</label><br>
-  <input name="picture[]" id="picture1" type="file"><br>
-	<input name="picture[]" id="picture2" type="file" style="display: none;">
-	<input name="picture[]" id="picture3" type="file" style="display: none;">
-	<input name="picture[]" id="picture4" type="file" style="display: none;">
-  <select name="mainCategory" id="mainCategories" onchange="createSubCategorySelect(this.value, 0)" required>
-    <?=generateCategoryOptions($results)?>
-  </select>
-  <div id="subCategoriesDiv0"></div>
-  <button type="submit" name="submit">Plaats veiling</button>-->
 </form>
-<!-- </div> -->
+
 </div>
-<!-- </div> -->
+
 
 
 <script>
+//adds pcitureselector if new picture is selected
 function adduploadbox1(){
   if(document.getElementById("picture1").value != "") {
      document.getElementById("picture2").style.display = "block";
@@ -402,20 +278,19 @@ document.getElementById("picture1").onchange = adduploadbox1;
 document.getElementById("picture2").onchange = adduploadbox2;
 document.getElementById("picture3").onchange = adduploadbox3;
 
-	//teller = 0;
-	function createSubCategorySelect(categorynumberParent, teller){
+//Generates subcategorie selectors
+	function createSubCategorySelect(categorynumberParent, teller){//Gets selected categorynumber
 
 
-		var results = <?php echo json_encode($results); ?>;
+		var results = <?php echo json_encode($results); ?>;//array containing all categories
 		var selector = "<select class='form-control' name='subCategories"+(teller+1)+"' id='subCategories"+(teller+1)+"' onchange='createSubCategorySelect(this.value, "+(teller+1)+")' required>";
     selector += "<option value=''>Kies subrubriek...</option>";
-		//console.log(results.length);
 
-		var gevonden = false;
-		for (i = 0; i < results.length; i++) {
+		var found = false;
+		for (i = 0; i < results.length; i++) { //checks every category parent if it is equal to selected category
 			if (results[i].rubrieknummerOuder == categorynumberParent) {
-				selector += "<option value='" + results[i].rubrieknummer + "'>" + results[i].rubrieknaam + "</option>";
-				gevonden = true;
+				selector += "<option value='" + results[i].rubrieknummer + "'>" + results[i].rubrieknaam + "</option>";//adds categoryoption to selector
+				found = true;
 			}
 		}
 
@@ -423,14 +298,13 @@ document.getElementById("picture3").onchange = adduploadbox3;
 		selector += "</select>";
     selector += "<div id='subCategoriesDiv"+(teller+1)+"'>";
 		selector += "</div>";
-		console.log(gevonden);
-		if (gevonden) {
-			document.getElementById('subCategoriesDiv'+teller).innerHTML = selector;
-			//teller++;
+
+		if (found) {
+			document.getElementById('subCategoriesDiv'+teller).innerHTML = selector;//creates new subcategory selector if subcategories exist
+
 		}
       else {
-        document.getElementById('subCategoriesDiv'+teller).innerHTML = "";
-        console.log(document.getElementById('subCategories'+teller).value);
+        document.getElementById('subCategoriesDiv'+teller).innerHTML = "";//deletes subcategory selector if other category is selected
       }
   	}
 
@@ -444,6 +318,8 @@ document.getElementById("picture3").onchange = adduploadbox3;
     document.getElementById('picture4').addEventListener('change', handleFileSelect, false);
     document.getElementById('picture4').pictureId = 4;
 
+
+    //Handles pictureselection
     function handleFileSelect(evt) {
           var files = evt.target.files;
           var pictureId = evt.target.pictureId;
@@ -477,6 +353,7 @@ document.getElementById("picture3").onchange = adduploadbox3;
 
   }
 
+  //Unselects picture
   function removePicture(pictureId) {
     var labelpicture = 'labelpicture' + pictureId;
     var file = document.getElementById('picture' + pictureId);

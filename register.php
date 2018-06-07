@@ -14,7 +14,16 @@ while($question = $data->fetch()){
   $secret_question_options .= "<option class='black-text' value='{$question['vraagnummer']}'>{$question['vraag']}</option>";
 }
 
-
+$land_options = null;
+try {
+    $data2 = $dbh->prepare("select landnaam from Landen");
+    $data2->execute();
+} catch (PDOException $e) {
+    $error = $e;
+}
+while($country = $data2->fetch()){
+  $land_options .= "<option class='black-text' value='{$country['landnaam']}'>{$country['landnaam']}</option>";
+}
 
 
 if(isset($_POST['submit'])){
@@ -189,10 +198,12 @@ if(isset($_POST['submit'])){
             <div class="md-form ml-5 mr-5 mb-3 register-select">
                 <select name="country" id="country" class="register-select-form black-text" required>
                   <option class="black-text" value="" class="font-weight-light disabled selected">Kies een land...</option>
-                  <option class="black-text" value='Nederland'>Nederland</option>
+                  <!-- <option class="black-text" value='Nederland'>Nederland</option>
                   <option class="black-text" value='Duitsland'>Duitsland</option>
                   <option class="black-text" value='Frankrijk'>Frankrijk</option>
                   <option class="black-text" value='België'>België</option>
+                </select> -->
+                  <?=$land_options?>
                 </select>
             </div>
           </div>

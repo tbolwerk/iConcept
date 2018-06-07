@@ -51,7 +51,7 @@ while( $row = $statement->fetch()){
 <div class="col-11 verifcation-list">
   <div class="panel-information">
     <h1>Gebruikerslijst</h1>
-    <p>In deze lijst staan alle gebruikers die geregistreert zijn op de website. Hier kan je de gebruikers blokkeren of deblokkeren</p>
+    <p>In deze lijst staan alle gebruikers die geregistreerd zijn op de website. Hier kan je de gebruikers blokkeren of deblokkeren</p>
   </div>
     <!-- Table-->
   <table id="status" class="table verification-table-list fixed_headers">

@@ -41,7 +41,6 @@ if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
   //Creates new auction
   newAuction($_POST['title'],$_POST['description'],$_POST['startprice'],$_POST['duration'],$_POST['pay_method'],$_POST['pay_instructions'],$_POST['place'],$_POST['country'],$_POST['shipping_costs'],$_POST['shipping_method'],$_FILES['picture'],$category);
 }
-
 ?>
 
 <style>

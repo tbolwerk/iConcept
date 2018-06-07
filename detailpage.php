@@ -112,7 +112,7 @@ try{
 </div>
 <?php if($results['geblokkeerd'] == 1){
   $message = "Veiling is gesloten";
-  header("Location: rubriek.php");
+
 }else{
   ?>
 

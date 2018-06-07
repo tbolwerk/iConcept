@@ -1,14 +1,21 @@
+<style>
+.buttonEmpty{
+  padding: 0;
+border: none;
+background: none;
+}
+</style>
 <?php
 $message = "";
-if(isset($_GET['ban'])){
+if(isset($_POST['ban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 1 WHERE gebruikersnaam = ?");
-  $statement->execute(array($_GET['ban']));
-  $message = "Account van ".$_GET['ban']." is succesvol geblokkeerd";
+  $statement->execute(array($_POST['gebruikersnaam']));
+  $message = "Account van ".$_POST['gebruikersnaam']." is succesvol geblokkeerd";
 }
-if(isset($_GET['unban'])){
+if(isset($_POST['unban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 0 WHERE gebruikersnaam = ?");
-  $statement->execute(array($_GET['unban']));
-  $message = "Account van ".$_GET['unban']." is succesvol gedeblokkeerd";
+  $statement->execute(array($_POST['gebruikersnaam']));
+  $message = "Account van ".$_POST['gebruikersnaam']." is succesvol gedeblokkeerd";
 }
 $out = "";
 $status = "";
@@ -19,16 +26,22 @@ $statement->execute();
 while( $row = $statement->fetch()){
   if ($row['geblokkeerd'] == 0){ //When not blocked show user as active
     $status = '<span class="user-active"></span>Actief';
-    $statusBtn= '<a id="status" href="?ban='.$row["gebruikersnaam"].'"><i class="fas fa-ban" aria-hidden="true"></i></a>';
+    $statusBtn='
+        <input type="hidden" name="gebruikersnaam" value="' . $row['gebruikersnaam'] . '"></input>
+        <button type="submit" name="ban" id="unbanBtn" class="buttonEmpty"><i class="fas fa-ban" aria-hidden="true"></i></button>';
+
+
   } else { //Else show as blocked
     $status = '<span class="user-blocked"></span>Geblokkeerd';
-    $statusBtn= '<a id="status" href="?unban='.$row["gebruikersnaam"].'"><i class="fas fa-check aria-hidden="true"></i></a>';
+    $statusBtn='
+        <input type="hidden" name="gebruikersnaam" value="' . $row['gebruikersnaam'] . '"></input>
+        <button type="submit" name="unban" id="banBtn" class="buttonEmpty"><i class="fas fa-check" aria-hidden="true"></i></button>';
   }
   $out.='<tr>
     <td>'.$row["gebruikersnaam"].'</td>
     <td>'.$row["email"].'</td>
     <td class="text-center">'.$status.'</td>
-    <td class="text-center">'.$statusBtn.'</td>
+    <td class="text-center"><form method="post" action="">'.$statusBtn.'</form></td>
   </tr>';
 }
 

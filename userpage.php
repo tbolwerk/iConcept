@@ -418,7 +418,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
     </div>
     <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
+      <button class="btn elegant" type="submit" name="tab1submit" data-toggle="tooltip" title="Gewijzigde gegevens opslaan">Opslaan</button>
     </div>
   </form>
 </div>
@@ -445,7 +445,7 @@ These values are for debugging purposes and are visible by inspecting the page s
           </div>
 
           <div class="mt-3 py-1 text-center">
-            <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
+            <button class="btn elegant" type="submit" name="tab2submit" data-toggle="tooltip" title="Gewijzigde gegevens opslaan">Opslaan</button>
           </div>
           </form>
 
@@ -523,7 +523,7 @@ if(!empty($results[0]['code'])){//shows verificationform if user is registerd as
       	</div>
 
       	<div class="py-1 mt-3 text-center">
-        <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+        <button class="btn elegant" type="submit" name="registerseller" data-toggle="tooltip" title="Aanvraag verkoper">Word verkoper</button>
       </div>
       </form>
       <?php

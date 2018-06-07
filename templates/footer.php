@@ -175,7 +175,10 @@
         var hash = window.location.hash;
         $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
-
+<script>// Tooltips Initialization
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})</script>
 
 
 </body>

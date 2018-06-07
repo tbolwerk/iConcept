@@ -245,7 +245,7 @@ body {
 
 
     <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="submit">Plaats veiling</button>
+      <button class="btn elegant" type="submit" name="submit" data-toggle="tooltip" title="Plaats veiling">Plaats veiling</button>
     </div>
 
 </form>

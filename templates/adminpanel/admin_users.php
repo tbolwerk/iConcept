@@ -20,7 +20,7 @@ if(isset($_POST['unban'])){
 $out = "";
 $status = "";
 //SQL statement to get all users form the database
-$statement = $dbh->prepare("SELECT * FROM Gebruiker");
+$statement = $dbh->prepare("SELECT * FROM Gebruiker ORDER BY geblokkeerd DESC");
 $statement->execute();
 //Iterate over all received users
 while( $row = $statement->fetch()){

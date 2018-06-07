@@ -11,11 +11,7 @@ switch($current_page){
 //Configure header for each page
 //Identify page with $current_page variable in php file
   case 'index':
-    if(isset($_SESSION['username'])){
 
-    }else{
-
-    }
     break;
 
   case 'login':
@@ -43,10 +39,20 @@ switch($current_page){
   }
 
     case 'detailpage':
+    $id = $_GET["id"];
+      $statement = $dbh->prepare("SELECT * FROM Voorwerp WHERE voorwerpnummer =?");
+      $statement->execute(array($id));
+      $data = $statement->fetch();
+      if($data['geblokkeerd'] == 1 || $data['veilinggesloten'] == 1){
+        header("Location: index.php");
+      }
       echo " <!-- Detailpage styling -->
       <link rel='stylesheet' href='css/detail.css'>";
       break;
     case 'userpage':
+    if(!isset($_SESSION['username'])){
+      header("Location: index.php");
+    }
       echo "<!-- userpage styling -->
       <link rel='stylesheet' href='css/userpage.css'>";
       break;

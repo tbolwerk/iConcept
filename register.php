@@ -17,12 +17,25 @@ while($question = $data->fetch()){
 
 
 
+
+
 if(isset($_POST['submit'])){
   $address2=NULL;
   if($_POST['address2']!=""){
     $address2=$_POST['address2'];
   }
   	register($_POST['username'],$_POST['firstname'],$_POST['lastname'],$_POST['address1'],$address2,$_POST['zipcode'],$_POST['city'],$_POST['country'],$_POST['birthday'],$_POST['email'],$_POST['email_check'],$_POST['password'],$_POST['password_check'],$_POST['secretAnswer'],$_POST['secretQuestion']);
+}
+
+$message = "";
+
+if(isset($errors) || isset($error)){
+  foreach ($errors as $error) {
+    $message.= $error;
+  }
+
+}else if(isset($_POST['submit'])){
+$message = "Account succesvol aanngemaakt, klik op de verificatie link in de ontvangen mail om het account te activeren";
 }
 ?>
 <!--Main Layout-->
@@ -38,6 +51,7 @@ if(isset($_POST['submit'])){
       <div class="login-form-header elegant">
         <h3>Registreren</h3>
       </div>
+      <?=$message?>
         <!-- Material form register -->
         <form action="" method="post" autocomplete="on">
             <!-- Material input text -->
@@ -232,16 +246,7 @@ if(isset($_POST['submit'])){
             </div>
         </form>
         <!-- Material form register -->
-<?php
-if(isset($errors)){
-print_r($errors);
 
-}
-if(isset($error)){
-  echo $error;
-}
-
-?>
 
     </div>
     <!-- Card body -->

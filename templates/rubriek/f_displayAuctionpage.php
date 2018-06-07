@@ -21,7 +21,7 @@ function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
   else {
     $data = $dbh->query("SELECT COUNT(*) as num FROM Voorwerp_in_Rubriek WHERE rubrieknummer = $rubrieknummer");
     $row = $data->fetch();
-    echo $row['num'];
+
 
     $total_pages = $row['num'];
   }

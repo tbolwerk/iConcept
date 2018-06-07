@@ -1,6 +1,16 @@
 <?php
+
+// If the auction gets blocked successfully it will write a message to the message variable
+// that gets executed with toastr after a page refresh
 if(isset($_POST['unblockAuction'])){
-  unblockAuction($_POST['auctionId']);
+  try {
+    unblockAuction($_POST['auctionId']);
+    $message = "Veiling is succesvol gedeblokkeerd";
+    header('Location:rubriek.php');
+  } catch (PDOException $e){
+    $message = "Er is iets fout gegaan tijdens het deblokkeren van de veiling";
+  }
+
 }
 
 function printAuctionList(){
@@ -35,14 +45,15 @@ function unblockAuction($auctionId){
   try { //Set 'geblokkeerd' in table 'Voorwerp' to false
     $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 0 WHERE voorwerpnummer = ?");
     $statement->execute(array($auctionId));
-    $message = "Veiling is succesvol gedeblokkeerd";
   } catch(PDOException $e) {
     $error = $e;
   }
 }
 ?>
 
+<!-- This is the panel content for the blocked auctions -->
 <div class="col-11 verifcation-list">
+  <!-- This is where the information about this panel is set -->
   <div class="panel-information">
     <h1>Veilingenlijst</h1>
     <p>In deze lijst staan alle veilingen die geblokkeerd zijn via de website. Hier kan je de veilingen deblokkeren</p>

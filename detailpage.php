@@ -111,7 +111,7 @@ try{
   </div>
 </div>
 <?php if($results['geblokkeerd'] == 1){
-  $message = "Veiling is gesloten";
+  $message = "Veiling is succesvol geblokkeerd";
 
 }else{
   ?>

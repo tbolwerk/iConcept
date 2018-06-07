@@ -1,7 +1,7 @@
 
 
 <?php if ($current_page == 'login' || $current_page == 'register' || $current_page == 'adminpanel') {
-  // include 'templates/logo_nav.php';
+  // do nothing actually
 } else {
   include 'templates/footer_links.php';
 }?>
@@ -36,7 +36,7 @@
     <!-- JS Toastr for alerts CDN -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- script for the sidenav on category page -->
+    <!-- Script for the sidenav on category page -->
     <script>
     $(document).ready(function(){
       $('.flypanels-container').flyPanels({
@@ -47,9 +47,10 @@
       FastClick.attach(document.body);
     });
     </script>
+
     <!-- Script for the carousel on the mainpage -->
     <script type="text/javascript">
-
+    // The time before the carousel slides to the other 4 items
     $('.carousel').carousel({
       interval: 5000
     })
@@ -69,28 +70,37 @@
     });
     </script>
 
+    <!-- Toasrt JS script for notifications -->
     <script>
+    // https://github.com/CodeSeven/toastr
     var message = '<?php echo $message; ?>';
 
     $(document).ready(function() {
-        // Show's message based on a user being blocked or unblocked
+        // Shows an alert based on a certain message that belongs to the action being executed
         if (message.indexOf("Account") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
           toastr["success"](message)
         } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
           toastr["error"](message)
         } else if (message.indexOf("Veiling") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
           toastr["success"] (message)
         } else if (message.indexOf("geen bestand") >= 0) {
           toastr["error"] (message)
         } else if (message.indexOf("profielfoto") >= 0 && message.indexOf("succesvol") >= 0) {
           toastr["success"] (message)
+        } else if (message.indexOf("Persoonlijke informatie") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("iets mis") >= 0 && message.indexOf("persoonlijke informatie") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("onjuist") >= 0) {
+          toastr["error"] (message)
         }
 
       });
-
-    $(document).on('click', '#unblockAuctionBtn',function() {
-      });
-
+      // The options for the toastr alerts
       toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -111,9 +121,15 @@
 
     </script>
 
-
+    <script type="text/javascript">
+    // Tooltips Initialization
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
 
     <script type="text/javascript">
+    // Align logo to the center of the navbar when using mobile devices or anything smaller than 991px
       $(document).ready(function() {
       appendMobileNav();
       appendMobileFooter();
@@ -124,6 +140,7 @@
       appendMobileFooter();
       });
 
+      // Removes classes and adds classes depending on the width of the screen
       const appendMobileNav = () => {
       if ($(window).width() < 991) {
         $('#navbar-brand').addClass('ml-auto');
@@ -145,7 +162,8 @@
       };
       </script>
 
-      <script>
+      <!-- This script is under development for the mobile version  -->
+      <!-- <script>
         function w3_open() {
             document.getElementById("mySidebar").style.display = "block";
             document.getElementById("myOverlay").style.display = "block";
@@ -154,7 +172,7 @@
             document.getElementById("mySidebar").style.display = "none";
             document.getElementById("myOverlay").style.display = "none";
         }
-    </script>
+    </script> -->
 
 
     <script type="text/javascript">

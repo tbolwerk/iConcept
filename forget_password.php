@@ -43,16 +43,17 @@ $update_password->execute(array($hash,$to));
   echo $e;
 }
 
-$subject = "Reset Password EenmaalAndermaal";
-$txt = "Your new generated password : ".$new_password;
+$subject = "Wachtwoord herstellen voor EenmaalAndermaal";
+$txt = "Uw nieuwe wachtwoord is: ".$new_password;
 $headers = "From: Admin@EenmaalAndermaal.com";
 
 // mail($to,$subject,$txt,$headers);
-  echo "Het nieuwe wachtwoord is verzonden naar ".$to;
+  $message = "Het nieuwe wachtwoord is verzonden naar ".$to;
 
 }else{
   $errortxt = "Email of vraag en antwoord incorrect";
   $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
+  $message = "Er is iets fout gegaan tijdens het aanvragen van een nieuw wachtwoord. Probeer het opnieuw.";
 }
 // }
 }
@@ -72,11 +73,11 @@ $headers = "From: Admin@EenmaalAndermaal.com";
         <h3>Wachtwoord vergeten?</h3>
       </div>
       <div class="green-text" style="text-align: center; font-weight: bold;">
-        <?=$txt?>
+        <!-- <?=$txt?> -->
       </div>
       <div class="red-text" style="text-align: center; font-weight: bold;">
         <?php if (isset($errortxt)) {
-          echo $errortxt;
+          // echo $errortxt;
         }?>
       </div>
 
@@ -85,13 +86,12 @@ $headers = "From: Admin@EenmaalAndermaal.com";
 <form method="post" action="" >
   <div class="md-form">
 
-    <i class="fa fa-envelope prefix niagara"></i>
+    <i class="fa fa-at prefix niagara"></i>
     <input type="email" class="form-control white-text" name="forget_password">
     <label for="forget_password" class="font-weight-light" >Uw email</label>
   </div>
 
     <div class="md-form">
-        <i class="fa fa-user prefix niagara"></i>
         <select name="secretQuestion" class="form-control black-text">
           <option value="kies" class="font-weight-light black-text disabled selected">Kies een geheime vraag...</option>
           <?=$secret_question_options?>

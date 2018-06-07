@@ -97,6 +97,10 @@
           toastr["success"] (message)
         } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("onjuist") >= 0) {
           toastr["error"] (message)
+        } else if (message.indexOf("nieuwe wachtwoord") >= 0 && message.indexOf("verzonden") >= 0) {
+          toastr["info"] (message)
+        } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {
+          toastr["error"] (message)
         }
 
       });
@@ -193,11 +197,6 @@
         var hash = window.location.hash;
         $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
-<script>// Tooltips Initialization
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})</script>
-
 
 </body>
 

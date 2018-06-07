@@ -28,14 +28,14 @@ while( $row = $statement->fetch()){
     $status = '<span class="user-active"></span>Actief';
     $statusBtn='
         <input type="hidden" name="gebruikersnaam" value="' . $row['gebruikersnaam'] . '"></input>
-        <button type="submit" name="ban" id="unbanBtn" class="buttonEmpty"><i class="fas fa-ban" aria-hidden="true"></i></button>';
+        <button type="submit" name="ban" id="unbanBtn" class="buttonEmpty" data-toggle="tooltip" data-placement="top" title="Ban gebruiker"><i class="fas fa-ban" aria-hidden="true"></i></button>';
 
 
   } else { //Else show as blocked
     $status = '<span class="user-blocked"></span>Geblokkeerd';
     $statusBtn='
         <input type="hidden" name="gebruikersnaam" value="' . $row['gebruikersnaam'] . '"></input>
-        <button type="submit" name="unban" id="banBtn" class="buttonEmpty"><i class="fas fa-check" aria-hidden="true"></i></button>';
+        <button type="submit" name="unban" id="banBtn" class="buttonEmpty" data-toggle="tooltip" data-placement="top" title="Unban gebruiker"><i class="fas fa-check" aria-hidden="true"></i></button>';
   }
   $out.='<tr>
     <td>'.$row["gebruikersnaam"].'</td>

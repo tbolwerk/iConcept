@@ -58,6 +58,7 @@ if(isset($_POST['tab1submit'])) {
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
   $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $address2 = str_replace("\"", "", strip_tags($_POST['address2']));
   $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
   $city = str_replace("\"", "", strip_tags($_POST['city']));
   $country = str_replace("\"", "", strip_tags($_POST['country']));
@@ -94,8 +95,8 @@ if(isset($_POST['tab1submit'])) {
 	}
 
   try { //Update the record for this user with the submitted data
-    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?,adresregel2=?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1,$address2, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
     updatePhones(); //Phones are updated seperately
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
@@ -306,8 +307,8 @@ These values are for debugging purposes and are visible by inspecting the page s
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12" >
+    <div class="form-row">
+      <div class="col-md-6" >
         <div class="md-form form-group">
           <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
@@ -319,6 +320,23 @@ These values are for debugging purposes and are visible by inspecting the page s
             </ul>
           </div>
           <label style="black-text" for="address1">Adres</label>
+        </div>
+      </div>
+
+
+      <div class="col-md-6" >
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <div class="form-requirements">
+            <ul>
+              <li>*Optioneel</li>
+              <li>Straatnaam gevolgd door huisnummer</li>
+              <li>Bijvoorbeeld: De goudenstraat 25B</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
+          <label style="black-text" for="address1">Adres 2</label>
         </div>
       </div>
     </div>

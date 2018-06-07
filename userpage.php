@@ -202,7 +202,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 
 
-
+<!-- Tabs to navigate trough account setting -->
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
@@ -216,6 +216,8 @@ These values are for debugging purposes and are visible by inspecting the page s
 </ul>
 <div class="tab-content">
 
+
+<!-- Form to update profile -->
 <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
   <form method="post" action="">
     <div class="userpage-form-header">
@@ -433,8 +435,9 @@ These values are for debugging purposes and are visible by inspecting the page s
         <!-- Settings to register as a seller -->
         <div class="tab-pane fade" id="tab3" role="tabpanel">
           <?php
-if(!empty($results[0]['code'])){//checks for verification code
+if(!empty($results[0]['code'])){//shows verificationform if user is registerd as seller but not yet verified
     ?>
+    <!-- Form to verify -->
     <form method="post" action="">
 
     	<div class="md-form">
@@ -516,7 +519,7 @@ if(!empty($results[0]['code'])){//checks for verification code
 
     <script src="js/functions.js"></script>
     <script>
-    function updateForm() {
+    function updateForm() {//function to show right fields for chosen option
       if (document.getElementById("checkoption").value == "post") {
         document.getElementById("bankDiv").style.display = "block";
     		document.getElementById("banknumberDiv").style.display = "block";
@@ -537,7 +540,7 @@ if(!empty($results[0]['code'])){//checks for verification code
     	}
     }
 
-    document.getElementById("checkoption").onchange = updateForm;
+    document.getElementById("checkoption").onchange = updateForm;//updates from if users changes verify option
     </script>
 
   </div>

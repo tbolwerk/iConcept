@@ -20,13 +20,16 @@ try {
 
 if(isset($_POST['submit'])){
 // print_r($secret_question_options);
-// if(empty($_POST['forget_password']) || empty($_POST['secretAnswer']) || empty($_POST['secretQuestion'])){
-//   $errortxt = "Niet alle velden zijn ingevuld";
-//   $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
-// }else{
+if(empty($_POST['forget_password']) || empty($_POST['secretAnswer']) || empty($_POST['secretQuestion'])){
+  $errortxt = "Niet alle velden zijn ingevuld";
+  $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
+}else{
+$password = str_replace("\"", "", strip_tags($_POST['forget_password']));
+$secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
+$secretQuestion = str_replace("\"", "", strip_tags($_POST['secretQuestion']));
 
   $user_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE email = ? AND antwoordtekst=? AND vraagnummer=?");
-  $user_check->execute(array($_POST['forget_password'],$_POST['secretAnswer'],$_POST['secretQuestion']));
+  $user_check->execute(array($password,$secretAnswer,$secretQuestion));
 
 
 
@@ -55,7 +58,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
   $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
   $message = "Er is iets fout gegaan tijdens het aanvragen van een nieuw wachtwoord. Probeer het opnieuw.";
 }
-// }
+}
 }
 ?>
 

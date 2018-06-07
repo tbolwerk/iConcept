@@ -35,8 +35,11 @@
   color: #FFFFFF;
   width: 100%;
 }
-.admin-user, .admin-time, .admin-logout {
+.admin-user, .admin-logout {
   padding: 5px 40px;
+}
+.admin-logout a:hover {
+  color: #4584a4;
 }
 
 /* Admin panel content styling */
@@ -88,15 +91,15 @@
 }
 .fixed_headers td:nth-child(2),
 .fixed_headers th:nth-child(2) {
-  min-width: 350px;
+  min-width: 475px;
 }
 .fixed_headers td:nth-child(3),
 .fixed_headers th:nth-child(3) {
-  width: 250px;
+  width: 150px;
 }
 .fixed_headers td:nth-child(4),
 .fixed_headers th:nth-child(4) {
-  width: 250px;
+  width: 150px;
 }
 .fixed_headers thead tr {
   display: block;
@@ -138,17 +141,10 @@
   color: #ff4444;
 }
 
-/* Notification boxes styling */
 
-#toast-container>div {
-  width: 400px !important;
-}
-.toast-info {
-  background-color: #4584a4 !important;
-}
-.toast-success {
-  background-color: #007E33 !important;
-}
-.toast-error {
-  background-color: #CC0000 !important;
+/* Block auction page styling */
+
+#unblockAuctionBtn {
+  border: none;
+  background: none;
 }

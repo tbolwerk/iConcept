@@ -1,13 +1,14 @@
 <?php
 $current_page='new_auction';
 require_once('templates/header.php');
+require_once("templates/auction/f_checkPicture.php");
+require_once("templates/auction/f_generateCategoryOptions.php");
+require_once("templates/auction/f_newAuction.php");
 
-$errors;
 $errors = array();
 $seller = $_SESSION['username'];
 
-
-try {
+try { //Select userdata from the database
   $statement = $dbh->prepare("select * from Gebruiker where gebruikersnaam = ?");
   $statement->execute(array($seller));
   $userdata = $statement->fetch();
@@ -15,7 +16,7 @@ try {
   echo $e;
 }
 
-try {
+try { //Select all categories from the database
   $data = $dbh->prepare("select * from Rubriek order by volgnummer");
   $data->execute();
   $i = 0;
@@ -29,150 +30,6 @@ try {
 } catch (PDOException $e) {
   echo $e;
 }
-
-
-//Checks if file is the right type and checks if the file is not too large
-function checkPicture($picture, $id, $i){
-  global $errors;
-
-  $pictures = array();
-  $allowedExts = array("jpg", "jpeg", "png", "bmp");//Allowed filetypes
-  $tmp_extension = explode(".", $picture["name"]);
-  $extension = end($tmp_extension);
-  $filename = $id . "_" . $i . "." . $extension;
-  if (//checks file type and size
-      !(
-      ($picture["type"] == "image/jpeg")
-      || ($picture["type"] == "image/png")
-      || ($picture["type"] == "image/pjpeg")
-      || ($picture["type"] == "image/bmp")
-      )
-      || ($picture["size"] > 2000000) //File must be smaller than 2MB
-      || !in_array($extension, $allowedExts)
-      || $picture["error"] > 0)
-      {
-        $errors['upload'] = 'Afbeeldingen moeten een jpg of png van maximaal 3MB zijn.';
-        $errors['upload'] = $picture["error"];
-      }
-      else {
-        return $filename;//returns filename
-      }
-}
-
-//generates and returns options for the main categoryselector
-function generateCategoryOptions($results){
-  $options = "<option value=''>Kies rubriek...</option>";
-  for ($i = 0; $i < count($results); $i++) {
-    if($results[$i]['rubrieknummerOuder'] == -1){
-      $options .= "<option value='" . $results[$i]['rubrieknummer'] . "'>" . $results[$i]['rubrieknaam'] . "</option>";
-    }
-  }
-  return $options;
-}
-
-//Stores all information in the database
-function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_instructions,$place,$country,$shipping_costs,$shipping_method,$picture,$category){
-  global $dbh;
-  global $errors;
-  global $seller;
-
-  $title = str_replace("\"", "", strip_tags($title));
-  $description = str_replace("\"", "", str_replace("\n", "<br>", strip_tags($description)));
-  $startprice = str_replace("\"", "", strip_tags($startprice));
-  $duration = str_replace("\"", "", strip_tags($duration));
-  $pay_method = str_replace("\"", "", strip_tags($pay_method));
-  $pay_instructions = str_replace("\"", "", strip_tags($pay_instructions));
-  $place = str_replace("\"", "", strip_tags($place));
-  $country = str_replace("\"", "", strip_tags($country));
-  $shipping_costs = str_replace("\"", "", strip_tags($shipping_costs));
-  $shipping_method = str_replace("\"", "", strip_tags($shipping_method));
-
-  $current_date = date('Y-m-d');
-  $current_time = date('G:i:s');
-
-  // try { //selects last inserted auctionid
-  //   $objectdata = $dbh->prepare("select top 1 voorwerpnummer from Voorwerp order by voorwerpnummer desc");
-  //   $objectdata->execute();
-  //   $lastid = $objectdata->fetch();
-  //   $id = $lastid[0] + 1;//id of the auction where all information should be stored in
-  // } catch (PDOException $e) {
-  //   $errors['db']=$e;
-  //   echo $errors['db'];
-  // }
-
-  $pictures = array();
-  $picture_keys = array_keys($picture);
-  for ($i = 0; $i < 4; $i++) { //rearranges the picture array so it's more usable
-  	foreach ($picture_keys as $key) {
-  		$pictures[$i][$key] = $picture[$key][$i];
-    }
-  }
-
-  $num_pictures = 0;
-  for ($i = 0; $i < 4; $i++){//counts number of selected pictures
-    if(!empty($pictures[$i]['name'])){
-      $num_pictures++;
-    }
-  }
-
-  if(count($errors) == 0){//Inserts all data in database if no errors occured
-    do {
-      $id = rand(0, 999999999); //generate random id to be used as voorwerpnummer
-      $retry = false;
-
-      try {//inserts all data in table 'Voorwerp'
-        $data = $dbh->prepare("insert into Voorwerp(voorwerpnummer, titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam, land, looptijd, Looptijdbegindag, Looptijdtijdstip, verzendkosten, verzendinstructies, verkoper, veilinggesloten)
-        values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $data->execute(array($id, $title, $description, (float)$startprice, $pay_method, $pay_instructions, $place, $country, $duration, $current_date, $current_time, (float)$shipping_costs, $shipping_method, $seller, 0));
-      } catch (PDOException $e) {
-        if ($e->getCode() == 23000) { //sqlstate 23000 means that there was a constraint violation
-          $retry = true;
-        } else {
-          $error=$e;
-          echo $error;
-          $errors['upload'] = "Er is iets misgegaan";
-        }
-      }
-    } while ($retry == true); //if there was an error, try again
-
-    for($i = 0; $i < $num_pictures; $i++){//makes the indexes of the pictures right for if user deselected a picture
-      if(empty($pictures[$i]['name'])){
-        $pictures[$i] = $pictures[$i+1];
-        $pictures[$i+1] = null;
-        $i--;
-      }
-      else {
-        $filenames[$i] = checkPicture($pictures[$i],$id,$i);
-      }
-    }
-
-    for($i = 0; $i < $num_pictures; $i++){//Inserts data for every selected picture
-      move_uploaded_file($pictures[$i]["tmp_name"], //uploads picture to server
-      "img/producten/" . $filenames[$i]);
-      try {//inserts picturedata in database
-        $data = $dbh->prepare("insert into Bestand(voorwerpnummer, filenaam) Values(?, ?)");
-        $data->execute(array($id, "img/producten/" . $filenames[$i]));
-      } catch (PDOException $e) {
-          $error = $e;
-          echo $error;
-          $errors['upload'] = "Er is iets misgegaan";
-      }
-    }
-    try {//inserts categorydata in database
-      $data = $dbh->prepare("insert into Voorwerp_in_Rubriek(voorwerpnummer, rubrieknummer) Values(?, ?)");
-      $data->execute(array($id, $category));
-    } catch (PDOException $e) {
-        $error = $e;
-        echo $error;
-        $errors['upload'] = "Er is iets misgegaan";
-    }
-    if(count($errors) == 0){
-      $errors['upload'] = "Veiling is succesvol geplaatst!";
-    }
-  }
-}
-
-
 
 if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
   $j = 1;
@@ -188,95 +45,9 @@ if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
 ?>
 
 <style>
-.inputfile {
-  display: block;
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	/* position: absolute; */
-	z-index: -1;
-}
-
-.inputfile + label {
-  position: relative;
-  height: 202px;
-  width: 202px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #bebebe;
-  margin-right: 10px;
-}
-
-.inputfile + label img {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-height: 200px;
-  max-width:200px;
-}
-
-.remove-btn, .edit-btn {
-  position: absolute;
-  z-index: 100;
-  background-color: #555;
-  color: #fff;
-  padding: 5px;
-  font-size: 20px;
-
-}
-
-.edit-btn {
-  right: 0px;
-}
-
-.remove-btn {
-  padding-right: 10px;
-  top: 0px;
-  display: none;
-}
-
-.newauction-form {
-  background-color: #ffffff;
-  padding: 40px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
-.newauction-form-header h1 {
-  color: #000000;
-  font-weight: bold;
-  font-size: 32px;
-  text-align: center;
-}
-
-.hoi {
-  position: relative;
-}
-
-.blockFileSelectButton {
-  opacity: 0;
-  z-index: 50;
-  height: 202px;
-  width: 202px;
-  position: absolute;
-  display: none;
-}
-.hiddenInput {
-  position: absolute;
-  top: 180px;
-  opacity: 0;
-  width: 0.1;
-  height: 0.1;
-}
-
 body {
   background-color: #ebebeb;
 }
-
 </style>
 
 <div class="view index-header">
@@ -288,9 +59,10 @@ body {
 
 
 <div class="container col-md-9 col-lg-8">
-<!-- <div class="row justify-content-center col-sm-12"> -->
+  <!-- Form for creating new auction -->
 <form class="newauction-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validateFileExtension(this.fileField)">
-  <?php if(isset($errors['upload'])){echo $errors['upload'];} ?>
+  <?php if(isset($errors['upload'])){echo $errors['upload'];} //shows errors if they exist
+  ?>
   <div class="newauction-form-header">
     <h1>Titel en beschrijving</h1>
   </div>
@@ -328,9 +100,9 @@ body {
   <div class="form-row">
       <div class="md-form form-group col-md-12">
         <select name="mainCategory" id="mainCategories" class="form-control" onchange="createSubCategorySelect(this.value, 0)" required>
-          <?=generateCategoryOptions($results)?>
+          <?=generateCategoryOptions($results) //echos all main categories ?>
         </select>
-        <div id="subCategoriesDiv0"></div>
+        <div id="subCategoriesDiv0"></div> <!--empty div which is filled when main category is selected -->
       </div>
   </div>
 
@@ -338,28 +110,28 @@ body {
     <h1>Afbeeldingen</h1>
   </div>
   <div class="form-row">
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture1" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture1" type="file" class="inputfile">
       <label id="labelpicture1" for="picture1"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn1" onclick="removePicture(1)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden1" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture2" class="blockFileSelectButton"></div>
       <input name="picture[]"  id="picture2" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture2" for="picture2" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn2" onclick="removePicture(2)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden2" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture3" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture3" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture3" for="picture3" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
       <div id="remove-btn3" onclick="removePicture(3)" class="remove-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
       <input type="text" id="hidden3" class="hiddenInput"></input>
     </div>
-    <div class="hoi">
+    <div class="auctionPictureFrame">
       <div id="blockPicture4" class="blockFileSelectButton"></div>
       <input name="picture[]" id="picture4" type="file" class="inputfile" style="display: none;">
       <label id="labelpicture4" for="picture4" style="display: none;"><img style="height: 80px;" src="img/picture-upload-button.png"></img></label>
@@ -473,56 +245,17 @@ body {
 
 
     <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="submit">Plaats veiling</button>
+      <button class="btn elegant" type="submit" name="submit" data-toggle="tooltip" title="Plaats veiling">Plaats veiling</button>
     </div>
 
-
-  <!-- <br>
-  <label>Titel</label>
-  <input type="text" name="title" required><br>
-  <label>Beschrijving</label>
-  <textarea name="description" required></textarea><br>
-  <label>Startprijs</label>
-  <input type="number" name="startprice" required><br>
-  <label>Looptijd</label>
-  <select name="duration">
-    <option value="1">1 dagen</option>
-    <option value="3">3 dagen</option>
-    <option value="5">5 dagen</option>
-    <option value="7" selected>7 dagen</option>
-    <option value="10">10 dagen</option>
-  </select><br>
-  <label>Betalingswijze</label>
-  <input type="radio" name="pay_method" value="contant" checked> Contant
-  <input type="radio" name="pay_method" value="bank/giro"> Bank/Giro
-  <input type="radio" name="pay_method" value="anders"> Anders<br>
-  <label>Betalingsinstructies</label>
-  <input type="text" name="pay_instructions"><br>
-  <label>Plaats</label>
-  <input type="text" name="place" value="<?=$userdata['plaatsnaam']?>" required><br>
-  <label>Land</label>
-  <input type="text" name="country" value="<?=$userdata['land']?>" required><br>
-  <label>Verzendkosten</label>
-  <input type="number" name="shipping_costs"><br>
-  <label>Verzendinstructies</label>
-  <input type="text" name="shipping_instructions"><br>
-  <label>Afbeeldingen</label><br>
-  <input name="picture[]" id="picture1" type="file"><br>
-	<input name="picture[]" id="picture2" type="file" style="display: none;">
-	<input name="picture[]" id="picture3" type="file" style="display: none;">
-	<input name="picture[]" id="picture4" type="file" style="display: none;">
-  <select name="mainCategory" id="mainCategories" onchange="createSubCategorySelect(this.value, 0)" required>
-    <?=generateCategoryOptions($results)?>
-  </select>
-  <div id="subCategoriesDiv0"></div>
-  <button type="submit" name="submit">Plaats veiling</button>-->
 </form>
-<!-- </div> -->
+
 </div>
-<!-- </div> -->
+
 
 
 <script>
+//adds pcitureselector if new picture is selected
 function adduploadbox1(){
   if(document.getElementById("picture1").value != "") {
      document.getElementById("picture2").style.display = "block";
@@ -545,20 +278,19 @@ document.getElementById("picture1").onchange = adduploadbox1;
 document.getElementById("picture2").onchange = adduploadbox2;
 document.getElementById("picture3").onchange = adduploadbox3;
 
-	//teller = 0;
-	function createSubCategorySelect(categorynumberParent, teller){
+//Generates subcategorie selectors
+	function createSubCategorySelect(categorynumberParent, teller){//Gets selected categorynumber
 
 
-		var results = <?php echo json_encode($results); ?>;
+		var results = <?php echo json_encode($results); ?>;//array containing all categories
 		var selector = "<select class='form-control' name='subCategories"+(teller+1)+"' id='subCategories"+(teller+1)+"' onchange='createSubCategorySelect(this.value, "+(teller+1)+")' required>";
     selector += "<option value=''>Kies subrubriek...</option>";
-		//console.log(results.length);
 
-		var gevonden = false;
-		for (i = 0; i < results.length; i++) {
+		var found = false;
+		for (i = 0; i < results.length; i++) { //checks every category parent if it is equal to selected category
 			if (results[i].rubrieknummerOuder == categorynumberParent) {
-				selector += "<option value='" + results[i].rubrieknummer + "'>" + results[i].rubrieknaam + "</option>";
-				gevonden = true;
+				selector += "<option value='" + results[i].rubrieknummer + "'>" + results[i].rubrieknaam + "</option>";//adds categoryoption to selector
+				found = true;
 			}
 		}
 
@@ -566,14 +298,13 @@ document.getElementById("picture3").onchange = adduploadbox3;
 		selector += "</select>";
     selector += "<div id='subCategoriesDiv"+(teller+1)+"'>";
 		selector += "</div>";
-		console.log(gevonden);
-		if (gevonden) {
-			document.getElementById('subCategoriesDiv'+teller).innerHTML = selector;
-			//teller++;
+
+		if (found) {
+			document.getElementById('subCategoriesDiv'+teller).innerHTML = selector;//creates new subcategory selector if subcategories exist
+
 		}
       else {
-        document.getElementById('subCategoriesDiv'+teller).innerHTML = "";
-        console.log(document.getElementById('subCategories'+teller).value);
+        document.getElementById('subCategoriesDiv'+teller).innerHTML = "";//deletes subcategory selector if other category is selected
       }
   	}
 
@@ -587,6 +318,8 @@ document.getElementById("picture3").onchange = adduploadbox3;
     document.getElementById('picture4').addEventListener('change', handleFileSelect, false);
     document.getElementById('picture4').pictureId = 4;
 
+
+    //Handles pictureselection
     function handleFileSelect(evt) {
           var files = evt.target.files;
           var pictureId = evt.target.pictureId;
@@ -620,6 +353,7 @@ document.getElementById("picture3").onchange = adduploadbox3;
 
   }
 
+  //Unselects picture
   function removePicture(pictureId) {
     var labelpicture = 'labelpicture' + pictureId;
     var file = document.getElementById('picture' + pictureId);

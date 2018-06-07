@@ -5,99 +5,12 @@ require_once("templates/userpage/f_addAvatar.php");
 require_once("templates/userpage/f_changePassword.php");
 require_once("templates/userpage/f_createVerificationCodeSeller.php");
 require_once("templates/userpage/f_registerSeller.php");
+require_once("templates/userpage/f_verificationSeller.php");
+require_once("templates/userpage/f_insertPhoneNumber.php");
+require_once("templates/userpage/f_updatePhones.php");
 require_once("templates/register/f_createVerificationCode.php");
 require_once("templates/mail/f_verificationMail.php");
 $message = "";
-
-function verificationSeller($username,$code)
-{
-	global $dbh;
-  global $message;
-
-	try {//checks if code exists in database
-		$statement = $dbh->prepare("SELECT code FROM VerificatieVerkoper WHERE gebruikersnaam = ?");
-		$statement->execute(array($username));
-		$results = $statement->fetch();
-	} catch (PDOException $e) {
-		$error = $e;
-		echo $error;
-	}
-
-	if($results[0] == $code){
-		try {
-			$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
-			$statement->execute(array($username));
-			$statement = $dbh->prepare("delete VerificatieVerkoper where gebruikersnaam = ?");
-			$statement->execute(array($username));
-			$_SESSION['seller'] = 1;
-      $message = "<p class='green-text lead'>U bent succesvol registreerd als verkoper.</p>";
-		} catch (PDOException $e) {
-			$error = $e;
-			echo $error;
-		}
-	}
-  else {
-    $message = "<p class='red-text lead'>De opgegeven verificatiecode is onjuist.</p>";
-  }
-}
-
-function updatePhones() {
-  global $dbh;
-
-  //Receive all phone numbers associated with this account
-  $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ?");
-  $statement->execute(array($_SESSION['username']));
-  $phones = $statement->fetchAll();
-
-  $numbersToKeep = array();
-
-  //Put all submitted numbers in an array and strip all duplicate numbers
-  $submittedPhones = array_unique(array($_POST['phone1'], $_POST['phone2'], $_POST['phone3']));
-
-  //Make sure all numbers are present in the database
-  foreach ($submittedPhones as $submittedPhone) {
-    if ($submittedPhone != "") {
-      insertNumber($submittedPhone, $phones, $numbersToKeep);
-    }
-  }
-  //Delete all phones associated with this account that shouldn't be kept
-  foreach ($phones as $phone) {
-    $hit = 0;
-
-    foreach ($numbersToKeep as $number) {
-      if ($phone['telefoonnummer'] == $number) {
-        $hit = 1;
-      }
-    }
-    if ($hit == 0) {
-      $statement = $dbh->prepare("delete Gebruikerstelefoon where volgnummer = ?");
-      $statement->execute(array($phone['volgnummer']));
-    }
-  }
-}
-
-//Insert a number into the database if the number can't be found in the $phones array, which should contain
-// all numbers in the database associated with this account
-function insertNumber($number, $phones, &$numbersToKeep) {
-  global $dbh;
-
-  $hit = 0;
-  foreach ($phones as $phone) {
-    if ($number == $phone['telefoonnummer']) {
-      $hit = 1;
-    }
-  }
-  //If the phone can't be found in the database
-  if ($hit == 0) {
-    //Insert it
-    $statement = $dbh->prepare("insert into Gebruikerstelefoon(gebruikersnaam, telefoonnummer) Values (?, ?)");
-    $statement->execute(array($_SESSION['username'], $number));
-  }
-  //This number should not be deleted
-  array_push($numbersToKeep, $number);
-}
-
-//If user submits updated account data
 
 //If user tries to register as seller
 if(isset($_POST['registerseller'])){
@@ -120,34 +33,32 @@ if (isset($_POST['tab2submit'])) {
     if (password_verify($_POST['currentPassword'],$password[0])) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
-        $message = "<p class='green-text lead'>wachtwoord succesvol veranderd</p>";
+        $message = "Uw wachtwoord is succesvol gewijzigd";
     }else{
-       $message = "<p class='red-text lead'>Wachtwoord niet correct</p>";
+       $message = "Opgegeven wachtwoord is onjuist";
     }
 }
 
 //If user submits a profile picture, upload it to the server
 if (isset($_POST['change_avatar'])) {
-    $username = $_SESSION['username'];
-    $picture = $_FILES['file'];
-    //addAvatar() can be found in functions.php
-    addAvatar($picture, $username);
+  $username = $_SESSION['username'];
+  $picture = $_FILES['file'];
+  addAvatar($picture, $username);
 }
 
 $username = $_SESSION['username'];
 
-//Receive account data from database
-$statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
-$statement->execute(array($username));
-$results = $statement->fetchAll();
-
-
-
+//If user submits updated account data
 if(isset($_POST['tab1submit'])) {
+	$statement = $dbh->prepare("SELECT email FROM Gebruiker WHERE gebruikersnaam = ?");
+	$statement->execute(array($username));
+	$currentmail = $statement->fetch()[0];
+
   //Remove any doublequotes and html tags
   $firstname = str_replace("\"", "", strip_tags($_POST['firstname']));
   $lastname = str_replace("\"", "", strip_tags($_POST['lastname']));
   $address1 = str_replace("\"", "", strip_tags($_POST['address1']));
+  $address2 = str_replace("\"", "", strip_tags($_POST['address2']));
   $postalcode = str_replace("\"", "", strip_tags($_POST['postalcode']));
   $city = str_replace("\"", "", strip_tags($_POST['city']));
   $country = str_replace("\"", "", strip_tags($_POST['country']));
@@ -157,47 +68,50 @@ if(isset($_POST['tab1submit'])) {
   $activation = 1;
   $email = str_replace("\"", "", strip_tags($_POST['email']));
   $statement = $dbh->query("SELECT email FROM Gebruiker");
-$email_exists = false;
+	$email_exists = false;
   while($row = $statement->fetch()){
-  if($email == $row['email'] && $results[0]['email'] != $email){
-    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
-    $email_exists = true;
-    break;
-  }
-}
-//If the submitted mail is not equal to the mail in the database and noone else is using the submitted mail
-if($results[0]['email'] != $email && $email_exists == false){
-  $username = $_SESSION['username'];
+	  if($email == $row['email'] && $currentmail != $email){
+	    $message = "<p class='red-text lead'>Er is al een account met dit E-mail adres</p>";
+	    $email_exists = true;
+	    break;
+	  }
+	}
+	//If the submitted mail is not equal to the mail in the database and noone else is using the submitted mail
+	if($currentmail != $email && $email_exists == false){
+	  $username = $_SESSION['username'];
 
-  //Generate verification code
-  $code = random_password(6);
-  createVerificationCode($username, $code, $email);
+	  //Generate verification code
+	  $code = random_password(6);
+	  createVerificationCode($username, $code, $email);
 
-  //Deactivate the account until the user clicks the link
-  $activation = 0;
+	  //Deactivate the account until the user clicks the link
+	  $activation = 0;
 
-  //Display message on webpage
-  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$username."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
+	  //Display message on webpage
+	  $message.="<p class='green-text lead'>Er is een verificatie mail verzonden naar ".$email." Klik op de activatie <a href='verification.php?username=".$username."&code=".$code."&email=".$email."'>link</a> om de wijziging door te voeren</p>";
 
-  //Send mail with verification code
-  verificationMail($email, $username, $code, 'mail');
-}
-
-
+	  //Send mail with verification code
+	  verificationMail($email, $username, $code, 'mail');
+	}
 
   try { //Update the record for this user with the submitted data
-    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
-    $statement->execute(array($firstname, $lastname, $address1, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
+    $statement = $dbh->prepare("update Gebruiker set voornaam = ?, achternaam = ?, adresregel1 = ?,adresregel2=?, postcode = ?, plaatsnaam = ?, land = ?, geboortedatum = ?,geactiveerd =?, vraagnummer = ?, antwoordtekst = ? where gebruikersnaam = ?");
+    $statement->execute(array($firstname, $lastname, $address1,$address2, $postalcode, $city, $country, $birthdate,$activation, $secretQuestion, $secretAnswer, $_SESSION['username']));
     updatePhones(); //Phones are updated seperately
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
-    // $message.="<br><p class='green-text lead'> Persoonlijke informatie succesvol aangepast!</p>";
+    $message.="Persoonlijke informatie succesvol gewijzigd";
   } catch (PDOException $e) {
     $error = $e;
 
-    $message = "<p class='red-text lead'>Er ging iets mis</p>";
+    $message = "Er ging iets mis tijdens het wijzigen van uw persoonlijke informatie";
   }
 }
+
+//Receive account data from database
+$statement = $dbh->prepare("SELECT * FROM Gebruiker g LEFT JOIN Gebruikerstelefoon gt ON g.gebruikersnaam=gt.gebruikersnaam LEFT JOIN Vraag v ON g.vraagnummer = v.vraagnummer LEFT JOIN VerificatieVerkoper vv ON g.gebruikersnaam=vv.gebruikersnaam WHERE g.gebruikersnaam = ?");
+$statement->execute(array($username));
+$results = $statement->fetchAll();
 
 // //Receive phone numbers for this user from database
 // $statement = $dbh->prepare("select * from Gebruikerstelefoon where gebruikersnaam = ? order by volgnummer");
@@ -252,7 +166,7 @@ while ($question = $data->fetch()) {
       <form method="post" action="" enctype="multipart/form-data">
         <input type="file" name="file" id="profile-picture" accept="image/png, image/jpeg">
         <div class="profile-picture-upload">
-          <button type="submit" name="change_avatar">Upload</button>
+          <button class="btn elegant" type="submit" name="change_avatar" data-toggle="tooltip" data-placement="bottom" title="Upload afbeelding"><i class="fas fa-upload"></i></button>
         </div>
       </form>
     </div>
@@ -287,9 +201,9 @@ These values are for debugging purposes and are visible by inspecting the page s
 <div class="col-md-8 ml-auto mr-5 usersettings-content">
 
 
-<?= $message ?>
 
 
+<!-- Tabs to navigate trough account setting -->
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
@@ -303,6 +217,8 @@ These values are for debugging purposes and are visible by inspecting the page s
 </ul>
 <div class="tab-content">
 
+
+<!-- Form to update profile -->
 <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
   <form method="post" action="">
     <div class="userpage-form-header">
@@ -391,8 +307,8 @@ These values are for debugging purposes and are visible by inspecting the page s
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12" >
+    <div class="form-row">
+      <div class="col-md-6" >
         <div class="md-form form-group">
           <input type="text" class="form-control" name="address1" id="address1" value="<?=$results[0]['adresregel1']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
@@ -404,6 +320,23 @@ These values are for debugging purposes and are visible by inspecting the page s
             </ul>
           </div>
           <label style="black-text" for="address1">Adres</label>
+        </div>
+      </div>
+
+
+      <div class="col-md-6" >
+        <div class="md-form form-group">
+          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <div class="form-requirements">
+            <ul>
+              <li>*Optioneel</li>
+              <li>Straatnaam gevolgd door huisnummer</li>
+              <li>Bijvoorbeeld: De goudenstraat 25B</li>
+              <li>Maximaal 35 tekens</li>
+              <li>De meeste tekens uit het latijns alfabet worden toegestaan</li>
+            </ul>
+          </div>
+          <label style="black-text" for="address1">Adres 2</label>
         </div>
       </div>
     </div>
@@ -485,7 +418,7 @@ These values are for debugging purposes and are visible by inspecting the page s
       </div>
     </div>
     <div class="mt-3 py-1 text-center">
-      <button class="btn elegant" type="submit" name="tab1submit">Opslaan</button>
+      <button class="btn elegant" type="submit" name="tab1submit" data-toggle="tooltip" title="Gewijzigde gegevens opslaan">Opslaan</button>
     </div>
   </form>
 </div>
@@ -512,7 +445,7 @@ These values are for debugging purposes and are visible by inspecting the page s
           </div>
 
           <div class="mt-3 py-1 text-center">
-            <button class="btn elegant" type="submit" name="tab2submit">Opslaan</button>
+            <button class="btn elegant" type="submit" name="tab2submit" data-toggle="tooltip" title="Gewijzigde gegevens opslaan">Opslaan</button>
           </div>
           </form>
 
@@ -520,8 +453,9 @@ These values are for debugging purposes and are visible by inspecting the page s
         <!-- Settings to register as a seller -->
         <div class="tab-pane fade" id="tab3" role="tabpanel">
           <?php
-if(!empty($results[0]['code'])){//checks for verification code
+if(!empty($results[0]['code'])){//shows verificationform if user is registerd as seller but not yet verified
     ?>
+    <!-- Form to verify -->
     <form method="post" action="">
 
     	<div class="md-form">
@@ -533,9 +467,10 @@ if(!empty($results[0]['code'])){//checks for verification code
             <li>Alleen hoofdletters en kleine letters zijn toegestaan</li>
           </ul>
         </div>
+            	<button class="btn-elegant" type="submit" name="verify" data-toggle="tooltip" data-placement="top" title="Verifieër code"><i class="fas fa-check"></i></button>
     	</div>
 
-    	<button type="submit" name="verify">Word verkoper</button>
+
     </form>
     <?php
 }else if($results[0]['verkoper'] == 1 && empty($results[0]['code'])){//checks if user is seller and no verification code *double check
@@ -588,7 +523,7 @@ if(!empty($results[0]['code'])){//checks for verification code
       	</div>
 
       	<div class="py-1 mt-3 text-center">
-        <button class="btn elegant" type="submit" name="registerseller">Word verkoper</button>
+        <button class="btn elegant" type="submit" name="registerseller" data-toggle="tooltip" title="Aanvraag verkoper">Word verkoper</button>
       </div>
       </form>
       <?php
@@ -602,7 +537,7 @@ if(!empty($results[0]['code'])){//checks for verification code
 
     <script src="js/functions.js"></script>
     <script>
-    function updateForm() {
+    function updateForm() {//function to show right fields for chosen option
       if (document.getElementById("checkoption").value == "post") {
         document.getElementById("bankDiv").style.display = "block";
     		document.getElementById("banknumberDiv").style.display = "block";
@@ -623,7 +558,7 @@ if(!empty($results[0]['code'])){//checks for verification code
     	}
     }
 
-    document.getElementById("checkoption").onchange = updateForm;
+    document.getElementById("checkoption").onchange = updateForm;//updates from if users changes verify option
     </script>
 
   </div>

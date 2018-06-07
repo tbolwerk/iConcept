@@ -11,11 +11,7 @@ switch($current_page){
 //Configure header for each page
 //Identify page with $current_page variable in php file
   case 'index':
-    if(isset($_SESSION['username'])){
 
-    }else{
-
-    }
     break;
 
   case 'login':
@@ -43,17 +39,26 @@ switch($current_page){
   }
 
     case 'detailpage':
+    $id = $_GET["id"];
+      $statement = $dbh->prepare("SELECT * FROM Voorwerp WHERE voorwerpnummer =?");
+      $statement->execute(array($id));
+      $data = $statement->fetch();
+      if($data['geblokkeerd'] == 1 || $data['veilinggesloten'] == 1){
+        header("Location: index.php");
+      }
       echo " <!-- Detailpage styling -->
       <link rel='stylesheet' href='css/detail.css'>";
       break;
     case 'userpage':
+    if(!isset($_SESSION['username'])){
+      header("Location: index.php");
+    }
       echo "<!-- userpage styling -->
       <link rel='stylesheet' href='css/userpage.css'>";
       break;
     case 'rubriek':
       echo "<link rel='stylesheet' href='css/flyPanels.css'>
-      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'";
-      // ../sidemenu/demo/
+      <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>";
       break;
     case 'adminpanel':
     if(isset($_SESSION['admin']) == 0){
@@ -72,6 +77,7 @@ switch($current_page){
 ?>
 <!DOCTYPE html>
 <html lang="en" class="full-height">
+<link rel="shortcut icon" type="image/png" href="img/logo/favicon.png">
 
 <head>
     <meta charset="utf-8">
@@ -94,11 +100,15 @@ switch($current_page){
     <link href="css/style.css" rel="stylesheet">
     <!-- Styling for the index page -->
     <link rel="stylesheet" href="css/index.css">
+    <!-- Styling for new auction page -->
+    <link rel="stylesheet" href="css/new_auction.css">
     <!-- Category page styling -->
     <link rel="stylesheet" href="css/rubriek.css">
     <!-- Search overlay styles -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/component.css">
+    <!-- Toastr alert css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <!-- Index carousel -->
     <link rel="stylesheet" href="css/carousel.css">
     <!-- Rubrieken overlay styling -->
@@ -119,7 +129,6 @@ else if ($current_page == 'login' || $current_page == 'register') {
 } else {
   include 'templates/nav.php';
 }
-
 
 ?>
 <body>

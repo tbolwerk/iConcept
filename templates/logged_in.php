@@ -1,30 +1,30 @@
 <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light' href='logout.php'>
-          <i class='fa fa-sign-out-alt'></i>
+        <a class='nav-link waves-effect waves-light' href='logout.php' data-toggle="tooltip" title="Logout">
+        <i class='fa fa-sign-out-alt'></i>
           </a>
         </li>
         <?php if($_SESSION['admin'] ==1){?>
         <li class='nav-item'>
-          <a class='nav-link waves-effect waves-light' href="admin_panel.php">
-            <i class="fa fa-users" aria-hidden="true"></i>
+          <a class='nav-link waves-effect waves-light' href="admin_panel.php" data-toggle="tooltip" title="Admin panel">
+            <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
           </a>
       </li>
     <?php } ?>
       <?php if($_SESSION['seller'] == 1){?>
       <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light' href='new_auction.php'>
+        <a class='nav-link waves-effect waves-light' href='new_auction.php' data-toggle="tooltip" title="Nieuwe veiling aanmaken">
           <i class='fa fa-edit'></i>
         </a>
       </li>
     <?php }else{ ?>
       <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light' href='new_auction.php'>
+        <a class='nav-link waves-effect waves-light' href='new_auction.php' >
           <i class='fa fa-heart'></i>
         </a>
       </li>
     <?php }?>
       <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light' href='userpage.php'>
+        <a class='nav-link waves-effect waves-light' href='userpage.php' data-toggle="tooltip" title="Account instellingen wijzigen">
           <i class='fa fa-cog'></i>
         </a>
       </li>

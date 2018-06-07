@@ -17,7 +17,7 @@ function printVerificationList($results){
       <td class="text-center">
         <form method="post" action="">
           <input type="hidden" name="username" value="' . $result['gebruikersnaam'] . '"></input>
-          <button type="submit" name="submit"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button type="submit" name="submit" data-toggle="tooltip" data-placement="top" title="Verifieër gebruiker"><i class="fa fa-times" aria-hidden="true"></i></button>
         </form>
       </td>
     </tr>
@@ -46,7 +46,7 @@ function sendVerificationCode($username){
   </div>
 
     <!-- Table-->
-  <table class="table verification-table-list">
+  <table class="table verification-table-list fixed_headers">
 
       <!--Table head-->
       <thead>

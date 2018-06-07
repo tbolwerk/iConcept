@@ -1,0 +1,84 @@
+.inputfile {
+  display: block;
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	/* position: absolute; */
+	z-index: -1;
+}
+
+.inputfile + label {
+  position: relative;
+  height: 202px;
+  width: 202px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bebebe;
+  margin-right: 10px;
+}
+
+.inputfile + label img {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 200px;
+  max-width:200px;
+}
+
+.remove-btn, .edit-btn {
+  position: absolute;
+  z-index: 100;
+  background-color: #555;
+  color: #fff;
+  padding: 5px;
+  font-size: 20px;
+
+}
+
+.edit-btn {
+  right: 0px;
+}
+
+.remove-btn {
+  padding-right: 10px;
+  top: 0px;
+  display: none;
+}
+
+.newauction-form {
+  background-color: #ffffff;
+  padding: 40px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.newauction-form-header h1 {
+  color: #000000;
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+}
+
+.auctionPictureFrame {
+  position: relative;
+}
+
+.blockFileSelectButton {
+  opacity: 0;
+  z-index: 50;
+  height: 202px;
+  width: 202px;
+  position: absolute;
+  display: none;
+}
+.hiddenInput {
+  position: absolute;
+  top: 180px;
+  opacity: 0;
+  width: 0.1;
+  height: 0.1;
+}

@@ -1,6 +1,7 @@
 <?php
 $current_page='detailpage';
 require_once('templates/header.php');
+require_once("templates/mail/f_bidMail.php");
 
 if(isset($_POST['block'])){
   $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
@@ -10,7 +11,7 @@ if(isset($_POST['block'])){
 if (isset($_GET['id'])) {
   if(!isset($_SESSION['username'])){
     $error = "U moet ingelogt zijn om te bieden klik <br><a href='login.php'>hier om in te loggen</a>";
-  }else{
+  } else {
   $error = "";
   if (isset($_POST['bid'])) {
     $bid = str_replace("\"", "", strip_tags($_POST['bid']));
@@ -19,9 +20,20 @@ if (isset($_GET['id'])) {
     }
     if ($error == "") {
       try {
+        //Take the highest bid before attempting to insert a new one
+        $statement = $dbh->prepare("select Gebruiker.gebruikersnaam, Gebruiker.email from Bod join Gebruiker on Bod.gebruikersnaam = Gebruiker.gebruikersnaam where voorwerpnummer = ? and bodbedrag = (
+        select max(bodbedrag) from Bod where voorwerpnummer = ?)");
+        $statement->execute(array($_GET['id'], $_GET['id']));
+        $userdata = $statement->fetch();
+
         $statement = $dbh->prepare("insert into bod(voorwerpnummer, bodbedrag, gebruikersnaam, boddag, bodtijdstip) Values (?, ?, ?, GETDATE(), CURRENT_TIMESTAMP)");
         $statement->execute(array($_GET['id'], $bid, $_SESSION['username']));
-      } catch(PDOException $e){
+
+        //If this was not the first bid, send a mail to the person that placed the last highest bid
+        if ($userdata[0] != "") {
+          bidMail($userdata);
+        }
+      } catch (PDOException $e){
         $error = $e->getMessage();
         echo "<!--|-~----~-|Database error|-~----~-|-->";
         echo "<!--{$error}-->";
@@ -36,6 +48,12 @@ try{
   $results = $statement->fetch();
   $time = date_create($results['looptijdeindedag2'] . $results['looptijdtijdstip']);
   $closingtime = date_format($time, "d M Y H:i"); //for example 14 Jul 2020 14:35
+  $titel = strip_tags($results["titel"]);
+  $beschrijving = strip_tags($results["beschrijving"],'<br>');
+  $betalingswijze = strip_tags($results['betalingswijze']);
+  $betalingsinstructie = strip_tags($results['betalingsinstructie']);
+  $verzendkosten = strip_tags($results['verzendkosten']);
+  $verzendinstructies = strip_tags($results['verzendinstructies']);
 }catch(PDOException $e){
 
 }
@@ -93,7 +111,8 @@ try{
   </div>
 </div>
 <?php if($results['geblokkeerd'] == 1){
-  echo "De veiling is gesloten";
+  $message = "Veiling is succesvol geblokkeerd";
+
 }else{
   ?>
 
@@ -130,7 +149,7 @@ try{
 
     <div class="col-md-5 product-info">
 
-      <form method="post" action=""><h2 class="product-title"><?=$results['titel']?></h2></form>
+    <h2 class="product-title"><?=$titel?></h2>
 
       <hr>
 
@@ -154,8 +173,8 @@ try{
               <input type="number" name="bid" class="form-control" step="0.01" <?php if(isset($input)){echo $input;}?>>
             </div>
             <div class="">
-              <button type="submit" name="submit" class="btn elegant" <?php if(isset($input)){echo $input;}?>>Bied</button>
-              <?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-ban"></i></button><?php } ?>
+              <button type="submit" name="submit" class="btn elegant" data-toggle="tooltip" title="Plaats bieding"<?php if(isset($input)){echo $input;}?>>Bied</button>
+              <?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3" data-toggle="tooltip" title="Blokkeer veiling"><i class="fas fa-ban"></i></button><?php } ?>
             </div>
         </div>
       </form>
@@ -186,21 +205,21 @@ try{
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade in show active" id="tab1" role="tabpanel">
-      <p><?=$results['beschrijving']?></p>
+      <p><?=$beschrijving?></p>
     </div>
     <div class="tab-pane fade" id="tab2" role="tabpanel">
       <p class="font-weight-bold niagara">Betaalwijze</p>
-      <p><?=$results['betalingswijze']?></p>
+      <p><?=$betalingswijze?></p>
       <br>
       <p class="font-weight-bold niagara">Betaalinstructie</p>
-      <p><?=$results['betalingsinstructie']?></p>
+      <p><?=$betalingsinstructie?></p>
     </div>
     <div class="tab-pane fade" id="tab3" role="tabpanel">
       <p class="font-weight-bold niagara">Verzendkosten</p>
-      <p>€<?=$results['verzendkosten']?></p>
+      <p>€<?=$verzendkosten?></p>
       <br>
       <p class="font-weight-bold niagara">Verzendinstructies</p>
-      <p><?=$results['verzendinstructies']?></p>
+      <p><?=$verzendinstructies?></p>
     </div>
   </div>
 </div>
@@ -208,17 +227,20 @@ try{
 <script>
 countdown('timer', <?php echo "'{$closingtime}'"; ?>);
 
+//Every second the script requests the highest bid in case someone has placed a new bid since this page was processed
 var x = setInterval(function() {
-  var xhttp;
-  xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("maxbid").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "refreshbid.php?id=<?=$_GET['id']?>", true);
-  xhttp.send();
-}, 1000);
+ var xhttp;
+ xhttp = new XMLHttpRequest();
+ xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+     //Write the value to the right place on the page
+     document.getElementById("{$maxbid}").innerHTML = this.responseText;
+   }
+ };
+ //Request the highest bid from the server
+ xhttp.open("GET", "refreshbid.php?id={$id}", true);
+ xhttp.send();
+}, 1000); //Interval of 1000ms
 </script>
 <?php } ?>
 <?php include('templates/footer.php'); ?>

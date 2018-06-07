@@ -1,7 +1,7 @@
 
 
 <?php if ($current_page == 'login' || $current_page == 'register' || $current_page == 'adminpanel') {
-  // include 'templates/logo_nav.php';
+  // do nothing actually
 } else {
   include 'templates/footer_links.php';
 }?>
@@ -33,6 +33,10 @@
     <script type="text/javascript" src="js/twbs-pagination.js"></script>
     <script type="text/javascript" src="js/paging.js"></script>
     <script type="text/javascript" src="js/timer.js"></script>
+    <!-- JS Toastr for alerts CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- Script for the sidenav on category page -->
     <script>
     $(document).ready(function(){
       $('.flypanels-container').flyPanels({
@@ -44,8 +48,9 @@
     });
     </script>
 
+    <!-- Script for the carousel on the mainpage -->
     <script type="text/javascript">
-
+    // The time before the carousel slides to the other 4 items
     $('.carousel').carousel({
       interval: 5000
     })
@@ -65,7 +70,66 @@
     });
     </script>
 
+    <!-- Toasrt JS script for notifications -->
+    <script>
+    // https://github.com/CodeSeven/toastr
+    var message = '<?php echo $message; ?>';
+
+    $(document).ready(function() {
+        // Shows an alert based on a certain message that belongs to the action being executed
+        if (message.indexOf("Account") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
+          toastr["success"](message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"](message)
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("geen bestand") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("profielfoto") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("Persoonlijke informatie") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("iets mis") >= 0 && message.indexOf("persoonlijke informatie") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("succesvol") >= 0) {
+          toastr["success"] (message)
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("onjuist") >= 0) {
+          toastr["error"] (message)
+        }
+
+      });
+      // The options for the toastr alerts
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "8000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
+    </script>
+
     <script type="text/javascript">
+    // Tooltips Initialization
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+
+    <script type="text/javascript">
+    // Align logo to the center of the navbar when using mobile devices or anything smaller than 991px
       $(document).ready(function() {
       appendMobileNav();
       appendMobileFooter();
@@ -76,6 +140,7 @@
       appendMobileFooter();
       });
 
+      // Removes classes and adds classes depending on the width of the screen
       const appendMobileNav = () => {
       if ($(window).width() < 991) {
         $('#navbar-brand').addClass('ml-auto');
@@ -97,7 +162,8 @@
       };
       </script>
 
-      <script>
+      <!-- This script is under development for the mobile version  -->
+      <!-- <script>
         function w3_open() {
             document.getElementById("mySidebar").style.display = "block";
             document.getElementById("myOverlay").style.display = "block";
@@ -106,20 +172,31 @@
             document.getElementById("mySidebar").style.display = "none";
             document.getElementById("myOverlay").style.display = "none";
         }
+    </script> -->
 
-          // function myAccFunc() {
-          //     var x = document.getElementById("demoAcc");
-          //     if (x.className.indexOf("w3-show") == -1) {
-          //         x.className += " w3-show";
-          //         x.previousElementSibling.className += " w3-green";
-          //     } else {
-          //         x.className = x.className.replace(" w3-show", "");
-          //         x.previousElementSibling.className =
-          //         x.previousElementSibling.className.replace(" w3-green", "");
-          //     }
-          // }
+
+    <script type="text/javascript">
+    //https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
+    // This script prevents the tabs to return to 1 after a page refresh
+    $('#adminTabs a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+        });
+
+        // store the currently selected tab in the hash value
+        $("ul.admin-list > li > a").on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+        });
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
-
+<script>// Tooltips Initialization
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})</script>
 
 
 </body>

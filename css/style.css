@@ -2,6 +2,7 @@
   Custom styles for the whole website
 */
 
+/* This declares the font that's used across the whole website */
 html, body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -95,12 +96,35 @@ footer.page-footer a {
   display: none !important;
 }
 
+/* Notification boxes styling */
+
+#toast-container>div {
+  width: 400px !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+/* .toast-info {
+  background-color: #4584a4 !important;
+}
+.toast-success {
+  background-color: #007E33 !important;
+}
+.toast-error {
+  background-color: #CC0000 !important;
+} */
+
+
+
+/* This defines the min and max height of all the card images
+   This needs to be changed when you want to make the website responsive again
+*/
+
 .card img{
   min-height: 15REM !important;
   max-height: 15REM !important;
 
 }
-
+/* When the screen becomes smaller than 991px in width these styles will be changed */
 @media only screen and (max-width: 991px) {
   .banner-text {
     font-size: 4.5rem;
@@ -109,7 +133,7 @@ footer.page-footer a {
     display: block !important;
   }
 }
-
+/* When the screen becomes smaller than 650px in width these styles will be changed */
 @media only screen and (max-width: 650px) {
   .banner-text {
     font-size: 3rem;

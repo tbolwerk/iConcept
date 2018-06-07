@@ -35,13 +35,23 @@ RETURNS BIT
 AS
 BEGIN
 	DECLARE @hoogstebod NUMERIC(9, 2);
+	DECLARE @verhoging NUMERIC(5, 2);
 
 	SET @hoogstebod = (
 				SELECT ISNULL(MAX(bodbedrag), 0) AS hoogstebod FROM bod
 				WHERE voorwerpnummer = @voorwerpnummer
 			)
 
-	IF (@bodbedrag > @hoogstebod)
+	SET @verhoging =
+		CASE
+			WHEN @hoogstebod < 50 THEN 0.5
+			WHEN @hoogstebod < 500 THEN 1
+			WHEN @hoogstebod < 1000 THEN 5
+			WHEN @hoogstebod < 5000 THEN 10
+			ELSE 50
+		END
+
+	IF (@bodbedrag > @hoogstebod + @verhoging)
 	BEGIN
 		RETURN 1
 	END

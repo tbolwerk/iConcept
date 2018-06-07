@@ -58,7 +58,13 @@ GO
 select dbo.udf_StripHTML(Beschrijving) 
 from GrootDBBedrijf.dbo.Items
 
+select Beschrijving
+from GrootDBBedrijf.dbo.Items
+
 select dbo.RemoveBracketedText(dbo.udf_StripHTML(Beschrijving))
+from GrootDBBedrijf.dbo.Items
+
+select dbo.RemoveBracketedText(Beschrijving)
 from GrootDBBedrijf.dbo.Items
 
 select RIGHT(dbo.udf_StripHTML(Beschrijving),len(dbo.udf_StripHTML(Beschrijving)) - patindex('%//-->%',dbo.udf_StripHTML(Beschrijving) ))
@@ -199,7 +205,7 @@ SELECT
 	ORDER BY Titel
 GO
 
-/*
+
 Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
 SELECT
 		ID as voorwerpnummer,
@@ -207,7 +213,7 @@ SELECT
 		FROM GrootDBBedrijf.dbo.Items
 		ORDER BY Titel
 GO
-*/
+
 
 Insert into testDB.dbo.Bestand(voorwerpnummer, filenaam)
 SELECT

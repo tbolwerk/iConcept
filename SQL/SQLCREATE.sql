@@ -238,6 +238,7 @@ create table dbo.VerificatieVerkoper -- Nieuwe tabel voor de verificatie codes. 
 (
 gebruikersnaam varchar(35) not null,
 code char(6) not null,
+verzonden bit default 0,
 CONSTRAINT pk_verificatieverkoper PRIMARY KEY (gebruikersnaam, code), 
 CONSTRAINT fk_verificatieverkoper_gebruikersnaam FOREIGN KEY (gebruikersnaam)  
 REFERENCES Gebruiker(gebruikersnaam) 

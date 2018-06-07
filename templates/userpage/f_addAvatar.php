@@ -27,7 +27,7 @@ function addAvatar($file, $username){
 			$message = "De profielfoto is succesvol gewijzigd. Het kan even duren totdat de wijziging zichtbaar is.";
 			$error.= "Stored in: " . $filename;
 		}
-	} else {
+	} else {//File is not supported or not selected
 		$error.= $file["type"]."<br />";
 		$error.= "Verkeerd bestand, selecteer een nieuwe";
 		$message = "U heeft geen bestand of een ongeldig bestand geselecteerd.";

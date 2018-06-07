@@ -33,9 +33,9 @@ if (isset($_POST['tab2submit'])) {
     if (password_verify($_POST['currentPassword'],$password[0])) { //Has the user submitted his current password?
         //changePassword() can be found in functions.php
         changePassword($_POST['newPassword']);
-        $message = "<p class='green-text lead'>wachtwoord succesvol veranderd</p>";
+        $message = "Uw wachtwoord is succesvol gewijzigd";
     }else{
-       $message = "<p class='red-text lead'>Wachtwoord niet correct</p>";
+       $message = "Opgegeven wachtwoord is onjuist";
     }
 }
 
@@ -99,11 +99,11 @@ if(isset($_POST['tab1submit'])) {
     updatePhones(); //Phones are updated seperately
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
-    // $message.="<br><p class='green-text lead'> Persoonlijke informatie succesvol aangepast!</p>";
+    $message.="Persoonlijke informatie succesvol gewijzigd";
   } catch (PDOException $e) {
     $error = $e;
 
-    $message = "<p class='red-text lead'>Er ging iets mis</p>";
+    $message = "Er ging iets mis tijdens het wijzigen van uw persoonlijke informatie";
   }
 }
 
@@ -165,7 +165,7 @@ while ($question = $data->fetch()) {
       <form method="post" action="" enctype="multipart/form-data">
         <input type="file" name="file" id="profile-picture" accept="image/png, image/jpeg">
         <div class="profile-picture-upload">
-          <button class="btn btn-primary" type="submit" name="change_avatar" data-toggle="tooltip" data-placement="top" title="Upload afbeelding"><i class="fas fa-upload"></i></button>
+          <button class="btn elegant" type="submit" name="change_avatar" data-toggle="tooltip" data-placement="bottom" title="Upload afbeelding"><i class="fas fa-upload"></i></button>
         </div>
       </form>
     </div>

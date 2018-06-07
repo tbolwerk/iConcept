@@ -4,7 +4,7 @@ function verificationSeller($username,$code)
 	global $dbh;
   global $message;
 
-	try {//checks if code exists in database
+	try {//gets verificatoncode of user from database
 		$statement = $dbh->prepare("SELECT code FROM VerificatieVerkoper WHERE gebruikersnaam = ?");
 		$statement->execute(array($username));
 		$results = $statement->fetch();
@@ -13,7 +13,7 @@ function verificationSeller($username,$code)
 		echo $error;
 	}
 
-	if($results[0] == $code){
+	if($results[0] == $code){//checks if filled in code is the same as the code in the database
 		try {
 			$statement = $dbh->prepare("update Gebruiker set verkoper = 1 where gebruikersnaam = ?");
 			$statement->execute(array($username));

@@ -162,10 +162,11 @@ body {
       </div>
       <div class="md-form form-group col-md-6">
         <select name="duration" class="form-control">
+          <option value="" selected>Kies aantal dagen...</option>
           <option value="1">1 dagen</option>
           <option value="3">3 dagen</option>
           <option value="5">5 dagen</option>
-          <option value="7" selected>7 dagen</option>
+          <option value="7">7 dagen</option>
           <option value="10">10 dagen</option>
         </select>
       </div>

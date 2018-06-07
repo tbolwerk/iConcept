@@ -30,7 +30,7 @@ function printAuctionList(){
       <td class="text-center">
         <form method="post" action="">
           <input type="hidden" name="auctionId" value="' . $result['voorwerpnummer'] . '"></input>
-          <button type="submit" name="unblockAuction" id="unblockAuctionBtn"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button type="submit" name="unblockAuction" id="unblockAuctionBtn" data-toggle="tooltip" data-placement="top" title="Unblock veiling"><i class="fa fa-times" aria-hidden="true"></i></button>
         </form>
       </td>
     </tr>

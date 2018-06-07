@@ -112,7 +112,7 @@ require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree
   <!-- Overlay content -->
   <div class="overlay-content">
     <div class="current-category">
-      <h1><?php if(isset($current_column)){
+      <h1><a href="rubriek.php">Rubrieken</a><?php if(isset($current_column)){
         echo $current_column;
       } ?></h1>
     </div>

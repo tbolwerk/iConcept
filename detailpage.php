@@ -173,8 +173,8 @@ try{
               <input type="number" name="bid" class="form-control" step="0.01" <?php if(isset($input)){echo $input;}?>>
             </div>
             <div class="">
-              <button type="submit" name="submit" class="btn elegant" <?php if(isset($input)){echo $input;}?>>Bied</button>
-              <?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3"><i class="fas fa-ban"></i></button><?php } ?>
+              <button type="submit" name="submit" class="btn elegant" data-toggle="tooltip" title="Plaats bieding"<?php if(isset($input)){echo $input;}?>>Bied</button>
+              <?php if(isset($_SESSION['admin']) == 1){?><button name="block" class="btn btn-danger px-3" data-toggle="tooltip" title="Blokkeer veiling"><i class="fas fa-ban"></i></button><?php } ?>
             </div>
         </div>
       </form>

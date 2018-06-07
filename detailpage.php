@@ -111,7 +111,8 @@ try{
   </div>
 </div>
 <?php if($results['geblokkeerd'] == 1){
-  echo "De veiling is gesloten";
+  $message = "Veiling is gesloten";
+  header("Location: rubriek.php");
 }else{
   ?>
 

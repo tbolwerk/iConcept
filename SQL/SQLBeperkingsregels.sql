@@ -170,6 +170,29 @@ CHECK (dbo.checkStartprijs(voorwerpnummer, bodbedrag) = 1)
 GO
 
 
+IF OBJECT_ID('dbo.tr_IsHoogsteBod') IS NOT NULL BEGIN DROP TRIGGER dbo.tr_IsHoogsteBod END
+GO
+
+CREATE TRIGGER tr_IsHoogsteBod ON bod
+INSTEAD OF INSERT
+AS
+BEGIN
+
+DECLARE @voorwerpnummer BIGINT,
+        @bodbedrag NUMERIC(9,2)
+
+SELECT  @voorwerpnummer = voorwerpnummer,
+        @bodbedrag = bodbedrag
+FROM inserted
+
+IF (dbo.IsHoogsteBod(@voorwerpnummer, @bodbedrag) = 1)
+	INSERT INTO bod SELECT * from inserted
+ELSE
+	THROW 50000, 'Niet het hoogste bod', 1
+END
+GO
+
+
 
 
 /* B 6	Tabellen Bod en Voorwerp:

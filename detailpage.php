@@ -130,7 +130,12 @@ try{
   <div class="row p-3">
     <div class="col-md-7 vertical-line">
       <!-- This includes the necessary code to display the pictures correctly -->
-      <?php include('detailpage_pictures.php'); ?>
+      <?php include('detailpage_pictures.php');
+if(empty($pictures[0]['filenaam'])){
+  $pictures[0]['filenaam'] =  "img/producten/no-image.jpg";
+
+}
+       ?>
       <div>
       <div id="active-picture" style="width: 80%; float: left;">
         <div class='pictureFrame'>

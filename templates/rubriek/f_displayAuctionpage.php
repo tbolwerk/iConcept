@@ -227,13 +227,18 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
       $titel = strip_tags($row['titel']);
       $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
+      $image = $row['filenaam'];
+      if(empty($image)){
+        $image = "img/producten/no-image.jpg";
+      }
+
       $auctionpage .= <<<HTML
 
       <div class="col-md-4">
       <div class="card auction-card mb-4">
       <div class="view overlay">
       <a href="detailpage.php?id={$voorwerpnummer}">
-        <img class="card-img-top" src="{$row["filenaam"]}" />
+        <img class="card-img-top" src="{$image}" />
       </a>
       </div>
       <div class="card-body">

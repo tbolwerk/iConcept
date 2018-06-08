@@ -8,15 +8,15 @@ $statement->execute(array($_GET['id'], $_GET['id']));
 $result = $statement->fetch();
 
 //Attempt to get the max bid
-$maxbid = "€" . $result['maxbod'];
+$maxbid = $result['maxbod'];
 
 //If there haven't been any bids then $maxbid will be mostly empty
-if ($maxbid == "€") {
+if ($maxbid == "") {
   //Set $maxbid to the starting price instead
-  $maxbid .= $result['startprijs'];
+  $maxbid = $result['startprijs'];
 }
-
+$maxbid = number_format($maxbid,2);
 //Return the highest bid (or starting price)
-echo $maxbid;
+echo "€" . $maxbid;
 
 ?>

@@ -24,6 +24,7 @@ LEFT JOIN (
       $timer = "timer{$i}";
 			$maxbid = "maxbid{$i}";
 
+
 			$countdown = "{$row['looptijdeindedag']} {$row['looptijdtijdstip']}";
 
 			//The database doesn't strip all html tags yet

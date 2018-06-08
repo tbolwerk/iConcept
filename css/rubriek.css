@@ -30,10 +30,10 @@
 
 
 .category-page {
-  overflow: auto;
+
 }
 .category-content {
-  height: 100%;
+
   max-width: 100%;
   padding: 20px;
 }
@@ -41,7 +41,7 @@
 .category-page .card img{
   min-height: 15REM !important;
   max-height: 15REM !important;
-  
+
 }
 
 .category-page .page {

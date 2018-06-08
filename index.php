@@ -14,7 +14,7 @@ displayAuction();
     <div class="mask index-banner rgba-niagara-strong">
         <h1 class="white-text index-text banner-text">EenmaalAndermaal</h1>
         <h3 class="white-text">...verkocht! Zo simpel is het</h3>
-        <a href="#how-it-works"><div class="animated bounce infinite"><i class="fas fa-chevron-down fa-4x"></i></div></a>
+        <a href="#how-it-works" data-toggle="tooltip" title="Hoe werkt het?"><div class="animated bounce infinite"><i class="fas fa-chevron-down fa-4x"></i></div></a>
     </div>
   </div>
 </div>

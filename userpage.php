@@ -204,7 +204,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 
 <!-- Tabs to navigate trough account setting -->
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" role="tablist" id="adminTabs">
   <li class="nav-item">
     <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
   </li>

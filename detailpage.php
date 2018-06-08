@@ -234,11 +234,11 @@ var x = setInterval(function() {
  xhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
      //Write the value to the right place on the page
-     document.getElementById("{$maxbid}").innerHTML = this.responseText;
+     document.getElementById("maxbid").innerHTML = this.responseText;
    }
  };
  //Request the highest bid from the server
- xhttp.open("GET", "refreshbid.php?id={$id}", true);
+ xhttp.open("GET", "refreshbid.php?id=<?=$results['voorwerpnummer']?>", true);
  xhttp.send();
 }, 1000); //Interval of 1000ms
 </script>

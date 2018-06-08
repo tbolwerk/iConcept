@@ -460,7 +460,7 @@ if(!empty($results[0]['code'])){//shows verificationform if user is registerd as
 
     	<div class="md-form">
     		<label for="code">Verificatiecode</label>
-    		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="[A-z]{6}">
+    		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="[a-zA-Z0-9-]{6}">
         <div class="form-requirements">
           <ul>
             <li>Een code bestaat uit 6 tekens</li>

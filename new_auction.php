@@ -17,7 +17,7 @@ try { //Select userdata from the database
 }
 
 try { //Select all categories from the database
-  $data = $dbh->prepare("select * from Rubriek order by volgnummer");
+  $data = $dbh->prepare("select * from Rubriek order by rubrieknaam");
   $data->execute();
   $i = 0;
   while ($row = $data->fetch()) {

@@ -1,3 +1,4 @@
+
 <?php
 if(isset($_POST['submit'])){
   sendVerificationCode($_POST['username']);
@@ -14,10 +15,10 @@ function printVerificationList($results){
       <td>' . $result['gebruikersnaam'] . '</td>
       <td>' . $result['adresregel1'] . '</td>
       <td>' . $result['code'] . '</td>
-      <td class="text-center">
+      <td class="text-right">
         <form method="post" action="">
           <input type="hidden" name="username" value="' . $result['gebruikersnaam'] . '"></input>
-          <button type="submit" name="submit" data-toggle="tooltip" data-placement="top" title="Verifieër gebruiker"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button style="border:none;background:none" type="submit" name="submit" data-toggle="tooltip" data-placement="top" title="Verifieër gebruiker"><i class="fas fa-check" aria-hidden="true"></i></button>
         </form>
       </td>
     </tr>

@@ -149,6 +149,3 @@ require_once("rubriek/f_convertAdjacencyListToTree.php");
   </div>
 </div>
 <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div> -->
-<?php
-
-require_once 'rubriek/sidebar-menu-mobile.php';?>

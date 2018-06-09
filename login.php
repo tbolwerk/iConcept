@@ -56,7 +56,6 @@ if(isset($_POST['submit'])){//if submit pressed
         <!-- Material form login -->
 
 
-        <!-- <?php  if(isset($error)){echo $error;}
 
           ?> -->
 

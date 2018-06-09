@@ -172,29 +172,7 @@ while ($question = $data->fetch()) {
     </div>
   </div>
 
-  <!--
-These values are for debugging purposes and are visible by inspecting the page source
 
-<p>ontvangen bestanden: </p>
-<?php print_r($_FILES); ?><br>
-<br>
-
-<p>ontvangen post gegevens: </p>
-<?php print_r($_POST); ?><br>
-<br>
-
-<p>ontvangen database gegevens: </p>
-<?php print_r($results); ?><br>
-<br>
-
-<p>ontvangen telefoon gegevens: </p>
-<?php print_r($phones); ?><br>
-<br>
-
-<p>ontvangen vraag gegevens: </p>
-<?php print_r($questions); ?><br>
-<br>
--->
 
 <div class="container-fluid usersettings-page" id="wrapper">
 

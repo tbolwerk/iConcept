@@ -4,10 +4,12 @@ if(isset($_POST['submit'])){
   sendVerificationCode($_POST['username']);
 }
 
+//Selects users that need verification
 $statement = $dbh->prepare("SELECT G.gebruikersnaam, G.adresregel1, VV.code FROM Gebruiker G, Verkoper V, VerificatieVerkoper VV WHERE G.gebruikersnaam = V.gebruikersnaam AND G.gebruikersnaam = VV.gebruikersnaam AND VV.verzonden = 0");
 $statement->execute();
 $results = $statement->fetchAll();
 
+//prints users that need verification
 function printVerificationList($results){
   foreach ($results as $result) {
     echo '

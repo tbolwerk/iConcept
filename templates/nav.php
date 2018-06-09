@@ -150,5 +150,5 @@ require_once("rubriek/f_convertAdjacencyListToTree.php");
 </div>
 <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div> -->
 <?php
-$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-require_once $server . '/templates/rubriek/sidebar-menu-mobile.php';?>
+
+require_once 'rubriek/sidebar-menu-mobile.php';?>

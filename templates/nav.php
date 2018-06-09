@@ -149,4 +149,6 @@ require_once("rubriek/f_convertAdjacencyListToTree.php");
   </div>
 </div>
 <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div> -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/rubriek/sidebar-menu-mobile.php';?>
+<?php
+$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+require_once $server . '/templates/rubriek/sidebar-menu-mobile.php';?>

@@ -35,7 +35,7 @@ require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree
 
 
     <!-- Navbar brand -->
-    <a id="navbar-brand" class="navbar-brand" href="index.php">
+    <a id="navbar-brand" class="navbar-brand" href="index.php" data-toggle="tooltip" title="Terug naar de hoofdpagina">
       <img src="img/logo/logo.png" height="50" alt="EenmaalAndermaal" />
     </a>
 

@@ -43,6 +43,10 @@
   max-height: 15REM !important;
 
 }
+.category-page .card{
+    min-width: 20REM !important;
+  max-width: 20REM !important;
+}
 
 .category-page .page {
   display: none;

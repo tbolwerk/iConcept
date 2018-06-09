@@ -6,6 +6,9 @@ require_once("templates/mail/f_bidMail.php");
 if(isset($_POST['block'])){
   $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
+  $URL="index.php";
+echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
 }
 
 if (isset($_GET['id'])) {

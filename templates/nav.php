@@ -1,6 +1,7 @@
 <?php
-$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree.php");
+
+require_once("rubriek/f_convertAdjacencyListToTree.php");
+
 
 // $statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
 // $rubrieken="";

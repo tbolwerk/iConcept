@@ -73,7 +73,7 @@
     <!-- Toasrt JS script for notifications -->
     <script>
     // https://github.com/CodeSeven/toastr
-    var message = '<?php echo $message; ?>';
+    var message = '<?php if(isset($message)){ echo $message;} ?>';
 
     $(document).ready(function() {
         // Shows an alert based on a certain message that belongs to the action being executed

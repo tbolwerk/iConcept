@@ -107,6 +107,10 @@
           toastr["error"] (message)
         } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {
           toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("niet geactiveerd") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"] (message)
         }
 
       });

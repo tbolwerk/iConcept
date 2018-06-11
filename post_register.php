@@ -22,11 +22,8 @@ if(isset($_GET['username'])){
 		$email = $result['email'];
 		verificationMail($email, $username, $code, 'register');
 	}
-} else { //Dit blok is om de pagina te kunnen testen zonder daadwerkelijk een gebruiker te hoeven registreren
-	$email = "janbeenham@hotmail.com";
-	$code = "2k48d2";
-	$username = "janbeenham";
-	$firstname = "Jan";
+} else {
+	header("Location: index.php");
 }
 ?>
 
@@ -42,8 +39,6 @@ if(isset($_GET['username'])){
 				<div class="white-text">
 					<p style="margin: 10px;">Beste <?=$firstname?>,</p>
 					<p>Er is een verificatie mail gestuurd naar <?=$email?>. Deze mail bevat een link. Uw account wordt geactiveerd zodra er op de link wordt geklikt</p>
-					<?php $url = 'verification.php?username=' . urlencode($username) . "&code=" . urlencode($code); ?>
-					<p><a href="<?=$url?>">Verificatie link om het systeem te testen</a></p>
 				</div>
 			</div>
 		</div>

@@ -77,39 +77,41 @@
 
     $(document).ready(function() {
         // Shows an alert based on a certain message that belongs to the action being executed
-        if (message.indexOf("Account") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
+        if (message.indexOf("Account") >= 0 && message.indexOf("gedeblokkeerd") >= 0) { // Adminpanel users alert
           toastr["success"](message)
-        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {  // Adminpanel users alert
           toastr["error"](message)
-        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("geblokkeerd") >= 0) {  // Detailpage ban auction alert
           toastr["error"] (message)
-        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("gedeblokkeerd") >= 0) {
+        } else if (message.indexOf("Veiling") >= 0 && message.indexOf("gedeblokkeerd") >= 0) { // Adminpanel auction list alert
           toastr["success"] (message)
-        } else if (message.indexOf("geen bestand") >= 0) {
+        } else if (message.indexOf("geen bestand") >= 0) {  // Userpage profile picture alert
           toastr["error"] (message)
-        } else if (message.indexOf("profielfoto") >= 0 && message.indexOf("succesvol") >= 0) {
+        } else if (message.indexOf("profielfoto") >= 0 && message.indexOf("succesvol") >= 0) {  // Userpage profile picture alert
           toastr["success"] (message)
-        } else if (message.indexOf("Persoonlijke informatie") >= 0 && message.indexOf("succesvol") >= 0) {
+        } else if (message.indexOf("Persoonlijke informatie") >= 0 && message.indexOf("succesvol") >= 0) {  // Userpage personal info alert
           toastr["success"] (message)
-        } else if (message.indexOf("iets mis") >= 0 && message.indexOf("persoonlijke informatie") >= 0) {
+        } else if (message.indexOf("iets mis") >= 0 && message.indexOf("persoonlijke informatie") >= 0) { // Userpage personal info alert
           toastr["error"] (message)
-        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("succesvol") >= 0) {
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("succesvol") >= 0) { // Userpage password alert
           toastr["success"] (message)
-        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("onjuist") >= 0) {
+        } else if (message.indexOf("wachtwoord") >= 0 && message.indexOf("onjuist") >= 0) { // Userpage password alert
           toastr["error"] (message)
-        } else if (message.indexOf("nieuwe wachtwoord") >= 0 && message.indexOf("verzonden") >= 0) {
+        } else if (message.indexOf("nieuwe wachtwoord") >= 0 && message.indexOf("verzonden") >= 0) {  // Forgot password alert
           toastr["info"] (message)
-        } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {
+        } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {  // Forgot password alert
           toastr["error"] (message)
-        } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) {
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) { // Register account alert
           toastr["error"] (message)
-        } else if (message.indexOf("Volgende") >= 0 && message.indexOf("foutmeldingen") >= 0) {
+        } else if (message.indexOf("iets fout gegaan") >= 0 && message.indexOf("registeren") >= 0) { // Register account alert
+          toastr["error"] (message)
+        } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {  // Login alert
+          toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("niet geactiveerd") >= 0) { // Login alert
+          toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {  // Login alert
           toastr["error"] (message)
         } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {
-          toastr["error"] (message)
-        } else if (message.indexOf("Account") >= 0 && message.indexOf("niet geactiveerd") >= 0) {
-          toastr["error"] (message)
-        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
           toastr["error"] (message)
         }
 

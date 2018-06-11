@@ -80,7 +80,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
       </div>
       <div class="red-text" style="text-align: center; font-weight: bold;">
         <?php if (isset($errortxt)) {
-          // echo $errortxt;
+          echo $message;
         }?>
       </div>
 

@@ -52,7 +52,7 @@ try{
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
-      $_SESSION['admin'] = 1;
+      $_SESSION['admin'] = $password_result['admin'];
 
 
       header('Location: index.php');

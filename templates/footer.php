@@ -101,6 +101,12 @@
           toastr["info"] (message)
         } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {
           toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Volgende") >= 0 && message.indexOf("foutmeldingen") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {
+          toastr["error"] (message)
         }
 
       });
@@ -120,7 +126,8 @@
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
+        "hideMethod": "fadeOut",
+        "body-output-type": "trustedHtml"
       }
 
     </script>

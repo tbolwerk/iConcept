@@ -24,9 +24,9 @@ if(isset($_POST['submit'])){//if submit pressed
         </div>
         <div class="red-text" style="text-align: center;font-weight: bold;">
         <?php
-        if(isset($error)) {
-          foreach ($error as $errortext) {
-            echo $errortext;
+        if(isset($messages)) {
+          foreach ($messages as $message) {
+            $message;
           }
         }
         ?>

@@ -108,7 +108,7 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
   $pagination = "";
   if($lastpage > 1)
   {
-    $pagination .= "<div class=\"card-body\" style='width:100%'><ul class=\"pagination pg-blue\">";
+    $pagination .= "<div class=\" ml-auto mr-auto mt-3 mb-3\"><ul class=\"pagination pagination-lg pg-dark\">";
     //previous button
     if ($page > 1) {
       $pagination.= "<li class=\"page-item\">

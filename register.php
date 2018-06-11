@@ -31,7 +31,7 @@ $message = "";
 
 if(isset($errors) || isset($error)){
   foreach ($errors as $error) {
-    $message.= $error;
+    $message.= "De volgende foutmeldingen zijn opgetreden: ".$error;
   }
 
 }else if(isset($_POST['submit'])){
@@ -51,7 +51,7 @@ $message = "Account succesvol aanngemaakt, klik op de verificatie link in de ont
       <div class="login-form-header elegant">
         <h3>Registreren</h3>
       </div>
-      <?=$message?>
+      <!-- <?=$message?> -->
         <!-- Material form register -->
         <form action="" method="post" autocomplete="on">
             <!-- Material input text -->

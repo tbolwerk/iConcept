@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){//if submit pressed
             <i class="fa fa-lock prefix niagara"></i>
             <input type="password" id="password" class="form-control white-text" name="password" aria-describedby="passwordHelp" required>
             <label for="password" class="font-weight-light">Wachtwoord</label>
-            <small id="passwordHelp" class="form-text text-muted red-text" href="forget_password.php"><a href="forget_password.php">Wachtwoord vergeten?</a></small>
+            <small id="passwordHelp" class="form-text text-muted red-text" href="forgot_password.php"><a href="forget_password.php">Wachtwoord vergeten?</a></small>
           </div>
 
 
@@ -53,12 +53,6 @@ if(isset($_POST['submit'])){//if submit pressed
             <button class="btn elegant" type="submit" name="submit">Inloggen</button>
           </div>
         </form>
-        <!-- Material form login -->
-
-
-
-          ?> -->
-
       </div>
 
       <!-- Card body -->

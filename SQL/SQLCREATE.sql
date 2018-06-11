@@ -67,6 +67,7 @@ antwoordtekst varchar(25) not null, /* de antwoord kan niet altijd 6 characters 
 verkoper bit not null, /* kan beste bit zijn voor true(wel) en false(niet) */
 geactiveerd bit not null, /* toevoeging we kunnen zien of accounts geactiveerd zijn */
 geblokkeerd bit default 0,
+administrator bit DEFAULT 0,
 CONSTRAINT pk_gebruikersnaam_email PRIMARY KEY (gebruikersnaam),  
 CONSTRAINT fk_Gebruiker_vraagnummer FOREIGN KEY (vraagnummer) 
 REFERENCES Vraag (vraagnummer),  

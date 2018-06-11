@@ -107,10 +107,10 @@ GO
 /* B 4	Tabel Bestand:
 Per voorwerp kunnen maximaal 4 afbeeldingen opgeslagen worden. */
 CREATE FUNCTION dbo.NietMeerDanVierAfbeelding (@voorwerpnummer BIGINT)
-RETURNS INT
+RETURNS BIT
 AS
 BEGIN
-	DECLARE @MinderDanVier BIGINT = 'False';
+	DECLARE @MinderDanVier BIT = 'False';
 	DECLARE @number INT
 	SET @number = (SELECT COUNT(voorwerpnummer)
 	FROM dbo.Bestand

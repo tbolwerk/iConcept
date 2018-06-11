@@ -168,14 +168,6 @@ select DISTINCT d.Username as gebruikersnaam,
 				from GrootDBBedrijf.dbo.Users d
 				order by d.Username
 GO
-/*
-insert into testDB.dbo.Voorwerp
-select DISTINCT TOP 20 d.ID as voorwerpnummer,
-				d.Titel as titel,
-				d.Beschrijving as beschrijving,
-				d.Prijs as startprijs,
-*/
-
 
 
 

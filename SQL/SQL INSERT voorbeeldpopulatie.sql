@@ -41,19 +41,19 @@ VALUES
 GO
 
 
-Insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper, geactiveerd)
+Insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper, geactiveerd, administrator)
 Values
-		('janbeenham', 'J�n', 'van Dooren', 'De goudenstraat 93', '3712HT', 'Zeist', 'Nederland', '1970-03-03', 'janbeenham@hotmail.com', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 1, '03-03-1970',  1, 1),
-		('michkz', 'mich�el', 'Kalil', 'De grote beer 5', '6501KL', 'Nijmegen', 'Nederland', '1997-11-08', 'MZ.Kalil@student.han.nl', '590395', 1, 'De grote beer', 1, 1),
-		('twankoekepan', 'twan', 'bolwerk', 'Hey�ndaalseweg 98', '1010TH', 'Amsterdam', 'Nederland', '1994-11-02', 'TPN.Bolwerk@student.han.nl', '598576', 2, 'meisjenaam', 0, 1),
-		('ggwp', 'ivan', 'miladinovi�', 'De achterbergsestraatweg 139', '3913KL', 'Rhenen', 'Nederland', '1995-07-25', 'I.Miladinovic@student.han.nl', '599294', 3, 'pizza', 1, 1),
-		('aukeonfleek', 'Auk�', 'Onvlee', 'De cuneraweg 17', '5262HP','Rotterdam', 'Nederland', '1998-02-03', 'AM.Onvlee@student.han.nl', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 5, 'suus', 1, 1),
-		('klikokotsjongen', 'Youri', 'Maarnen', 'grebbeweg 23',  '3922XJ', 'Wageningen', 'Nederland', '1981-03-09', 'klikokotsjongen@gmail.com', 'klikokotsjongen00', 1, 'grebbeweg', 0, 0),
-		('bigben10', 'Ben', 'Hammington', 'londonroad 201', 'E130AA', 'London', 'United Kingdom', '1988-12-30', 'benhammington@gmail.com', 'bigben00', 2, 'benlia', 0, 1),
-		('deutschesalade', 'Herman', 'Reinhart', 'neuestrasse 23','10119', 'Berlin', 'Duitsland', '1995-01-03', 'hermanreinhart@hotmail.com', 'herman00', 3, 'kartoffel', 0, 1),
-		('letourleeiffel', 'jean', 'Claude', 'la rue rouge 2',  '75011', 'Paris',  'Frankrijk', '1992-02-01', 'jeanclaude@gmail.com', 'jeanclaude00', 4, 'jeanette', 0, 1),
-		('jeromeke', 'Jeroen', 'Janssen', 'C�lvijnstraat 23', '2020', 'Antwerpen', 'Belgi�', '1964-10-26', 'jeroenjanssen@hotmail.com', 'jeromeke00', 1, '26-10-1964', 0, 1),
-		('BeenmaalAndermaal', 'mknc', 'yuino', 'awda', '7812AK', 'thuis', 'hier', '0815-01-01', 'beenmaal@andermaal.com', '$2y$10$92Zj38fzTkn24C61T6oSUOFzco6Kkehufhgn28cS/5EaCmNrVoOMa', 3, 'dfjkvn', 0, 1)
+		('janbeenham', 'Jan', 'van Dooren', 'De goudenstraat 93', '3712HT', 'Zeist', 'Nederland', '1970-03-03', 'janbeenham@hotmail.com', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 1, '03-03-1970',  1, 1, 1),
+		('michkz', 'michiel', 'Kalil', 'De grote beer 5', '6501KL', 'Nijmegen', 'Nederland', '1997-11-08', 'MZ.Kalil@student.han.nl', '590395', 1, 'De grote beer', 1, 1, 1),
+		('twankoekepan', 'twan', 'bolwerk', 'Heyendaalseweg 98', '1010TH', 'Amsterdam', 'Nederland', '1994-11-02', 'TPN.Bolwerk@student.han.nl', '598576', 2, 'meisjenaam', 0, 1, 1),
+		('ggwp', 'ivan', 'miladinovic', 'De achterbergsestraatweg 139', '3913KL', 'Rhenen', 'Nederland', '1995-07-25', 'I.Miladinovic@student.han.nl', '599294', 3, 'pizza', 1, 1, 1),
+		('aukeonfleek', 'Auke', 'Onvlee', 'De cuneraweg 17', '5262HP','Rotterdam', 'Nederland', '1998-02-03', 'AM.Onvlee@student.han.nl', '$2y$10$6DMX/eyUxUFFlyAXNK857eN.QH91c0kYZ1QPUIqNmC0u5ezaRe4mS', 5, 'suus', 1, 1, 1),
+		('klikokotsjongen', 'Youri', 'Maarnen', 'grebbeweg 23',  '3922XJ', 'Wageningen', 'Nederland', '1981-03-09', 'klikokotsjongen@gmail.com', 'klikokotsjongen00', 1, 'grebbeweg', 0, 0, 1),
+		('bigben10', 'Ben', 'Hammington', 'londonroad 201', 'E130AA', 'London', 'United Kingdom', '1988-12-30', 'benhammington@gmail.com', 'bigben00', 2, 'benlia', 0, 1, 1),
+		('deutschesalade', 'Herman', 'Reinhart', 'neuestrasse 23','10119', 'Berlin', 'Duitsland', '1995-01-03', 'hermanreinhart@hotmail.com', 'herman00', 3, 'kartoffel', 0, 1, 1),
+		('letourleeiffel', 'jean', 'Claude', 'la rue rouge 2',  '75011', 'Paris',  'Frankrijk', '1992-02-01', 'jeanclaude@gmail.com', 'jeanclaude00', 4, 'jeanette', 0, 1, 1),
+		('jeromeke', 'Jeroen', 'Janssen', 'Calvijnstraat 23', '2020', 'Antwerpen', 'Belgi�', '1964-10-26', 'jeroenjanssen@hotmail.com', 'jeromeke00', 1, '26-10-1964', 0, 1, 1),
+		('BeenmaalAndermaal', 'mknc', 'yuino', 'awda', '7812AK', 'thuis', 'hier', '0815-01-01', 'beenmaal@andermaal.com', '$2y$10$92Zj38fzTkn24C61T6oSUOFzco6Kkehufhgn28cS/5EaCmNrVoOMa', 3, 'dfjkvn', 0, 1, 1)
 		;
 
 

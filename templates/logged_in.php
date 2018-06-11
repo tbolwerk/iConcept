@@ -16,13 +16,7 @@
           <i class='fa fa-edit'></i>
         </a>
       </li>
-    <?php }else{ ?>
-      <li class='nav-item'>
-        <a class='nav-link waves-effect waves-light' href='new_auction.php' >
-          <i class='fa fa-heart'></i>
-        </a>
-      </li>
-    <?php }?>
+    <?php } ?>
       <li class='nav-item'>
         <a class='nav-link waves-effect waves-light' href='userpage.php' data-toggle="tooltip" title="Account instellingen wijzigen">
           <i class='fa fa-cog'></i>

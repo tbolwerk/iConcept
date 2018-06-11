@@ -51,7 +51,7 @@ $txt = "Uw nieuwe wachtwoord is: ".$new_password;
 $headers = "From: Admin@EenmaalAndermaal.com";
 
 // mail($to,$subject,$txt,$headers);
-  $message = "Het nieuwe wachtwoord is verzonden naar ".$to;
+  $message = "Het nieuwe wachtwoord is verzonden naar ".$to . $new_password;
 
 }else{
   $errortxt = "Email of vraag en antwoord incorrect";

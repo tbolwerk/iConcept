@@ -73,7 +73,7 @@
     <!-- Toasrt JS script for notifications -->
     <script>
     // https://github.com/CodeSeven/toastr
-    var message = '<?php echo $message; ?>';
+    var message = '<?php if(isset($message)){ echo $message;} ?>';
 
     $(document).ready(function() {
         // Shows an alert based on a certain message that belongs to the action being executed
@@ -101,6 +101,19 @@
           toastr["info"] (message)
         } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {
           toastr["error"] (message)
+<<<<<<< HEAD
+=======
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Volgende") >= 0 && message.indexOf("foutmeldingen") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("niet geactiveerd") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Account") >= 0 && message.indexOf("geblokkeerd") >= 0) {
+          toastr["error"] (message)
+>>>>>>> d9a598bd47231a9b772fb5fc75ec705cf35fb4f4
         }
 
       });
@@ -120,7 +133,8 @@
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
+        "hideMethod": "fadeOut",
+        "body-output-type": "trustedHtml"
       }
 
     </script>
@@ -197,7 +211,27 @@
         var hash = window.location.hash;
         $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
+<<<<<<< HEAD
+=======
+    <script type="text/javascript">
+    //https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
+    // This script prevents the tabs to return to 1 after a page refresh
+    $('#adminTabs a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+        });
 
+        // store the currently selected tab in the hash value
+        $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+        });
+>>>>>>> d9a598bd47231a9b772fb5fc75ec705cf35fb4f4
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#adminTabs a[href="' + hash + '"]').tab('show');
+    </script>
 </body>
 
 </html>

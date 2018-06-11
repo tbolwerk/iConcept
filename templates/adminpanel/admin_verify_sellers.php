@@ -1,12 +1,15 @@
+
 <?php
 if(isset($_POST['submit'])){
   sendVerificationCode($_POST['username']);
 }
 
+//Selects users that need verification
 $statement = $dbh->prepare("SELECT G.gebruikersnaam, G.adresregel1, VV.code FROM Gebruiker G, Verkoper V, VerificatieVerkoper VV WHERE G.gebruikersnaam = V.gebruikersnaam AND G.gebruikersnaam = VV.gebruikersnaam AND VV.verzonden = 0");
 $statement->execute();
 $results = $statement->fetchAll();
 
+//prints users that need verification
 function printVerificationList($results){
   foreach ($results as $result) {
     echo '
@@ -14,10 +17,10 @@ function printVerificationList($results){
       <td>' . $result['gebruikersnaam'] . '</td>
       <td>' . $result['adresregel1'] . '</td>
       <td>' . $result['code'] . '</td>
-      <td class="text-center">
+      <td class="text-right">
         <form method="post" action="">
           <input type="hidden" name="username" value="' . $result['gebruikersnaam'] . '"></input>
-          <button type="submit" name="submit" data-toggle="tooltip" data-placement="top" title="Verifieër gebruiker"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button style="border:none;background:none" type="submit" name="submit" data-toggle="tooltip" data-placement="top" title="Verifieër gebruiker"><i class="fas fa-check" aria-hidden="true"></i></button>
         </form>
       </td>
     </tr>

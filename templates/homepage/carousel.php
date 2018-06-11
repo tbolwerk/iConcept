@@ -25,6 +25,11 @@ while($row = $statement->fetch()){
   $title = strip_tags($row['titel']);
   $description = strip_tags($row['beschrijving'],'<br>');
 
+  $image = $row['filenaam'];
+  if(empty($image)){
+    $image = "img/producten/no-image.jpg";
+  }
+
 	$out = "";
 
   $carousel[] = <<<HTML
@@ -32,7 +37,7 @@ while($row = $statement->fetch()){
   		<div class="card auction-card mb-4">
   			<div class="view overlay">
   			<a href="detailpage.php?id={$id}"><div class="mask flex-center rgba-white-slight waves-effect waves-light"></div>
-  				<img class="card-img-top" src="{$row['filenaam']}" alt="{$title}" />
+  				<img class="card-img-top" src="{$image}" alt="{$title}" />
   			</a>
   			</div>
   			<div class="card-body">

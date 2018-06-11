@@ -1,6 +1,7 @@
 <?php
-$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree.php");
+
+require_once("rubriek/f_convertAdjacencyListToTree.php");
+
 
 // $statement = $dbh->query("SELECT * FROM Rubriek WHERE rubrieknummerOuder = -1");
 // $rubrieken="";
@@ -35,7 +36,7 @@ require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree
 
 
     <!-- Navbar brand -->
-    <a id="navbar-brand" class="navbar-brand" href="index.php">
+    <a id="navbar-brand" class="navbar-brand" href="index.php" data-toggle="tooltip" title="Terug naar de hoofdpagina">
       <img src="img/logo/logo.png" height="50" alt="EenmaalAndermaal" />
     </a>
 
@@ -148,4 +149,3 @@ require_once($server . "/iconcept/templates/rubriek/f_convertAdjacencyListToTree
   </div>
 </div>
 <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div> -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/iConcept/templates/rubriek/sidebar-menu-mobile.php';?>

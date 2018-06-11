@@ -14,9 +14,11 @@ displayAuction();
     <div class="mask index-banner rgba-niagara-strong">
         <h1 class="white-text index-text banner-text">EenmaalAndermaal</h1>
         <h3 class="white-text">...verkocht! Zo simpel is het</h3>
+        <a href="#how-it-works" data-toggle="tooltip" title="Hoe werkt het?"><div class="animated bounce infinite"><i class="fas fa-chevron-down fa-4x"></i></div></a>
     </div>
   </div>
 </div>
+
 
  <!-- Include file for the carousel on the index page -->
 <?php include 'templates/homepage/carousel.php'; ?>
@@ -52,13 +54,14 @@ displayAuction();
 
 
     <!-- "Hoe werkt het?" section -->
- <div class="container-fluid mt-3 mb-5 how-does-it-work">
+ <div class="container-fluid mt-3 mb-5 how-does-it-work" id="how-it-works">
    <div class="pt-3 mb-3 white-text text-center">
      <h1>Hoe werkt het?</h1>
    </div>
+   <?php if(!isset($_SESSION['username'])){ ?>
    <div class="row ml-3 mr-3 pb-3 text-center">
      <div class="col-md-12 col-lg-4">
-       <img src="img/register.png" alt="test">
+       <a href="register.php"><img src="img/register.png" alt="register"></a>
        <div class="mt-2">
        <h4 class="white-text">Registreer jezelf via de website</h4>
      </div>
@@ -76,6 +79,49 @@ displayAuction();
      </div>
      </div>
    </div>
+ <?php }else if($_SESSION['seller'] == 0){ ?>
+   <div class="row ml-3 mr-3 pb-3 text-center">
+     <div class="col-md-12 col-lg-4">
+       <a href="userpage.php#tab3"><img src="img/register.png" alt="register"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Registreer jezelf als verkoper</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <a href="userpage.php#tab3"><img src="img/activate.png" alt="test"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Activeer je verkopers account</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <a href="new_auction.php"><img src="img/bid.png" alt="test"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Plaats een veiling!</h4>
+     </div>
+     </div>
+   </div>
+ <?php }else if($_SESSION['seller'] == 1){ ?>
+   <div class="row ml-3 mr-3 pb-3 text-center">
+     <div class="col-md-12 col-lg-4">
+       <a href="userpage.php"><img src="img/register.png" alt="register"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Persoonlijke gegevens wijzigen</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <a href="rubriek.php"><img src="img/activate.png" alt="test"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Bieden op veilingen</h4>
+     </div>
+     </div>
+     <div class="col-md-12 col-lg-4">
+       <a href="new_auction.php"><img src="img/bid.png" alt="test"></a>
+       <div class="mt-2">
+       <h4 class="white-text">Maak een veiling aan!</h4>
+     </div>
+     </div>
+   </div>
+ <?php }?>
  </div>
 
  <!-- Question opportunities -->

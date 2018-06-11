@@ -6,6 +6,9 @@ require_once("templates/mail/f_bidMail.php");
 if(isset($_POST['block'])){
   $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 1 WHERE voorwerpnummer = ?");
   $statement->execute(array($_GET['id']));
+  $URL="index.php";
+echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
 }
 
 if (isset($_GET['id'])) {
@@ -130,7 +133,12 @@ try{
   <div class="row p-3">
     <div class="col-md-7 vertical-line">
       <!-- This includes the necessary code to display the pictures correctly -->
-      <?php include('detailpage_pictures.php'); ?>
+      <?php include('detailpage_pictures.php');
+if(empty($pictures[0]['filenaam'])){
+  $pictures[0]['filenaam'] =  "img/producten/no-image.jpg";
+
+}
+       ?>
       <div>
       <div id="active-picture" style="width: 80%; float: left;">
         <div class='pictureFrame'>
@@ -234,11 +242,11 @@ var x = setInterval(function() {
  xhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
      //Write the value to the right place on the page
-     document.getElementById("{$maxbid}").innerHTML = this.responseText;
+     document.getElementById("maxbid").innerHTML = this.responseText;
    }
  };
  //Request the highest bid from the server
- xhttp.open("GET", "refreshbid.php?id={$id}", true);
+ xhttp.open("GET", "refreshbid.php?id=<?=$results['voorwerpnummer']?>", true);
  xhttp.send();
 }, 1000); //Interval of 1000ms
 </script>

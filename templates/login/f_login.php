@@ -3,7 +3,7 @@
 function login($username_input, $password)
 {
   global $dbh;
-  global $error;
+  global $messages;
 
 	$username = $username_input;
 	$email = $username_input;
@@ -11,19 +11,19 @@ function login($username_input, $password)
   // $username=trim($username);
   $password = trim($password);
 
-  $error = array();
+  $messages = array();
 
   if (strlen($username) >= 25) {
-    $error['username'] = "Gebruikersnaam heeft meer dan 25 karakters";
+    $messages['username'] = "Gebruikersnaam heeft meer dan 25 karakters";
   } else
   if (strlen($password) >= 50) {
-    $error['password'] = "Wachtwoord heeft meer dan 50 karakters";
+    $message['password'] = "Wachtwoord heeft meer dan 50 karakters";
   } else
   if (empty($username)) {
-    $error['username'] = "Gebruikersnaam is leeg";
+    $messages['username'] = "Gebruikersnaam is leeg";
   } else
   if (empty($password)) {
-    $error['password'] = "Wachtwoord is leeg";
+    $messages['password'] = "Wachtwoord is leeg";
   } else {
     try { //Attempt to receive data about the user with the submitted credentials
     	$password_check = $dbh->prepare("SELECT * FROM Gebruiker WHERE gebruikersnaam=? OR email=?");
@@ -34,18 +34,18 @@ function login($username_input, $password)
 
 
     } catch(PDOException $e){
-    	$error = $e;
+    	$messages = $e;
     }
 try{
     if(!isset($password_from_db)){
-      $error['username'] = "Gebruiker bestaat niet";
+      $messages['username'] = "Logingegevens zijn onjuist";
     }else
     if(!password_verify($password,$password_from_db)){ //If the result is empty then there are no users with the submitted username+password
-    	$error['password'] = "Wachtwoord klopt niet";
+    	$messages['password'] = "Logingegevens zijn onjuist";
     } else if ($password_result['geactiveerd'] == 0) { //If the user does exist, check whether the account has been activated
-      $error['verification'] = "Account is nog niet geactiveerd";
+      $messages['verification'] = "Account is nog niet geactiveerd";
     } else if($password_result['geblokkeerd'] == 1){
-      $error['geblokkeerd'] = "Account is geblokkeerd";
+      $messages['geblokkeerd'] = "Account is geblokkeerd";
     }else{
       $_SESSION['seller'] = $password_result['verkoper'];
       $_SESSION['username'] = $password_result['gebruikersnaam'];
@@ -58,7 +58,7 @@ try{
       header('Location: index.php');
     }
   }catch(PDOException $e){
-    $error['username']=$e;
+    $messages['username']=$e;
 }
 
 }

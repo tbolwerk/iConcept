@@ -109,7 +109,7 @@
   display: block;
   overflow: auto;
   width: 100%;
-  height: 500px;
+  height: 25REM;
 }
 .table thead th {
   border-bottom: none !important;

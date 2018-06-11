@@ -21,7 +21,7 @@ function displayAuctionpage($voorwerpnummer = 0,$rubrieknummer = 0)
   else {
     $data = $dbh->query("SELECT COUNT(*) as num FROM Voorwerp_in_Rubriek WHERE rubrieknummer = $rubrieknummer");
     $row = $data->fetch();
-    echo $row['num'];
+
 
     $total_pages = $row['num'];
   }
@@ -108,7 +108,7 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
   $pagination = "";
   if($lastpage > 1)
   {
-    $pagination .= "<div class=\"card-body\"><ul class=\"pagination pg-blue\">";
+    $pagination .= "<div class=\"card-body\" style='width:100%'><ul class=\"pagination pg-blue\">";
     //previous button
     if ($page > 1) {
       $pagination.= "<li class=\"page-item\">
@@ -201,20 +201,21 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
   }
 
   $i = 0;
-    while($row = $data->fetch())
+    while ($row = $data->fetch())
     {
       $voorwerpnummer = $row[0];
       $i++;
-      $timer="timer".$i;
+      $timer = "timer{$i}";
+			$maxbid = "maxbid{$i}";
       $looptijd = $row['looptijd'];
       $looptijdbegindag =strtotime($row['looptijdbegindag']);
 
       $looptijdbegintijdstip = strtotime($row['looptijdtijdstip']);
       // $countdown_date = date("Y-m-d",$looptijdbegindag);
       // $countdown_time = date("h:i:s",$looptijdbegintijdstip);
-      if(isset($row['hoogsteBod'])){
+      if (isset($row['hoogsteBod'])) {
          $huidige_bod = number_format($row['hoogsteBod'], 2, ',', '.');
-       }else{
+       } else {
          $huidige_bod=$row['startprijs'];
        }
 
@@ -223,40 +224,59 @@ ON vw.voorwerpnummer=bd.voorwerpnummer WHERE vw.geblokkeerd = 0");
 
 
       $countdown = $closingtime;
-      $titel = strip_tags($row['beschrijving']);
+      $titel = strip_tags($row['titel']);
       $beschrijving = strip_tags($row['beschrijving'],'<br>');
 
-      $auctionpage.='
+      $image = $row['filenaam'];
+      if(empty($image)){
+        $image = "img/producten/no-image.jpg";
+      }
+
+      $auctionpage .= <<<HTML
 
       <div class="col-md-4">
       <div class="card auction-card mb-4">
       <div class="view overlay">
-      <a href="detailpage.php?id='.$voorwerpnummer.'">
-        <img class="card-img-top" src="'.$row["filenaam"].'" />
+      <a href="detailpage.php?id={$voorwerpnummer}">
+        <img class="card-img-top" src="{$image}" />
       </a>
       </div>
       <div class="card-body">
-        <span class="small-font">'.$voorwerpnummer.'</span>
-        <h4 class="card-title">'.$titel.'</h4>
+        <span class="small-font">{$voorwerpnummer}</span>
+        <h4 class="card-title">{$titel}</h4>
         <hr>
         <div class="card-text">
-          <p>
-            '.$beschrijving.'
-          </p>
+          <p>{$beschrijving}</p>
         </div>
         <hr />
         <ul class="list-unstyled list-inline d-flex" style="text-align:center">
-          <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i>&euro;'.$huidige_bod.'</li>
+          <li class="list-inline-item pr-2 flex-1 ml-5"><i class="fa fa-lg fa-gavel pr-2"></i><div style='display:inline;' id='{$maxbid}'></div></li>
           <div class="card-line"></div>
-          <li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id='.$timer.'></div></li>
+          <li class="list-inline-item pr-2 flex-1 mr-5"><i class=""></i><div id={$timer}></div></li>
         </ul>
       </div>
     </div>
     </div>
     <script>
-    countdown("'.$timer.'","'.$countdown.'");
+    //Timer function
+    countdown("{$timer}","{$countdown}");
+
+    //Every two seconds the script requests the highest bid in case someone has placed a new bid since this page was processed
+    var x = setInterval(function() {
+     var xhttp;
+     xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+       if (this.readyState == 4 && this.status == 200) {
+         //Write the value to the right place on the page
+         document.getElementById("{$maxbid}").innerHTML = this.responseText;
+       }
+     };
+     //Request the highest bid from the server
+     xhttp.open("GET", "refreshbid.php?id={$row[0]}", true);
+     xhttp.send();
+    }, 2000); //Interval of 2000ms
     </script>
-          ';
+HTML;
     }
     $auctionpage .= $pagination;
 

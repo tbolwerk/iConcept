@@ -90,6 +90,9 @@ function newAuction($title,$description,$startprice,$duration,$pay_method,$pay_i
     }
     if(count($errors) == 0){
       $errors['upload'] = "Veiling is succesvol geplaatst!";
+      $URL="detailpage.php?id=".$id;
+echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
     }
   }
 }

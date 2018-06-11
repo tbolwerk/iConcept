@@ -172,29 +172,7 @@ while ($question = $data->fetch()) {
     </div>
   </div>
 
-  <!--
-These values are for debugging purposes and are visible by inspecting the page source
 
-<p>ontvangen bestanden: </p>
-<?php print_r($_FILES); ?><br>
-<br>
-
-<p>ontvangen post gegevens: </p>
-<?php print_r($_POST); ?><br>
-<br>
-
-<p>ontvangen database gegevens: </p>
-<?php print_r($results); ?><br>
-<br>
-
-<p>ontvangen telefoon gegevens: </p>
-<?php print_r($phones); ?><br>
-<br>
-
-<p>ontvangen vraag gegevens: </p>
-<?php print_r($questions); ?><br>
-<br>
--->
 
 <div class="container-fluid usersettings-page" id="wrapper">
 
@@ -204,7 +182,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
 
 <!-- Tabs to navigate trough account setting -->
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" role="tablist" id="adminTabs">
   <li class="nav-item">
     <a class="nav-link active panel-name" data-toggle="tab" href="#tab1" role="tab">Persoonlijke Instellingen</a>
   </li>
@@ -326,7 +304,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
       <div class="col-md-6" >
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
             <ul>
               <li>*Optioneel</li>
@@ -460,7 +438,7 @@ if(!empty($results[0]['code'])){//shows verificationform if user is registerd as
 
     	<div class="md-form">
     		<label for="code">Verificatiecode</label>
-    		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="[A-z]{6}">
+    		<input type="text" class="form-control" name="code" id="code" value="" maxlength="6" required pattern="[a-zA-Z0-9-]{6}">
         <div class="form-requirements">
           <ul>
             <li>Een code bestaat uit 6 tekens</li>

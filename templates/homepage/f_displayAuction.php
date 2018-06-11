@@ -23,6 +23,10 @@ LEFT JOIN (
       $i++;
       $timer = "timer{$i}";
 			$maxbid = "maxbid{$i}";
+			$image = $row['filenaam'];
+		  if(empty($image)){
+		    $image = "img/producten/no-image.jpg";
+		  }
 
 			$countdown = "{$row['looptijdeindedag']} {$row['looptijdtijdstip']}";
 
@@ -34,7 +38,7 @@ LEFT JOIN (
 				<div class='col-12 col-md-6 col-lg-4'>
           <div class='card auction-card'>
             <div class='view overlay'>
-              <img class='card-img-top' src='{$row['filenaam']}' alt='{$title}' />
+              <img class='card-img-top' src='{$image}' alt='{$title}' />
             </div>
             <div class='card-body'>
               <span class='small-font'>{$id}</span>

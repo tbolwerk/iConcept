@@ -1,6 +1,5 @@
 <?php
-$server = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-require_once $server . '/iConcept/templates/functions.php';
+
 
 
 

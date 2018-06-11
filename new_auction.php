@@ -5,7 +5,7 @@ require_once("templates/auction/f_checkPicture.php");
 require_once("templates/auction/f_generateCategoryOptions.php");
 require_once("templates/auction/f_newAuction.php");
 
-$errors = array();
+
 $seller = $_SESSION['username'];
 
 try { //Select userdata from the database
@@ -13,11 +13,11 @@ try { //Select userdata from the database
   $statement->execute(array($seller));
   $userdata = $statement->fetch();
 } catch (PDOException $e) {
-  echo $e;
+
 }
 
 try { //Select all categories from the database
-  $data = $dbh->prepare("select * from Rubriek order by volgnummer");
+  $data = $dbh->prepare("select * from Rubriek order by rubrieknaam");
   $data->execute();
   $i = 0;
   while ($row = $data->fetch()) {
@@ -28,7 +28,7 @@ try { //Select all categories from the database
     $i++;
   }
 } catch (PDOException $e) {
-  echo $e;
+
 }
 
 if(isset($_POST['submit'])){//executed if button 'Plaats veiling' is pressed
@@ -61,8 +61,7 @@ body {
 <div class="container col-md-9 col-lg-8">
   <!-- Form for creating new auction -->
 <form class="newauction-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validateFileExtension(this.fileField)">
-  <?php if(isset($errors['upload'])){echo $errors['upload'];} //shows errors if they exist
-  ?>
+
   <div class="newauction-form-header">
     <h1>Titel en beschrijving</h1>
   </div>

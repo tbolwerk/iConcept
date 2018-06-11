@@ -23,5 +23,15 @@ function verificationMail($email, $username, $code, $type) {
 
   //Send the mail
 	mail($to, $subject, $message, $headers);
+
+	echo "<!--
+	From: webmaster@iproject40.icasites.nl
+
+	To: {$to}
+
+	Subject: {$subject}
+	
+	Message: {$message}
+	-->";
 }
 ?>

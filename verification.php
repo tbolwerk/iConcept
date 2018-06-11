@@ -3,6 +3,9 @@ $current_page='register';
 require('templates/header.php');
 require_once("templates/register/f_verification.php");
 
+if(!isset($_GET['username'])) {
+  header("Location: index.php");
+}
 
 verification($_GET['username'],$_GET['code']);
 
@@ -22,12 +25,13 @@ verification($_GET['username'],$_GET['code']);
 		<div class="card login-register-card">
 			<div class="card-body">
 	    	<div class="login-form-header elegant">
-	       	<h3>Account geregistreert</h3>
+	       	<h3>Account geregistreerd</h3>
 	      </div>
 				<div class="white-text">
-					<p>Uw account is succesvol geregistreert. Als u op de link in uw mail klikt, wordt uw account automatisch geactiveerd en kunt u gebruik maken van onze veilingwebsite.</p>
-          <br>
-          <p>Tip: klik op het logo om terug te gaan naar de hoofdpagina.</p>
+          <p>Uw activatie is succesvol afgerond. U kunt nu inloggen.</p>
+          <div class="text-center py-1 mt-3">
+            <button class="btn elegant"><a href="login.php" class="white-text">Naar de loginpagina</a></button>
+          </div>
 				</div>
 			</div>
 		</div>

@@ -326,7 +326,7 @@ These values are for debugging purposes and are visible by inspecting the page s
 
       <div class="col-md-6" >
         <div class="md-form form-group">
-          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" required maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
+          <input type="text" class="form-control" name="address2" id="address2" value="<?=$results[0]['adresregel2']?>" placeholder="Vul hier uw adres in" maxlength="35" pattern="[A-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿþ\-'’‘ ]+ [0-9]+[A-z]{0,1}">
           <div class="form-requirements">
             <ul>
               <li>*Optioneel</li>

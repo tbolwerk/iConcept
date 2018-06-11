@@ -24,7 +24,7 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 
 
 
-echo $hash;
+
   $secretAnswer = str_replace("\"", "", strip_tags($secretAnswer));
   $secretQuestion = str_replace("\"", "", strip_tags($secretQuestion));
 

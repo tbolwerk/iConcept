@@ -4,8 +4,8 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 {
   global $dbh;
   global $error;
-	global $errors;
-	$errors = array();
+	global $messages;
+	$messages = array();
 
   //Remove any doublequotes and html tags
   $username = str_replace("\"", "", strip_tags($username));
@@ -30,7 +30,7 @@ function register($username,$firstname,$lastname,$address1,$address2,$zipcode,$c
 
 if(empty($username))//checks if username is not empty
 {
-  $errors['username'] = "Dit is een verplicht veld.";
+  $messages['username'] = "Dit is een verplicht veld.";
 }
 else{
 	try {
@@ -40,24 +40,24 @@ else{
 			$error = $e;
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-			 $errors['username'] = "Deze gebruikersnaam bestaat al.";
+			 $messages['username'] = "Deze gebruikersnaam bestaat al.";
 	}
 }
 if(empty($password) || empty($password_check))//checks if password is not empty
 {
-  $errors['password'] = "Dit is een verplicht veld.";
+  $messages['password'] = "Dit is een verplicht veld.";
 }else
 if($password != $password_check)//checks if password equils password_check
 {
-  $errors['password'] = "Het wachtwoord komt niet overeen.";
+  $messages['password'] = "Het wachtwoord komt niet overeen.";
 }
 if(empty($email) || empty($email_check))//checks if email is not empty
 {
- $errors['email'] = "Dit is een verplicht veld.";
+ $messages['email'] = "Dit is een verplicht veld.";
 }else
 if($email != $email_check)//checks if email equils email_check
 {
-  $errors['email'] = "Het email-adres komt niet overeen.";
+  $messages['email'] = "Het email-adres komt niet overeen.";
 }
 else{
 	try {
@@ -67,47 +67,47 @@ else{
 			$error = $e;
 	}
 	if (($result = $userdata->fetch(PDO::FETCH_ASSOC))) {
-			 $errors['email'] = "Dit email-adres is al in gebruik.";
+			 $messages['email'] = "Dit email-adres is al in gebruik.";
 	}
 }
 if($secretQuestion == "kies")//checks if username is not empty
 {
-  $errors['secretQuestion'] = "Dit is een verplicht veld.";
+  $messages['secretQuestion'] = "Dit is een verplicht veld.";
 }
 if(empty($secretAnswer))//checks if username is not empty
 {
-  $errors['secretAnswer'] = "Dit is een verplicht veld.";
+  $messages['secretAnswer'] = "Dit is een verplicht veld.";
 }
 if(empty($firstname))//checks if username is not empty
 {
-  $errors['firstname'] = "Dit is een verplicht veld.";
+  $messages['firstname'] = "Dit is een verplicht veld.";
 }
 if(empty($lastname))//checks if username is not empty
 {
-  $errors['lastname'] = "Dit is een verplicht veld.";
+  $messages['lastname'] = "Dit is een verplicht veld.";
 }
 if(empty($zipcode))//checks if username is not empty
 {
-  $errors['zipcode'] = "Dit is een verplicht veld.";
+  $messages['zipcode'] = "Dit is een verplicht veld.";
 }
 if(empty($address1))//checks if username is not empty
 {
-  $errors['address1'] = "Dit is een verplicht veld.";
+  $messages['address1'] = "Dit is een verplicht veld.";
 }
 if(empty($city))//checks if username is not empty
 {
-  $errors['city'] = "Dit is een verplicht veld.";
+  $messages['city'] = "Dit is een verplicht veld.";
 }
 if(empty($country))//checks if username is not empty
 {
-  $errors['country'] = "Dit is een verplicht veld.";
+  $messages['country'] = "Dit is een verplicht veld.";
 }
 if(empty($birthdate))//checks if username is not empty
 {
-  $errors['birthdate'] = "Dit is een verplicht veld.";
+  $messages['birthdate'] = "Dit is een verplicht veld.";
 }
 
-if(count($errors) == 0){//checks if there are errors
+if(count($messages) == 0){//checks if there are errors
     try {
       $hash=password_hash($password, PASSWORD_DEFAULT);
       $userdata = $dbh->prepare("insert into Gebruiker(gebruikersnaam, voornaam, achternaam, adresregel1, adresregel2, postcode, plaatsnaam, land, geboortedatum, email, wachtwoord, vraagnummer, antwoordtekst, verkoper,geactiveerd)

@@ -38,9 +38,9 @@ if(isset($_POST['submit'])){
 
 $message = "";
 
-if(isset($errors) || isset($error)){
-  foreach ($errors as $error) {
-    $message.= "De volgende foutmeldingen zijn opgetreden: ".$error;
+if(isset($messages) || isset($error)){
+  foreach ($messages as $message) {
+    $message.= "Er is iets fout gegaan tijdens het registeren van uw account. Probeer het opnieuw.";
   }
 
 }else if(isset($_POST['submit'])){

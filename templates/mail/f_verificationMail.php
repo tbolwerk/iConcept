@@ -3,7 +3,7 @@
 function verificationMail($email, $username, $code, $type) {
 	$to = $email;
   //Generate the url that the user has to click
-  $url = "http://iconcept.tpnb.nl/iconcept/" . "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);
+  $url = "http://iproject40.icasites.nl/iconcept/" . "verification.php?username=" . urlencode($username) . "&code=" . urlencode($code);
 
   switch($type) {
   case "register": //For when someone registers a new account
@@ -23,5 +23,15 @@ function verificationMail($email, $username, $code, $type) {
 
   //Send the mail
 	mail($to, $subject, $message, $headers);
+
+	echo "<!--
+	From: webmaster@iproject40.icasites.nl
+
+	To: {$to}
+
+	Subject: {$subject}
+
+	Message: {$message}
+	-->";
 }
 ?>

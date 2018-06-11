@@ -1,5 +1,5 @@
 <?php
-function mailUser($email, $username, $type) {
+/*function mailUser($email, $username, $type) {
 
   global $dbh;
 
@@ -51,5 +51,5 @@ function mailUser($email, $username, $type) {
 	    'X-Mailer: PHP/' . phpversion();
 
 	mail($to, $subject, $message, $headers);
-}
+}*/
 ?>

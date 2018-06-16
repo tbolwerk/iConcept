@@ -452,7 +452,7 @@ if(!empty($results[0]['code'])){//shows verificationform if user is registerd as
     </form>
     <?php
 }else if($results[0]['verkoper'] == 1 && empty($results[0]['code'])){//checks if user is seller and no verification code *double check
-  echo "U bent al verkoper.";
+  $message = "U bent al verkoper.";
 }else{//else option to register as seller
       ?>
       <!-- Form to register as seller -->
@@ -506,7 +506,7 @@ if(!empty($results[0]['code'])){//shows verificationform if user is registerd as
       </form>
       <?php
 }
-
+echo $message;
   ?>
         </div>
 

@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
   if (isset($_POST['bid'])) {
     $bid = str_replace("\"", "", strip_tags($_POST['bid']));
     if ($bid <= 0) {
-      $error = "Bod is te laag";
+      $message = "Bod is te laag";
     }
     if ($error == "") {
       try {
@@ -40,7 +40,7 @@ if (isset($_GET['id'])) {
         $error = $e->getMessage();
         echo "<!--|-~----~-|Database error|-~----~-|-->";
         echo "<!--{$error}-->";
-        $error = "Ongeldig bod";
+        $message = "Ongeldig bod";
       }
     }
   }
@@ -187,7 +187,7 @@ if(empty($pictures[0]['filenaam'])){
         </div>
       </form>
 
-      <p class="red-text text-center font-weight-bold"><?=$error?></p>
+      <p class="red-text text-center font-weight-bold"><?=$message?></p>
 
       <hr>
       <ul class="product-info-data">

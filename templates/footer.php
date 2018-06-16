@@ -99,15 +99,13 @@
           toastr["error"] (message)
         } else if (message.indexOf("nieuwe wachtwoord") >= 0 && message.indexOf("verzonden") >= 0) {  // Forgot password alert
           toastr["info"] (message)
-        } else if (message.indexOf("Iets fout gegaan") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {  // Forgot password alert
+        } else if (message.indexOf("Probeer het opnieuw") >= 0 && message.indexOf("nieuw wachtwoord") >= 0) {  // Forgot password alert
           toastr["error"] (message)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
         } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) {
-=======
+
         } else if (message.indexOf("Account") >= 0 && message.indexOf("succesvol aangemaakt") >= 0) { // Register account alert
->>>>>>> 2c4e7820333cff76c5fb8c0516fbf7b38420fa90
+
           toastr["error"] (message)
         } else if (message.indexOf("iets fout gegaan") >= 0 && message.indexOf("registeren") >= 0) { // Register account alert
           toastr["error"] (message)
@@ -119,7 +117,10 @@
           toastr["error"] (message)
         } else if (message.indexOf("Logingegevens") >= 0 && message.indexOf("onjuist") >= 0) {
           toastr["error"] (message)
->>>>>>> d9a598bd47231a9b772fb5fc75ec705cf35fb4f4
+        } else if (message.indexOf("bod") >= 0 && message.indexOf("Ongeldig") >= 0) {
+          toastr["error"] (message)
+        } else if (message.indexOf("Bod") >= 0 && message.indexOf("laag") >= 0) {
+          toastr["error"] (message)
         }
 
       });

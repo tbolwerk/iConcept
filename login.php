@@ -2,7 +2,11 @@
 $current_page='login';
 require_once('templates/header.php');
 require_once("templates/login/f_login.php");
-
+if(isset($_GET['redirect'])){
+  $message=$_GET['redirect'];//message from forgot_password
+  $message_array = explode('naar ',$message);
+  $get_username = $message_array[1];
+}
 //login SCRIPTS
 if(isset($_POST['submit'])){//if submit pressed
   login($_POST['username'], $_POST['password']);//login function
@@ -36,7 +40,7 @@ if(isset($_POST['submit'])){//if submit pressed
           <!-- Material input username -->
           <div class="md-form">
             <i class="fa fa-user prefix niagara"></i>
-            <input type="text" id="username" class="form-control white-text" name="username" autofocus required>
+            <input type="text" id="username" class="form-control white-text" name="username" <?php if(isset($_GET['redirect'])){echo "value='".$get_username."'";}?> autofocus required>
             <label for="username" class="font-weight-light">Gebruikersnaam</label>
           </div>
           <!-- Material input username -->

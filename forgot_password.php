@@ -20,9 +20,9 @@ try {
 
 if(isset($_POST['submit'])){
 // print_r($secret_question_options);
-if(empty($_POST['forget_password']) || empty($_POST['secretAnswer']) || empty($_POST['secretQuestion'])){
-  $errortxt = "Niet alle velden zijn ingevuld";
-  $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
+if(empty($_POST['forget_password']) || empty($_POST['secretAnswer'])){
+  $message = "Niet alle velden zijn ingevuld";
+  $message.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
 }else{
 $password = str_replace("\"", "", strip_tags($_POST['forget_password']));
 $secretAnswer = str_replace("\"", "", strip_tags($_POST['secretAnswer']));
@@ -51,11 +51,14 @@ $txt = "Uw nieuwe wachtwoord is: ".$new_password;
 $headers = "From: Admin@EenmaalAndermaal.com";
 
 // mail($to,$subject,$txt,$headers);
-  $message = "Het nieuwe wachtwoord is verzonden naar ".$to . $new_password;
+  $message = "Het nieuwe wachtwoord is verzonden naar ".$to;
+  $URL="login.php?redirect=".$message;
+echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
 
 }else{
-  $errortxt = "Email of vraag en antwoord incorrect";
-  $errortxt.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
+  $message = "Email of vraag en antwoord incorrect";
+  $message.=$_POST['forget_password'].$_POST['secretAnswer'].$_POST['secretQuestion'];
   $message = "Er is iets fout gegaan tijdens het aanvragen van een nieuw wachtwoord. Probeer het opnieuw.";
 }
 }
@@ -79,9 +82,7 @@ $headers = "From: Admin@EenmaalAndermaal.com";
         <!-- <?=$txt?> -->
       </div>
       <div class="red-text" style="text-align: center; font-weight: bold;">
-        <?php if (isset($errortxt)) {
-          echo $message;
-        }?>
+
       </div>
 
 

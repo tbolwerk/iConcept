@@ -1,10 +1,10 @@
 <?php
 //This function sends a mail to a user notifying him that someone else placed a higher bid
-function bidMail($userdata) {
+function bidMail($userdata, $title) {
 	$to = $userdata[1];
 
   $subject = "EenmaalAndermaal overboden";
-  $message = "Beste " . $userdata[0] . ",\nU bent overboden";
+  $message = "Beste " . $userdata[0] . ",\nU bent overboden op de veiling \"{$title}\"";
 
   //Metadata for the mail
 	$headers = "From: webmaster@iproject40.icasites.nl" . "\r\n" .

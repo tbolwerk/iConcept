@@ -12,6 +12,7 @@ echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
 }
 
 if (isset($_GET['id'])) {
+  $message = "";
   if(!isset($_SESSION['username'])){
     $error = "U moet ingelogt zijn om te bieden klik <br><a href='login.php'>hier om in te loggen</a>";
   } else {
@@ -34,7 +35,10 @@ if (isset($_GET['id'])) {
 
         //If this was not the first bid, send a mail to the person that placed the last highest bid
         if ($userdata[0] != "") {
-          bidMail($userdata);
+          $statement = $dbh->prepare("select titel from Voorwerp where Voorwerp.voorwerpnummer = ?");
+          $statement->execute(array($_GET['id']));
+          $title = $statement->fetch()[0];
+          bidMail($userdata, $title);
         }
       } catch (PDOException $e){
         $error = $e->getMessage();

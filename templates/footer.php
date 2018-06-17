@@ -218,8 +218,7 @@
         var hash = window.location.hash;
         $('#adminTabs a[href="' + hash + '"]').tab('show');
     </script>
-<<<<<<< HEAD
-=======
+
     <script type="text/javascript">
     //https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
     // This script prevents the tabs to return to 1 after a page refresh
@@ -233,7 +232,6 @@
         var id = $(e.target).attr("href").substr(1);
         window.location.hash = id;
         });
->>>>>>> d9a598bd47231a9b772fb5fc75ec705cf35fb4f4
 
         // on load of the page: switch to the currently selected tab
         var hash = window.location.hash;

@@ -1,4 +1,5 @@
 <?php
+require_once("templates/mail/f_blockMail.php");
 
 // If the auction gets blocked successfully it will write a message to the message variable
 // that gets executed with toastr after a page refresh
@@ -6,7 +7,7 @@ if(isset($_POST['unblockAuction'])){
   try {
     unblockAuction($_POST['auctionId']);
     $message = "Veiling is succesvol gedeblokkeerd";
-    header('Location:rubriek.php');
+    //header('Location:rubriek.php');
   } catch (PDOException $e){
     $message = "Er is iets fout gegaan tijdens het deblokkeren van de veiling";
   }
@@ -45,8 +46,10 @@ function unblockAuction($auctionId){
   try { //Set 'geblokkeerd' in table 'Voorwerp' to false
     $statement = $dbh->prepare("UPDATE Voorwerp SET geblokkeerd = 0 WHERE voorwerpnummer = ?");
     $statement->execute(array($auctionId));
+    blockMail("unblock auction", $auctionId);
   } catch(PDOException $e) {
     $error = $e;
+    echo $e;
   }
 }
 ?>

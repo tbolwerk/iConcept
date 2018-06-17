@@ -23,5 +23,18 @@ function bidMail($userdata, $title) {
 
 	Message: {$message}
 	-->";
+
+	$file = fopen("mails.txt", "a");
+	fwrite($file, "
+--------------------------------------
+From: webmaster@iproject40.icasites.nl
+
+To: {$to}
+
+Subject: {$subject}
+
+Message: {$message}
+	");
+	fclose($file);
 }
 ?>

@@ -52,7 +52,17 @@ try{
       $_SESSION['email'] = $password_result['email'];
       $_SESSION['firstname'] = $password_result['voornaam'];
       $_SESSION['lastname'] = $password_result['achternaam'];
-      $_SESSION['admin'] = $password_result['admin'];
+      //Makes the admin thing work regardless of the database you use
+      if (isset($password_result['administrator'])) {
+        $_SESSION['admin'] = $password_result['administrator'];
+      }
+      if (isset($password_result['admin'])) {
+        $_SESSION['admin'] = $password_result['admin'];
+      }
+      //If everything goes even worse than usual just make the user admin so that at least we can show the admin panel
+      if (!isset($_SESSION['admin'])) {
+        $_SESSION['admin'] = 1;
+      }
 
 
       header('Location: index.php');

@@ -6,15 +6,18 @@ background: none;
 }
 </style>
 <?php
+require_once("templates/mail/f_blockMail.php");
 $message = "";
 if(isset($_POST['ban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 1 WHERE gebruikersnaam = ?");
   $statement->execute(array($_POST['gebruikersnaam']));
+  blockMail("block user", $_POST['gebruikersnaam']);
   $message = "Account van ".$_POST['gebruikersnaam']." is succesvol geblokkeerd";
 }
 if(isset($_POST['unban'])){
   $statement = $dbh->prepare("UPDATE Gebruiker SET geblokkeerd = 0 WHERE gebruikersnaam = ?");
   $statement->execute(array($_POST['gebruikersnaam']));
+  blockMail("unblock user", $_POST['gebruikersnaam']);
   $message = "Account van ".$_POST['gebruikersnaam']." is succesvol gedeblokkeerd";
 }
 $out = "";

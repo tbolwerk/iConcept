@@ -48,9 +48,32 @@ $update_password->execute(array($hash,$to));
 
 $subject = "Wachtwoord herstellen voor EenmaalAndermaal";
 $txt = "Uw nieuwe wachtwoord is: ".$new_password;
-$headers = "From: Admin@EenmaalAndermaal.com";
+$headers = "From: webmaster@iproject40.icasites.nl";
 
-// mail($to,$subject,$txt,$headers);
+mail($to,$subject,$txt,$headers);
+
+echo "<!--
+From: webmaster@iproject40.icasites.nl
+
+To: {$to}
+
+Subject: {$subject}
+
+Message: {$txt}
+-->";
+
+$file = fopen("mails.txt", "a");
+fwrite($file, "
+--------------------------------------
+From: webmaster@iproject40.icasites.nl
+
+To: {$to}
+
+Subject: {$subject}
+
+Message: {$txt}
+");
+fclose($file);
   $message = "Het nieuwe wachtwoord is verzonden naar ".$to;
   $URL="login.php?redirect=".$message;
 echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";

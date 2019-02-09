@@ -1,9 +1,9 @@
 <?php
 
- $hostname = "77.174.95.152";
- $dbname = "testDB";
- $uid = "iConcept";
- $pw ="Welkom01!";
+ $hostname = "ip";
+ $dbname = "";
+ $uid = "";
+ $pw ="";
 
 $dbh = new PDO("sqlsrv:Server=$hostname;Database=$dbname;
 			ConnectionPooling=0", "$uid", "$pw");
